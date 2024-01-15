@@ -47,6 +47,16 @@
 		8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD82B54EF0F00D6BCF6 /* CalendarViewModel.swift */; };
 		8ECF5FDB2B54EF2300D6BCF6 /* ChatListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */; };
 		8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */; };
+		9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */; };
+		9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */; };
+		9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */; };
+		9A27E6AD2B55154200E7E699 /* CustomerCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6AC2B55154200E7E699 /* CustomerCalendarViewModel.swift */; };
+		9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6AF2B55156000E7E699 /* InstagramView.swift */; };
+		9A27E6B22B55156C00E7E699 /* InstagramViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6B12B55156C00E7E699 /* InstagramViewModel.swift */; };
+		9A27E6B52B55158A00E7E699 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6B42B55158A00E7E699 /* MapView.swift */; };
+		9A27E6B72B55159300E7E699 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6B62B55159300E7E699 /* MapViewModel.swift */; };
+		9A27E6B92B55160B00E7E699 /* ManagerOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */; };
+		9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */; };
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
 		9A3588622B0227DB00501E60 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3588612B0227DB00501E60 /* FirebaseAnalyticsOnDeviceConversion */; };
 		9A3588642B0227DB00501E60 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3588632B0227DB00501E60 /* FirebaseAnalyticsSwift */; };
@@ -119,6 +129,16 @@
 		8ECF5FD82B54EF0F00D6BCF6 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusView.swift; sourceTree = "<group>"; };
+		9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusViewModel.swift; sourceTree = "<group>"; };
+		9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerCalendarView.swift; sourceTree = "<group>"; };
+		9A27E6AC2B55154200E7E699 /* CustomerCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerCalendarViewModel.swift; sourceTree = "<group>"; };
+		9A27E6AF2B55156000E7E699 /* InstagramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramView.swift; sourceTree = "<group>"; };
+		9A27E6B12B55156C00E7E699 /* InstagramViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramViewModel.swift; sourceTree = "<group>"; };
+		9A27E6B42B55158A00E7E699 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
+		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +241,8 @@
 				8ECF5FDC2B54EF2C00D6BCF6 /* OrderDetail */,
 				8ECF5FDD2B54EF3B00D6BCF6 /* Calendar */,
 				8ECF5FDE2B54EF4700D6BCF6 /* ChatList */,
+				9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */,
+				9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -290,6 +312,10 @@
 		8ECF5FC62B54EE5B00D6BCF6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				9A27E6B32B55157800E7E699 /* Map */,
+				9A27E6AE2B55154900E7E699 /* Instagram */,
+				9A27E6A92B5514C400E7E699 /* CustomerCalendar */,
+				9A27E6A42B55148200E7E699 /* OrderStatus */,
 				8ECF5FB02B54C1C300D6BCF6 /* HomeView.swift */,
 				8ECF5FC42B54EE5300D6BCF6 /* HomeViewModel.swift */,
 			);
@@ -374,6 +400,42 @@
 				8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		9A27E6A42B55148200E7E699 /* OrderStatus */ = {
+			isa = PBXGroup;
+			children = (
+				9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */,
+				9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */,
+			);
+			path = OrderStatus;
+			sourceTree = "<group>";
+		};
+		9A27E6A92B5514C400E7E699 /* CustomerCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */,
+				9A27E6AC2B55154200E7E699 /* CustomerCalendarViewModel.swift */,
+			);
+			path = CustomerCalendar;
+			sourceTree = "<group>";
+		};
+		9A27E6AE2B55154900E7E699 /* Instagram */ = {
+			isa = PBXGroup;
+			children = (
+				9A27E6AF2B55156000E7E699 /* InstagramView.swift */,
+				9A27E6B12B55156C00E7E699 /* InstagramViewModel.swift */,
+			);
+			path = Instagram;
+			sourceTree = "<group>";
+		};
+		9A27E6B32B55157800E7E699 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				9A27E6B42B55158A00E7E699 /* MapView.swift */,
+				9A27E6B62B55159300E7E699 /* MapViewModel.swift */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -493,9 +555,12 @@
 				8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */,
 				8ECF5FCB2B54EE8A00D6BCF6 /* CautionViewModel.swift in Sources */,
 				8ECF5FC52B54EE5300D6BCF6 /* HomeViewModel.swift in Sources */,
+				9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */,
 				8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */,
+				9A27E6B52B55158A00E7E699 /* MapView.swift in Sources */,
 				8ECF5FB32B54C1CB00D6BCF6 /* ChatView.swift in Sources */,
 				8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */,
+				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
@@ -505,7 +570,11 @@
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
+				9A27E6AD2B55154200E7E699 /* CustomerCalendarViewModel.swift in Sources */,
+				9A27E6B22B55156C00E7E699 /* InstagramViewModel.swift in Sources */,
 				8ECF5FDB2B54EF2300D6BCF6 /* ChatListViewModel.swift in Sources */,
+				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
+				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
 				8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */,
 				8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */,
 				8E874BB82B00B59F00ECEF08 /* ProfileView.swift in Sources */,
@@ -513,9 +582,12 @@
 				8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */,
 				8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
+				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */,
 				8ECF5FD02B54EEAE00D6BCF6 /* ProfileVIewModel.swift in Sources */,
 				8ECF5FB52B54C1FE00D6BCF6 /* OrderDetailView.swift in Sources */,
+				9A27E6B92B55160B00E7E699 /* ManagerOnlyView.swift in Sources */,
+				9A27E6B72B55159300E7E699 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
