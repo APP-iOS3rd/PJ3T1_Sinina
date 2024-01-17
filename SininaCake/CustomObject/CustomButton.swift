@@ -35,7 +35,7 @@ struct CustomButton: View {
             Spacer()
         }
         .background(Color(backgroundColor))
-        .cornerRadius(12)
+        .cornerRadius(27.5)
         .padding(.leading, leading)
         .padding(.trailing, trailing)
     }
