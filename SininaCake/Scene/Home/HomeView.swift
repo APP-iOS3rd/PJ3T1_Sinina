@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
 
 struct HomeView: View {
+    @StateObject var loginVM: LoginViewModel = LoginViewModel()
+    @State var isAuthExist = AuthApi.hasToken()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        CustomButton(action: {/*loginVM.handleKakaoLogout()*/}, title: "로그아웃", titleColor: UIColor.white, backgroundColor: UIColor.customBlue, leading: 12, trailing: 12)
     }
 }
+
 
 #Preview {
     HomeView()

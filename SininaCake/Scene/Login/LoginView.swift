@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
+    private let loginButtonView = LoginButtonView()
     
     var body: some View {
         VStack {
@@ -34,11 +35,14 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 32)
             
-            LoginButtonView()
+            loginButtonView
             
             Spacer()
                 .frame(height: 70)
         }
+        .fullScreenCover(
+            isPresented: loginButtonView.$loginVM.isLoggedin,
+            content: { HomeView() })
     }
 }
 

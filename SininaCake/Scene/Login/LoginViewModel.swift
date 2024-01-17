@@ -51,6 +51,7 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    /// 카카오 유저 정보 획득
     func getUserInfo() {
         UserApi.shared.me() {(user, error) in
             if let error = error {
@@ -66,6 +67,5 @@ class LoginViewModel: ObservableObject {
             }
         }
     }
-    
 }
 
