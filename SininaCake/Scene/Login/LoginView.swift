@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
+    
     var body: some View {
         VStack {
             Spacer()
@@ -42,10 +43,12 @@ struct LoginView: View {
 }
 
 struct LoginButtonView: View {
+    @StateObject var loginVM: LoginViewModel = LoginViewModel()
+    
     var body: some View {
         VStack(spacing: 18) {
             // 카카오 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: { loginVM.handleKakaoLogin() }, label: {
                 Image("kakaoLogin")
                     .resizable()
                     .scaledToFit()
@@ -73,6 +76,7 @@ struct LoginButtonView: View {
         }
     }
 }
+                       
 
 #Preview {
     LoginView()
