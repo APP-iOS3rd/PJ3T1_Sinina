@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct LoginView: View {
+    
+    @StateObject var LoginVM = LoginViewModel()
+    
     var body: some View {
         VStack {
             Spacer()
@@ -33,7 +36,7 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 32)
             
-            LoginButtonView()
+            LoginButtonView(viewModel: LoginVM)
             
             Spacer()
                 .frame(height: 70)
@@ -42,6 +45,9 @@ struct LoginView: View {
 }
 
 struct LoginButtonView: View {
+    
+    @ObservedObject var viewModel: LoginViewModel
+    
     var body: some View {
         VStack(spacing: 18) {
             // 카카오 로그인 버튼
@@ -63,7 +69,7 @@ struct LoginButtonView: View {
             .padding(.trailing, 24)
             
             // 애플 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: viewModel.startSignInWithAppleFlow, label: {
                 Image("appleLogin")
                     .resizable()
                     .scaledToFit()
