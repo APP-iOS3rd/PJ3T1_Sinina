@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    private let loginButtonView = LoginButtonView()
+    @StateObject var loginVM = LoginViewModel()
     
     var body: some View {
         VStack {
@@ -35,19 +35,19 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 32)
             
-            loginButtonView
+            LoginButtonView(loginVM: loginVM)
             
             Spacer()
                 .frame(height: 70)
         }
         .fullScreenCover(
-            isPresented: loginButtonView.$loginVM.isLoggedin,
+            isPresented: $loginVM.isLoggedin,
             content: { HomeView() })
     }
 }
 
 struct LoginButtonView: View {
-    @StateObject var loginVM: LoginViewModel = LoginViewModel()
+    @ObservedObject var loginVM: LoginViewModel
     
     var body: some View {
         VStack(spacing: 18) {

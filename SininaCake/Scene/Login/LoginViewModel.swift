@@ -22,7 +22,7 @@ class LoginViewModel: ObservableObject {
                     
                     //do something
                     _ = oauthToken
-                    self.getUserInfo()
+                    self.isLoggedin = true
                 }
             }
         } else {
@@ -34,36 +34,8 @@ class LoginViewModel: ObservableObject {
                     
                     //do something
                     _ = oauthToken
-                    self.getUserInfo()
+                    self.isLoggedin = true
                 }
-            }
-        }
-    }
-    
-    /// 카카오 로그아웃
-    func handleKakaoLogout() {
-        UserApi.shared.logout {(error) in
-            if let error = error {
-                print(error)
-            } else {
-                print("logout() success.")
-            }
-        }
-    }
-    
-    /// 카카오 유저 정보 획득
-    func getUserInfo() {
-        UserApi.shared.me() {(user, error) in
-            if let error = error {
-                print(error)
-            } else {
-                print("me() success.")
-                
-                //do something
-                let userNickName = user?.kakaoAccount?.profile?.nickname
-                let userThumnail = user?.kakaoAccount?.profile?.thumbnailImageUrl
-                
-                self.isLoggedin = true
             }
         }
     }

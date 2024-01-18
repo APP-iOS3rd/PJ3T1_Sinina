@@ -91,6 +91,8 @@
 		9A3588942B0227DB00501E60 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3588932B0227DB00501E60 /* FirebaseStorageCombine-Community */; };
 		9A9E9DA92B58ADC5001B49EF /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */; };
 		9A9E9DAA2B58ADC5001B49EF /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */; };
+		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
+		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -149,6 +151,8 @@
 		9A27E6DA2B57D53300E7E699 /* SininaCake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SininaCake.entitlements; sourceTree = "<group>"; };
 		9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
+		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +247,7 @@
 		8E874BB02B00B47700ECEF08 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				9A9E9DB72B5917D9001B49EF /* Splash */,
 				8ECF5FC32B54EE4200D6BCF6 /* Login */,
 				8ECF5FC62B54EE5B00D6BCF6 /* Home */,
 				8ECF5FC92B54EE7400D6BCF6 /* Chat */,
@@ -456,6 +461,15 @@
 			path = Map;
 			sourceTree = "<group>";
 		};
+		9A9E9DB72B5917D9001B49EF /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */,
+				9A9E9DB32B5917C7001B49EF /* SplashView.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -584,12 +598,14 @@
 				9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */,
 				8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */,
 				9A27E6B52B55158A00E7E699 /* MapView.swift in Sources */,
+				9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */,
 				8ECF5FB32B54C1CB00D6BCF6 /* ChatView.swift in Sources */,
 				8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */,
 				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
+				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
 				8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */,
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
@@ -622,6 +638,7 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -685,6 +702,7 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -741,6 +759,7 @@
 		};
 		8E874BAA2B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -781,6 +800,7 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -9,11 +9,16 @@ import SwiftUI
 import KakaoSDKAuth
 
 struct HomeView: View {
-    @StateObject var loginVM: LoginViewModel = LoginViewModel()
+    @StateObject var homeVM = HomeViewModel()
     @State var isAuthExist = AuthApi.hasToken()
     
     var body: some View {
-        CustomButton(action: {/*loginVM.handleKakaoLogout()*/}, title: "로그아웃", titleColor: UIColor.white, backgroundColor: UIColor.customBlue, leading: 12, trailing: 12)
+        CustomButton(action: { homeVM.handleKakaoLogout() }, title: "로그아웃", titleColor: UIColor.white, backgroundColor: UIColor.customBlue, leading: 12, trailing: 12)
+        
+        AsyncImage(url: homeVM.profileImageURL)
+            .frame(width: 200, height: 200)
+        
+        Text(homeVM.nickname)
     }
 }
 
