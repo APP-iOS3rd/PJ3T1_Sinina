@@ -57,7 +57,6 @@
 		9A27E6B72B55159300E7E699 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6B62B55159300E7E699 /* MapViewModel.swift */; };
 		9A27E6B92B55160B00E7E699 /* ManagerOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */; };
 		9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */; };
-		9A27E6C52B56B46D00E7E699 /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A27E6C42B56B46D00E7E699 /* ApiKeys.plist */; };
 		9A27E6C82B56B7F800E7E699 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6C72B56B7F800E7E699 /* KakaoSDK */; };
 		9A27E6CA2B56B7F800E7E699 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6C92B56B7F800E7E699 /* KakaoSDKAuth */; };
 		9A27E6CC2B56B7F800E7E699 /* KakaoSDKCert in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CB2B56B7F800E7E699 /* KakaoSDKCert */; };
@@ -90,6 +89,8 @@
 		9A3588902B0227DB00501E60 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35888F2B0227DB00501E60 /* FirebaseRemoteConfigSwift */; };
 		9A3588922B0227DB00501E60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3588912B0227DB00501E60 /* FirebaseStorage */; };
 		9A3588942B0227DB00501E60 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3588932B0227DB00501E60 /* FirebaseStorageCombine-Community */; };
+		9A9E9DA92B58ADC5001B49EF /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */; };
+		9A9E9DAA2B58ADC5001B49EF /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,9 +146,9 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
-		9A27E6C42B56B46D00E7E699 /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
-		9A27E6D12B56BA1E00E7E699 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		9A27E6DA2B57D53300E7E699 /* SininaCake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SininaCake.entitlements; sourceTree = "<group>"; };
+		9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
+		9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,9 +215,9 @@
 			isa = PBXGroup;
 			children = (
 				9A27E6DA2B57D53300E7E699 /* SininaCake.entitlements */,
+				9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */,
+				9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
-				9A27E6D12B56BA1E00E7E699 /* ApiKeys.xcconfig */,
-				9A27E6C42B56B46D00E7E699 /* ApiKeys.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
 				8ECF5FBC2B54C43600D6BCF6 /* Network */,
@@ -552,16 +553,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
-				9A27E6C52B56B46D00E7E699 /* ApiKeys.plist in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
 				8ECF5FC02B54D05F00D6BCF6 /* GoogleService-Info.plist in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
+				9A9E9DAA2B58ADC5001B49EF /* ApiKeys.plist in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
+				9A9E9DA92B58ADC5001B49EF /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
 			);
@@ -620,7 +622,6 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A27E6D12B56BA1E00E7E699 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -684,7 +685,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A27E6D12B56BA1E00E7E699 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -741,16 +741,17 @@
 		};
 		8E874BAA2B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A27E6D12B56BA1E00E7E699 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SininaCake/SininaCake.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SininaCake/Preview Content\"";
-				DEVELOPMENT_TEAM = 2252348JAM;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2252348JAM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SininaCake/Info.plist;
@@ -771,6 +772,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sinina.SininaCake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Sinina Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -779,16 +781,17 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A27E6D12B56BA1E00E7E699 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SininaCake/SininaCake.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SininaCake/Preview Content\"";
-				DEVELOPMENT_TEAM = 2252348JAM;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2252348JAM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SininaCake/Info.plist;
@@ -809,6 +812,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sinina.SininaCake;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Sinina Release";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
