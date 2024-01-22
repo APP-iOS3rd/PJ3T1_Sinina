@@ -21,7 +21,7 @@ class LoginViewModel: ObservableObject {
                     print("loginWithKakaoTalk() success.")
                     
                     //do something
-                    _ = oauthToken
+                    
                     self.isLoggedin = true
                 }
             }
