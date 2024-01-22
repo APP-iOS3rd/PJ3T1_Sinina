@@ -33,11 +33,14 @@ struct SininaCakeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     init() {
+        var kakaoAppKey: String? {
+            get { getValueOfPlistFile("ApiKeys", "KAKAO_NATIVE_APP_KEY") }
+        }
         // Kakao SDK 초기화
-        let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
-        KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
+        // let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        KakaoSDK.initSDK(appKey: kakaoAppKey!)
         
-        print("TOKEN: \(kakaoAppKey)")
+        print("TOKEN: \(String(describing: kakaoAppKey))")
     }
     
     var body: some Scene {
