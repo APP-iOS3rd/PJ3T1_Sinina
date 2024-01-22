@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LoginView: View {
-    
     @StateObject var loginVM = LoginViewModel()
     
     var body: some View {
@@ -43,8 +42,7 @@ struct LoginView: View {
         }
         .fullScreenCover(
             isPresented: $loginVM.isLoggedin,
-            content: { HomeView() }
-        )
+            content: { HomeView() })
     }
 }
 
@@ -54,7 +52,7 @@ struct LoginButtonView: View {
     var body: some View {
         VStack(spacing: 18) {
             // 카카오 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: { loginVM.handleKakaoLogin() }, label: {
                 Image("kakaoLogin")
                     .resizable()
                     .scaledToFit()
@@ -82,6 +80,7 @@ struct LoginButtonView: View {
         }
     }
 }
+                       
 
 #Preview {
     LoginView()

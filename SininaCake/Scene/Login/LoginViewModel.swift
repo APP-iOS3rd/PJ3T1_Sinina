@@ -9,6 +9,7 @@ import Foundation
 import FirebaseAuth
 import CryptoKit
 import AuthenticationServices
+import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
     @Published var isLoggedin: Bool = false
@@ -46,6 +47,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
       return hashString
     }
     
+  /// 애플 로그인
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
       let nonce = randomNonceString()
@@ -95,4 +97,33 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         // Handle error.
         print("Sign in with Apple errored: \(error)")
       }
+  
+     /// 카카오 로그인
+     func handleKakaoLogin() {
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("loginWithKakaoTalk() success.")
+                    
+                    //do something
+                    
+                    self.isLoggedin = true
+                }
+            }
+        } else {
+            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("loginWithKakaoAccount() success.")
+                    
+                    //do something
+                    _ = oauthToken
+                    self.isLoggedin = true
+                }
+            }
+        }
+    }
 }
