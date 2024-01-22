@@ -20,7 +20,7 @@ struct ChatListView: View {
                                 VStack(alignment: .leading) {
                                     Text("Username")
                                     Text("Message sent to user")
-                                }
+                                } 
                                 Spacer()
                                 
                                 Text("22d")

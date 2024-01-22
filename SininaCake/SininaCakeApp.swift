@@ -24,7 +24,7 @@ struct SininaCakeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            ChatView()
         }
     }
 }
