@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @StateObject var LoginVM = LoginViewModel()
+    @StateObject var loginVM = LoginViewModel()
     
     var body: some View {
         VStack {
@@ -36,17 +36,20 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 32)
             
-            LoginButtonView(viewModel: LoginVM)
+            LoginButtonView(loginVM: loginVM)
             
             Spacer()
                 .frame(height: 70)
         }
+        .fullScreenCover(
+            isPresented: $loginVM.isLoggedin,
+            content: { HomeView() }
+        )
     }
 }
 
 struct LoginButtonView: View {
-    
-    @ObservedObject var viewModel: LoginViewModel
+    @ObservedObject var loginVM: LoginViewModel
     
     var body: some View {
         VStack(spacing: 18) {
@@ -69,7 +72,7 @@ struct LoginButtonView: View {
             .padding(.trailing, 24)
             
             // 애플 로그인 버튼
-            Button(action: viewModel.startSignInWithAppleFlow, label: {
+            Button(action: loginVM.startSignInWithAppleFlow, label: {
                 Image("appleLogin")
                     .resizable()
                     .scaledToFit()

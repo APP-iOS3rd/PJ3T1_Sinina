@@ -11,10 +11,8 @@ import CryptoKit
 import AuthenticationServices
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
-    
+    @Published var isLoggedin: Bool = false
     var currentNonce: String?
-    
-    
     
     private func randomNonceString(length: Int = 32) -> String {
       precondition(length > 0)
@@ -88,8 +86,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
               print(error?.localizedDescription)
               return
             }
-            // User is signed in to Firebase with Apple.
-            // ...
+              self.isLoggedin = true
           }
         }
       }
