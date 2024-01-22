@@ -13,15 +13,29 @@ struct CalendarView01: View {
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
     
+    //@State var clickedDates: Set<Date> = []
+    @State private var clickedDates: Set<Date> = Set()
+    
+    var clicked: Bool = false
+    
+    
     //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
-    //날짜 설정 버튼
+    
+    
+    //데이트피커에 의한 날짜 변경값
+    @State private var showDatePicker = false
+    
+    
     @State private var showAlert = false
+    
+    
     var body: some View {
         VStack(spacing: 0) {
             
             //년월 및 월 변경 버튼
-            HStack() {
+            VStack{
+                HStack() {
                     Button {
                         monthOffset -= 1
                     } label: {
@@ -29,55 +43,68 @@ struct CalendarView01: View {
                             .font(.title2)
                             .foregroundColor(Color(UIColor.customBlue))
                     }
-//                    Text(year())
-//                        .font(.caption)
-//                        .fontWeight(.semibold)
+                    //                    Text(year())
+                    //                        .font(.caption)
+                    //                        .fontWeight(.semibold)
                     Text(month())
                         .foregroundStyle(Color(UIColor.customBlue))
-                        //.font(UIFont.pretendard(size: , weight: UIFont.))
-                
-               
-                //.buttonStyle(BasicButtonStyle())
-                
-                Button {
-                    monthOffset += 1
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.title2)
-                        .foregroundColor(Color(UIColor.customBlue))
-                }
-                //.buttonStyle(BasicButtonStyle())
+                    //.font(UIFont.pretendard(size: , weight: UIFont.))
                     
                     
-                //Spacer()
-            } //HStack
-            .padding(.horizontal)
-            .padding(.bottom, 10)
-            .padding(.top, 10)
-            //.padding(.leading, 100)
+                    //.buttonStyle(BasicButtonStyle())
+                    
+                    Button {
+                        monthOffset += 1
+                    } label: {
+                        Image(systemName: "chevron.right")
+                            .font(.title2)
+                            .foregroundColor(Color(UIColor.customBlue))
+                    }
+                    //.buttonStyle(BasicButtonStyle())
+                    
+                    
+                    //Spacer()
+                }//HStack
+                .padding(.horizontal)
+                .padding(.bottom, 10)
+                .padding(.top, 10)
+                
+                
+            }
+            .padding(.bottom, 40)
             //요일
             HStack() {
                 
-                Button("Alert") {
-                    showAlert = true
-                }
-                .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text("알림"),
-                        message: Text("이것은 Alert입니다."),
-                        dismissButton: .default(Text("확인"))
-                    )
-                }
+                Button {
+                    showDatePicker.toggle()
+                                } label: {
+                                    Image(systemName: "calendar")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(Color(UIColor.customBlue))
+                                }
+                
+                            
+                            if showDatePicker {
+                                DatePicker(
+                                    "",
+                                    selection: $currentDate,
+                                    displayedComponents: .date
+                                )
+                                
+                                .datePickerStyle(.wheel)
+                                
+                                
+                            }
             }
-            .foregroundColor(Color(UIColor.customBlue))
-            .offset(x: 110, y: -30)
-            
+            //.foregroundColor(Color(UIColor.customBlue))
+            .offset(x: 100, y: -30)
             
             Group {
-                let days = ["일", "월", "화", "수", "목", "금", "토"]
+                let days = ["  일", " 월", " 화", " 수", " 목", " 금", "토"]
                 
                 
-                HStack(spacing: 7) {
+                HStack(spacing: 3) {
                     
                     
                     ForEach(days.indices, id: \.self) { index in
@@ -91,23 +118,77 @@ struct CalendarView01: View {
                 }
                 
             }
+            
+        
              //Group
             
+            
             //일
+            
             Group {
                 ForEach(daysList.indices, id: \.self) { i in
-                    HStack() {
-                        
-                        ForEach(daysList[i].indices, id: \.self) { j in
-                            CardView(value: daysList[i][j], schedule: testSchedule)
+                            HStack() {
+                                ForEach(daysList[i].indices, id: \.self) { j in
+                                    Button(action: {
+                                        showAlert = true
+                                        // 버튼이 클릭되었을 때 실행할 코드
+                                        let date = Date()
+                                        let clicked = clickedDates.contains(date)
+                                        if clicked {
+                                            print("dsdsf")
+                                            // 클릭된 경우의 동작
+                                            clickedDates.remove(date)
+                                            
+                                        } else {
+                                            // 클릭되지 않은 경우의 동작
+                                            print("Button unclicked at \(i), \(j)")
+                                            clickedDates.insert(date)
+                                            
+                                            
+                                        }
+                                    }) {
+                                        CardView(value: daysList[i][j], schedule: testSchedule)
+                                                .alert(isPresented: $showAlert) {
+                                                    Alert(
+                                                        title: Text("알림"),
+                                                        message: Text("스케줄 페이지로 연결"),
+                                                        dismissButton: .default(Text("확인"))
+                                                        
+                                                    )
+                                                }
+                                            
+                                    }
+                                }
+                            }
+                            .minimumScaleFactor(0.1)
+                            .padding([.leading, .trailing], 10)
                         }
                     }
-                    .minimumScaleFactor(0.1)
-                    .padding([.leading,.trailing],10)
-                    
-                }
-                
-            }
+//            Group {
+//                ForEach(daysList.indices, id: \.self) { i in
+//                    
+//                    HStack() {
+//                        
+//                        ForEach(daysList[i].indices, id: \.self) { j in
+//                            CardView(value: daysList[i][j], schedule: testSchedule)
+//                        }
+//                    }
+//                    .minimumScaleFactor(0.1)
+//                    .padding([.leading,.trailing],10)
+//                    .onTapGesture {
+//                        let date = Date()
+//                        let clicked = clickedDates.contains(date)
+//                        
+//                        if clicked {
+//                            RoundedRectangle(cornerRadius: 5)
+//                        
+//                    
+//                        }
+//                    }
+//                    
+//                }
+//                
+//            }
             
             
            
@@ -120,7 +201,7 @@ struct CalendarView01: View {
         .task {
             daysList = extractDate()
         }
-        .border(Color.gray, width: 1)
+        .border(Color(UIColor.customGray), width: 1)
         
         
     } //body
@@ -130,10 +211,12 @@ struct CalendarView01: View {
      */
     @ViewBuilder
     func CardView(value: DateValue, schedule: Schedule) -> some View {
-        
+        //var clicked: Bool = false
         ZStack() {
             VStack() {
                 if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate {
+                
+                       
                     if schedule.startDate.day == value.day {
                         
                             Text(schedule.name)
@@ -162,10 +245,11 @@ struct CalendarView01: View {
             HStack {
                 
                 if value.day > 0 {
+                    
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
                             .font(.title3.bold())
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
                     } else {
                         Text("\(value.day)")
@@ -274,6 +358,20 @@ struct CalendarView01: View {
         return result
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #Preview {
