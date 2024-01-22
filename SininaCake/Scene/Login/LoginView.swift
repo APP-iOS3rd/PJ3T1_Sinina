@@ -70,7 +70,7 @@ struct LoginButtonView: View {
             .padding(.trailing, 24)
             
             // 애플 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: loginVM.startSignInWithAppleFlow, label: {
                 Image("appleLogin")
                     .resizable()
                     .scaledToFit()

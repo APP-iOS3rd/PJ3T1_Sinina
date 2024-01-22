@@ -16,6 +16,7 @@
 		8E874BB82B00B59F00ECEF08 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BB72B00B59F00ECEF08 /* ProfileView.swift */; };
 		8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */; };
 		8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BC52B00BBA000ECEF08 /* OrderListView.swift */; };
+		8EC21AC22B59078C00E92DA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8EC21AC12B59078C00E92DA7 /* GoogleService-Info.plist */; };
 		8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */; };
 		8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */; };
 		8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A02B1DC00A003BF8B0 /* Pretendard-Medium.otf */; };
@@ -35,7 +36,6 @@
 		8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FB62B54C22800D6BCF6 /* ChatListView.swift */; };
 		8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FB82B54C3EA00D6BCF6 /* NaverMapAPI.swift */; };
 		8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FBA2B54C42900D6BCF6 /* InstagramAPI.swift */; };
-		8ECF5FC02B54D05F00D6BCF6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8ECF5FBF2B54D05F00D6BCF6 /* GoogleService-Info.plist */; };
 		8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FC12B54EE3D00D6BCF6 /* LoginViewModel.swift */; };
 		8ECF5FC52B54EE5300D6BCF6 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FC42B54EE5300D6BCF6 /* HomeViewModel.swift */; };
 		8ECF5FC82B54EE6F00D6BCF6 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */; };
@@ -106,6 +106,8 @@
 		8E874BB72B00B59F00ECEF08 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8E874BC52B00BBA000ECEF08 /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
+		8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SininaCake.entitlements; sourceTree = "<group>"; };
+		8EC21AC12B59078C00E92DA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		8ECB21A02B1DC00A003BF8B0 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -126,7 +128,6 @@
 		8ECF5FB62B54C22800D6BCF6 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		8ECF5FB82B54C3EA00D6BCF6 /* NaverMapAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMapAPI.swift; sourceTree = "<group>"; };
 		8ECF5FBA2B54C42900D6BCF6 /* InstagramAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramAPI.swift; sourceTree = "<group>"; };
-		8ECF5FBF2B54D05F00D6BCF6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8ECF5FC12B54EE3D00D6BCF6 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FC42B54EE5300D6BCF6 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -218,9 +219,7 @@
 		8E874B9D2B00B37200ECEF08 /* SininaCake */ = {
 			isa = PBXGroup;
 			children = (
-				9A27E6DA2B57D53300E7E699 /* SininaCake.entitlements */,
-				9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */,
-				9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */,
+				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
@@ -230,7 +229,7 @@
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
 				8E874BA22B00B37400ECEF08 /* Assets.xcassets */,
-				8ECF5FBF2B54D05F00D6BCF6 /* GoogleService-Info.plist */,
+				8EC21AC12B59078C00E92DA7 /* GoogleService-Info.plist */,
 				8E874BA42B00B37400ECEF08 /* Preview Content */,
 			);
 			path = SininaCake;
@@ -571,7 +570,7 @@
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
-				8ECF5FC02B54D05F00D6BCF6 /* GoogleService-Info.plist in Resources */,
+				8EC21AC22B59078C00E92DA7 /* GoogleService-Info.plist in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				9A9E9DAA2B58ADC5001B49EF /* ApiKeys.plist in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
