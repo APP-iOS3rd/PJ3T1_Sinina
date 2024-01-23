@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
+    @StateObject var loginVM = LoginViewModel()
+    
     var body: some View {
         VStack {
             Spacer()
@@ -33,19 +35,24 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 32)
             
-            LoginButtonView()
+            LoginButtonView(loginVM: loginVM)
             
             Spacer()
                 .frame(height: 70)
         }
+        .fullScreenCover(
+            isPresented: $loginVM.isLoggedin,
+            content: { HomeView() })
     }
 }
 
 struct LoginButtonView: View {
+    @ObservedObject var loginVM: LoginViewModel
+    
     var body: some View {
         VStack(spacing: 18) {
             // 카카오 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: { loginVM.handleKakaoLogin() }, label: {
                 Image("kakaoLogin")
                     .resizable()
                     .scaledToFit()
@@ -63,7 +70,7 @@ struct LoginButtonView: View {
             .padding(.trailing, 24)
             
             // 애플 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: loginVM.startSignInWithAppleFlow, label: {
                 Image("appleLogin")
                     .resizable()
                     .scaledToFit()
@@ -73,6 +80,7 @@ struct LoginButtonView: View {
         }
     }
 }
+                       
 
 #Preview {
     LoginView()
