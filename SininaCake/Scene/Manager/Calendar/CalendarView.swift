@@ -9,7 +9,7 @@ import SwiftUI
 struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
-    
+
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -18,9 +18,10 @@ struct CalendarView: View {
         return dateString
     }
 
+
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
-    
+
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
     
@@ -52,7 +53,7 @@ struct CalendarView: View {
     var body: some View {
         
         VStack() {
-            
+
             Text("🗓️ 이달의 스케줄")
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -88,7 +89,6 @@ struct CalendarView: View {
                                 Spacer()
                             }
                             .padding([.horizontal,.vertical], 10)
-                            
                         }
                         
                         
@@ -188,6 +188,8 @@ struct CalendarView: View {
                                 clickedDates.insert(date)
                                 
                                 
+   
+  
                             }
                         }) {
                             CardView(value: daysList[i][j], schedule: testSchedule)
