@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.i5s.sininacake</string>
+	<string>com.sinina.SininaCake</string>
 	<key>PROJECT_ID</key>
 	<string>sininacake</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:196495081616:ios:43c452185f28018c485815</string>
+	<string>1:196495081616:ios:4e4b6fa871113496485815</string>
 </dict>
 </plist>

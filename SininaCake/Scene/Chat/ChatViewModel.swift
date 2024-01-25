@@ -15,14 +15,14 @@ class ChatViewModel: ObservableObject {
         
     }
     
-    func handleSend() {
-        print(chatText)
-        
-        guard let fromId =
-                FirebaseManager.shared.auth.currentUser?.uid
-                else { return }
-        
-        guard let toId
-         
-    }
+//    func handleSend() {
+//        print(chatText)
+//        
+//        guard let fromId =
+//                FirebaseManager.shared.auth.currentUser?.uid
+//                else { return }
+//        
+//        guard let toId
+//         
+//    }
 }

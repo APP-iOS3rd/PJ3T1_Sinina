@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ChatView: View {
     
-    let chatUser = "고객"
+    let chatUser = "이찰떡"
     @State var chatText = ""
     @ObservedObject var chatvm = ChatViewModel()
     
-    init(chatUser: ChatUser?) {
-        self.chatUser = chatUser
-        self.chatvm = ChatViewModel
-    }
+//    init(chatUser: ChatUser?) {
+//        self.chatUser = chatUser
+//        self.chatvm = ChatViewModel
+//    }
     
     var body: some View {
         messagesView
@@ -37,7 +37,7 @@ struct ChatView: View {
                                     .foregroundColor(.white)
                             }
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.init(UIColor.customBlue))
                             .cornerRadius(8)
                         }
                         .padding(.horizontal)
@@ -60,25 +60,26 @@ struct ChatView: View {
     
     private var chatBottomBar: some View {
         HStack(spacing: 16 ) {
-            Image(systemName: "photo.on.rectangle")
+            Image(systemName: "plus")
                 .font(.system(size: 24))
-                .foregroundColor(Color(.darkGray))
+                .foregroundColor(Color.init(UIColor.customGray))
             
             ZStack {
                 TextEditor(text: $chatvm.chatText)
                     .opacity(chatvm.chatText.isEmpty ? 0.5 : 1 )
+                    .background(Color.init(UIColor.customGray))
+                    .cornerRadius(8)
             }
             .frame(height: 40)
             
             Button {
-                chatvm.handleSend()
+                //chatvm.handleSend()
             } label: {
-                Text("Send")
-                    .foregroundColor(.white)
+                Image(systemName: "paperplane")
+                    .foregroundColor(Color.init(UIColor.customGray))
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
-            .background(Color.blue)
             .cornerRadius(4)
         }
         .padding()
