@@ -5,10 +5,12 @@
 //  Created by  zoa0945 on 1/15/24.
 //
 
+import AuthenticationServices
+import CryptoKit
 import Foundation
 import FirebaseAuth
-import CryptoKit
-import AuthenticationServices
+import FirebaseCore
+import GoogleSignIn
 import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
@@ -47,7 +49,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
       return hashString
     }
     
-  /// 애플 로그인
+    /// 애플 로그인
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
       let nonce = randomNonceString()
@@ -80,6 +82,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                                                             rawNonce: nonce,
                                                             fullName: appleIDCredential.fullName)
           // Sign in with Firebase.
+        
           Auth.auth().signIn(with: credential) { (authResult, error) in
             if error != nil {
               // Error. If error.code == .MissingOrInvalidNonce, make sure
@@ -93,13 +96,14 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         }
       }
 
-      func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
         print("Sign in with Apple errored: \(error)")
-      }
+    }
   
+    // MARK: - 카카오 로그인
      /// 카카오 로그인
-     func handleKakaoLogin() {
+    func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
@@ -123,6 +127,43 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                     _ = oauthToken
                     self.isLoggedin = true
                 }
+            }
+        }
+    }
+    
+    // MARK: - 구글 로그인
+    /// 구글 로그인
+    func handleGoogleLogin() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(withPresenting: Utilities.rootViewController) { result, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard
+                let user = result?.user,
+                let idToken = user.idToken?.tokenString else { return }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: user.accessToken.tokenString)
+            
+            Auth.auth().signIn(with: credential) { result, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                
+                guard let user = result?.user else { return }
+                print(user)
+                self.isLoggedin = true
             }
         }
     }
