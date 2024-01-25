@@ -1,15 +1,16 @@
 //
-//  CalendarView.swift
+//  CalDemo.swift
 //  SininaCake
 //
-//  Created by  zoa0945 on 11/12/23.
+//  Created by 박채운 on 1/25/24.
 //
+
 import SwiftUI
 
-struct CalendarView: View {
+struct ContainerView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
-
+    
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -17,11 +18,10 @@ struct CalendarView: View {
         let dateString = myFormatter.string(from: date)
         return dateString
     }
-
-
+    
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
-    var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
-
+    var testSchedule = Schedule(name: "asdds ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date())
+    
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
     
@@ -51,50 +51,38 @@ struct CalendarView: View {
     }
     
     var body: some View {
-        
-        VStack() {
-
-            Text("🗓️ 이달의 스케줄")
-                .font(
-                    Font.custom("Pretendard", fixedSize: 24)
-                        .weight(.semibold)
-                )
-                .dynamicTypeSize(.large)
-                .kerning(0.6)
-                .foregroundColor(.black)
-                .frame(width: UIScreen.main.bounds.size.width * (185/430), height: UIScreen.main.bounds.size.width * (130/430))
-                .aspectRatio(1/1, contentMode: .fill)
-            
-            
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 342, height: 441)
-                .background(
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 8)
+        Text("🗓️ 이달의 스케줄")
+        .font(
+        Font.custom("Pretendard", size: 24)
+        .weight(.semibold)
+        )
+        .kerning(0.6)
+        .foregroundColor(.black)
+        Rectangle()
+            .foregroundColor(.clear)
+            .frame(width: 342, height: 441)
+            .background(
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                        .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 8)
                         
-                        VStack() {
-                                headerView
+                    VStack {
+                        headerView
+                        monthView
+                        cardView
+                        HStack {
+                            bookingView
                             
-                                monthView
-                                
-                                cardView
-                        
-                            HStack {
-                                bookingView
-                                
-                                Spacer()
-                            }
-                            .padding([.horizontal,.vertical], 10)
+                            Spacer()
                         }
-                        
-                        
+                        .padding([.horizontal,.vertical], 10)
+                    
                     }
-                )
-        }
+                    
+                }
+            )
     }
     
     
@@ -110,16 +98,14 @@ struct CalendarView: View {
             }
             
             Text(month())
-                
+                .fixedSize(horizontal: false, vertical: true)
                 .font(
-                    Font.custom("Pretendard", fixedSize: 24)
+                    Font.custom("Pretendard", size: 24)
                         .weight(.semibold)
                 )
                 .kerning(0.6)
                 .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
-                .minimumScaleFactor(0.7)
                 .padding()
-                
             
             
             
@@ -136,40 +122,28 @@ struct CalendarView: View {
     }
     
     private var monthView: some View {
-        //let weekdaySymbols = Calendar.current.veryShortWeekdaySymbols
-        let days = ["  일", "월", "화", "수", "목", "금", "토"]
+        let days = [" 일", " 월", " 화", " 수", " 목", " 금", "토"]
         
-        
-        return
-        
-        HStack(spacing:24) {
+        return GeometryReader { geometry in
+            HStack(spacing:20) {
                 
                 ForEach(days.indices, id: \.self) { index in
                     Text(days[index])
-                        .font(.custom("Pretendard-SemiBold",fixedSize: 18))
-                    
-                    
+                        .font(customFont(size: min(geometry.size.width, geometry.size.height), maxSize: 16))
+                        .kerning(0.4)
                         .foregroundColor(Color(red: 0.44, green: 0.44, blue: 0.44))
                         .aspectRatio(contentMode: .fill)
                         .foregroundColor(index == 0 ? .red : (index == days.count - 1 ? Color(UIColor.customBlue) : .black))
-                        
                     
                 }
-                
-           
             }
-        .minimumScaleFactor(0.1)
-        .padding([.leading, .trailing], 10)
-        .frame(width: UIScreen.main.bounds.width / 13)
-        .frame(height: 40)
+            .frame(maxWidth: .infinity, maxHeight: .infinity) // 이 부분을 추가하여 부모 스택의 크기를 가득 채우도록 설정
             
-        
+        }
     }
     
     private var cardView: some View {
-        VStack() {
-            
-
+        VStack {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
@@ -189,10 +163,6 @@ struct CalendarView: View {
                                 clickedDates.insert(date)
                                 
                                 
-   
-  
-
-   
                             }
                         }) {
                             CardView(value: daysList[i][j], schedule: testSchedule)
@@ -211,7 +181,7 @@ struct CalendarView: View {
                 }
                 
                 .minimumScaleFactor(0.1)
-                
+                .padding([.leading, .trailing], 10)
                 
             }
         }
@@ -224,26 +194,22 @@ struct CalendarView: View {
         .task {
             daysList = extractDate()
         }
-
     }
 
     
-
     
     @ViewBuilder
     func CardView(value: DateValue, schedule: Schedule) -> some View {
         //var clicked: Bool = false
-        
         ZStack() {
-            ZStack() {
+            VStack() {
                 if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate {
                 
                        
                     if schedule.startDate.day == value.day {
                         
                             Text(schedule.name)
-
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 12))
+                                .font(.custom("Pretendard-SemiBold", size: 12))
                                 .foregroundStyle(.black)
                                 //.foregroundColor(Color(UIColor.customBlue))
                                 .lineLimit(2)
@@ -270,26 +236,17 @@ struct CalendarView: View {
                 
                 
                 if value.day > 0 {
+                    
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
-                            .font(.custom("Pretendard-SemiBold", size: 18))
+                            .font(.title3.bold())
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
                     } else {
-                        
-                        if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
-                        {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", size: 18))
-                                .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
-                                .padding([.leading, .bottom], 10)
-                        } else {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", size: 18))
-                                .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
-                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
-                                .padding([.leading, .bottom], 10)
-                        }
+                        Text("\(value.day)")
+                            .font(.title3.bold())
+                            .foregroundColor(value.date.weekday == 1 ? .red : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+                            .padding([.leading, .bottom], 10)
                     }
                 }
                // Spacer()
@@ -313,48 +270,45 @@ struct CalendarView: View {
     
     private var bookingView: some View {
         
-            
-            VStack(alignment:.leading) {
-                HStack {
-                    Image("Ellipse 62")
-                        .frame(width: 12, height: 12)
+        VStack(alignment:.leading) {
+            HStack {
+                Image("Ellipse 62")
+                    .frame(width: 12, height: 12)
                     
-                    Text("예약 가능")
-                        .font(
-                            Font.custom("Pretendard", fixedSize: 14)
-                                .weight(.semibold)
-                        )
-                        .kerning(0.35)
-                        .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
-                    
-                }
-                HStack {
-                    Image("Ellipse 63")
-                        .frame(width: 12, height: 12)
-                    
-                    Text("예약 마감")
-                        .font(
-                            Font.custom("Pretendard", fixedSize: 14)
-                                .weight(.semibold)
-                        )
-                        .kerning(0.35)
-                        .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
-                }
+                Text("예약 가능")
+                .font(
+                Font.custom("Pretendard", size: 14)
+                .weight(.semibold)
+                )
+                .kerning(0.35)
+                .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
                 
-                HStack {
-                    Image("Ellipse 64")
-                        .frame(width: 12, height: 12)
-                    Text("휴무")
-                        .font(
-                            Font.custom("Pretendard", fixedSize: 14)
-                                .weight(.semibold)
-                        )
-                        .kerning(0.35)
-                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
-                }
             }
-        
-        
+            HStack {
+                Image("Ellipse 63")
+                    .frame(width: 12, height: 12)
+                     
+                Text("예약 마감")
+                  .font(
+                    Font.custom("Pretendard", size: 14)
+                      .weight(.semibold)
+                  )
+                  .kerning(0.35)
+                  .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
+            }
+            
+            HStack {
+                Image("Ellipse 64")
+                    .frame(width: 12, height: 12)
+                Text("휴무")
+                .font(
+                Font.custom("Pretendard", size: 14)
+                .weight(.semibold)
+                )
+                .kerning(0.35)
+                .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+            }
+        }
     }
     
     /**
@@ -460,6 +414,6 @@ extension UIScreen {
 
 
 #Preview {
-    CalendarView()
+    ContainerView()
     
 }
