@@ -95,9 +95,11 @@
 		9AEACEAE2B624EE400AE041F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAD2B624EE400AE041F /* GoogleSignIn */; };
 		9AEACEB02B624EE400AE041F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAF2B624EE400AE041F /* GoogleSignInSwift */; };
 		9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEACEB12B6255DE00AE041F /* Utilities.swift */; };
+		E497138EE1DEF1C9FCAD9516 /* Pods_SininaCake.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7D6FD1E6A153435F968A9C98 /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BA22B00B37400ECEF08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		8ECF5FD82B54EF0F00D6BCF6 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SininaCake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusView.swift; sourceTree = "<group>"; };
 		9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusViewModel.swift; sourceTree = "<group>"; };
 		9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerCalendarView.swift; sourceTree = "<group>"; };
@@ -151,12 +154,11 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
-		9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
-		9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		9AEACEB12B6255DE00AE041F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		A1FF33546BA7B910F954E933 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 				9A35887A2B0227DB00501E60 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				9A35888A2B0227DB00501E60 /* FirebaseMessaging in Frameworks */,
 				9A3588862B0227DB00501E60 /* FirebaseInstallations in Frameworks */,
+				E497138EE1DEF1C9FCAD9516 /* Pods_SininaCake.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +213,8 @@
 				8E874B9D2B00B37200ECEF08 /* SininaCake */,
 				8E874B9C2B00B37200ECEF08 /* Products */,
 				9AEACEA92B62446B00AE041F /* Recovered References */,
+				DF04FFE9D6F8D13092B126B3 /* Pods */,
+				A4966792BB31E9FCD96259A8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -480,10 +485,25 @@
 		9AEACEA92B62446B00AE041F /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */,
-				9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		A4966792BB31E9FCD96259A8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF04FFE9D6F8D13092B126B3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A1FF33546BA7B910F954E933 /* Pods-SininaCake.debug.xcconfig */,
+				7D6FD1E6A153435F968A9C98 /* Pods-SininaCake.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -493,9 +513,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E874BA92B00B37400ECEF08 /* Build configuration list for PBXNativeTarget "SininaCake" */;
 			buildPhases = (
+				87EEBC3D8550A6A2165557BD /* [CP] Check Pods Manifest.lock */,
 				8E874B972B00B37200ECEF08 /* Sources */,
 				8E874B982B00B37200ECEF08 /* Frameworks */,
 				8E874B992B00B37200ECEF08 /* Resources */,
+				EA0667FDFC66CB1377954CFB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -603,6 +625,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		87EEBC3D8550A6A2165557BD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SininaCake-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA0667FDFC66CB1377954CFB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SininaCake/Pods-SininaCake-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SininaCake/Pods-SininaCake-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SininaCake/Pods-SininaCake-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8E874B972B00B37200ECEF08 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -693,7 +757,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -721,7 +785,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -757,7 +820,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -778,7 +841,7 @@
 		};
 		8E874BAA2B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */;
+			baseConfigurationReference = A1FF33546BA7B910F954E933 /* Pods-SininaCake.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -819,7 +882,7 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */;
+			baseConfigurationReference = 7D6FD1E6A153435F968A9C98 /* Pods-SininaCake.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
