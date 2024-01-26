@@ -13,15 +13,7 @@ struct InstagramView: View {
     
     var body: some View {
         VStack {
-            
-            // FIXME: - 고치기!
-            Text("🧁 새로운 케이크")
-                .font(
-                    Font.custom("Pretendard", size: 24)
-                        .weight(.semibold)
-                )
-                .kerning(0.6)
-                .foregroundColor(.black)
+            CustomText(title: "🧁 새로운 케이크", textColor: .black, textWeight: .semibold, textSize: 24)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top) {

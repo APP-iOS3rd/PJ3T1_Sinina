@@ -11,25 +11,33 @@ import NMapsMap
 
 struct MapView: View {
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack() {
+            CustomText(title: "📍 찾아오시는 길", textColor: .black, textWeight: .semibold, textSize: 24)
+                .padding(.bottom, 24)
+            
             NaverMap(coord: (37.6550100, 127.069713))
               .foregroundColor(.clear)
-              .frame(width: 382, height: 535)
-              .cornerRadius(12)
+              .frame(width: 382, height: 435)
+              .clipShape(
+                .rect(topLeadingRadius: 12, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 12)
+              )
               .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
               .padding(.horizontal, 24)
-            
-            Rectangle()
-            .foregroundColor(.clear)
-            .frame(width: 382, height: 100)
-            .background(.white)
-            .cornerRadius(12)
-            
-            VStack(alignment: .leading) {
+              .padding(.vertical, -16)
 
+            VStack(alignment: .leading) {
                 CustomText(title: "시니나 케이크", textColor: .black, textWeight: .semibold, textSize: 18)
+
                 CustomText(title: "서울 노원구 노원로30길 44 1층", textColor: .customGray, textWeight: .semibold, textSize: 16)
             }
+            .padding(.leading, 24)
+            .foregroundColor(.clear)
+            .frame(width: 382, height: 100, alignment: .leading)
+            .background(.white)
+            .clipShape(
+              .rect(topLeadingRadius: 0, bottomLeadingRadius: 12, bottomTrailingRadius: 12, topTrailingRadius: 0)
+            )
+            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
         }
     }
 }
@@ -41,7 +49,7 @@ struct NaverMap: UIViewRepresentable {
         let view = NMFNaverMapView()
         view.showZoomControls = false
         view.mapView.positionMode = .direction
-        view.mapView.zoomLevel = 20
+        view.mapView.zoomLevel = 19
         return view
     }
     
