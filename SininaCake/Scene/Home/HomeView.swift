@@ -9,8 +9,6 @@ import SwiftUI
 import KakaoSDKAuth
 
 struct HomeView: View {
-    @StateObject var homeVM = HomeViewModel()
-    
     var body: some View {
         // TODO: MyPage로 이동 예정
         ScrollView {

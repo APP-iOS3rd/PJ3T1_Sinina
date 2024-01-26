@@ -12,19 +12,18 @@ struct InstagramView: View {
     //private var instaData: [InstaData]
     
     var body: some View {
-        VStack {
+            VStack {
             CustomText(title: "🧁 새로운 케이크", textColor: .black, textWeight: .semibold, textSize: 24)
-            
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top) {
                     ForEach(instaVM.instaData) { data in
                         AsyncImage(url: URL(string: data.mediaURL)) { image in
                             image.image?
                                 .resizable()
-                                .frame(width: 185, height: 185 * (750/601))
+                                .frame(width: UIScreen.main.bounds.size.width * (185/430), height: UIScreen.main.bounds.size.width * (185/430) * (750/601))
                                 .aspectRatio(1/1, contentMode: .fill)
                         }
-                        .frame(width: 185, height: 185)
+                        .frame(width: UIScreen.main.bounds.size.width * (185/430), height: UIScreen.main.bounds.size.width * (185/430))
                         .clipShape(.rect(cornerRadius: 12))
                     }
                 }
