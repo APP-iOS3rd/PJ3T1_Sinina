@@ -9,71 +9,66 @@ import SwiftUI
 
 struct ChatView: View {
     
-    let chatUser = "이찰떡"
+    @StateObject var chatvm = ChatViewModel()
+    @ObservedObject var fbManager = FirebaseManager.shared
     @State var chatText = ""
-    @ObservedObject var chatvm = ChatViewModel()
     
-//    init(chatUser: ChatUser?) {
-//        self.chatUser = chatUser
-//        self.chatvm = ChatViewModel
-//    }
-    
-    var body: some View {
-        messagesView
-        .navigationTitle(chatUser)
-        .navigationBarTitleDisplayMode(.inline)
+    var chatUser: String
+        
+    init(chatUser: String) {
+        self.chatUser = chatUser
     }
     
+    // MARK: 통합 뷰
+    var body: some View {
+        VStack {
+            messagesView
+                .navigationTitle(chatUser)
+                .navigationBarTitleDisplayMode(.inline)
+                .padding(.top, 10)
+            
+            chatBottomBar
+        }
+    }
+    
+    // MARK: 메세지 창 띄우는 뷰
     private var messagesView: some View {
         VStack {
-            if #available(iOS 15.0, *) {
+            ScrollViewReader { proxy in
                 ScrollView {
-                    ForEach(0..<10) { num in
-                        HStack {
-                            Spacer()
-                            
-                            HStack {
-                                Text("Fake Message for now")
-                                    .foregroundColor(.white)
-                            }
-                            .padding()
-                            .background(Color.init(UIColor.customBlue))
-                            .cornerRadius(8)
-                        }
-                        .padding(.horizontal)
-                        .padding(.top, 8)
-                    }
-                    
-                    HStack{ Spacer() }
+                    ForEach(chatvm.messages, id: \.id) { message in
+                        MessageBubble(message: message)
+                    } 
                 }
-                .background(Color(.init(white: 0.95, alpha: 1)))
-                .safeAreaInset(edge: .bottom) {
-                    chatBottomBar
-                        .background(Color(
-                            .systemBackground)
-                            .ignoresSafeArea()
-                        )
+                .background(Color.clear)
+                .onChange(of: chatvm.lastMessageId){ id in
+                    withAnimation {
+                        // 마지막 말풍선을 따라 스크롤로 내려감
+                        proxy.scrollTo(id, anchor: .bottom)
+                    }
+
                 }
             }
         }
     }
     
+    //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
-        HStack(spacing: 16 ) {
+        HStack(spacing: 16) {
             Image(systemName: "plus")
                 .font(.system(size: 24))
                 .foregroundColor(Color.init(UIColor.customGray))
             
             ZStack {
-                TextEditor(text: $chatvm.chatText)
-                    .opacity(chatvm.chatText.isEmpty ? 0.5 : 1 )
+                // 텍스트 입력
+                TextField("Enter your message", text: $chatText)
                     .background(Color.init(UIColor.customGray))
                     .cornerRadius(8)
             }
             .frame(height: 40)
             
             Button {
-                //chatvm.handleSend()
+                chatvm.sendMessage(text: chatText)
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(Color.init(UIColor.customGray))
@@ -88,7 +83,7 @@ struct ChatView: View {
 
 #Preview {
     NavigationView {
-        ChatView()
+        ChatView(chatUser: "사용자 이름")
     }
     
 }

@@ -4,12 +4,13 @@
 //
 //  Created by  zoa0945 on 1/15/24.
 //
-
 import Foundation
 import FirebaseAuth
 import CryptoKit
 import AuthenticationServices
 import KakaoSDKUser
+import Firebase
+import FirebaseStorage
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
     @Published var isLoggedin: Bool = false
@@ -80,7 +81,8 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                                                             rawNonce: nonce,
                                                             fullName: appleIDCredential.fullName)
           // Sign in with Firebase.
-          Auth.auth().signIn(with: credential) { (authResult, error) in
+        // MARK: 여기서 로그인이 됨!!!
+            FirebaseManager.shared.auth.signIn(with: credential) { (authResult, error) in
             if error != nil {
               // Error. If error.code == .MissingOrInvalidNonce, make sure
               // you're sending the SHA256-hashed nonce as a hex string with
@@ -89,9 +91,27 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
               return
             }
               self.isLoggedin = true
+            //self.storeUserInformation(imageProfileUrl: url)
           }
         }
       }
+    
+//    private func storeUserInformation(imageProfileUrl: URL){
+//        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+//            return }
+//        
+//        
+//        let userData = ["email": self.email, "uid": uid, "profileImageUrl": imageProfileUrl.absoluteString]
+//        FirebaseManager.shared.firestore.collection("users")
+//            .document(uid).setData(userData){ err in
+//                if let err = err {
+//                    print(err)
+//                    //self.loginStatusmessage = "\(err)"
+//                    return
+//                }
+//                print("Success")
+//            }
+//    }
 
       func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
