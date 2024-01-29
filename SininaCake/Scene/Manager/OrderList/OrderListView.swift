@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct OrderListView: View {
-    
     // Dummy Data
     private var orderData: [OrderItem] = [
         OrderItem(date: "2023/09/23(금)", time: "12:30", cakeSize: "도시락", sheet: "초코시트", cream: "크림치즈프로스팅", customer: "김고구마", phoneNumber: "010-0000-0000", text: "생일축하해", imageURL: [""], comment: "보냉백 추가할게요!", price: 25000),
@@ -25,23 +24,28 @@ struct OrderListView: View {
                     ForEach(0..<orderData.count, id: \.self) { i in
                         NavigationLink(value: i) {
                             ListCellView(orderItem: orderData[i])
+                                .listRowSeparator(.hidden)
                         }
-                            .listRowSeparator(.hidden)
                     }
                 }
                 
                 Section(
                     header: CustomText(title: "승인 주문건 현황", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                 ) {
-                    ForEach(orderData, id: \.self) {
-                        ListCellView(orderItem: $0)
-                            .listRowSeparator(.hidden)
+                    ForEach(0..<orderData.count, id: \.self) { i in
+                        NavigationLink(value: i) {
+                            ListCellView(orderItem: orderData[i])
+                                .listRowSeparator(.hidden)
+                        }
                     }
                 }
             }
             .listStyle(.inset)
             .navigationDestination(for: Int.self) { i in
-                OrderDetailView(/*orderItem: orderData[i]*/)
+                OrderDetailView(orderItem: orderData[i])
+            }
+            .navigationDestination(for: Int.self) { i in
+                OrderDetailView(orderItem: orderData[i])
             }
         }
     }
