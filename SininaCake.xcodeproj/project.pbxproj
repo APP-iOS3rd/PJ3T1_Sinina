@@ -245,7 +245,6 @@
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
 				8E874BA22B00B37400ECEF08 /* Assets.xcassets */,
-				8EC21AC12B59078C00E92DA7 /* GoogleService-Info.plist */,
 				8E874BA42B00B37400ECEF08 /* Preview Content */,
 			);
 			path = SininaCake;
@@ -625,7 +624,6 @@
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
-				8EC21AC22B59078C00E92DA7 /* GoogleService-Info.plist in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */,
