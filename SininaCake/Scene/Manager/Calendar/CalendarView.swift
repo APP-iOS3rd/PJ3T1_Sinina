@@ -4,11 +4,22 @@
 //
 //  Created by  zoa0945 on 11/12/23.
 //
-
 import SwiftUI
 
-struct CalendarView01: View {
-    let testSchedule = Schedule(name: "이벤트 기간", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date())
+struct CalendarView: View {
+    
+    @Environment(\.sizeCategory) var sizeCategory
+    
+    var dateString: String? {
+        let date =  Date()                     // 넣을 데이터(현재 시간)
+        let myFormatter = DateFormatter()
+        myFormatter.dateFormat = "MM-dd"  // 변환할 형식
+        let dateString = myFormatter.string(from: date)
+        return dateString
+    }
+
+//    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
+    var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
@@ -29,170 +40,177 @@ struct CalendarView01: View {
     
     @State private var showAlert = false
     
+    private func customFont(size: CGFloat, maxSize: CGFloat) -> Font {
+        let scaledSize = min(size, maxSize)
+        
+        guard let customFont = UIFont(name: "Pretendard", size: scaledSize) else {
+            return Font.system(size: scaledSize)
+        }
+        return Font(customFont)
+    }
     
     var body: some View {
-        VStack(spacing: 0) {
+        
+        VStack() {
             
-            //년월 및 월 변경 버튼
-            VStack{
-                HStack() {
-                    Button {
-                        monthOffset -= 1
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.title2)
-                            .foregroundColor(Color(UIColor.customBlue))
-                    }
-                    //                    Text(year())
-                    //                        .font(.caption)
-                    //                        .fontWeight(.semibold)
-                    Text(month())
-                        .foregroundStyle(Color(UIColor.customBlue))
-                    //.font(UIFont.pretendard(size: , weight: UIFont.))
-                    
-                    
-                    //.buttonStyle(BasicButtonStyle())
-                    
-                    Button {
-                        monthOffset += 1
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.title2)
-                            .foregroundColor(Color(UIColor.customBlue))
-                    }
-                    //.buttonStyle(BasicButtonStyle())
-                    
-                    
-                    //Spacer()
-                }//HStack
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                .padding(.top, 10)
-                
-                
-            }
-            .padding(.bottom, 40)
-            //요일
-            HStack() {
-                
-                Button {
-                    showDatePicker.toggle()
-                                } label: {
-                                    Image(systemName: "calendar")
-                                        .resizable()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(Color(UIColor.customBlue))
-                                }
-                
+            Text("🗓️ 이달의 스케줄")
+                .font(
+                    Font.custom("Pretendard", fixedSize: 24)
+                        .weight(.semibold)
+                )
+                .dynamicTypeSize(.large)
+                .kerning(0.6)
+                .foregroundColor(.black)
+                .frame(width: UIScreen.main.bounds.size.width * (185/430), height: UIScreen.main.bounds.size.width * (130/430))
+                .aspectRatio(1/1, contentMode: .fill)
+            
+            
+            Rectangle()
+                .foregroundColor(.clear)
+                .frame(width: 342, height: 441)
+                .background(
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                            .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 8)
+                        
+                        VStack() {
+                                headerView
                             
-                            if showDatePicker {
-                                DatePicker(
-                                    "",
-                                    selection: $currentDate,
-                                    displayedComponents: .date
-                                )
+                                monthView
                                 
-                                .datePickerStyle(.wheel)
+                                cardView
+                        
+                            HStack {
+                                bookingView
                                 
-                                
+                                Spacer()
                             }
-            }
-            //.foregroundColor(Color(UIColor.customBlue))
-            .offset(x: 100, y: -30)
-            
-            Group {
-                let days = ["  일", " 월", " 화", " 수", " 목", " 금", "토"]
-                
-                
-                HStack(spacing: 3) {
-                    
-                    
-                    ForEach(days.indices, id: \.self) { index in
-                        Text(days[index])
-                            .font(.callout)
-                            //.fontWeight(.semibold)
-                            .padding([.leading,.trailing], 9)
+                            .padding([.horizontal,.vertical], 10)
                             
-                            .foregroundColor(index == 0 ? .red : (index == days.count - 1 ? Color(UIColor.customBlue) : .black))
+                        }
+                        
+                        
                     }
+                )
+        }
+    }
+    
+    
+    
+    private var headerView: some View {
+        HStack {
+            
+            Button {
+                monthOffset -= 1
+            } label: {
+                Image("angle-left")
+                    
+            }
+            
+            Text(month())
+                
+                .font(
+                    Font.custom("Pretendard", fixedSize: 24)
+                        .weight(.semibold)
+                )
+                .kerning(0.6)
+                .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
+                .minimumScaleFactor(0.7)
+                .padding()
+                
+            
+            
+            
+            Button {
+                monthOffset += 1
+            } label: {
+                Image("angle-right")
+                    
+            }
+            //.buttonStyle(BasicButtonStyle())
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
+        
+    }
+    
+    private var monthView: some View {
+        //let weekdaySymbols = Calendar.current.veryShortWeekdaySymbols
+        let days = ["  일", "월", "화", "수", "목", "금", "토"]
+        
+        
+        return
+        
+        HStack(spacing:24) {
+                
+                ForEach(days.indices, id: \.self) { index in
+                    Text(days[index])
+                        .font(.custom("Pretendard-SemiBold",fixedSize: 18))
+                    
+                    
+                        .foregroundColor(Color(red: 0.44, green: 0.44, blue: 0.44))
+                        .aspectRatio(contentMode: .fill)
+                        .foregroundColor(index == 0 ? .red : (index == days.count - 1 ? Color(UIColor.customBlue) : .black))
+                        
+                    
                 }
                 
+           
             }
+        .minimumScaleFactor(0.1)
+        .padding([.leading, .trailing], 10)
+        .frame(width: UIScreen.main.bounds.width / 13)
+        .frame(height: 40)
             
         
-             //Group
+    }
+    
+    private var cardView: some View {
+        VStack() {
             
-            
-            //일
-            
-            Group {
-                ForEach(daysList.indices, id: \.self) { i in
-                            HStack() {
-                                ForEach(daysList[i].indices, id: \.self) { j in
-                                    Button(action: {
-                                        showAlert = true
-                                        // 버튼이 클릭되었을 때 실행할 코드
-                                        let date = Date()
-                                        let clicked = clickedDates.contains(date)
-                                        if clicked {
-                                            print("dsdsf")
-                                            // 클릭된 경우의 동작
-                                            clickedDates.remove(date)
-                                            
-                                        } else {
-                                            // 클릭되지 않은 경우의 동작
-                                            print("Button unclicked at \(i), \(j)")
-                                            clickedDates.insert(date)
-                                            
-                                            
-                                        }
-                                    }) {
-                                        CardView(value: daysList[i][j], schedule: testSchedule)
-                                                .alert(isPresented: $showAlert) {
-                                                    Alert(
-                                                        title: Text("알림"),
-                                                        message: Text("스케줄 페이지로 연결"),
-                                                        dismissButton: .default(Text("확인"))
-                                                        
-                                                    )
-                                                }
-                                            
-                                    }
-                                }
+            ForEach(daysList.indices, id: \.self) { i in
+                HStack() {
+                    ForEach(daysList[i].indices, id: \.self) { j in
+                        Button(action: {
+                            showAlert = true
+                            // 버튼이 클릭되었을 때 실행할 코드
+                            let date = Date()
+                            let clicked = clickedDates.contains(date)
+                            if clicked {
+                                print("dsdsf")
+                                // 클릭된 경우의 동작
+                                clickedDates.remove(date)
+                                
+                            } else {
+                                // 클릭되지 않은 경우의 동작
+                                print("Button unclicked at \(i), \(j)")
+                                clickedDates.insert(date)
+                                
+                                
                             }
-                            .minimumScaleFactor(0.1)
-                            .padding([.leading, .trailing], 10)
+                        }) {
+                            CardView(value: daysList[i][j], schedule: testSchedule)
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text("알림"),
+                                        message: Text("페이지이동"),
+                                        dismissButton: .default(Text("확인"))
+                                        
+                                    )
+                                }
+                            
                         }
                     }
-//            Group {
-//                ForEach(daysList.indices, id: \.self) { i in
-//                    
-//                    HStack() {
-//                        
-//                        ForEach(daysList[i].indices, id: \.self) { j in
-//                            CardView(value: daysList[i][j], schedule: testSchedule)
-//                        }
-//                    }
-//                    .minimumScaleFactor(0.1)
-//                    .padding([.leading,.trailing],10)
-//                    .onTapGesture {
-//                        let date = Date()
-//                        let clicked = clickedDates.contains(date)
-//                        
-//                        if clicked {
-//                            RoundedRectangle(cornerRadius: 5)
-//                        
-//                    
-//                        }
-//                    }
-//                    
-//                }
-//                
-//            }
-            
-            
-           
-        } //VStack
+
+                }
+                
+                .minimumScaleFactor(0.1)
+                
+                
+            }
+        }
+        
         .onChange(of: monthOffset) { _ in
             // updating Month...
             currentDate = getCurrentMonth()
@@ -201,27 +219,25 @@ struct CalendarView01: View {
         .task {
             daysList = extractDate()
         }
-        .border(Color(UIColor.customGray), width: 1)
-        
-        
-    } //body
+    }
+
     
-    /**
-     각각의 날짜에 대한 달력 칸 뷰
-     */
+    
     @ViewBuilder
     func CardView(value: DateValue, schedule: Schedule) -> some View {
         //var clicked: Bool = false
+        
         ZStack() {
-            VStack() {
+            ZStack() {
                 if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate {
                 
                        
                     if schedule.startDate.day == value.day {
                         
                             Text(schedule.name)
-                                .font(.custom("NotoSansCJKkr-Regular", size: 11))
-                                .foregroundColor(Color(UIColor.customBlue))
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 12))
+                                .foregroundStyle(.black)
+                                //.foregroundColor(Color(UIColor.customBlue))
                                 .lineLimit(2)
                                 .multilineTextAlignment(.trailing)
                                 .fixedSize()
@@ -244,18 +260,28 @@ struct CalendarView01: View {
             .offset(x: 10, y: -10)
             HStack {
                 
+                
                 if value.day > 0 {
-                    
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
-                            .font(.title3.bold())
+                            .font(.custom("Pretendard-SemiBold", size: 18))
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
                     } else {
-                        Text("\(value.day)")
-                            .font(.title3.bold())
-                            .foregroundColor(value.date.weekday == 1 ? .red : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
-                            .padding([.leading, .bottom], 10)
+                        
+                        if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
+                        {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", size: 18))
+                                .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
+                                .padding([.leading, .bottom], 10)
+                        } else {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", size: 18))
+                                .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
+                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+                                .padding([.leading, .bottom], 10)
+                        }
                     }
                 }
                // Spacer()
@@ -267,12 +293,59 @@ struct CalendarView01: View {
 //
 //            }
 //            .stroke(.gray, lineWidth: 0.3)
-        //.padding()
+//            .padding()
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
         //.frame(maxHeight: .infinity)
         //.contentShape(Rectangle())
+        
+    }
+    
+    
+    private var bookingView: some View {
+        
+            
+            VStack(alignment:.leading) {
+                HStack {
+                    Image("Ellipse 62")
+                        .frame(width: 12, height: 12)
+                    
+                    Text("예약 가능")
+                        .font(
+                            Font.custom("Pretendard", fixedSize: 14)
+                                .weight(.semibold)
+                        )
+                        .kerning(0.35)
+                        .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
+                    
+                }
+                HStack {
+                    Image("Ellipse 63")
+                        .frame(width: 12, height: 12)
+                    
+                    Text("예약 마감")
+                        .font(
+                            Font.custom("Pretendard", fixedSize: 14)
+                                .weight(.semibold)
+                        )
+                        .kerning(0.35)
+                        .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
+                }
+                
+                HStack {
+                    Image("Ellipse 64")
+                        .frame(width: 12, height: 12)
+                    Text("휴무")
+                        .font(
+                            Font.custom("Pretendard", fixedSize: 14)
+                                .weight(.semibold)
+                        )
+                        .kerning(0.35)
+                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+                }
+            }
+        
         
     }
     
@@ -363,7 +436,11 @@ struct CalendarView01: View {
 
 
 
-
+extension UIScreen {
+   static let screenWidth = UIScreen.main.bounds.size.width
+   static let screenHeight = UIScreen.main.bounds.size.height
+   static let screenSize = UIScreen.main.bounds.size
+}
 
 
 
@@ -375,6 +452,6 @@ struct CalendarView01: View {
 
 
 #Preview {
-    CalendarView01()
+    CalendarView()
     
 }
