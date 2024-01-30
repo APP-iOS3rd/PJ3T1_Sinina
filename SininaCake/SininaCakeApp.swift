@@ -40,8 +40,6 @@ struct SininaCakeApp: App {
         // Kakao SDK 초기화
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
-        
-        print("TOKEN: \(kakaoAppKey)")
     }
     
     var body: some Scene {
