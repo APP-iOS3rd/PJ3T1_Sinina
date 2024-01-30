@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
 
 struct HomeView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        // TODO: MyPage로 이동 예정
+        ScrollView {
+            VStack {
+                InstagramView()
+                MapView()
+            }
+        }
     }
 }
+
 
 #Preview {
     HomeView()
