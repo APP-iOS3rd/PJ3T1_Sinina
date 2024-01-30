@@ -192,7 +192,7 @@ struct CalendarView: View {
                                 clickedDates.insert(date)
                                 
                                 
-<
+
                             }
                         }) {
                             CardView(value: daysList[i][j], schedule: testSchedule)
