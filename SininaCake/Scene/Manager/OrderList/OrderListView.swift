@@ -95,7 +95,7 @@ private struct ListCellView: View {
                 
                 VStack(alignment: .trailing) {
                     CustomText(title: "총 예상금액", textColor: .gray, textWeight: .semibold, textSize: 14)
-                    CustomText(title: "\(orderItem.price)원", textColor: .black, textWeight: .semibold, textSize: 18)
+                    CustomText(title: intToString(orderItem.price), textColor: .black, textWeight: .semibold, textSize: 18)
                 }
             }
         }
@@ -105,6 +105,22 @@ private struct ListCellView: View {
                 .stroke(Color(.gray))
         )
     }
+}
+
+private func intToString(_ price: Int) -> String {
+    let priceString = String(price)
+    var result = ""
+    var count = 0
+    
+    for str in priceString.reversed() {
+        result += String(str)
+        count += 1
+        if count % 3 == 0 {
+            result += ","
+        }
+    }
+    
+    return result.reversed() + "원"
 }
 
 #Preview {
