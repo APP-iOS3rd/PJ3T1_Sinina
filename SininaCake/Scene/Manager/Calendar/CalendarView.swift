@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct CalendarView: View {
-    
+
     @Environment(\.sizeCategory) var sizeCategory
 
     var dateString: String? {
@@ -21,6 +21,7 @@ struct CalendarView: View {
 
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
+
 
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
@@ -66,6 +67,7 @@ struct CalendarView: View {
                 .aspectRatio(1/1, contentMode: .fill)
             
             
+
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: 342, height: 441)
@@ -89,6 +91,7 @@ struct CalendarView: View {
                                 Spacer()
                             }
                             .padding([.horizontal,.vertical], 10)
+
                         }
                         
                         
@@ -189,10 +192,7 @@ struct CalendarView: View {
                                 clickedDates.insert(date)
                                 
                                 
-   
-  
-
-   
+<
                             }
                         }) {
                             CardView(value: daysList[i][j], schedule: testSchedule)
@@ -225,11 +225,12 @@ struct CalendarView: View {
             daysList = extractDate()
         }
 
+
     }
 
     
 
-    
+
     @ViewBuilder
     func CardView(value: DateValue, schedule: Schedule) -> some View {
         //var clicked: Bool = false
