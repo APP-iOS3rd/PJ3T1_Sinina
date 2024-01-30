@@ -39,6 +39,8 @@
 		2367639C2B6691DC008C8244 /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639B2B6691DC008C8244 /* FirebaseManger.swift */; };
 		2367639E2B66BF8D008C8244 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639D2B66BF8D008C8244 /* Message.swift */; };
 		236763A02B6734F2008C8244 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639F2B6734F2008C8244 /* MessageBubble.swift */; };
+		236763A22B678A09008C8244 /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236763A12B678A09008C8244 /* ChatUser.swift */; };
+		236763A42B67AE57008C8244 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236763A32B67AE57008C8244 /* ChatRoom.swift */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA22B00B37400ECEF08 /* Assets.xcassets */; };
 		8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA52B00B37400ECEF08 /* Preview Assets.xcassets */; };
@@ -103,6 +105,8 @@
 		2367639B2B6691DC008C8244 /* FirebaseManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		2367639D2B66BF8D008C8244 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		2367639F2B6734F2008C8244 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
+		236763A12B678A09008C8244 /* ChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
+		236763A32B67AE57008C8244 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BA22B00B37400ECEF08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -368,6 +372,7 @@
 				8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */,
 				2367639D2B66BF8D008C8244 /* Message.swift */,
 				2367639F2B6734F2008C8244 /* MessageBubble.swift */,
+				236763A32B67AE57008C8244 /* ChatRoom.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -431,6 +436,7 @@
 			children = (
 				8ECF5FB62B54C22800D6BCF6 /* ChatListView.swift */,
 				8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */,
+				236763A12B678A09008C8244 /* ChatUser.swift */,
 			);
 			path = ChatList;
 			sourceTree = "<group>";
@@ -607,6 +613,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				236763A22B678A09008C8244 /* ChatUser.swift in Sources */,
 				8ECF5FC82B54EE6F00D6BCF6 /* ChatViewModel.swift in Sources */,
 				8E874BAD2B00B40D00ECEF08 /* LoginView.swift in Sources */,
 				8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */,
@@ -624,6 +631,7 @@
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
 				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
+				236763A42B67AE57008C8244 /* ChatRoom.swift in Sources */,
 				8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */,
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,

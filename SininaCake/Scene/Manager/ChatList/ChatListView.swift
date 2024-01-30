@@ -8,33 +8,38 @@
 import SwiftUI
 
 struct ChatListView: View {
+    @ObservedObject var chatVM = ChatViewModel.shared
+    
+    @State var userEmail: String = ""
+    @State var userName: String = ""
+    
     var body: some View {
         NavigationView {
             VStack {
+                TextField("유저 이메일", text: $userEmail)
+                TextField("유저 이름", text: $userName)
+                
+                HStack {
+                    Button("add room"){
+                        chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: userEmail, userName: userName))
+                    }
+                    
+                    Button("load room"){
+                        chatVM.fetchAllRooms()
+                    }
+                }
+                
                 ScrollView {
-                    ForEach(0..<10, id: \.self){ num in
-                        VStack {
-                            HStack(spacing: 16) {
-                                Image(systemName: "person.fill")
-                                    .font(.system(size: 32))
-                                VStack(alignment: .leading) {
-                                    Text("이찰떡")
-                                    Text("케이크 관련 문의드립니다!")
-                                        .foregroundStyle(Color.init(UIColor.customGray))
-                                }
-                                Spacer()
-                                
-                                Text("오후 1:05")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundStyle(Color.init(UIColor.customGray))
-                            }
-                            Divider()
-                        }.padding(.horizontal)
+                    ForEach(chatVM.chatRooms, id: \.self){ room in
+                        Text(room.userName)
                         
                     }
                 }
                 .navigationTitle("💬 채팅방")
                 .navigationBarTitleDisplayMode(.inline)
+                
+            }.onAppear(){
+                chatVM.fetchAllRooms()
             }
         }
         

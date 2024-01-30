@@ -6,11 +6,18 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Message: Identifiable, Codable {
-    var id: String
-    //var sender: String
+    var id: String // 아이디로 말풍선 위치 결정
     var text: String
-    var received: Bool
-    var timestamp: Date
+    var timestamp: Timestamp
+    var userName: String
+    
+    init(text: String, userName: String, timestamp: Timestamp = Timestamp(date: Date()), id: String = UUID().uuidString) {
+        self.id = id
+        self.text = text
+        self.userName = userName
+        self.timestamp = timestamp
+    }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatView: View {
     
-    @StateObject var chatvm = ChatViewModel()
+    @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var fbManager = FirebaseManager.shared
     @State var chatText = ""
     
@@ -36,19 +36,30 @@ struct ChatView: View {
         VStack {
             ScrollViewReader { proxy in
                 ScrollView {
-                    ForEach(chatvm.messages, id: \.id) { message in
-                        MessageBubble(message: message)
-                    } 
+                    ForEach(chatVM.messages, id: \.id) { message in
+                        //MessageBubble(message: message)
+                        
+                        HStack {
+                            // 내가 보낸 거 
+                            //if message.userName == chatVM.currentUser {
+                                Text(message.text)
+                           // } else {
+                                
+                          //  }
+                        }
                 }
                 .background(Color.clear)
-                .onChange(of: chatvm.lastMessageId){ id in
-                    withAnimation {
-                        // 마지막 말풍선을 따라 스크롤로 내려감
-                        proxy.scrollTo(id, anchor: .bottom)
-                    }
-
+//                .onChange(of: chatvm.lastMessageId){ id in
+//                    withAnimation {
+//                        // 마지막 말풍선을 따라 스크롤로 내려감
+//                        proxy.scrollTo(id, anchor: .bottom)
+//                    }
+//
                 }
             }
+        }
+        .onAppear {
+            chatVM.fetchRoom(userEmail: "a@gmail.com")
         }
     }
     
@@ -68,7 +79,8 @@ struct ChatView: View {
             .frame(height: 40)
             
             Button {
-                chatvm.sendMessage(text: chatText)
+                let msg = Message(text: chatText, userName: "아무개")
+                chatVM.sendMessage(chatRoom: chatVM.currentRoom, message: msg)
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(Color.init(UIColor.customGray))
