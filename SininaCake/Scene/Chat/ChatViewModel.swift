@@ -23,6 +23,7 @@ class ChatViewModel: ObservableObject {
     let collectionName = "chatRoom"
     var listener: ListenerRegistration?
     
+    // 모든 방 리스트를 받아옴
     func fetchAllRooms() {
         fireStore.collection(collectionName).getDocuments { (snapshot, error) in
             guard error == nil else { return }
@@ -49,6 +50,7 @@ class ChatViewModel: ObservableObject {
                 if let data = try? document.data(as: ChatRoom.self) {
                     self.currentRoom = data
                     
+                    // 동시에 해당 chatRoom의 메세지를 가져옴
                     startListening(chatRoom: data)
                     
                     print("data", data)
@@ -64,6 +66,7 @@ class ChatViewModel: ObservableObject {
     
     func stopListening() {
         listener?.remove()
+        messages.removeAll()
         print("stopListening")
     }
     
@@ -74,23 +77,36 @@ class ChatViewModel: ObservableObject {
         stopListening()
         
         listener = fireStore.collection(collectionName).document(chatRoom.id).collection("message").addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot, error == nil else {
-                print("Error: \(error!)")
-                return
-            }
-            
-            // 추가된 게 관찰되면 data를 message에 추가
-            snapshot.documentChanges.forEach { diff in
-                if (diff.type == .added) {
-                    if let data = try? diff.document.data(as: Message.self) {
-                        self.messages.append(data)
-                        print("add data", data)
+            DispatchQueue.main.async {
+                guard let snapshot = querySnapshot, error == nil else {
+                    print("Error: \(error!)")
+                    return
+                }
+                
+                // 추가된 게 관찰되면 data를 message에 추가
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                        if let data = try? diff.document.data(as: Message.self) {
+                            self.messages.append(data)
+                            print("add data", data)
+                        }
                     }
                 }
             }
+            
+            
         }
     }
     
+    // 메세지 보냄(방 데이터, 보내는 사람, 메세지 필요)
+    func sendMessage(chatRoom: ChatRoom?, message: Message) {
+        
+        if let chatRoom = chatRoom {
+            try? fireStore.collection(collectionName).document(chatRoom.id)
+                .collection("message").document(message.id).setData(from: message)
+        }
+    }
+}
     
     //        fireStore.collection("chatRoom").document("id").collection("message").getDocuments { (snapshot, error) in
     //            guard error == nil else { return }
@@ -141,15 +157,7 @@ class ChatViewModel: ObservableObject {
     //        }
     
     
-    // 메세지 보냄(방 데이터, 보내는 사람, 메세지 필요)
-    func sendMessage(chatRoom: ChatRoom?, message: Message) {
-        
-        if let chatRoom = chatRoom {
-            try? fireStore.collection(collectionName).document(chatRoom.id)
-                .collection("message").document(message.id).setData(from: message)
-        }
-    }
-}
+    
         
         //                do {
         //                    let newMessage = Message(id: "\(UUID())", text: text, received: false, timestamp: Date())

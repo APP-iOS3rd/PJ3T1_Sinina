@@ -12,18 +12,13 @@ struct ChatView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var fbManager = FirebaseManager.shared
     @State var chatText = ""
-    
-    var chatUser: String
-        
-    init(chatUser: String) {
-        self.chatUser = chatUser
-    }
-    
+    var userEmail: String
+
     // MARK: 통합 뷰
     var body: some View {
         VStack {
             messagesView
-                .navigationTitle(chatUser)
+                .navigationTitle(chatVM.currentRoom?.userName ?? "")
                 .navigationBarTitleDisplayMode(.inline)
                 .padding(.top, 10)
             
@@ -37,7 +32,7 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     ForEach(chatVM.messages, id: \.id) { message in
-                        //MessageBubble(message: message)
+                        MessageBubble(message: message)
                         
                         HStack {
                             // 내가 보낸 거 
@@ -59,7 +54,7 @@ struct ChatView: View {
             }
         }
         .onAppear {
-            chatVM.fetchRoom(userEmail: "a@gmail.com")
+            chatVM.fetchRoom(userEmail: userEmail)
         }
     }
     
@@ -95,7 +90,7 @@ struct ChatView: View {
 
 #Preview {
     NavigationView {
-        ChatView(chatUser: "사용자 이름")
+        ChatView(userEmail: "b@gmail.com")
     }
     
 }

@@ -43,8 +43,8 @@ struct SininaCakeApp: App {
     var body: some Scene {
         WindowGroup {
             
-            ChatView(chatUser: "이찰떡")
-            //ChatListView()
+            //ChatView(userEmail: ")
+            ChatListView()
             //ChatView(chatUser: "사용자이름")
 //            LoginView().onOpenURL(perform: { url in
 //                if (AuthApi.isKakaoTalkLoginUrl(url)) {

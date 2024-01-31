@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		236762B82B60EAC8008C8244 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */; };
+		234ABD852B6A1182007199E2 /* ApiKeys .xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */; };
 		236762BF2B60F215008C8244 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 236762BD2B60F215008C8244 /* GoogleService-Info.plist */; };
 		236763662B638C3D008C8244 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 236763652B638C3D008C8244 /* FirebaseAnalytics */; };
 		236763682B638C3D008C8244 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 236763672B638C3D008C8244 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -100,7 +100,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../../Downloads/ApiKeys.xcconfig; sourceTree = "<group>"; };
+		234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "ApiKeys .xcconfig"; sourceTree = "<group>"; };
+		234ABD862B6A1348007199E2 /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
+		234ABD872B6A1356007199E2 /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Release.mobileprovision; sourceTree = "<group>"; };
 		236762BD2B60F215008C8244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2367639B2B6691DC008C8244 /* FirebaseManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		2367639D2B66BF8D008C8244 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -248,8 +250,10 @@
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
 				8E874BA22B00B37400ECEF08 /* Assets.xcassets */,
-				236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */,
 				236762BD2B60F215008C8244 /* GoogleService-Info.plist */,
+				234ABD862B6A1348007199E2 /* Sinina_Debug.mobileprovision */,
+				234ABD872B6A1356007199E2 /* Sinina_Release.mobileprovision */,
+				234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */,
 				8E874BA42B00B37400ECEF08 /* Preview Content */,
 			);
 			path = SininaCake;
@@ -590,7 +594,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				236762B82B60EAC8008C8244 /* ApiKeys.xcconfig in Resources */,
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
@@ -600,6 +603,7 @@
 				236762BF2B60F215008C8244 /* GoogleService-Info.plist in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */,
+				234ABD852B6A1182007199E2 /* ApiKeys .xcconfig in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
@@ -666,7 +670,6 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -730,7 +733,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -787,7 +789,6 @@
 		};
 		8E874BAA2B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -829,7 +830,6 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 236762B72B60EAC8008C8244 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

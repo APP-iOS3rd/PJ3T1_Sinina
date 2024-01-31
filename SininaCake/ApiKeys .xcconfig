@@ -1,0 +1,14 @@
+//
+//  ApiKeys.xcconfig
+//  SininaCake
+//
+//  Created by 이종원 on 1/16/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+KAKAO_NATIVE_APP_KEY = fcbd2de15a4e051ba31d871adec138d2
+INSTAGRAM_API_KEY = IGQWRPMEg3ZA0FLemZAaZA0pxNVNkR1dUVGxISUFLRUtQek1mWkpyY2pIQVZAkQkxGWmI5c2Rhcm9sdHJsTlphcUdid1M4X1BuajNzV3ZA2RVBiTjVhSnNWa1YyOThnTVZADazQ2RHVYZAk1RMmg1emQ5c290ZA2VkNXV4Uk0ZD
+REVERSED_CLIENT_ID = com.googleusercontent.apps.196495081616-687qiq8b0cf4eik7b0op852gj95qj7c1
+NMFClientId = 102hb3txar
