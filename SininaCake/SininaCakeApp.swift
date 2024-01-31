@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseCore
 import KakaoSDKCommon
 import KakaoSDKAuth
+import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -44,7 +45,7 @@ struct SininaCakeApp: App {
         WindowGroup {
             
             //ChatView(userEmail: ")
-            ChatListView()
+            ChatListView(loginedUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
             //ChatView(chatUser: "사용자이름")
 //            LoginView().onOpenURL(perform: { url in
 //                if (AuthApi.isKakaoTalkLoginUrl(url)) {

@@ -11,9 +11,12 @@ struct ChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var fbManager = FirebaseManager.shared
+    @ObservedObject var userStore = UserStore.shared
+    
     @State var chatText = ""
-    var userEmail: String
-
+    @State var loginedUser: User?
+    @State var userEmail: String
+    
     // MARK: 통합 뷰
     var body: some View {
         VStack {
@@ -31,25 +34,26 @@ struct ChatView: View {
         VStack {
             ScrollViewReader { proxy in
                 ScrollView {
-                    ForEach(chatVM.messages, id: \.id) { message in
-                        MessageBubble(message: message)
-                        
-                        HStack {
-                            // 내가 보낸 거 
-                            //if message.userName == chatVM.currentUser {
-                                Text(message.text)
-                           // } else {
+                    VStack {
+                        ForEach(chatVM.messages, id: \.id) { msg in
+                            // 나
+                            if loginedUser?.name == msg.userName {
+                                blueMessageBubble(message: msg)
                                 
-                          //  }
+                                // 상대
+                            } else {
+                                grayMessageBubble(message: msg)
+                            }
+                            
                         }
-                }
-                .background(Color.clear)
-//                .onChange(of: chatvm.lastMessageId){ id in
-//                    withAnimation {
-//                        // 마지막 말풍선을 따라 스크롤로 내려감
-//                        proxy.scrollTo(id, anchor: .bottom)
-//                    }
-//
+                        .background(Color.clear)
+                        .onChange(of: chatVM.lastMessageId){ id in
+                            withAnimation {
+                                // 마지막 말풍선을 따라 스크롤로 내려감
+                                proxy.scrollTo(id, anchor: .bottom)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -74,7 +78,7 @@ struct ChatView: View {
             .frame(height: 40)
             
             Button {
-                let msg = Message(text: chatText, userName: "아무개")
+                let msg = Message(text: chatText, userName: "아무개", timestamp: Date())
                 chatVM.sendMessage(chatRoom: chatVM.currentRoom, message: msg)
             } label: {
                 Image(systemName: "paperplane")
@@ -86,11 +90,45 @@ struct ChatView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    NavigationView {
-        ChatView(userEmail: "b@gmail.com")
+    
+    // MARK: - 파란 말풍선
+    private func blueMessageBubble(message: Message) -> some View {
+        HStack {
+            CustomText(title: message.timestamp
+                .formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            
+            CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
+                .padding()
+            
+            
+                .background(Color.init(UIColor.customBlue))
+                .cornerRadius(30)
+            
+        } // VStack
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.horizontal, 10)
     }
     
+    // MARK: - 회색 말풍선
+    private func grayMessageBubble(message: Message) -> some View {
+        HStack {
+            CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
+                .padding()
+                .background(Color.init(UIColor.customGray))
+                .cornerRadius(30)
+            
+            CustomText(title: message.timestamp
+                .formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            
+        } // VStack
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 10)
+    }
 }
+
+//#Preview {
+//    NavigationView {
+//        ChatView(loginedUser: User, userEmail: userEmail)
+//    }
+//
+//}

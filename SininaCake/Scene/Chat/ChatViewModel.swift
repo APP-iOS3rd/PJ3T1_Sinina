@@ -12,7 +12,7 @@ import FirebaseStorage
 class ChatViewModel: ObservableObject {
     static let shared = ChatViewModel()
     
-    private init() {}
+    init(){}
     
     @Published var chatRooms = [ChatRoom]()
     @Published var messages = [Message]()
@@ -21,6 +21,7 @@ class ChatViewModel: ObservableObject {
     private var fireStore = FirebaseManager.shared.firestore
     
     let collectionName = "chatRoom"
+    var lastMessageId = ""
     var listener: ListenerRegistration?
     
     // 모든 방 리스트를 받아옴
@@ -49,7 +50,7 @@ class ChatViewModel: ObservableObject {
             if let document = snapshot!.documents.first {
                 if let data = try? document.data(as: ChatRoom.self) {
                     self.currentRoom = data
-                    
+                                    
                     // 동시에 해당 chatRoom의 메세지를 가져옴
                     startListening(chatRoom: data)
                     
@@ -87,14 +88,21 @@ class ChatViewModel: ObservableObject {
                 snapshot.documentChanges.forEach { diff in
                     if (diff.type == .added) {
                         if let data = try? diff.document.data(as: Message.self) {
+                            
                             self.messages.append(data)
+                            
+                            // 시간 순에 맞게 정렬
+                            self.messages.sort { $0.timestamp < $1.timestamp }
+                            
+                            if let id = self.messages.last?.id {
+                                self.lastMessageId = id
+                            }
+                            
                             print("add data", data)
                         }
                     }
                 }
             }
-            
-            
         }
     }
     

@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ChatListView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
+    @ObservedObject var userStore = UserStore.shared
+    @State var loginedUser: User?
     
-    @State var userEmail: String = ""
-    @State var userName: String = ""
-    @State var title = CustomText(title: "채팅방", textColor: .black, textWeight: .regular, textSize: 24)
+    //@State var userEmail: String = ""
+    //@State var userName: String = ""
+//    @State var title = CustomText(title: "채팅방", textColor: .black, textWeight: .regular, textSize: 24)
     
     var body: some View {
         NavigationView {
@@ -20,7 +23,8 @@ struct ChatListView: View {
                 LazyVStack(spacing: 10) {
                     ForEach(chatVM.chatRooms, id: \.self){ room in
                         
-                        NavigationLink(destination: ChatView(userEmail: room.userEmail)) {
+                        // 방 주인의 Email을 넘김
+                        NavigationLink(destination: ChatView(loginedUser: loginedUser, userEmail: room.userEmail)) {
                             Text("\(room.userName)")
                         }
                     }
@@ -53,5 +57,5 @@ struct ChatListView: View {
 }
 
 #Preview {
-    ChatListView()
+    ChatListView(loginedUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		234ABD852B6A1182007199E2 /* ApiKeys .xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */; };
+		234ABD892B6A2C4E007199E2 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234ABD882B6A2C4E007199E2 /* Date.swift */; };
+		234ABD8B2B6A3BBB007199E2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234ABD8A2B6A3BBB007199E2 /* User.swift */; };
 		236762BF2B60F215008C8244 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 236762BD2B60F215008C8244 /* GoogleService-Info.plist */; };
 		236763662B638C3D008C8244 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 236763652B638C3D008C8244 /* FirebaseAnalytics */; };
 		236763682B638C3D008C8244 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 236763672B638C3D008C8244 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -38,8 +40,6 @@
 		2367639A2B638C3D008C8244 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 236763992B638C3D008C8244 /* FirebaseStorageCombine-Community */; };
 		2367639C2B6691DC008C8244 /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639B2B6691DC008C8244 /* FirebaseManger.swift */; };
 		2367639E2B66BF8D008C8244 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639D2B66BF8D008C8244 /* Message.swift */; };
-		236763A02B6734F2008C8244 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639F2B6734F2008C8244 /* MessageBubble.swift */; };
-		236763A22B678A09008C8244 /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236763A12B678A09008C8244 /* ChatUser.swift */; };
 		236763A42B67AE57008C8244 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236763A32B67AE57008C8244 /* ChatRoom.swift */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA22B00B37400ECEF08 /* Assets.xcassets */; };
@@ -103,11 +103,11 @@
 		234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "ApiKeys .xcconfig"; sourceTree = "<group>"; };
 		234ABD862B6A1348007199E2 /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
 		234ABD872B6A1356007199E2 /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Release.mobileprovision; sourceTree = "<group>"; };
+		234ABD882B6A2C4E007199E2 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		234ABD8A2B6A3BBB007199E2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		236762BD2B60F215008C8244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2367639B2B6691DC008C8244 /* FirebaseManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		2367639D2B66BF8D008C8244 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		2367639F2B6734F2008C8244 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
-		236763A12B678A09008C8244 /* ChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
 		236763A32B67AE57008C8244 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
@@ -308,6 +308,7 @@
 			children = (
 				8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */,
 				8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */,
+				234ABD882B6A2C4E007199E2 /* Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -352,6 +353,7 @@
 				8E874BAC2B00B40D00ECEF08 /* LoginView.swift */,
 				8ECF5FC12B54EE3D00D6BCF6 /* LoginViewModel.swift */,
 				2367639B2B6691DC008C8244 /* FirebaseManger.swift */,
+				234ABD8A2B6A3BBB007199E2 /* User.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -375,7 +377,6 @@
 				8ECF5FB22B54C1CB00D6BCF6 /* ChatView.swift */,
 				8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */,
 				2367639D2B66BF8D008C8244 /* Message.swift */,
-				2367639F2B6734F2008C8244 /* MessageBubble.swift */,
 				236763A32B67AE57008C8244 /* ChatRoom.swift */,
 			);
 			path = Chat;
@@ -440,7 +441,6 @@
 			children = (
 				8ECF5FB62B54C22800D6BCF6 /* ChatListView.swift */,
 				8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */,
-				236763A12B678A09008C8244 /* ChatUser.swift */,
 			);
 			path = ChatList;
 			sourceTree = "<group>";
@@ -617,7 +617,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				236763A22B678A09008C8244 /* ChatUser.swift in Sources */,
 				8ECF5FC82B54EE6F00D6BCF6 /* ChatViewModel.swift in Sources */,
 				8E874BAD2B00B40D00ECEF08 /* LoginView.swift in Sources */,
 				8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */,
@@ -640,9 +639,9 @@
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
+				234ABD892B6A2C4E007199E2 /* Date.swift in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
-				236763A02B6734F2008C8244 /* MessageBubble.swift in Sources */,
 				9A27E6AD2B55154200E7E699 /* CustomerCalendarViewModel.swift in Sources */,
 				9A27E6B22B55156C00E7E699 /* InstagramViewModel.swift in Sources */,
 				8ECF5FDB2B54EF2300D6BCF6 /* ChatListViewModel.swift in Sources */,
@@ -655,6 +654,7 @@
 				8E874BB62B00B59800ECEF08 /* OrderView.swift in Sources */,
 				8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */,
 				8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */,
+				234ABD8B2B6A3BBB007199E2 /* User.swift in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
 				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */,
