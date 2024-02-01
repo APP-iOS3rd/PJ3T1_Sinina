@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		234ABD852B6A1182007199E2 /* ApiKeys .xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */; };
 		234ABD892B6A2C4E007199E2 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234ABD882B6A2C4E007199E2 /* Date.swift */; };
 		234ABD8B2B6A3BBB007199E2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234ABD8A2B6A3BBB007199E2 /* User.swift */; };
-		236762BF2B60F215008C8244 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 236762BD2B60F215008C8244 /* GoogleService-Info.plist */; };
 		236763662B638C3D008C8244 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 236763652B638C3D008C8244 /* FirebaseAnalytics */; };
 		236763682B638C3D008C8244 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 236763672B638C3D008C8244 /* FirebaseAnalyticsOnDeviceConversion */; };
 		2367636A2B638C3D008C8244 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 236763692B638C3D008C8244 /* FirebaseAnalyticsSwift */; };
@@ -100,12 +98,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "ApiKeys .xcconfig"; sourceTree = "<group>"; };
-		234ABD862B6A1348007199E2 /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
-		234ABD872B6A1356007199E2 /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Release.mobileprovision; sourceTree = "<group>"; };
 		234ABD882B6A2C4E007199E2 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		234ABD8A2B6A3BBB007199E2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		236762BD2B60F215008C8244 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2367639B2B6691DC008C8244 /* FirebaseManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		2367639D2B66BF8D008C8244 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		236763A32B67AE57008C8244 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
@@ -161,8 +155,6 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
-		9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
-		9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -213,8 +205,6 @@
 		236762B42B60EA47008C8244 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */,
-				9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -250,10 +240,6 @@
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
 				8E874BA22B00B37400ECEF08 /* Assets.xcassets */,
-				236762BD2B60F215008C8244 /* GoogleService-Info.plist */,
-				234ABD862B6A1348007199E2 /* Sinina_Debug.mobileprovision */,
-				234ABD872B6A1356007199E2 /* Sinina_Release.mobileprovision */,
-				234ABD842B6A1182007199E2 /* ApiKeys .xcconfig */,
 				8E874BA42B00B37400ECEF08 /* Preview Content */,
 			);
 			path = SininaCake;
@@ -600,10 +586,8 @@
 				8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
-				236762BF2B60F215008C8244 /* GoogleService-Info.plist in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */,
-				234ABD852B6A1182007199E2 /* ApiKeys .xcconfig in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
