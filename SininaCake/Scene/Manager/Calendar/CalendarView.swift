@@ -10,13 +10,7 @@ struct CalendarView: View {
 
     @Environment(\.sizeCategory) var sizeCategory
 
-    var dateString: String? {
-        let date =  Date()                     // 넣을 데이터(현재 시간)
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "MM-dd"  // 변환할 형식
-        let dateString = myFormatter.string(from: date)
-        return dateString
-    }
+    
 
 
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
@@ -42,14 +36,6 @@ struct CalendarView: View {
     
     @State private var showAlert = false
     
-    private func customFont(size: CGFloat, maxSize: CGFloat) -> Font {
-        let scaledSize = min(size, maxSize)
-        
-        guard let customFont = UIFont(name: "Pretendard", size: scaledSize) else {
-            return Font.system(size: scaledSize)
-        }
-        return Font(customFont)
-    }
     
     var body: some View {
         
