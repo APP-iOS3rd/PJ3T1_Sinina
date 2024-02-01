@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ChatView: View {
     
@@ -21,10 +22,6 @@ struct ChatView: View {
     var body: some View {
         VStack {
             messagesView
-                .navigationTitle(chatVM.currentRoom?.userName ?? "")
-                .navigationBarTitleDisplayMode(.inline)
-                .padding(.top, 10)
-            
             chatBottomBar
         }
     }
@@ -60,33 +57,37 @@ struct ChatView: View {
         .onAppear {
             chatVM.fetchRoom(userEmail: userEmail)
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal){
+                CustomText(title: "\(chatVM.currentRoom?.userName ?? "")", textColor: .black, textWeight: .semibold, textSize: 24)
+            }
+        }
     }
     
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
         HStack(spacing: 16) {
             Image(systemName: "plus")
-                .font(.system(size: 24))
-                .foregroundColor(Color.init(UIColor.customGray))
+                .frame(width: 24, height: 24)
+                .foregroundColor(Color(.customGray))
             
             ZStack {
-                // 텍스트 입력
-                TextField("Enter your message", text: $chatText)
-                    .background(Color.init(UIColor.customGray))
-                    .cornerRadius(8)
+                TextField("", text: $chatText)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Color(.textFieldColor))
+                    .cornerRadius(45)
             }
-            .frame(height: 40)
             
             Button {
-                let msg = Message(text: chatText, userName: "아무개", timestamp: Date())
+                let msg = Message(text: chatText, userName: loginedUser?.name ?? "", timestamp: Date())
                 chatVM.sendMessage(chatRoom: chatVM.currentRoom, message: msg)
             } label: {
                 Image(systemName: "paperplane")
-                    .foregroundColor(Color.init(UIColor.customGray))
+                    .foregroundColor(Color(.customGray))
+                    .frame(width: 24, height: 24)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            .cornerRadius(4)
         }
         .padding()
     }
@@ -99,9 +100,7 @@ struct ChatView: View {
             
             CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
                 .padding()
-            
-            
-                .background(Color.init(UIColor.customBlue))
+                .background(Color(.customBlue))
                 .cornerRadius(30)
             
         } // VStack
@@ -112,9 +111,9 @@ struct ChatView: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
+            CustomText(title: message.text, textColor: .black, textWeight: .regular, textSize: 16)
                 .padding()
-                .background(Color.init(UIColor.customGray))
+                .background(Color(.textFieldColor))
                 .cornerRadius(30)
             
             CustomText(title: message.timestamp
@@ -126,9 +125,10 @@ struct ChatView: View {
     }
 }
 
-//#Preview {
-//    NavigationView {
-//        ChatView(loginedUser: User, userEmail: userEmail)
-//    }
-//
-//}
+#Preview {
+    NavigationView {
+        //ChatView(loginedUser: User, userEmail: userEmail)
+        ChatView(loginedUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"), userEmail: "b@gmail.com")
+    }
+    
+}

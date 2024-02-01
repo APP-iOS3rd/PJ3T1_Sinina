@@ -96,6 +96,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         }
       }
     
+    // 프로필 사진 들고오기
 //    private func storeUserInformation(imageProfileUrl: URL){
 //        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
 //            return }

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct ChatRoom: Codable, Hashable {
+struct ChatRoom: Codable, Hashable, Identifiable {
     var id: String
     var userEmail: String
     var userName: String
