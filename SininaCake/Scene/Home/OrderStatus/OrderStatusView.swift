@@ -33,6 +33,7 @@ struct OrderStatusView: View {
     
     
     var body: some View {
+        
         Rectangle()
             .foregroundColor(.clear)
             .frame(width: 342, height: 30)
@@ -48,88 +49,96 @@ struct OrderStatusView: View {
         }
         )
         if true {
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 342, height: 383)
-                .background(
-                    ZStack {
-                        
-                        
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 4)
-                        
-                        VStack() {
+            
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .frame(width: 342, height: 383)
+                    .background(
+                        ZStack {
+                            
+                            
                             Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: 342, height: 170)
-                                .background(
-                                    Image("jingjing")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 306, height: 170)
-                                        .clipped()
-                                    
-                                )
-                            statusView
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 4)
+                            
+                            VStack() {
+                                Rectangle()
+                                    .foregroundColor(.clear)
+                                    .frame(width: 342, height: 170)
+                                    .background(
+                                        Image("jingjing")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 306, height: 170)
+                                            .clipped()
+                                        
+                                    )
+                                statusView
+                            }
+                            
+                            
                         }
                         
                         
-                    }
-                    
-                    
-                )
+                    )
+            
         }
         else {
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 342, height: 403)
-                .background(
-                    ZStack {
+            
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .frame(width: 342, height: 403)
+                    .background(
                         
-                        
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 4)
-                        
-                        VStack() {
+                        ZStack {
                             
-                                    Image("cake")
-                                        .resizable()
-                                        .frame(width: 34, height: 25.54)
-                                    Text("예약된 주문이 아직 없어요!")
+                            
+                            Rectangle()
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                                .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 4)
+                            
+                            VStack() {
+                                
+                                Image("cake")
+                                    .resizable()
+                                    .frame(width: 34, height: 25.54)
+                                Text("예약된 주문이 아직 없어요!")
                                     .font(
                                         Font.custom("Pretendard", fixedSize: 18)
                                             .weight(.semibold)
                                     )
                                     .kerning(0.45)
                                     .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
-                            ZStack() {
-                                Rectangle()
-                                    .foregroundColor(.clear)
-                                    .frame(width: 161, height: 43)
-                                    .background(Color(red: 0.45, green: 0.76, blue: 0.87))
+                                ZStack() {
+                                    
+                                    //NavigationLink(destination: OrderView()) {
+                                    Button(action: {
+                                    }) {
+                                        Text("주문하러 가기")
+                                            .frame(width: 161, height: 43)
+                                            .background(Color(red: 0.45, green: 0.76, blue: 0.87))
+                                        
+                                            .cornerRadius(45)
+                                            .font(
+                                                Font.custom("Pretendard", fixedSize: 16)
+                                                    .weight(.semibold)
+                                            )
+                                            .kerning(0.4)
+                                            .foregroundColor(.white)
+                                        
+                                    }
+                                }
+                                //}
                                 
-                                    .cornerRadius(45)
-                                
-                                
-                                Text("주문하러 가기")
-                                    .font(
-                                        Font.custom("Pretendard", fixedSize: 16)
-                                            .weight(.semibold)
-                                    )
-                                    .kerning(0.4)
-                                    .foregroundColor(.white)
                             }
+                            
+                            
                         }
                         
                         
-                    }
-                    
-                    
-                )
+                    )
             
         }
     }
@@ -159,18 +168,17 @@ struct OrderStatusView: View {
             }
             
             HStack {
-            
-                CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
+//                CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
                 CustomText(title: orderItem.sheet, textColor: .gray, textWeight: .regular, textSize: 16)
                 CustomText(title: "/", textColor: .gray, textWeight: .regular, textSize: 16)
                 CustomText(title: orderItem.cream, textColor: .gray, textWeight: .regular, textSize: 16)
-                Spacer()
+                
             }
             
             Divider()
                 .frame(width: 300)
             
-            HStack(alignment: .bottom) {
+            HStack() {
                 VStack(alignment: .leading, spacing: 10) {
                     CustomText(title: "예약자", textColor: .gray, textWeight: .semibold, textSize: 16)
                     CustomText(title: "전화번호", textColor: .gray, textWeight: .semibold, textSize: 16)
