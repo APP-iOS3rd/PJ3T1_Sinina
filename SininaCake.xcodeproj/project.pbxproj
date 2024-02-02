@@ -16,8 +16,6 @@
 		8E874BB82B00B59F00ECEF08 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BB72B00B59F00ECEF08 /* ProfileView.swift */; };
 		8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */; };
 		8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BC52B00BBA000ECEF08 /* OrderListView.swift */; };
-		8EC21AC22B59078C00E92DA7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8EC21AC12B59078C00E92DA7 /* GoogleService-Info.plist */; };
-		8EC21AD22B60EB2100E92DA7 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8EC21AD12B60EB2100E92DA7 /* ApiKeys.xcconfig */; };
 		8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */; };
 		8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */; };
 		8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A02B1DC00A003BF8B0 /* Pretendard-Medium.otf */; };
@@ -92,7 +90,6 @@
 		9A3588942B0227DB00501E60 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9A3588932B0227DB00501E60 /* FirebaseStorageCombine-Community */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
-		9AEACEAB2B6244C900AE041F /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */; };
 		9AEACEAE2B624EE400AE041F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAD2B624EE400AE041F /* GoogleSignIn */; };
 		9AEACEB02B624EE400AE041F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAF2B624EE400AE041F /* GoogleSignInSwift */; };
 		9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEACEB12B6255DE00AE041F /* Utilities.swift */; };
@@ -112,7 +109,6 @@
 		8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8E874BC52B00BBA000ECEF08 /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
 		8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SininaCake.entitlements; sourceTree = "<group>"; };
-		8EC21AC12B59078C00E92DA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8EC21AD12B60EB2100E92DA7 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../../ApiKeys.xcconfig; sourceTree = "<group>"; };
 		8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
@@ -158,7 +154,6 @@
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
-		9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		9AEACEB12B6255DE00AE041F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		A1FF33546BA7B910F954E933 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -235,7 +230,6 @@
 				8EC21AD12B60EB2100E92DA7 /* ApiKeys.xcconfig */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
-				9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
@@ -292,15 +286,6 @@
 				8ECF5FD22B54EEC200D6BCF6 /* Profile */,
 			);
 			path = Customer;
-			sourceTree = "<group>";
-		};
-		8EC21AD02B60E9F200E92DA7 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				9A9E9DA82B58ADC5001B49EF /* ApiKeys.plist */,
-				9A9E9DA72B58ADC5001B49EF /* ApiKeys.xcconfig */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		8ECB219C2B1DBF89003BF8B0 /* Extension */ = {
@@ -618,7 +603,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AEACEAB2B6244C900AE041F /* ApiKeys.xcconfig in Resources */,
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
@@ -731,7 +715,6 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -795,7 +778,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AEACEAA2B6244C900AE041F /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

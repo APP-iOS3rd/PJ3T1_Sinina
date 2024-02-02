@@ -19,4 +19,11 @@ struct OrderItem: Hashable {
     var imageURL: [String]
     var comment: String
     var price: Int
+    var status: OrderStatus
+}
+
+enum OrderStatus {
+    case notAssign
+    case assign
+    case complete
 }

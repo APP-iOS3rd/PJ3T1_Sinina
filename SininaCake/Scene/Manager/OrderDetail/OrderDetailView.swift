@@ -238,5 +238,5 @@ private func intToString(_ price: Int) -> String {
 }
 
 #Preview {
-    OrderDetailView(orderItem: OrderItem(date: "2023/09/23(금)", time: "12:30", cakeSize: "도시락", sheet: "초코시트", cream: "크림치즈프로스팅", customer: "김고구마", phoneNumber: "010-0000-0000", text: "생일축하해", imageURL: ["sun.max.fill", "sun.max.fill", "sun.max.fill"], comment: "보냉백 추가할게요!", price: 1025000))
+    OrderDetailView(orderItem: OrderItem(date: "2023/09/23(금)", time: "12:30", cakeSize: "도시락", sheet: "초코시트", cream: "크림치즈프로스팅", customer: "김고구마", phoneNumber: "010-0000-0000", text: "생일축하해", imageURL: ["sun.max.fill", "sun.max.fill", "sun.max.fill"], comment: "보냉백 추가할게요!", price: 1025000, status: .assign))
 }
