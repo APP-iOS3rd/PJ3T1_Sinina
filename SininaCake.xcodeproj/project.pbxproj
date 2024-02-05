@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E0248AC2B70B0AE00695209 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E0248AB2B70B0AE00695209 /* GoogleService-Info.plist */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA22B00B37400ECEF08 /* Assets.xcassets */; };
 		8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA52B00B37400ECEF08 /* Preview Assets.xcassets */; };
@@ -17,6 +16,7 @@
 		8E874BB82B00B59F00ECEF08 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BB72B00B59F00ECEF08 /* ProfileView.swift */; };
 		8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */; };
 		8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BC52B00BBA000ECEF08 /* OrderListView.swift */; };
+		8EA135DC2B70E578006D4FB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8EA135DB2B70E577006D4FB4 /* GoogleService-Info.plist */; };
 		8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */; };
 		8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */; };
 		8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A02B1DC00A003BF8B0 /* Pretendard-Medium.otf */; };
@@ -99,7 +99,6 @@
 
 /* Begin PBXFileReference section */
 		7D6FD1E6A153435F968A9C98 /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
-		8E0248AB2B70B0AE00695209 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BA22B00B37400ECEF08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,6 +109,7 @@
 		8E874BB72B00B59F00ECEF08 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8E874BC52B00BBA000ECEF08 /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
+		8EA135DB2B70E577006D4FB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SininaCake.entitlements; sourceTree = "<group>"; };
 		8EC21AD12B60EB2100E92DA7 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../../ApiKeys.xcconfig; sourceTree = "<group>"; };
 		8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
@@ -241,7 +241,7 @@
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
 				8E874BA22B00B37400ECEF08 /* Assets.xcassets */,
-				8E0248AB2B70B0AE00695209 /* GoogleService-Info.plist */,
+				8EA135DB2B70E577006D4FB4 /* GoogleService-Info.plist */,
 				8E874BA42B00B37400ECEF08 /* Preview Content */,
 			);
 			path = SininaCake;
@@ -611,7 +611,7 @@
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
-				8E0248AC2B70B0AE00695209 /* GoogleService-Info.plist in Resources */,
+				8EA135DC2B70E578006D4FB4 /* GoogleService-Info.plist in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */,

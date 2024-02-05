@@ -82,6 +82,15 @@ private struct CellView: View {
             }
         }
         
+        var priceText: String {
+            switch orderItem.status {
+            case .notAssign:
+                return "총 예상금액"
+            case .assign, .complete:
+                return "총 확정금액"
+            }
+        }
+        
         VStack(spacing: 10) {
             HStack {
                 CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
@@ -116,7 +125,7 @@ private struct CellView: View {
                 Spacer()
                 
                 VStack(alignment: .trailing) {
-                    CustomText(title: "총 예상금액", textColor: .gray, textWeight: .semibold, textSize: 14)
+                    CustomText(title: priceText, textColor: .gray, textWeight: .semibold, textSize: 14)
                     CustomText(title: intToString(orderItem.expectedPrice), textColor: .black, textWeight: .semibold, textSize: 18)
                 }
             }

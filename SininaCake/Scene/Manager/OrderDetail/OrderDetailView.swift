@@ -11,19 +11,18 @@ struct OrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
     @State var isButtonActive = true
-    
-    var body: some View {
-        var statusTitle: (String, UIColor) {
-            switch orderItem.status {
-            case .assign:
-                return ("승인 주문건 현황", .customBlue)
-            case .notAssign:
-                return ("미승인 주문건 현황", .customLightgray)
-            case .complete:
-                return ("완료 주문건 현황", .black)
-            }
+    var statusTitle: (String, UIColor) {
+        switch orderItem.status {
+        case .assign:
+            return ("승인 주문건 현황", .customBlue)
+        case .notAssign:
+            return ("미승인 주문건 현황", .customLightgray)
+        case .complete:
+            return ("완료 주문건 현황", .black)
         }
-        
+    }
+
+    var body: some View {
         ScrollView {
             VStack {
                 HStack {
@@ -67,7 +66,7 @@ struct OrderDetailView: View {
                 })
             }
         }
-        AssignButton(toggle: $isButtonActive)
+        BottomButton(orderItem: $orderItem, toggle: $isButtonActive)
     }
 }
 
@@ -187,21 +186,34 @@ struct PhotoView: View {
 struct PriceView: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
-    @State var totalPrice = 0
+    @State var totalPrice = ""
+    @FocusState var isFocused: Bool
     
-    let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
+    var priceText: (String, String) {
+        switch orderItem.status {
+        case .notAssign:
+            return ("총 예상금액", intToString(orderItem.expectedPrice))
+        case .assign, .complete:
+            return ("총 확정금액", intToString(orderItem.confirmedPrice))
+        }
+    }
+    
+    var opacity: Double {
+        switch orderItem.status {
+        case .notAssign:
+            return 1
+        case .assign, .complete:
+            return 0
+        }
+    }
     
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: "총 예상금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: priceText.0, textColor: .customGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 45)
-                CustomText(title: intToString(orderItem.expectedPrice), textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
                 Spacer()
             }
             
@@ -211,11 +223,29 @@ struct PriceView: View {
                 Spacer()
                     .frame(width: 24)
                 HStack {
-                    TextField("", value: $totalPrice, formatter: formatter)
+                    TextField("", text: $totalPrice)
                         .padding()
                         .background(Color(.white))
-                        .keyboardType(.decimalPad)
-                    Button(action: { toggle = false }, label: {
+                        .keyboardType(.numberPad)
+                        .font(.custom("Pretendard", fixedSize: 20))
+                        .fontWeight(.semibold)
+                        .focused($isFocused)
+                        .onTapGesture {
+                            totalPrice = ""
+                        }
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                Button(action: {
+                                    toggle = false
+                                    isFocused = false
+                                    totalPrice = intToString(Int(totalPrice) ?? 0)
+                                }, label: {
+                                    CustomText(title: "Done", textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                                })
+                            }
+                        }
+                    Button(action: {  }, label: {
                         CustomText(title: "등록", textColor: .white, textWeight: .semibold, textSize: 16)
                     })
                     .frame(width: 94, height: 55)
@@ -228,19 +258,39 @@ struct PriceView: View {
                 )
                 Spacer()
             }
+            .opacity(opacity)
         }
         .padding(.leading, 24)
         .padding(.trailing, 24)
     }
 }
 
-struct AssignButton: View {
+struct BottomButton: View {
+    @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
     
+    var buttonStyle: (String, UIColor, Double) {
+        switch orderItem.status {
+        case .notAssign:
+            if toggle {
+                return ("승인하기", .customLightgray, 1)
+            } else {
+                return ("승인하기", .customBlue, 1)
+            }
+        case .assign:
+            return ("제작완료", .customBlue, 1)
+        case .complete:
+            return ("", .black, 0)
+        }
+    }
+
     var body: some View {
-        CustomButton(action: { print("승인") }, title: "승인하기", titleColor: .white, backgroundColor: .customBlue, leading: 24, trailing: 24)
+        CustomButton(action: {
+            print("승인")
+        }, title: buttonStyle.0, titleColor: .white, backgroundColor: buttonStyle.1, leading: 24, trailing: 24)
             .padding(.top, 29)
             .disabled(toggle)
+            .opacity(buttonStyle.2)
     }
 }
 
@@ -252,7 +302,7 @@ private func intToString(_ price: Int) -> String {
     for str in priceString.reversed() {
         result += String(str)
         count += 1
-        if count % 3 == 0 {
+        if count % 3 == 0 && count != priceString.count {
             result += ","
         }
     }
