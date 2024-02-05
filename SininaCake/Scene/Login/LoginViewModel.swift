@@ -10,6 +10,7 @@ import CryptoKit
 import Foundation
 import FirebaseAuth
 import FirebaseCore
+import FirebaseFirestore
 import GoogleSignIn
 import KakaoSDKUser
 
@@ -110,9 +111,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                     print(error)
                 } else {
                     print("loginWithKakaoTalk() success.")
-                    
-                    //do something
-                    
+                    self.getAndStoreKakaoUserInfo()
                     self.isLoggedin = true
                 }
             }
@@ -122,9 +121,9 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                     print(error)
                 } else {
                     print("loginWithKakaoAccount() success.")
-                    
                     //do something
-                    _ = oauthToken
+//                    _ = oauthToken
+                    self.getAndStoreKakaoUserInfo()
                     self.isLoggedin = true
                 }
             }
@@ -165,6 +164,48 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                 print(user)
                 self.isLoggedin = true
             }
+        }
+    }
+    
+    // MARK: - 카카오 유저 정보 획득
+    func getAndStoreKakaoUserInfo() {
+//        var nickName: String
+//        var email: String
+//        var imgURL: String
+        
+        UserApi.shared.me() {(user, error) in
+            if let error = error {
+                print(error)
+            }
+            else {
+                print("me() success.")
+//                nickName = user?.kakaoAccount?.profile?.nickname ?? ""
+//                email = user?.kakaoAccount?.email ?? ""
+//                imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
+                Task {
+                    await self.addUserInfoToFirestore(email: user?.kakaoAccount?.email ?? "", 
+                                                      imgURL: user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? "",
+                                                      userName: user?.kakaoAccount?.profile?.nickname ?? "")
+                }
+            }
+        }
+//        return (nickName, email, imgURL)
+    }
+    
+    // MARK: - 유저 정보 파이어스토어에 저장
+    func addUserInfoToFirestore(email: String, imgURL: String, userName: String) async {
+
+        let db = Firestore.firestore()
+        
+        do {
+          try await db.collection("Users").document(email).setData([
+            "email": email,
+            "userName": userName,
+            "imgURL": imgURL
+          ], merge: true)
+          print("Document successfully written!")
+        } catch {
+          print("Error writing document: \(error)")
         }
     }
 }
