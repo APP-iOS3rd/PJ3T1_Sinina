@@ -40,11 +40,12 @@ class OrderListViewModel: ObservableObject {
                 if let snapshot = querySnapshot, let self = self {
                     for doc in snapshot.documents {
                         let documentData: [String: Any] = doc.data()
+                        print(documentData)
                         
                         let id: String = documentData["id"] as? String ?? ""
                         let date: Timestamp = documentData["date"] as? Timestamp ?? Timestamp()
                         let orderTime: Timestamp = documentData["orderTime"] as? Timestamp ?? Timestamp()
-                        let cakeSize: String = documentData["cakeSize"] as? String ?? ""
+                        let cakeSize: String = documentData["size"] as? String ?? ""
                         let sheet: String = documentData["sheet"] as? String ?? ""
                         let cream: String = documentData["cream"] as? String ?? ""
                         let icePack: Bool = documentData["icePack"] as? Bool ?? false

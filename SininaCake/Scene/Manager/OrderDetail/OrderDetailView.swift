@@ -10,8 +10,20 @@ import SwiftUI
 struct OrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
+    @State var isButtonActive = true
     
     var body: some View {
+        var statusTitle: (String, UIColor) {
+            switch orderItem.status {
+            case .assign:
+                return ("승인 주문건 현황", .customBlue)
+            case .notAssign:
+                return ("미승인 주문건 현황", .customLightgray)
+            case .complete:
+                return ("완료 주문건 현황", .black)
+            }
+        }
+        
         ScrollView {
             VStack {
                 HStack {
@@ -19,8 +31,8 @@ struct OrderDetailView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 18, height: 18)
-                        .foregroundStyle(Color(.customLightgray))
-                    CustomText(title: "미승인 주문건 현황", textColor: .black, textWeight: .semibold, textSize: 18)
+                        .foregroundStyle(Color(statusTitle.1))
+                    CustomText(title: statusTitle.0, textColor: .black, textWeight: .semibold, textSize: 18)
                     Spacer()
                 }
                 .padding(.leading, 24)
@@ -42,7 +54,7 @@ struct OrderDetailView: View {
                 
                 DividerView()
                 
-                PriceView(orderItem: $orderItem)
+                PriceView(orderItem: $orderItem, toggle: $isButtonActive)
             }
         }
         .navigationBarBackButtonHidden()
@@ -55,7 +67,7 @@ struct OrderDetailView: View {
                 })
             }
         }
-        AssignButton()
+        AssignButton(toggle: $isButtonActive)
     }
 }
 
@@ -87,8 +99,8 @@ struct OrderInfoView: View {
                 .frame(width: 63)
             
             VStack(alignment: .leading, spacing: 18) {
-//                CustomText(title: orderItem.date, textColor: .black, textWeight: .semibold, textSize: 16)
-//                CustomText(title: orderItem.time, textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: dateToTime(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.name, textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .semibold, textSize: 16)
             }
@@ -174,7 +186,14 @@ struct PhotoView: View {
 
 struct PriceView: View {
     @Binding var orderItem: OrderItem
-    @State var totalPrice = ""
+    @Binding var toggle: Bool
+    @State var totalPrice = 0
+    
+    let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
     
     var body: some View {
         VStack {
@@ -186,24 +205,25 @@ struct PriceView: View {
                 Spacer()
             }
             
+            // 미승인 주문 건
             HStack {
                 CustomText(title: "총 확정금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 24)
                 HStack {
-                    TextField("", text: $totalPrice)
+                    TextField("", value: $totalPrice, formatter: formatter)
                         .padding()
                         .background(Color(.white))
                         .keyboardType(.decimalPad)
-                    Button(action: {}, label: {
+                    Button(action: { toggle = false }, label: {
                         CustomText(title: "등록", textColor: .white, textWeight: .semibold, textSize: 16)
                     })
                     .frame(width: 94, height: 55)
                     .background(Color(.customBlue))
-                    .cornerRadius(12)
+                    .cornerRadius(27.5)
                 }
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
+                    RoundedRectangle(cornerRadius: 27.5)
                         .stroke(Color(.customLightgray))
                 )
                 Spacer()
@@ -215,9 +235,12 @@ struct PriceView: View {
 }
 
 struct AssignButton: View {
+    @Binding var toggle: Bool
+    
     var body: some View {
-        CustomButton(action: {}, title: "승인하기", titleColor: .white, backgroundColor: .customBlue, leading: 24, trailing: 24)
+        CustomButton(action: { print("승인") }, title: "승인하기", titleColor: .white, backgroundColor: .customBlue, leading: 24, trailing: 24)
             .padding(.top, 29)
+            .disabled(toggle)
     }
 }
 
@@ -236,7 +259,20 @@ private func intToString(_ price: Int) -> String {
     
     return result.reversed() + "원"
 }
-//
-//#Preview {
-//    OrderDetailView(orderItem: OrderItem(date: "2023/09/23(금)", time: "12:30", cakeSize: "도시락", sheet: "초코시트", cream: "크림치즈프로스팅", customer: "김고구마", phoneNumber: "010-0000-0000", text: "생일축하해", imageURL: ["sun.max.fill", "sun.max.fill", "sun.max.fill"], comment: "보냉백 추가할게요!", price: 1025000, status: .assign))
-//}
+
+private func dateToString(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko-KR")
+    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
+    
+    let dateString = dateFormatter.string(from: date)
+    return dateString
+}
+
+private func dateToTime(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    
+    let timeString = dateFormatter.string(from: date)
+    return timeString
+}

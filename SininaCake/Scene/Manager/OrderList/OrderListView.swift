@@ -71,16 +71,25 @@ private struct CellView: View {
     }
     
     var body: some View {
-        let statusColor: UIColor = orderItem.status == .notAssign ? .customLightgray : .customBlue
+        var statusColor: UIColor {
+            switch orderItem.status {
+            case .assign:
+                return .customBlue
+            case .notAssign:
+                return .customLightgray
+            case .complete:
+                return .black
+            }
+        }
         
         VStack(spacing: 10) {
             HStack {
-//                CustomText(title: orderItem.date, textColor: .black, textWeight: .semibold, textSize: 18)
+                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
                 Spacer()
                 Image(systemName: "clock")
                     .frame(width: 18, height: 18)
                     .foregroundStyle(Color(statusColor))
-//                CustomText(title: orderItem.time, textColor: statusColor, textWeight: .semibold, textSize: 18)
+                CustomText(title: dateToTime(orderItem.date), textColor: statusColor, textWeight: .semibold, textSize: 18)
             }
             
             HStack {
@@ -134,6 +143,23 @@ private func intToString(_ price: Int) -> String {
     }
     
     return result.reversed() + "원"
+}
+
+private func dateToString(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko-KR")
+    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
+    
+    let dateString = dateFormatter.string(from: date)
+    return dateString
+}
+
+private func dateToTime(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    
+    let timeString = dateFormatter.string(from: date)
+    return timeString
 }
 
 #Preview {
