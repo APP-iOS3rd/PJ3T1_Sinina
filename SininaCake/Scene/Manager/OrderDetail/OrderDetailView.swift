@@ -87,9 +87,9 @@ struct OrderInfoView: View {
                 .frame(width: 63)
             
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: orderItem.date, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.time, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.customer, textColor: .black, textWeight: .semibold, textSize: 16)
+//                CustomText(title: orderItem.date, textColor: .black, textWeight: .semibold, textSize: 16)
+//                CustomText(title: orderItem.time, textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.name, textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .semibold, textSize: 16)
             }
             
@@ -182,7 +182,7 @@ struct PriceView: View {
                 CustomText(title: "총 예상금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 45)
-                CustomText(title: intToString(orderItem.price), textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: intToString(orderItem.expectedPrice), textColor: .black, textWeight: .semibold, textSize: 16)
                 Spacer()
             }
             
@@ -236,7 +236,7 @@ private func intToString(_ price: Int) -> String {
     
     return result.reversed() + "원"
 }
-
-#Preview {
-    OrderDetailView(orderItem: OrderItem(date: "2023/09/23(금)", time: "12:30", cakeSize: "도시락", sheet: "초코시트", cream: "크림치즈프로스팅", customer: "김고구마", phoneNumber: "010-0000-0000", text: "생일축하해", imageURL: ["sun.max.fill", "sun.max.fill", "sun.max.fill"], comment: "보냉백 추가할게요!", price: 1025000, status: .assign))
-}
+//
+//#Preview {
+//    OrderDetailView(orderItem: OrderItem(date: "2023/09/23(금)", time: "12:30", cakeSize: "도시락", sheet: "초코시트", cream: "크림치즈프로스팅", customer: "김고구마", phoneNumber: "010-0000-0000", text: "생일축하해", imageURL: ["sun.max.fill", "sun.max.fill", "sun.max.fill"], comment: "보냉백 추가할게요!", price: 1025000, status: .assign))
+//}

@@ -8,17 +8,20 @@
 import Foundation
 
 struct OrderItem: Hashable {
-    var date: String
-    var time: String
+    var id: String
+    var date: Date
+    var orderTime: Date
     var cakeSize: String
     var sheet: String
     var cream: String
-    var customer: String
+    var icePack: Bool
+    var name: String
     var phoneNumber: String
     var text: String
     var imageURL: [String]
     var comment: String
-    var price: Int
+    var expectedPrice: Int
+    var confirmedPrice: Int
     var status: OrderStatus
 }
 
