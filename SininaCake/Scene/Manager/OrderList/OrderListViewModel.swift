@@ -92,7 +92,7 @@ class OrderListViewModel: ObservableObject {
             return .notAssign
         }
     }
-    
+
     private func stringToIcePack(_ icePack: String) -> IcePack {
         switch icePack {
         case "없음":
