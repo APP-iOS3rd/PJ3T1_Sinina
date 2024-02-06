@@ -9,6 +9,7 @@ import Foundation
 
 struct OrderItem: Hashable {
     var id: String
+    var email: String
     var date: Date
     var orderTime: Date
     var cakeSize: String

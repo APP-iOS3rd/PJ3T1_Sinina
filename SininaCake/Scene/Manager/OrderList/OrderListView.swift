@@ -28,6 +28,9 @@ struct OrderListView: View {
             .navigationDestination(for: OrderItem.self) { item in
                 OrderDetailView(orderItem: item)
             }
+            .onAppear {
+                orderListVM.fetchData()
+            }
         }
     }
 }
@@ -82,12 +85,12 @@ private struct CellView: View {
             }
         }
         
-        var priceText: String {
+        var price: (String, Int) {
             switch orderItem.status {
             case .notAssign:
-                return "총 예상금액"
+                return ("총 예상금액", orderItem.expectedPrice)
             case .assign, .complete:
-                return "총 확정금액"
+                return ("총 확정금액", orderItem.confirmedPrice)
             }
         }
         
@@ -125,8 +128,8 @@ private struct CellView: View {
                 Spacer()
                 
                 VStack(alignment: .trailing) {
-                    CustomText(title: priceText, textColor: .gray, textWeight: .semibold, textSize: 14)
-                    CustomText(title: intToString(orderItem.expectedPrice), textColor: .black, textWeight: .semibold, textSize: 18)
+                    CustomText(title: price.0, textColor: .gray, textWeight: .semibold, textSize: 14)
+                    CustomText(title: intToString(price.1), textColor: .black, textWeight: .semibold, textSize: 18)
                 }
             }
         }

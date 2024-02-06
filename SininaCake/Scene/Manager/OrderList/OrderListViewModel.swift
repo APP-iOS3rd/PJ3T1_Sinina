@@ -23,11 +23,13 @@ class OrderListViewModel: ObservableObject {
         
         db = Firestore.firestore()
         ordersRef = db.collection("CurrentOrders")
-        
-        fetchData()
     }
     
     func fetchData() {
+        assignOrderData = []
+        notAssignOrderData = []
+        completeOrderData = []
+        
         let query: Query = ordersRef.order(by: "id")
         
         query.getDocuments { [weak self] querySnapshot, error in
@@ -43,6 +45,7 @@ class OrderListViewModel: ObservableObject {
                         print(documentData)
                         
                         let id: String = documentData["id"] as? String ?? ""
+                        let email: String = documentData["email"] as? String ?? ""
                         let date: Timestamp = documentData["date"] as? Timestamp ?? Timestamp()
                         let orderTime: Timestamp = documentData["orderTime"] as? Timestamp ?? Timestamp()
                         let cakeSize: String = documentData["size"] as? String ?? ""
@@ -58,7 +61,7 @@ class OrderListViewModel: ObservableObject {
                         let confirmedPrice: Int = documentData["confirmedPrice"] as? Int ?? 0
                         let status: String = documentData["status"] as? String ?? ""
                         
-                        let orderDate = OrderItem(id: id, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: icePack, name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
+                        let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: icePack, name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
                         if self.stringToStatus(status) == .assign {
                             assignOrderData.append(orderDate)

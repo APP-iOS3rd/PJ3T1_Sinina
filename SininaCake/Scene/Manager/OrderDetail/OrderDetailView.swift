@@ -10,15 +10,27 @@ import SwiftUI
 struct OrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
+    @State private var totalPrice = ""
     @State var isButtonActive = true
-    var statusTitle: (String, UIColor) {
+    @StateObject var orderDetailVM = OrderDetailViewModel()
+    
+    var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
         case .assign:
-            return ("승인 주문건 현황", .customBlue)
+            return ("승인 주문건 현황", .customBlue, "assignCheckImage")
         case .notAssign:
-            return ("미승인 주문건 현황", .customLightgray)
+            return ("미승인 주문건 현황", .customLightgray, "checkImage")
         case .complete:
-            return ("완료 주문건 현황", .black)
+            return ("완료 주문건 현황", .black, "assignCheckImage")
+        }
+    }
+    
+    var opacity: Double {
+        switch orderItem.status {
+        case .complete:
+            return 0
+        default:
+            return 1
         }
     }
 
@@ -26,7 +38,7 @@ struct OrderDetailView: View {
         ScrollView {
             VStack {
                 HStack {
-                    Image(systemName: "checkmark")
+                    Image(statusTitle.2)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 18, height: 18)
@@ -49,11 +61,14 @@ struct OrderDetailView: View {
                 Spacer()
                     .frame(height: 18)
                 
-                PhotoView(orderItem: $orderItem)
+                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
                 
                 DividerView()
                 
-                PriceView(orderItem: $orderItem, toggle: $isButtonActive)
+                PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
+                
+                BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
+                    .opacity(opacity)
             }
         }
         .navigationBarBackButtonHidden()
@@ -61,12 +76,11 @@ struct OrderDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
-                    Image(systemName: "chevron.backward")
+                    Image("angle-left")
                         .foregroundStyle(Color.black)
                 })
             }
         }
-        BottomButton(orderItem: $orderItem, toggle: $isButtonActive)
     }
 }
 
@@ -140,6 +154,7 @@ struct CakeInfoView: View {
 
 struct PhotoView: View {
     @Binding var orderItem: OrderItem
+    @ObservedObject var orderDetailVM: OrderDetailViewModel
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     let imageWidth = (UIScreen.main.bounds.width - 60) / 2
     
@@ -152,18 +167,47 @@ struct PhotoView: View {
             
             Spacer()
                 .frame(height: 24)
-            
-            LazyVGrid(columns: columns, spacing: 34) {
-                ForEach((0..<orderItem.imageURL.count), id: \.self) { i in
-                    Image(systemName: orderItem.imageURL[i])
-                        .resizable()
-                        .frame(width: imageWidth - 20, height: imageWidth - 20)
-                        .scaledToFit()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.customLightgray))
-                                .frame(width: imageWidth, height: imageWidth)
-                        )
+
+            LazyVGrid(columns: columns) {
+                if orderItem.imageURL.isEmpty {
+                    ForEach(0...1, id: \.self) { _ in
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.customLightgray))
+                            .frame(width: imageWidth, height: imageWidth)
+                            .foregroundStyle(.clear)
+                            .overlay(
+                                Image("emptyPhoto")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .scaledToFit()
+                            )
+                    }
+                } else {
+                    ForEach(0..<orderItem.imageURL.count, id: \.self) { idx in
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.customLightgray))
+                            .frame(width: imageWidth, height: imageWidth)
+                            .foregroundStyle(.clear)
+                            .overlay(
+                                Image(uiImage: orderDetailVM.downloadImage(orderItem.imageURL[idx]))
+                                    .resizable()
+                                    .frame(width: imageWidth - 20, height: imageWidth - 20)
+                                    .scaledToFit()
+                            )
+                    }
+                    
+                    if orderItem.imageURL.count % 2 == 1 {
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.customLightgray))
+                            .frame(width: imageWidth, height: imageWidth)
+                            .foregroundStyle(.clear)
+                            .overlay(
+                                Image("emptyPhoto")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .scaledToFit()
+                            )
+                    }
                 }
             }
             
@@ -186,7 +230,7 @@ struct PhotoView: View {
 struct PriceView: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
-    @State var totalPrice = ""
+    @Binding var totalPrice: String
     @FocusState var isFocused: Bool
     
     var priceText: (String, String) {
@@ -217,7 +261,6 @@ struct PriceView: View {
                 Spacer()
             }
             
-            // 미승인 주문 건
             HStack {
                 CustomText(title: "총 확정금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
                 Spacer()
@@ -266,31 +309,46 @@ struct PriceView: View {
 }
 
 struct BottomButton: View {
+    @ObservedObject var orderDetailVM: OrderDetailViewModel
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
+    @Binding var totalPrice: String
     
-    var buttonStyle: (String, UIColor, Double) {
+    var buttonStyle: (String, UIColor) {
         switch orderItem.status {
         case .notAssign:
             if toggle {
-                return ("승인하기", .customLightgray, 1)
+                return ("승인하기", .customLightgray)
             } else {
-                return ("승인하기", .customBlue, 1)
+                return ("승인하기", .customBlue)
             }
         case .assign:
-            return ("제작완료", .customBlue, 1)
+            return ("제작완료", .customBlue)
         case .complete:
-            return ("", .black, 0)
+            return ("", .black)
+        }
+    }
+    
+    var buttonToggle: Bool {
+        switch orderItem.status {
+        case .assign:
+            return false
+        default:
+            return toggle
         }
     }
 
     var body: some View {
         CustomButton(action: {
-            print("승인")
+            if orderItem.status == .notAssign {
+                orderDetailVM.updateStatus(orderItem: orderItem)
+                orderDetailVM.updatePrice(orderItem: orderItem, stringToInt(totalPrice))
+            } else {
+                orderDetailVM.updateStatus(orderItem: orderItem)
+            }
         }, title: buttonStyle.0, titleColor: .white, backgroundColor: buttonStyle.1, leading: 24, trailing: 24)
             .padding(.top, 29)
-            .disabled(toggle)
-            .opacity(buttonStyle.2)
+            .disabled(buttonToggle)
     }
 }
 
@@ -325,4 +383,17 @@ private func dateToTime(_ date: Date) -> String {
     
     let timeString = dateFormatter.string(from: date)
     return timeString
+}
+
+private func stringToInt(_ str: String) -> Int {
+    let numbers = "0123456789"
+    var result = ""
+    
+    for number in str {
+        if numbers.contains(number) {
+            result += String(number)
+        }
+    }
+    
+    return Int(result) ?? 0
 }
