@@ -10,9 +10,9 @@ import Firebase
 import FirebaseStorage
 
 class OrderDetailViewModel: ObservableObject {
-    @Published var imageView: UIImage = UIImage()
     let db = Firestore.firestore()
     let storage = Storage.storage()
+    @Published var images: [UIImage?] = []
     
     func updatePrice(orderItem: OrderItem, _ price: Int) {
 //        db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["confirmedPrice":price])
@@ -32,20 +32,23 @@ class OrderDetailViewModel: ObservableObject {
         }
     }
     
-    func downloadImage(_ imageName: String) {
-        for image in imageName {
-            storage.reference(forURL: "gs://sininacake.appspot.com/\(image)").downloadURL { url, error in
-                guard let url = url else { return }
-                URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                    guard let self = self,
-                          let data = data,
-                          response != nil,
-                          error == nil else { return }
-                    
-                    DispatchQueue.main.async {
-                        self.imageView = UIImage(data: data) ?? UIImage()
+    func downloadImage(_ imageNames: [String]) {
+        let storage = Storage.storage()
+        
+        for imageName in imageNames {
+            let storageRef = storage.reference().child(imageName)
+            
+            storageRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print("Cannot download image \(error.localizedDescription)")
+                    return
+                } else {
+                    if let imageData = data, let uiImage = UIImage(data: imageData) {
+                        DispatchQueue.main.async {
+                            self.images.append(uiImage)
+                        }
                     }
-                }.resume()
+                }
             }
         }
     }

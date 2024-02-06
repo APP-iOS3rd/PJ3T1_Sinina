@@ -53,9 +53,25 @@ struct ListView: View {
                 Spacer()
             }
             
-            ForEach(0..<orderData.count, id: \.self) { i in
-                NavigationLink(value: orderData[i]) {
-                    CellView(orderItem: orderData[i])
+            if orderData.isEmpty {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.customLightgray))
+                    .frame(height: 100)
+                    .overlay(
+                        VStack {
+                            Image(systemName: "cart")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(Color(.customLightgray))
+                                .frame(width: 20, height: 20)
+                            CustomText(title: "주문 내역이 없습니다.", textColor: .customLightgray, textWeight: .semibold, textSize: 16)
+                        }
+                    )
+            } else {
+                ForEach(0..<orderData.count, id: \.self) { i in
+                    NavigationLink(value: orderData[i]) {
+                        CellView(orderItem: orderData[i])
+                    }
                 }
             }
         }

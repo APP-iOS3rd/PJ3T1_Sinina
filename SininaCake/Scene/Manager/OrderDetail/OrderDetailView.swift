@@ -13,7 +13,6 @@ struct OrderDetailView: View {
     @State private var totalPrice = ""
     @State var isButtonActive = true
     @StateObject var orderDetailVM = OrderDetailViewModel()
-    @State var imageSet: [UIImage] = []
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
@@ -62,7 +61,7 @@ struct OrderDetailView: View {
                 Spacer()
                     .frame(height: 18)
                 
-                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM, imageSet: $imageSet)
+                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
                 
                 Spacer()
                     .frame(height: 32)
@@ -88,10 +87,7 @@ struct OrderDetailView: View {
             }
         }
         .onAppear {
-            for images in orderItem.imageURL {
-                orderDetailVM.downloadImage(images)
-                imageSet.append(orderDetailVM.imageView)
-            }
+            orderDetailVM.downloadImage(orderItem.imageURL)
         }
     }
 }
@@ -171,8 +167,6 @@ struct CakeInfoView: View {
 struct PhotoView: View {
     @Binding var orderItem: OrderItem
     @ObservedObject var orderDetailVM: OrderDetailViewModel
-    @Binding var imageSet: [UIImage]
-    var image = UIImage()
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     let imageWidth = (UIScreen.main.bounds.width - 60) / 2
     
@@ -201,17 +195,19 @@ struct PhotoView: View {
                             )
                     }
                 } else {
-                    ForEach(0..<orderItem.imageURL.count, id: \.self) { idx in
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customLightgray))
-                            .frame(width: imageWidth, height: imageWidth)
-                            .foregroundStyle(.clear)
-                            .overlay(
-                                Image(uiImage: imageSet[idx])
-                                    .resizable()
-                                    .frame(width: imageWidth - 20, height: imageWidth - 20)
-                                    .scaledToFit()
-                            )
+                    ForEach(orderDetailVM.images, id: \.self) { image in
+                        if let image = image {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(.customLightgray))
+                                .frame(width: imageWidth, height: imageWidth)
+                                .foregroundStyle(.clear)
+                                .overlay(
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .frame(width: imageWidth - 20, height: imageWidth - 20)
+                                        .scaledToFit()
+                                )
+                        }
                     }
                     
                     if orderItem.imageURL.count % 2 == 1 {
