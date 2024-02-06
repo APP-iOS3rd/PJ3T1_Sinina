@@ -48,6 +48,8 @@ struct AccountButton: View {
                 }
                 let secondButton = Alert.Button.destructive(Text("로그아웃")) {
                     profileVM.handleKakaoLogout()
+                    profileVM.handleFBAuthLogout()
+                    
                     isNextScreenActive = true
                 }
                 return Alert(title: Text("로그아웃"),
@@ -66,6 +68,8 @@ struct AccountButton: View {
                 }
                 let secondButton = Alert.Button.destructive(Text("회원탈퇴")) {
                     profileVM.handleKakaoUnlink()
+                    profileVM.handleFBAuthUnlink()
+                    
                     isNextScreenActive = true
                 }
                 return Alert(title: Text("회원탈퇴"),

@@ -83,17 +83,8 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
                                                            rawNonce: nonce,
                                                            fullName: appleIDCredential.fullName)
-            // Sign in with Firebase.
-            Auth.auth().signIn(with: credential) { (authResult, error) in
-                if error != nil {
-                    // Error. If error.code == .MissingOrInvalidNonce, make sure
-                    // you're sending the SHA256-hashed nonce as a hex string with
-                    // your request to Apple.
-                    print(error?.localizedDescription as Any)
-                    return
-                }
-                self.isLoggedin = true
-            }
+            
+            self.signInFirebase(credential: credential)
         }
     }
     
@@ -126,32 +117,12 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: user.accessToken.tokenString)
             
-            Auth.auth().signIn(with: credential) { result, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                    return
-                }
-                
-                guard let user = result?.user else { return }
-                print(user)
-                self.isLoggedin = true
-                
-                // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
-                let email = user.email ?? ""
-                let imgURL = user.photoURL?.absoluteString ?? ""
-                let userName = user.displayName ?? ""
-                
-                Task {
-                    await self.addUserInfoToFirestore(email: email,
-                                                      imgURL: imgURL,
-                                                      userName: userName)
-                }
-            }
+            self.signInFirebase(credential: credential)
         }
     }
     
     // MARK: - 카카오 로그인
-     /// 카카오 로그인
+    /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
@@ -178,7 +149,6 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     
     // MARK: - 카카오 유저 정보 획득
     func getAndStoreKakaoUserInfo() {
-        
         UserApi.shared.me() {(user, error) in
             if let error = error {
                 print(error)
@@ -197,10 +167,36 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         }
     }
     
+    func signInFirebase(credential: AuthCredential) {
+        Auth.auth().signIn(with: credential) { result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let user = result?.user else { return }
+            print(user)
+            self.isLoggedin = true
+            self.getAndStoreFirebaseUserInfo(user: user)
+        }
+    }
+    
+    func getAndStoreFirebaseUserInfo(user: FirebaseAuth.User) {
+        // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
+        let email = user.email ?? ""
+        let imgURL = user.photoURL?.absoluteString ?? ""
+        let userName = user.displayName ?? ""
+        
+        Task {
+            await self.addUserInfoToFirestore(email: email,
+                                              imgURL: imgURL,
+                                              userName: userName)
+        }
+    }
+    
     // MARK: - 유저 정보 파이어스토어에 저장
     // FIXME: - 회원가입일때만 저장
     func addUserInfoToFirestore(email: String, imgURL: String, userName: String) async {
-
         let db = Firestore.firestore()
         
         do {
