@@ -109,7 +109,7 @@
 		8E874BBD2B00B66F00ECEF08 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8E874BC52B00BBA000ECEF08 /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
 		8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SininaCake.entitlements; sourceTree = "<group>"; };
-		8EC21AD12B60EB2100E92DA7 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../../ApiKeys.xcconfig; sourceTree = "<group>"; };
+
 		8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		8ECB21A02B1DC00A003BF8B0 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -227,7 +227,6 @@
 		8E874B9D2B00B37200ECEF08 /* SininaCake */ = {
 			isa = PBXGroup;
 			children = (
-				8EC21AD12B60EB2100E92DA7 /* ApiKeys.xcconfig */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
