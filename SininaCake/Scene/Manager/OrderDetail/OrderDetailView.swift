@@ -11,7 +11,9 @@ struct OrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
     @State private var totalPrice = ""
-    @State var isButtonActive = true
+    @State private var isButtonActive = true
+    @State private var isEditing: Bool = false
+    @State private var scrollTarget: String?
     @StateObject var orderDetailVM = OrderDetailViewModel()
     
     var statusTitle: (String, UIColor, String) {
@@ -70,7 +72,9 @@ struct OrderDetailView: View {
                 
                 DividerView()
                 
-                PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
+                ScrollViewReader { proxy in
+                    PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, isEditing: $isEditing, scrollTarget: $scrollTarget, scrollProxy: proxy)
+                }
                 
                 BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
                     .opacity(opacity)
@@ -272,6 +276,9 @@ struct PriceView: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
     @Binding var totalPrice: String
+    @Binding var isEditing: Bool
+    @Binding var scrollTarget: String?
+    var scrollProxy: ScrollViewProxy
     @FocusState var isFocused: Bool
     
     var priceText: (String, String) {
@@ -307,12 +314,18 @@ struct PriceView: View {
                 Spacer()
                     .frame(width: 24)
                 HStack {
-                    TextField("", text: $totalPrice)
+                    TextField("", text: $totalPrice, onEditingChanged: { editing in
+                        scrollTarget = "priceTextField"
+                        withAnimation {
+                            isEditing = editing
+                        }
+                    })
                         .padding()
                         .background(Color(.white))
                         .keyboardType(.numberPad)
                         .font(.custom("Pretendard", fixedSize: 20))
                         .fontWeight(.semibold)
+                        .id("priceTextField")
                         .focused($isFocused)
                         .onTapGesture {
                             totalPrice = ""
@@ -323,18 +336,19 @@ struct PriceView: View {
                                 Button(action: {
                                     toggle = false
                                     isFocused = false
-                                    totalPrice = intToString(Int(totalPrice) ?? 0)
+                                    totalPrice = String(intToString(Int(totalPrice) ?? 0).dropLast())
                                 }, label: {
                                     CustomText(title: "Done", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                                 })
                             }
                         }
-                    Button(action: {  }, label: {
-                        CustomText(title: "등록", textColor: .white, textWeight: .semibold, textSize: 16)
-                    })
-                    .frame(width: 94, height: 55)
-                    .background(Color(.customBlue))
-                    .cornerRadius(27.5)
+                        .overlay(
+                            HStack {
+                                Spacer()
+                                CustomText(title: "원", textColor: .customGray, textWeight: .semibold, textSize: 20)
+                            }
+                            .padding(.trailing, 18)
+                        )
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 27.5)
@@ -346,6 +360,15 @@ struct PriceView: View {
         }
         .padding(.leading, 24)
         .padding(.trailing, 24)
+        .onChange(of: scrollTarget) { target in
+            if let target = target {
+                withAnimation {
+                    scrollProxy.scrollTo(target, anchor: .top)
+                    
+                    scrollTarget = nil
+                }
+            }
+        }
     }
 }
 
