@@ -15,8 +15,9 @@ struct ChatView: View {
     @ObservedObject var userStore = UserStore.shared
     
     @State var chatText = ""
-    @State var loginedUser: User?
+    @State var loginUser: User?
     @State var userEmail: String
+    @State var room: ChatRoom
     
     // MARK: 통합 뷰
     var body: some View {
@@ -32,35 +33,40 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack {
-                        ForEach(chatVM.messages, id: \.id) { msg in
+                        ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
                             // 나
-                            if loginedUser?.name == msg.userName {
+                            if loginUser?.name == msg.userName {
                                 blueMessageBubble(message: msg)
                                 
-                                // 상대
+                            // 상대
                             } else {
                                 grayMessageBubble(message: msg)
                             }
                             
                         }
                         .background(Color.clear)
+//                        .onAppear(){
+//                            withAnimation {
+//                                // 마지막 말풍선을 따라 스크롤로 내려감
+//                                proxy.scrollTo(chatVM.messages[room.id]??.last?.id, anchor: .bottom)
+//
+//                            }
+//                        }
                         .onChange(of: chatVM.lastMessageId){ id in
                             withAnimation {
                                 // 마지막 말풍선을 따라 스크롤로 내려감
                                 proxy.scrollTo(id, anchor: .bottom)
+                                print("update scroll \(id)")
                             }
                         }
                     }
                 }
             }
         }
-        .onAppear {
-            chatVM.fetchRoom(userEmail: userEmail)
-        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal){
-                CustomText(title: "\(chatVM.currentRoom?.userName ?? "")", textColor: .black, textWeight: .semibold, textSize: 24)
+                CustomText(title: "\(room.userName)", textColor: .black, textWeight: .semibold, textSize: 24)
             }
         }
     }
@@ -81,8 +87,9 @@ struct ChatView: View {
             }
             
             Button {
-                let msg = Message(text: chatText, userName: loginedUser?.name ?? "", timestamp: Date())
-                chatVM.sendMessage(chatRoom: chatVM.currentRoom, message: msg)
+                let msg = Message(text: chatText, userName: loginUser?.name ?? "", timestamp: Date())
+                
+                chatVM.sendMessage(chatRoom: room, message: msg)
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(Color(.customGray))
@@ -125,10 +132,11 @@ struct ChatView: View {
     }
 }
 
-#Preview {
-    NavigationView {
-        //ChatView(loginedUser: User, userEmail: userEmail)
-        ChatView(loginedUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"), userEmail: "b@gmail.com")
-    }
-    
-}
+//#Preview {
+//    NavigationView {
+//        //ChatView(loginedUser: User, userEmail: userEmail)
+//        ChatView(loginUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu")
+//                 , userEmail: "b@gmail.com", room: ChatRoom(userEmail: "b@gmail.com", userName: "서감자", date: Timestamp(date: Date()), id: "h30LSY4MBubwggDHhR6n", lastMessageText: nil))
+//    }
+
+//}

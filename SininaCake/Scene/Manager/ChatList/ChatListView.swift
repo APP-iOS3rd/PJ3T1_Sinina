@@ -11,17 +11,14 @@ import Firebase
 struct ChatListView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var userStore = UserStore.shared
-    @State var loginedUser: User?
-    
-    //@State var userEmail: String = ""
-    //@State var userName: String = ""
-    
+    @State var loginUser: User? // 현재 접속자(본인)
+ 
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVStack(spacing: 10) {
                     ForEach(chatVM.chatRooms, id: \.self){ room in
-                        NavigationLink(destination: ChatView(loginedUser: loginedUser, userEmail: room.userEmail)){
+                        NavigationLink(destination: ChatView(loginUser: loginUser, userEmail: room.userEmail, room: room)){
                             HStack {
                                 Image(systemName: "person.crop.circle.fill")
                                     .resizable()
@@ -34,14 +31,18 @@ struct ChatListView: View {
                                         
                                         Spacer()
                                         
-                                        CustomText(title: "5:20", textColor: .black, textWeight: .semibold, textSize: 18)
-                                            .frame(alignment: .leading)
-                                        
+                                        if let lastMessageTimestamp = chatVM.lastMessageTimestamp[room.id] {
+                                            CustomText(title: "\(lastMessageTimestamp)", textColor: .black, textWeight: .semibold, textSize: 18)
+                                                .frame(alignment: .leading)
+                                        }
                                     }
                                     .padding(3)
                                     
                                     HStack {
-                                        CustomText(title: "내용내용내용내용", textColor: .customGray, textWeight: .regular, textSize: 16)
+                                        if let lastMessageText = chatVM.lastMessageText[room.id] {
+                                            
+                                            CustomText(title: "\(lastMessageText)", textColor: .customGray, textWeight: .regular, textSize: 16)
+                                        }
                                         
                                         Spacer()
                                         
@@ -69,22 +70,7 @@ struct ChatListView: View {
             chatVM.fetchAllRooms()}
     }
 }
-/*
- VStack {
- TextField("유저 이메일", text: $userEmail)
- TextField("유저 이름", text: $userName)
- 
- HStack {
- Button("add room"){
- chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: userEmail, userName: userName))
- }
- 
- Button("load room"){
- chatVM.fetchAllRooms()
- }
- }
- }*/
 
 #Preview {
-    ChatListView(loginedUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
+    ChatListView(loginUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
 }

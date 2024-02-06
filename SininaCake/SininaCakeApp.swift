@@ -38,14 +38,14 @@ struct SininaCakeApp: App {
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         
-        print("TOKEN: \(kakaoAppKey)")
+        //print("TOKEN: \(kakaoAppKey)")
     }
     
     var body: some Scene {
         WindowGroup {
             
             //ChatView(userEmail: ")
-            ChatListView(loginedUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
+            ChatListView(loginUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
             //ChatView(chatUser: "사용자이름")
 //            LoginView().onOpenURL(perform: { url in
 //                if (AuthApi.isKakaoTalkLoginUrl(url)) {
