@@ -13,6 +13,7 @@ struct OrderDetailView: View {
     @State private var totalPrice = ""
     @State var isButtonActive = true
     @StateObject var orderDetailVM = OrderDetailViewModel()
+    @State var imageSet: [UIImage] = []
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
@@ -61,7 +62,12 @@ struct OrderDetailView: View {
                 Spacer()
                     .frame(height: 18)
                 
-                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
+                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM, imageSet: $imageSet)
+                
+                Spacer()
+                    .frame(height: 32)
+                
+                EtcView(orderItem: $orderItem)
                 
                 DividerView()
                 
@@ -81,9 +87,16 @@ struct OrderDetailView: View {
                 })
             }
         }
+        .onAppear {
+            for images in orderItem.imageURL {
+                orderDetailVM.downloadImage(images)
+                imageSet.append(orderDetailVM.imageView)
+            }
+        }
     }
 }
 
+// MARK: - DividerView
 struct DividerView: View {
     var body: some View {
         Spacer()
@@ -96,6 +109,7 @@ struct DividerView: View {
     }
 }
 
+// MARK: - OrderInfoView
 struct OrderInfoView: View {
     @Binding var orderItem: OrderItem
     
@@ -124,6 +138,7 @@ struct OrderInfoView: View {
     }
 }
 
+// MARK: - CakeInfoView
 struct CakeInfoView: View {
     @Binding var orderItem: OrderItem
     
@@ -152,9 +167,12 @@ struct CakeInfoView: View {
     }
 }
 
+// MARK: - PhotoView
 struct PhotoView: View {
     @Binding var orderItem: OrderItem
     @ObservedObject var orderDetailVM: OrderDetailViewModel
+    @Binding var imageSet: [UIImage]
+    var image = UIImage()
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     let imageWidth = (UIScreen.main.bounds.width - 60) / 2
     
@@ -189,7 +207,7 @@ struct PhotoView: View {
                             .frame(width: imageWidth, height: imageWidth)
                             .foregroundStyle(.clear)
                             .overlay(
-                                Image(uiImage: orderDetailVM.downloadImage(orderItem.imageURL[idx]))
+                                Image(uiImage: imageSet[idx])
                                     .resizable()
                                     .frame(width: imageWidth - 20, height: imageWidth - 20)
                                     .scaledToFit()
@@ -210,23 +228,50 @@ struct PhotoView: View {
                     }
                 }
             }
-            
-            Spacer()
-                .frame(height: 28)
-            
-            HStack {
-                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                Spacer()
-                    .frame(width: 26)
-                CustomText(title: orderItem.comment, textColor: .black, textWeight: .semibold, textSize: 16)
-                Spacer()
-            }
         }
         .padding(.leading, 24)
         .padding(.trailing, 24)
     }
 }
 
+// MARK: - EtcView
+struct EtcView: View {
+    @Binding var orderItem: OrderItem
+    var icePackTitle: String {
+        switch orderItem.icePack {
+        case .none:
+            return "없음"
+        case .icePack:
+            return "보냉팩(+1000원) 추가"
+        case .iceBag:
+            return "보냉백(+5000원) 추가"
+        }
+    }
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 18) {
+                CustomText(title: "보냉팩 / 보냉백", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            
+            Spacer()
+                .frame(width: 20)
+            
+            VStack(alignment: .leading, spacing: 18) {
+                CustomText(title: icePackTitle, textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.comment, textColor: .black, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            
+            Spacer()
+        }
+        .padding(.leading, 24)
+    }
+}
+
+// MARK: - PriceView
 struct PriceView: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
@@ -308,6 +353,7 @@ struct PriceView: View {
     }
 }
 
+// MARK: - BottomButton
 struct BottomButton: View {
     @ObservedObject var orderDetailVM: OrderDetailViewModel
     @Binding var orderItem: OrderItem
@@ -352,6 +398,7 @@ struct BottomButton: View {
     }
 }
 
+// MARK: - Convert Method
 private func intToString(_ price: Int) -> String {
     let priceString = String(price)
     var result = ""

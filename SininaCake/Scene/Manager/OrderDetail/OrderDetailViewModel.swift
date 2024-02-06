@@ -10,6 +10,7 @@ import Firebase
 import FirebaseStorage
 
 class OrderDetailViewModel: ObservableObject {
+    @Published var imageView: UIImage = UIImage()
     let db = Firestore.firestore()
     let storage = Storage.storage()
     
@@ -31,26 +32,21 @@ class OrderDetailViewModel: ObservableObject {
         }
     }
     
-    func downloadImage(_ imageName: String) -> UIImage {
-        var image = UIImage()
-        
-        storage.reference(forURL: "gs://sininacake.appspot.com/\(imageName)").downloadURL { (url, error) in
-            guard let url = url else {
-                print("Cannot Found Firebase Storege url")
-                return
-            }
-            
-            guard let error = error else {
-                print(error?.localizedDescription ?? "")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                let data = NSData(contentsOf: url)
-                image = UIImage(data: data! as Data)!
+    func downloadImage(_ imageName: String) {
+        for image in imageName {
+            storage.reference(forURL: "gs://sininacake.appspot.com/\(image)").downloadURL { url, error in
+                guard let url = url else { return }
+                URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                    guard let self = self,
+                          let data = data,
+                          response != nil,
+                          error == nil else { return }
+                    
+                    DispatchQueue.main.async {
+                        self.imageView = UIImage(data: data) ?? UIImage()
+                    }
+                }.resume()
             }
         }
-        
-        return image
     }
 }

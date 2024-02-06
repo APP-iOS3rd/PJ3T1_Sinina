@@ -15,7 +15,7 @@ struct OrderItem: Hashable {
     var cakeSize: String
     var sheet: String
     var cream: String
-    var icePack: Bool
+    var icePack: IcePack
     var name: String
     var phoneNumber: String
     var text: String
@@ -30,4 +30,10 @@ enum OrderStatus {
     case notAssign
     case assign
     case complete
+}
+
+enum IcePack {
+    case none
+    case icePack
+    case iceBag
 }
