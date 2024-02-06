@@ -50,84 +50,56 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
       return hashString
     }
     
+    // MARK: - 애플 로그인
     /// 애플 로그인
     @available(iOS 13, *)
     func startSignInWithAppleFlow() {
-      let nonce = randomNonceString()
-      currentNonce = nonce
-      let appleIDProvider = ASAuthorizationAppleIDProvider()
-      let request = appleIDProvider.createRequest()
-      request.requestedScopes = [.fullName, .email]
-      request.nonce = sha256(nonce)
-
-      let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-      authorizationController.delegate = self
-      authorizationController.performRequests()
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-          guard let nonce = currentNonce else {
-            fatalError("Invalid state: A login callback was received, but no login request was sent.")
-          }
-          guard let appleIDToken = appleIDCredential.identityToken else {
-            print("Unable to fetch identity token")
-            return
-          }
-          guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-            print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
-            return
-          }
-          // Initialize a Firebase credential, including the user's full name.
-          let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
-                                                            rawNonce: nonce,
-                                                            fullName: appleIDCredential.fullName)
-          // Sign in with Firebase.
-        
-          Auth.auth().signIn(with: credential) { (authResult, error) in
-            if error != nil {
-              // Error. If error.code == .MissingOrInvalidNonce, make sure
-              // you're sending the SHA256-hashed nonce as a hex string with
-              // your request to Apple.
-              print(error?.localizedDescription)
-              return
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
             }
-              self.isLoggedin = true
-          }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unable to fetch identity token")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            // Initialize a Firebase credential, including the user's full name.
+            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
+                                                           rawNonce: nonce,
+                                                           fullName: appleIDCredential.fullName)
+            // Sign in with Firebase.
+            Auth.auth().signIn(with: credential) { (authResult, error) in
+                if error != nil {
+                    // Error. If error.code == .MissingOrInvalidNonce, make sure
+                    // you're sending the SHA256-hashed nonce as a hex string with
+                    // your request to Apple.
+                    print(error?.localizedDescription as Any)
+                    return
+                }
+                self.isLoggedin = true
+            }
         }
-      }
-
+    }
+    
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
         print("Sign in with Apple errored: \(error)")
-    }
-  
-    // MARK: - 카카오 로그인
-     /// 카카오 로그인
-    func handleKakaoLogin() {
-        if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("loginWithKakaoTalk() success.")
-                    self.getAndStoreKakaoUserInfo()
-                    self.isLoggedin = true
-                }
-            }
-        } else {
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("loginWithKakaoAccount() success.")
-                    //do something
-//                    _ = oauthToken
-                    self.getAndStoreKakaoUserInfo()
-                    self.isLoggedin = true
-                }
-            }
-        }
     }
     
     // MARK: - 구글 로그인
@@ -163,15 +135,49 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                 guard let user = result?.user else { return }
                 print(user)
                 self.isLoggedin = true
+                
+                // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
+                let email = user.email ?? ""
+                let imgURL = user.photoURL?.absoluteString ?? ""
+                let userName = user.displayName ?? ""
+                
+                Task {
+                    await self.addUserInfoToFirestore(email: email,
+                                                      imgURL: imgURL,
+                                                      userName: userName)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 카카오 로그인
+     /// 카카오 로그인
+    func handleKakaoLogin() {
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("loginWithKakaoTalk() success.")
+                    self.isLoggedin = true
+                    self.getAndStoreKakaoUserInfo()
+                }
+            }
+        } else {
+            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("loginWithKakaoAccount() success.")
+                    self.isLoggedin = true
+                    self.getAndStoreKakaoUserInfo()
+                }
             }
         }
     }
     
     // MARK: - 카카오 유저 정보 획득
     func getAndStoreKakaoUserInfo() {
-//        var nickName: String
-//        var email: String
-//        var imgURL: String
         
         UserApi.shared.me() {(user, error) in
             if let error = error {
@@ -179,20 +185,20 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             }
             else {
                 print("me() success.")
-//                nickName = user?.kakaoAccount?.profile?.nickname ?? ""
-//                email = user?.kakaoAccount?.email ?? ""
-//                imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
+                let email = user?.kakaoAccount?.email ?? ""
+                let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
+                let userName = user?.kakaoAccount?.profile?.nickname ?? ""
                 Task {
-                    await self.addUserInfoToFirestore(email: user?.kakaoAccount?.email ?? "", 
-                                                      imgURL: user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? "",
-                                                      userName: user?.kakaoAccount?.profile?.nickname ?? "")
+                    await self.addUserInfoToFirestore(email: email,
+                                                      imgURL: imgURL,
+                                                      userName: userName)
                 }
             }
         }
-//        return (nickName, email, imgURL)
     }
     
     // MARK: - 유저 정보 파이어스토어에 저장
+    // FIXME: - 회원가입일때만 저장
     func addUserInfoToFirestore(email: String, imgURL: String, userName: String) async {
 
         let db = Firestore.firestore()

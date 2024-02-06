@@ -8,47 +8,73 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @StateObject var profileVM = ProfileViewModel()
-    
+    @StateObject private var profileVM = ProfileViewModel()
     
     var body: some View {
-        VStack {
-            AsyncImage(url: profileVM.profileImageURL)
-                .frame(width: 100, height: 100)
-            
-            Text(profileVM.nickname)
+        VStack(alignment: .center) {
+            HStack() {
+                AsyncImage(url: profileVM.profileImageURL)
+                    .frame(width: 80, height: 80)
+                    .clipShape(Circle())
+                
+                Text(profileVM.nickname)
+                
+                Spacer()
+            }
+            .padding(16)
             
             Spacer()
             
             AccountButton(profileVM: profileVM)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 struct AccountButton: View {
-    @State private var showing = false
     @ObservedObject var profileVM: ProfileViewModel
+    @State private var showingLogout = false
+    @State private var showingUnlink = false
+    @State private var isNextScreenActive = false
     
     var body: some View {
         HStack {
-            Button(action: {showing = true}) {
+            Button(action: { self.showingLogout.toggle() }) {
                 CustomText(title: "로그아웃", textColor: .customGray, textWeight: .semibold, textSize: 16)
             }
-            .alert("로그아웃 하기", isPresented: $showing) {
-                Button ("아니오", role: .cancel) { }
-                Button("네") { profileVM.handleKakaoLogout() }
+            .alert(isPresented: $showingLogout) {
+                let firstButton = Alert.Button.cancel(Text("취소")) {
+
+                }
+                let secondButton = Alert.Button.destructive(Text("로그아웃")) {
+                    profileVM.handleKakaoLogout()
+                    isNextScreenActive = true
+                }
+                return Alert(title: Text("로그아웃"),
+                             message: Text("정말로 로그아웃 하시겠습니까?"),
+                             primaryButton: firstButton, secondaryButton: secondButton)
             }
             
             CustomText(title: "|", textColor: .customGray, textWeight: .semibold, textSize: 16)
             
-            Button(action: {showing = true}) {
+            Button(action: { showingUnlink = true }) {
                 CustomText(title: "회원탈퇴", textColor: .customGray, textWeight: .semibold, textSize: 16)
             }
-            .alert("회원탈퇴 하기", isPresented: $showing) {
-                Button ("아니오", role: .cancel) { }
-                Button("네") { profileVM.handleKakaoUnlink() }
+            .alert(isPresented: $showingUnlink) {
+                let firstButton = Alert.Button.cancel(Text("취소")) {
+
+                }
+                let secondButton = Alert.Button.destructive(Text("회원탈퇴")) {
+                    profileVM.handleKakaoUnlink()
+                    isNextScreenActive = true
+                }
+                return Alert(title: Text("회원탈퇴"),
+                             message: Text("정말로 회원탈퇴 하시겠습니까?"),
+                             primaryButton: firstButton, secondaryButton: secondButton)
             }
         }
+        .fullScreenCover(isPresented: $isNextScreenActive,
+                         content: { LoginView() })
     }
 }
 
