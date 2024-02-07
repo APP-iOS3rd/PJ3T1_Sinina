@@ -275,7 +275,7 @@ struct CalendarView: View {
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
                             .font(.custom("Pretendard-SemiBold", size: 18))
-                            .foregroundColor(Color(UIColor.customGray))
+                            .foregroundColor(Color(UIColor.customDarkGray))
                             .padding([.leading, .bottom], 10)
                     } else {
                         

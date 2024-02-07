@@ -29,7 +29,7 @@ struct MapView: View {
             VStack(alignment: .leading) {
                 CustomText(title: "시니나 케이크", textColor: .black, textWeight: .semibold, textSize: 18)
                 
-                CustomText(title: "서울 노원구 노원로30길 44 1층", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "서울 노원구 노원로30길 44 1층", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             .padding(.leading, 24)
             .foregroundColor(.clear)
