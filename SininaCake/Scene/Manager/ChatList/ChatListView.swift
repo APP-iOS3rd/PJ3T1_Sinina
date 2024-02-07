@@ -32,7 +32,7 @@ struct ChatListView: View {
                                         Spacer()
                                         
                                         if let lastMessageTimestamp = chatVM.lastMessageTimestamp[room.id] {
-                                            CustomText(title: "\(lastMessageTimestamp)", textColor: .black, textWeight: .semibold, textSize: 18)
+                                            CustomText(title: "\(lastMessageTimestamp)", textColor: .customGray, textWeight: .semibold, textSize: 12)
                                                 .frame(alignment: .leading)
                                         }
                                     }

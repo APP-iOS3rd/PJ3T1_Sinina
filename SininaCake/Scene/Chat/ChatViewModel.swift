@@ -17,7 +17,7 @@ class ChatViewModel: ObservableObject {
     @Published var messages = [String: [Message]?]() // key: 방 uuid, 메세지 배열
     @Published var lastMessageText = [String: String]()
     @Published var lastMessageId = ""
-    @Published var lastMessageTimestamp = [String: Date]()
+    @Published var lastMessageTimestamp = [String: String]()
     let collectionName = "chatRoom"
     var listeners = [ListenerRegistration]()
     
@@ -96,9 +96,9 @@ class ChatViewModel: ObservableObject {
                             }
                             
                             // 마지막 메세지 시간
-                            if let lastMessageTimestamp = self.messages[chatRoom.id]??.last?.timestamp {
+                            if let lastMessageTimestamp = self.messages[chatRoom.id]??.last?.timestamp.formattedDate() {
                                 self.lastMessageTimestamp[chatRoom.id] = lastMessageTimestamp
-                                print("lastMessagetext: \(lastMessageTimestamp)")
+                                print("lastMessageTimestamp: \(lastMessageTimestamp)")
                             }
                             print("startListening")
                         }

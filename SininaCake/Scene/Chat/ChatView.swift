@@ -102,8 +102,7 @@ struct ChatView: View {
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.timestamp
-                .formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
             CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
                 .padding()
@@ -123,8 +122,7 @@ struct ChatView: View {
                 .background(Color(.textFieldColor))
                 .cornerRadius(30)
             
-            CustomText(title: message.timestamp
-                .formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
         } // VStack
         .frame(maxWidth: .infinity, alignment: .leading)
