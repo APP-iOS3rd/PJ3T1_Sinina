@@ -39,10 +39,6 @@
 		2367639C2B6691DC008C8244 /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639B2B6691DC008C8244 /* FirebaseManger.swift */; };
 		2367639E2B66BF8D008C8244 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2367639D2B66BF8D008C8244 /* Message.swift */; };
 		236763A42B67AE57008C8244 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236763A32B67AE57008C8244 /* ChatRoom.swift */; };
-		23FE6C3C2B6F84170082923F /* Sinina_Debug.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 23FE6C382B6F84170082923F /* Sinina_Debug.mobileprovision */; };
-		23FE6C3D2B6F84170082923F /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 23FE6C392B6F84170082923F /* ApiKeys.xcconfig */; };
-		23FE6C3E2B6F84170082923F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23FE6C3A2B6F84170082923F /* GoogleService-Info.plist */; };
-		23FE6C3F2B6F84170082923F /* Sinina_Release.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 23FE6C3B2B6F84170082923F /* Sinina_Release.mobileprovision */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA22B00B37400ECEF08 /* Assets.xcassets */; };
 		8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E874BA52B00B37400ECEF08 /* Preview Assets.xcassets */; };
@@ -107,10 +103,6 @@
 		2367639B2B6691DC008C8244 /* FirebaseManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		2367639D2B66BF8D008C8244 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		236763A32B67AE57008C8244 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
-		23FE6C382B6F84170082923F /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
-		23FE6C392B6F84170082923F /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
-		23FE6C3A2B6F84170082923F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		23FE6C3B2B6F84170082923F /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Release.mobileprovision; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BA22B00B37400ECEF08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -238,10 +230,6 @@
 		8E874B9D2B00B37200ECEF08 /* SininaCake */ = {
 			isa = PBXGroup;
 			children = (
-				23FE6C392B6F84170082923F /* ApiKeys.xcconfig */,
-				23FE6C3A2B6F84170082923F /* GoogleService-Info.plist */,
-				23FE6C382B6F84170082923F /* Sinina_Debug.mobileprovision */,
-				23FE6C3B2B6F84170082923F /* Sinina_Release.mobileprovision */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
@@ -595,18 +583,14 @@
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
-				23FE6C3C2B6F84170082923F /* Sinina_Debug.mobileprovision in Resources */,
 				8E874BA62B00B37400ECEF08 /* Preview Assets.xcassets in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8E874BA32B00B37400ECEF08 /* Assets.xcassets in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
-				23FE6C3F2B6F84170082923F /* Sinina_Release.mobileprovision in Resources */,
-				23FE6C3D2B6F84170082923F /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
-				23FE6C3E2B6F84170082923F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

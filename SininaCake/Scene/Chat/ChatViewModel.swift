@@ -77,13 +77,6 @@ class ChatViewModel: ObservableObject {
                             // 시간 순에 맞게 정렬
                             self.messages[chatRoom.id]??.sort { $0.timestamp < $1.timestamp }
                             
-                            
-                            // 마지막 메세지 Id
-//                            if let id = self.messages[chatRoom.id]??.last?.id {
-//                                self.lastMessageId[chatRoom.id] = id
-//                                print("lastMessageID: \(id)")
-//                            }
-                            
                             if let id = self.messages[chatRoom.id]??.last?.id {
                                 self.lastMessageId = id
                                 print("lastMessageID: \(id)")
