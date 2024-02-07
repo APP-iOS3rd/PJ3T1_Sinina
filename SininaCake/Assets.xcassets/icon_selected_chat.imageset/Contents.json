@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon_selected_chat.png",
+      "filename" : "Group 125.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icon_selected_chat@2x.png",
+      "filename" : "Group 125@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "icon_selected_chat@3x.png",
+      "filename" : "Group 125@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

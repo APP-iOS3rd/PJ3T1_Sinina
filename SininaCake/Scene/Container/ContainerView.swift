@@ -41,6 +41,8 @@ struct ContainerView: View {
                 ProfileView()
                     .tag(Tab.profile)
             }
+            .padding(.bottom, 60)
+       
             CustomTabView(selection: $currentTab)
         }
     }
@@ -55,18 +57,15 @@ struct CustomTabView: View {
                 Button {
                     selection = tab
                 } label: {
-                    VStack(spacing: 1) {
-                        Image(selection != tab ? tab.rawValue : getTab(tab: tab))
-                            .scaleEffect(selection == tab ? 1.1 : 0.9)
-                            .frame(maxWidth: .infinity)
-                    }
+                    Image(selection != tab ? tab.rawValue : getTab(tab: tab))
+                        .frame(width: 120, height: UIScreen.main.bounds.size.height * (50/932))
+                        .contentShape(Rectangle())
+                        .scaleEffect(selection == tab ? 1.1 : 0.9)
                 }
                 .buttonStyle(TabButtonStyle())
             }
-            .padding(.top, 24)
         }
-        .frame(height: UIScreen.main.bounds.size.height * (104/932), alignment: .top)
-        .background(.white)
+        .padding(.top, 20)
     }
 }
 

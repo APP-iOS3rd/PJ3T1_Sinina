@@ -28,7 +28,6 @@ struct ProfileView: View {
             AccountButton(profileVM: profileVM)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.bottom, 80)
     }
 }
 

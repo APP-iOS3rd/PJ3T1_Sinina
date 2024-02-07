@@ -17,7 +17,6 @@ struct HomeView: View {
                 MapView()
             }
         }
-        .padding(.bottom, 80)
     }
 }
 
