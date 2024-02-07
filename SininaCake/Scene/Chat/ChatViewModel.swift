@@ -7,8 +7,6 @@
 
 import Foundation
 import Firebase
-import FirebaseFirestore
-import FirebaseStorage
 
 class ChatViewModel: ObservableObject {
     static let shared = ChatViewModel()
