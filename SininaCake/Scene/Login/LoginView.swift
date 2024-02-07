@@ -42,7 +42,7 @@ struct LoginView: View {
         }
         .fullScreenCover(
             isPresented: $loginVM.isLoggedin,
-            content: { HomeView() })
+            content: { ProfileView() })
     }
 }
 
@@ -61,7 +61,7 @@ struct LoginButtonView: View {
             .padding(.trailing, 24)
             
             // 구글 로그인 버튼
-            Button(action: {}, label: {
+            Button(action: { loginVM.handleGoogleLogin() }, label: {
                 Image("googleLogin")
                     .resizable()
                     .scaledToFit()
