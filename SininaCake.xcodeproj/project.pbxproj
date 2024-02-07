@@ -214,6 +214,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		236762B42B60EA47008C8244 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		8E874B922B00B37200ECEF08 = {
 			isa = PBXGroup;
 			children = (
@@ -305,6 +312,7 @@
 				23D682D32B738A0200A2036A /* Date.swift */,
 				8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */,
 				8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */,
+				234ABD882B6A2C4E007199E2 /* Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -350,6 +358,8 @@
 				23D682982B7380A400A2036A /* FirebaseManger.swift */,
 				8E874BAC2B00B40D00ECEF08 /* LoginView.swift */,
 				8ECF5FC12B54EE3D00D6BCF6 /* LoginViewModel.swift */,
+				2367639B2B6691DC008C8244 /* FirebaseManger.swift */,
+				234ABD8A2B6A3BBB007199E2 /* User.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -374,6 +384,8 @@
 				23D682942B737FFD00A2036A /* Message.swift */,
 				8ECF5FB22B54C1CB00D6BCF6 /* ChatView.swift */,
 				8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */,
+				2367639D2B66BF8D008C8244 /* Message.swift */,
+				236763A32B67AE57008C8244 /* ChatRoom.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
