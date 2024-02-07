@@ -11,7 +11,9 @@ struct OrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
     @State private var totalPrice = ""
-    @State var isButtonActive = true
+    @State private var isButtonActive = true
+    @State private var isEditing: Bool = false
+    @State private var scrollTarget: String?
     @StateObject var orderDetailVM = OrderDetailViewModel()
     
     var statusTitle: (String, UIColor, String) {
@@ -63,9 +65,16 @@ struct OrderDetailView: View {
                 
                 PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
                 
+                Spacer()
+                    .frame(height: 32)
+                
+                EtcView(orderItem: $orderItem)
+                
                 DividerView()
                 
-                PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
+                ScrollViewReader { proxy in
+                    PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, isEditing: $isEditing, scrollTarget: $scrollTarget, scrollProxy: proxy)
+                }
                 
                 BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
                     .opacity(opacity)
@@ -81,9 +90,13 @@ struct OrderDetailView: View {
                 })
             }
         }
+        .onAppear {
+            orderDetailVM.downloadImage(orderItem.imageURL)
+        }
     }
 }
 
+// MARK: - DividerView
 struct DividerView: View {
     var body: some View {
         Spacer()
@@ -96,6 +109,7 @@ struct DividerView: View {
     }
 }
 
+// MARK: - OrderInfoView
 struct OrderInfoView: View {
     @Binding var orderItem: OrderItem
     
@@ -124,6 +138,7 @@ struct OrderInfoView: View {
     }
 }
 
+// MARK: - CakeInfoView
 struct CakeInfoView: View {
     @Binding var orderItem: OrderItem
     
@@ -152,6 +167,7 @@ struct CakeInfoView: View {
     }
 }
 
+// MARK: - PhotoView
 struct PhotoView: View {
     @Binding var orderItem: OrderItem
     @ObservedObject var orderDetailVM: OrderDetailViewModel
@@ -183,17 +199,19 @@ struct PhotoView: View {
                             )
                     }
                 } else {
-                    ForEach(0..<orderItem.imageURL.count, id: \.self) { idx in
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customLightgray))
-                            .frame(width: imageWidth, height: imageWidth)
-                            .foregroundStyle(.clear)
-                            .overlay(
-                                Image(uiImage: orderDetailVM.downloadImage(orderItem.imageURL[idx]))
-                                    .resizable()
-                                    .frame(width: imageWidth - 20, height: imageWidth - 20)
-                                    .scaledToFit()
-                            )
+                    ForEach(orderDetailVM.images, id: \.self) { image in
+                        if let image = image {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(.customLightgray))
+                                .frame(width: imageWidth, height: imageWidth)
+                                .foregroundStyle(.clear)
+                                .overlay(
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .frame(width: imageWidth - 20, height: imageWidth - 20)
+                                        .scaledToFit()
+                                )
+                        }
                     }
                     
                     if orderItem.imageURL.count % 2 == 1 {
@@ -210,27 +228,57 @@ struct PhotoView: View {
                     }
                 }
             }
-            
-            Spacer()
-                .frame(height: 28)
-            
-            HStack {
-                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                Spacer()
-                    .frame(width: 26)
-                CustomText(title: orderItem.comment, textColor: .black, textWeight: .semibold, textSize: 16)
-                Spacer()
-            }
         }
         .padding(.leading, 24)
         .padding(.trailing, 24)
     }
 }
 
+// MARK: - EtcView
+struct EtcView: View {
+    @Binding var orderItem: OrderItem
+    var icePackTitle: String {
+        switch orderItem.icePack {
+        case .none:
+            return "없음"
+        case .icePack:
+            return "보냉팩(+1000원) 추가"
+        case .iceBag:
+            return "보냉백(+5000원) 추가"
+        }
+    }
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 18) {
+                CustomText(title: "보냉팩 / 보냉백", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            
+            Spacer()
+                .frame(width: 20)
+            
+            VStack(alignment: .leading, spacing: 18) {
+                CustomText(title: icePackTitle, textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.comment, textColor: .black, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            
+            Spacer()
+        }
+        .padding(.leading, 24)
+    }
+}
+
+// MARK: - PriceView
 struct PriceView: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
     @Binding var totalPrice: String
+    @Binding var isEditing: Bool
+    @Binding var scrollTarget: String?
+    var scrollProxy: ScrollViewProxy
     @FocusState var isFocused: Bool
     
     var priceText: (String, String) {
@@ -266,12 +314,18 @@ struct PriceView: View {
                 Spacer()
                     .frame(width: 24)
                 HStack {
-                    TextField("", text: $totalPrice)
+                    TextField("", text: $totalPrice, onEditingChanged: { editing in
+                        scrollTarget = "priceTextField"
+                        withAnimation {
+                            isEditing = editing
+                        }
+                    })
                         .padding()
                         .background(Color(.white))
                         .keyboardType(.numberPad)
                         .font(.custom("Pretendard", fixedSize: 20))
                         .fontWeight(.semibold)
+                        .id("priceTextField")
                         .focused($isFocused)
                         .onTapGesture {
                             totalPrice = ""
@@ -282,18 +336,19 @@ struct PriceView: View {
                                 Button(action: {
                                     toggle = false
                                     isFocused = false
-                                    totalPrice = intToString(Int(totalPrice) ?? 0)
+                                    totalPrice = String(intToString(Int(totalPrice) ?? 0).dropLast())
                                 }, label: {
                                     CustomText(title: "Done", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                                 })
                             }
                         }
-                    Button(action: {  }, label: {
-                        CustomText(title: "등록", textColor: .white, textWeight: .semibold, textSize: 16)
-                    })
-                    .frame(width: 94, height: 55)
-                    .background(Color(.customBlue))
-                    .cornerRadius(27.5)
+                        .overlay(
+                            HStack {
+                                Spacer()
+                                CustomText(title: "원", textColor: .customGray, textWeight: .semibold, textSize: 20)
+                            }
+                            .padding(.trailing, 18)
+                        )
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 27.5)
@@ -305,9 +360,19 @@ struct PriceView: View {
         }
         .padding(.leading, 24)
         .padding(.trailing, 24)
+        .onChange(of: scrollTarget) { target in
+            if let target = target {
+                withAnimation {
+                    scrollProxy.scrollTo(target, anchor: .top)
+                    
+                    scrollTarget = nil
+                }
+            }
+        }
     }
 }
 
+// MARK: - BottomButton
 struct BottomButton: View {
     @ObservedObject var orderDetailVM: OrderDetailViewModel
     @Binding var orderItem: OrderItem
@@ -352,6 +417,7 @@ struct BottomButton: View {
     }
 }
 
+// MARK: - Convert Method
 private func intToString(_ price: Int) -> String {
     let priceString = String(price)
     var result = ""

@@ -51,7 +51,7 @@ class OrderListViewModel: ObservableObject {
                         let cakeSize: String = documentData["size"] as? String ?? ""
                         let sheet: String = documentData["sheet"] as? String ?? ""
                         let cream: String = documentData["cream"] as? String ?? ""
-                        let icePack: Bool = documentData["icePack"] as? Bool ?? false
+                        let icePack: String = documentData["icePack"] as? String ?? ""
                         let name: String = documentData["name"] as? String ?? ""
                         let phoneNumber: String = documentData["phoneNumber"] as? String ?? ""
                         let text: String = documentData["text"] as? String ?? ""
@@ -61,7 +61,7 @@ class OrderListViewModel: ObservableObject {
                         let confirmedPrice: Int = documentData["confirmedPrice"] as? Int ?? 0
                         let status: String = documentData["status"] as? String ?? ""
                         
-                        let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: icePack, name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
+                        let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
                         if self.stringToStatus(status) == .assign {
                             assignOrderData.append(orderDate)
@@ -90,6 +90,19 @@ class OrderListViewModel: ObservableObject {
             return .complete
         default:
             return .notAssign
+        }
+    }
+
+    private func stringToIcePack(_ icePack: String) -> IcePack {
+        switch icePack {
+        case "없음":
+            return .none
+        case "보냉팩":
+            return .icePack
+        case "보냉백":
+            return .iceBag
+        default:
+            return .none
         }
     }
 }
