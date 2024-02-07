@@ -34,7 +34,8 @@ struct ContainerView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
-                ChatView()
+                // FIXME: - ChatView() 파라미터 전달
+                HomeView()
                     .tag(Tab.chat)
                 HomeView()
                     .tag(Tab.home)

@@ -21,7 +21,7 @@ struct OrderDetailView: View {
         case .assign:
             return ("승인 주문건 현황", .customBlue, "assignCheckImage")
         case .notAssign:
-            return ("미승인 주문건 현황", .customLightgray, "checkImage")
+            return ("미승인 주문건 현황", .customGray, "checkImage")
         case .complete:
             return ("완료 주문건 현황", .black, "assignCheckImage")
         }
@@ -188,7 +188,7 @@ struct PhotoView: View {
                 if orderItem.imageURL.isEmpty {
                     ForEach(0...1, id: \.self) { _ in
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customLightgray))
+                            .stroke(Color(.customGray))
                             .frame(width: imageWidth, height: imageWidth)
                             .foregroundStyle(.clear)
                             .overlay(
@@ -216,7 +216,7 @@ struct PhotoView: View {
                     
                     if orderItem.imageURL.count % 2 == 1 {
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customLightgray))
+                            .stroke(Color(.customGray))
                             .frame(width: imageWidth, height: imageWidth)
                             .foregroundStyle(.clear)
                             .overlay(
@@ -352,7 +352,7 @@ struct PriceView: View {
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 27.5)
-                        .stroke(Color(.customLightgray))
+                        .stroke(Color(.customGray))
                 )
                 Spacer()
             }
@@ -383,7 +383,7 @@ struct BottomButton: View {
         switch orderItem.status {
         case .notAssign:
             if toggle {
-                return ("승인하기", .customLightgray)
+                return ("승인하기", .customGray)
             } else {
                 return ("승인하기", .customBlue)
             }

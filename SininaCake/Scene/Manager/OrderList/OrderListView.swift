@@ -55,16 +55,16 @@ struct ListView: View {
             
             if orderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color(.customLightgray))
+                    .stroke(Color(.customGray))
                     .frame(height: 100)
                     .overlay(
                         VStack {
                             Image(systemName: "cart")
                                 .resizable()
                                 .scaledToFit()
-                                .foregroundStyle(Color(.customLightgray))
+                                .foregroundStyle(Color(.customGray))
                                 .frame(width: 20, height: 20)
-                            CustomText(title: "주문 내역이 없습니다.", textColor: .customLightgray, textWeight: .semibold, textSize: 16)
+                            CustomText(title: "주문 내역이 없습니다.", textColor: .customGray, textWeight: .semibold, textSize: 16)
                         }
                     )
             } else {
@@ -95,7 +95,7 @@ private struct CellView: View {
             case .assign:
                 return .customBlue
             case .notAssign:
-                return .customLightgray
+                return .customGray
             case .complete:
                 return .black
             }
