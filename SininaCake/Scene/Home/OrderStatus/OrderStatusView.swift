@@ -8,28 +8,8 @@
 import SwiftUI
 
 struct OrderStatusView: View {
-    
-    var dateString: String? {
-        let date =  Date()                     // 넣을 데이터(현재 시간)
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "YYYY/MM/dd(EEEEE)"  // 변환할 형식
-        myFormatter.locale = Locale(identifier: "ko_KR")
-        let dateString = myFormatter.string(from: date)
-        
-        return dateString
-    }
-    
-    var timeString: String? {
-        let date =  Date()                     // 넣을 데이터(현재 시간)
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "HH:mm"  // 변환할 형식
-        myFormatter.locale = Locale(identifier: "ko_KR")
-        let timeString = myFormatter.string(from: date)
-        
-        return timeString
-    }
-    
-    
+
+
     
     
     var body: some View {
@@ -48,6 +28,7 @@ struct OrderStatusView: View {
             Spacer()
         }
         )
+        
         if true {
             
                 Rectangle()
@@ -85,7 +66,6 @@ struct OrderStatusView: View {
             
         }
         else {
-            
                 Rectangle()
                     .foregroundColor(.clear)
                     .frame(width: 342, height: 403)
@@ -130,21 +110,21 @@ struct OrderStatusView: View {
                                         
                                     }
                                 }
-                                //}
                                 
                             }
                             
-                            
                         }
-                        
-                        
                     )
-            
         }
     }
     
+    
+
+    
+ 
     private var statusView: some View {
-        let orderItem: OrderItem = OrderItem(date: "\(dateString ?? "2023/09/23")", time: "\(timeString ?? "")", cakeSize: "", sheet: "초코시트", cream: "블루베리", customer: "이찰떡", phoneNumber: "010-1234-5678", text: "", imageURL: [""], comment: "", price: 25000)
+        let orderItem: OrderItem = OrderItem(id:"", email:"" ,date: Date(), orderTime: Date(), cakeSize: "", sheet: "초코시트", cream: "블루베리",icePack: .none, name: "이찰떡", phoneNumber: "010-1234-5678", text: "", imageURL: [""], comment: "",expectedPrice:25000, confirmedPrice:25000, status: .assign)
+        
         
         
         return Rectangle()
@@ -153,22 +133,24 @@ struct OrderStatusView: View {
             .background(
                 VStack(alignment:.leading, spacing: 15) {
             Spacer()
+                    
             HStack {
+                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
                 
-                CustomText(title: orderItem.date, textColor: .black, textWeight: .semibold, textSize: 18)
                 Spacer()
                 Spacer()
                 Spacer()
                 Spacer()
+                
                 Image(systemName: "clock")
                     .font(.custom("PreTendard", fixedSize: 18))
                     .foregroundStyle(Color(.customBlue))
-                CustomText(title: orderItem.time, textColor: .customBlue, textWeight: .semibold, textSize: 18)
                 
+                CustomText(title: dateToTime(orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
             }
             
             HStack {
-//                CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
+
                 CustomText(title: orderItem.sheet, textColor: .gray, textWeight: .regular, textSize: 16)
                 CustomText(title: "/", textColor: .gray, textWeight: .regular, textSize: 16)
                 CustomText(title: orderItem.cream, textColor: .gray, textWeight: .regular, textSize: 16)
@@ -179,13 +161,14 @@ struct OrderStatusView: View {
                 .frame(width: 300)
             
             HStack() {
+                
                 VStack(alignment: .leading, spacing: 10) {
                     CustomText(title: "예약자", textColor: .gray, textWeight: .semibold, textSize: 16)
                     CustomText(title: "전화번호", textColor: .gray, textWeight: .semibold, textSize: 16)
                 }
                 
                 VStack(alignment: .leading, spacing: 10) {
-                    CustomText(title: orderItem.customer, textColor: .black, textWeight: .regular, textSize: 16)
+                    CustomText(title: orderItem.name, textColor: .black, textWeight: .regular, textSize: 16)
                     CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .regular, textSize: 16)
                 }
                 
@@ -195,6 +178,52 @@ struct OrderStatusView: View {
             Spacer()
         }
     )
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    var dateString: String? {
+        let date =  Date()                     // 넣을 데이터(현재 시간)
+        let myFormatter = DateFormatter()
+        myFormatter.dateFormat = "YYYY/MM/dd(EEEEE)"  // 변환할 형식
+        myFormatter.locale = Locale(identifier: "ko_KR")
+        let dateString = myFormatter.string(from: date)
+        
+        return dateString
+    }
+    
+    
+    
+    var timeString: String? {
+        let date =  Date()                     // 넣을 데이터(현재 시간)
+        let myFormatter = DateFormatter()
+        myFormatter.dateFormat = "HH:mm"  // 변환할 형식
+        myFormatter.locale = Locale(identifier: "ko_KR")
+        let timeString = myFormatter.string(from: date)
+        
+        return timeString
+    }
+    
+    private func dateToString(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko-KR")
+        dateFormatter.dateFormat = "yyyy/MM/dd(E)"
+        
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
+
+    private func dateToTime(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        
+        let timeString = dateFormatter.string(from: date)
+        return timeString
     }
 }
 
@@ -207,3 +236,4 @@ struct OrderStatusView: View {
 #Preview {
     OrderStatusView()
 }
+

@@ -2,17 +2,32 @@
 import SwiftUI
 
 struct CautionView: View {
+    @State private var cautionAll: Bool
+    @State private var pickUp: Bool
+    @State private var cakeCaution: Bool
+    @State private var instaUpload: Bool
+    @State private var Next: Bool
+    
+    init(cautionAll: Bool, pickUp: Bool, cakeCaution: Bool, instaUpload: Bool, Next: Bool) {
+        self.cautionAll = cautionAll
+        self.pickUp = pickUp
+        self.cakeCaution = cakeCaution
+        self.instaUpload = instaUpload
+        self.Next = Next
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
                 ScrollView(showsIndicators: false){
-                    ScrollTitleView()
+                    ScrollTitleView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
                 }
                 .navigationBarTitle("주문 전 확인사항")
                 .navigationBarTitleDisplayMode(.inline)
  
             }
         }
+        cautionbottomView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
     }
 }
 
@@ -28,22 +43,17 @@ private struct TitleView: View {
 
 struct ScrollTitleView: View {
     
-    @State private var cautionAll: Bool = false
-    @State private var pickUp: Bool = false
-    @State private var cakeCaution: Bool = false
-    @State private var instaUpload: Bool = false
-    @State private var Next: Bool = false
+    @Binding var cautionAll: Bool
+    @Binding var pickUp: Bool
+    @Binding var cakeCaution: Bool
+    @Binding var instaUpload: Bool
+    @Binding var Next: Bool
     
     
     var body: some View {
-        LazyVStack(alignment: .center, pinnedViews: [.sectionFooters]){
+        LazyVStack(alignment: .center){
             
-            Section(footer: CustomButton(action: {}, title: "확인", titleColor: Next ? .white : .customGray , backgroundColor: Next ? .customBlue : .textFieldColor, leading: 24, trailing: 24)
-                .disabled(!Next)
-                .onChange(of: [cautionAll, pickUp, cakeCaution, instaUpload]) { _ in
-                    self.Next = isAllChecked(self.pickUp, self.cakeCaution, self.instaUpload)
-                }){
-                
+            // 예약/픽업 날짜
                 Button(action: {self.cautionAll.toggle()}, label: {
                     Image(cautionAll ? "VectorWhite" : "VectorFalse")
                         .resizable()
@@ -112,7 +122,8 @@ struct ScrollTitleView: View {
                 .onChange(of: [cautionAll]) { _ in
                     self.pickUp = self.cautionAll
                 }
-                
+            
+            // 케이크 주의사항
                 Button(action: {
                     self.cakeCaution.toggle()
                 }){
@@ -163,6 +174,7 @@ struct ScrollTitleView: View {
                     self.cakeCaution = self.cautionAll
                 }
                 
+            // 인스타 그램 업로드
                 Button(action: {
                     self.instaUpload.toggle()
                 }){
@@ -210,7 +222,7 @@ struct ScrollTitleView: View {
                     self.instaUpload = self.cautionAll
                 }
             }
-        }
+        
     }
 }
 
@@ -226,8 +238,23 @@ struct CustomTextModifier: ViewModifier {
     }
 }
 
+struct cautionbottomView: View {
+    @Binding  var cautionAll: Bool
+    @Binding  var pickUp: Bool
+    @Binding  var cakeCaution: Bool
+    @Binding  var instaUpload: Bool
+    @Binding  var Next: Bool
+    
+    var body: some View {
+        CustomButton(action: {}, title: "확인", titleColor: Next ? .white : .customGray , backgroundColor: Next ? .customBlue : .textFieldColor, leading: 24, trailing: 24)
+            .disabled(!Next)
+            .onChange(of: [cautionAll, pickUp, cakeCaution, instaUpload]) { _ in
+                self.Next = isAllChecked(self.pickUp, self.cakeCaution, self.instaUpload)
+            }
+    }
+}
 
 #Preview {
-    CautionView()
+    CautionView(cautionAll: false, pickUp: false, cakeCaution: false, instaUpload: false, Next: false)
 }
 
