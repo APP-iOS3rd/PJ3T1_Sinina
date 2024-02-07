@@ -15,6 +15,8 @@ struct DateValue: Identifiable {
     var day: Int
     var date: Date
     var isNotCurrentMonth: Bool = false
+    var isSelected: Bool = false
+    
 }
 
 /**
@@ -34,6 +36,7 @@ struct Schedule: Decodable {
         case name, startDate, endDate
     }
 }
+
 
 extension Date {
     /**
