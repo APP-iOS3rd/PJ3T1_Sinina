@@ -16,8 +16,6 @@
 		23D682972B737FFD00A2036A /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682952B737FFD00A2036A /* ChatRoom.swift */; };
 		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
 		23D6829B2B7380AD00A2036A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6829A2B7380AD00A2036A /* User.swift */; };
-		23D682A02B73852A00A2036A /* Sinina_Release.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 23D6829C2B73852A00A2036A /* Sinina_Release.mobileprovision */; };
-		23D682A12B73852A00A2036A /* Sinina_Debug.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 23D6829D2B73852A00A2036A /* Sinina_Debug.mobileprovision */; };
 		23D682A22B73852A00A2036A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23D6829E2B73852A00A2036A /* GoogleService-Info.plist */; };
 		23D682A32B73852A00A2036A /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 23D6829F2B73852A00A2036A /* ApiKeys.xcconfig */; };
 		23D682A82B73878A00A2036A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A72B73878A00A2036A /* FirebaseAnalytics */; };
@@ -98,6 +96,7 @@
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
+		9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */; };
 		9AEACEAE2B624EE400AE041F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAD2B624EE400AE041F /* GoogleSignIn */; };
 		9AEACEB02B624EE400AE041F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAF2B624EE400AE041F /* GoogleSignInSwift */; };
 		9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEACEB12B6255DE00AE041F /* Utilities.swift */; };
@@ -109,8 +108,6 @@
 		23D682952B737FFD00A2036A /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D6829A2B7380AD00A2036A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		23D6829C2B73852A00A2036A /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Release.mobileprovision; sourceTree = "<group>"; };
-		23D6829D2B73852A00A2036A /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
 		23D6829E2B73852A00A2036A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		23D6829F2B73852A00A2036A /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -167,6 +164,7 @@
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
+		9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AEACEB12B6255DE00AE041F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		AC2A35757B1DF682C450E618 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,13 +212,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		236762B42B60EA47008C8244 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		8E874B922B00B37200ECEF08 = {
 			isa = PBXGroup;
 			children = (
@@ -244,10 +235,9 @@
 		8E874B9D2B00B37200ECEF08 /* SininaCake */ = {
 			isa = PBXGroup;
 			children = (
+				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
 				23D6829F2B73852A00A2036A /* ApiKeys.xcconfig */,
 				23D6829E2B73852A00A2036A /* GoogleService-Info.plist */,
-				23D6829D2B73852A00A2036A /* Sinina_Debug.mobileprovision */,
-				23D6829C2B73852A00A2036A /* Sinina_Release.mobileprovision */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
@@ -312,7 +302,6 @@
 				23D682D32B738A0200A2036A /* Date.swift */,
 				8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */,
 				8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */,
-				234ABD882B6A2C4E007199E2 /* Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -358,8 +347,6 @@
 				23D682982B7380A400A2036A /* FirebaseManger.swift */,
 				8E874BAC2B00B40D00ECEF08 /* LoginView.swift */,
 				8ECF5FC12B54EE3D00D6BCF6 /* LoginViewModel.swift */,
-				2367639B2B6691DC008C8244 /* FirebaseManger.swift */,
-				234ABD8A2B6A3BBB007199E2 /* User.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -384,8 +371,6 @@
 				23D682942B737FFD00A2036A /* Message.swift */,
 				8ECF5FB22B54C1CB00D6BCF6 /* ChatView.swift */,
 				8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */,
-				2367639D2B66BF8D008C8244 /* Message.swift */,
-				236763A32B67AE57008C8244 /* ChatRoom.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -631,15 +616,14 @@
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
+				9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				23D682A22B73852A00A2036A /* GoogleService-Info.plist in Resources */,
-				23D682A02B73852A00A2036A /* Sinina_Release.mobileprovision in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				23D682A32B73852A00A2036A /* ApiKeys.xcconfig in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
-				23D682A12B73852A00A2036A /* Sinina_Debug.mobileprovision in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
