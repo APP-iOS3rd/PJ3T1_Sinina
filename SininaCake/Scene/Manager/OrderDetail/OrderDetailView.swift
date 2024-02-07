@@ -15,6 +15,7 @@ struct OrderDetailView: View {
     @State private var isEditing: Bool = false
     @State private var scrollTarget: String?
     @StateObject var orderDetailVM = OrderDetailViewModel()
+    @StateObject var fcmServerAPI = FCMServerAPI()
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
@@ -76,7 +77,7 @@ struct OrderDetailView: View {
                     PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, isEditing: $isEditing, scrollTarget: $scrollTarget, scrollProxy: proxy)
                 }
                 
-                BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
+                BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, fcmAPI: fcmServerAPI)
                     .opacity(opacity)
             }
         }
@@ -378,6 +379,7 @@ struct BottomButton: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
     @Binding var totalPrice: String
+    @ObservedObject var fcmAPI: FCMServerAPI
     
     var buttonStyle: (String, UIColor) {
         switch orderItem.status {
@@ -405,6 +407,8 @@ struct BottomButton: View {
 
     var body: some View {
         CustomButton(action: {
+            fcmAPI.sendFCM()
+            
             if orderItem.status == .notAssign {
                 orderDetailVM.updateStatus(orderItem: orderItem)
                 orderDetailVM.updatePrice(orderItem: orderItem, stringToInt(totalPrice))

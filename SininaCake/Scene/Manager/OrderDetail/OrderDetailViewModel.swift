@@ -52,4 +52,25 @@ class OrderDetailViewModel: ObservableObject {
             }
         }
     }
+    
+    func getDeviceToken(_ email: String) -> String {
+        var deviceToken = ""
+        let docRef = db.collection("Users").document(email)
+        
+        docRef.getDocument { doc, error in
+            if let error = error {
+                print("FireStore Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let doc = doc, doc.exists {
+                let data = doc.data()
+                if let data = data {
+                    deviceToken = data["deviceToken"] as? String ?? ""
+                }
+            }
+        }
+        
+        return deviceToken
+    }
 }
