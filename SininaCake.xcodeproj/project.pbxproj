@@ -51,7 +51,6 @@
 		8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD32B54EEDA00D6BCF6 /* OrderListViewModel.swift */; };
 		8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD62B54EEFA00D6BCF6 /* OrderDetailViewModel.swift */; };
 		8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD82B54EF0F00D6BCF6 /* CalendarViewModel.swift */; };
-		8ECF5FDB2B54EF2300D6BCF6 /* ChatListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */; };
 		8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */; };
 		9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */; };
 		9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */; };
@@ -147,7 +146,6 @@
 		8ECF5FD32B54EEDA00D6BCF6 /* OrderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FD62B54EEFA00D6BCF6 /* OrderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FD82B54EF0F00D6BCF6 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
-		8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SininaCake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusView.swift; sourceTree = "<group>"; };
@@ -429,7 +427,6 @@
 			isa = PBXGroup;
 			children = (
 				8ECF5FB62B54C22800D6BCF6 /* ChatListView.swift */,
-				8ECF5FDA2B54EF2200D6BCF6 /* ChatListViewModel.swift */,
 			);
 			path = ChatList;
 			sourceTree = "<group>";
@@ -678,7 +675,6 @@
 				23D6829B2B7380AD00A2036A /* User.swift in Sources */,
 				9A27E6AD2B55154200E7E699 /* CustomerCalendarViewModel.swift in Sources */,
 				9A27E6B22B55156C00E7E699 /* InstagramViewModel.swift in Sources */,
-				8ECF5FDB2B54EF2300D6BCF6 /* ChatListViewModel.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
 				2367639E2B66BF8D008C8244 /* (null) in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
