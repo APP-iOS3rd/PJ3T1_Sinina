@@ -19,7 +19,7 @@ struct OrderDetailView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 18, height: 18)
-                        .foregroundStyle(Color(.customLightgray))
+                        .foregroundStyle(Color(.customGray))
                     CustomText(title: "미승인 주문건 현황", textColor: .black, textWeight: .semibold, textSize: 18)
                     Spacer()
                 }
@@ -77,10 +77,10 @@ struct OrderInfoView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "픽업날짜", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "픽업시간", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "이름", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "휴대전화", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "픽업날짜", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "픽업시간", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "이름", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "휴대전화", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             
             Spacer()
@@ -105,10 +105,10 @@ struct CakeInfoView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "사이즈", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "시트(빵)", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "속크링", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "문구/글씨 색상", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "사이즈", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "시트(빵)", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "속크링", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "문구/글씨 색상", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             
             Spacer()
@@ -135,7 +135,7 @@ struct PhotoView: View {
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: "사진", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "사진", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
             }
             
@@ -150,7 +150,7 @@ struct PhotoView: View {
                         .scaledToFit()
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.customLightgray))
+                                .stroke(Color(.customGray))
                                 .frame(width: imageWidth, height: imageWidth)
                         )
                 }
@@ -160,7 +160,7 @@ struct PhotoView: View {
                 .frame(height: 28)
             
             HStack {
-                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "추가 요청 사항", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 26)
                 CustomText(title: orderItem.comment, textColor: .black, textWeight: .semibold, textSize: 16)
@@ -179,7 +179,7 @@ struct PriceView: View {
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: "총 예상금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "총 예상금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 45)
                 CustomText(title: intToString(orderItem.price), textColor: .black, textWeight: .semibold, textSize: 16)
@@ -187,7 +187,7 @@ struct PriceView: View {
             }
             
             HStack {
-                CustomText(title: "총 확정금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "총 확정금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 24)
                 HStack {
@@ -204,7 +204,7 @@ struct PriceView: View {
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color(.customLightgray))
+                        .stroke(Color(.customGray))
                 )
                 Spacer()
             }

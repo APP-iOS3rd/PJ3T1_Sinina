@@ -82,7 +82,7 @@ private struct CellView: View {
     }
     
     var body: some View {
-        let statusColor: UIColor = orderItem.status == .notAssign ? .customLightgray : .customBlue
+        let statusColor: UIColor = orderItem.status == .notAssign ? .customGray : .customBlue
         
         VStack(spacing: 10) {
             HStack {
@@ -96,9 +96,9 @@ private struct CellView: View {
             
             HStack {
                 CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
-                CustomText(title: orderItem.sheet, textColor: .customGray, textWeight: .regular, textSize: 16)
-                CustomText(title: "/", textColor: .customGray, textWeight: .regular, textSize: 16)
-                CustomText(title: orderItem.cream, textColor: .customGray, textWeight: .regular, textSize: 16)
+                CustomText(title: orderItem.sheet, textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                CustomText(title: "/", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                CustomText(title: orderItem.cream, textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                 Spacer()
             }
             
@@ -106,8 +106,8 @@ private struct CellView: View {
             
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 10) {
-                    CustomText(title: "예약자", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                    CustomText(title: "전화번호", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                    CustomText(title: "예약자", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                    CustomText(title: "전화번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 }
                 
                 VStack(alignment: .leading, spacing: 10) {

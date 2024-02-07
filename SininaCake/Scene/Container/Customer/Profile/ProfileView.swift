@@ -40,7 +40,7 @@ struct AccountButton: View {
     var body: some View {
         HStack {
             Button(action: { self.showingLogout.toggle() }) {
-                CustomText(title: "로그아웃", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "로그아웃", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             .alert(isPresented: $showingLogout) {
                 let firstButton = Alert.Button.cancel(Text("취소")) {
@@ -57,10 +57,10 @@ struct AccountButton: View {
                              primaryButton: firstButton, secondaryButton: secondButton)
             }
             
-            CustomText(title: "|", textColor: .customGray, textWeight: .semibold, textSize: 16)
+            CustomText(title: "|", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             
             Button(action: { showingUnlink = true }) {
-                CustomText(title: "회원탈퇴", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "회원탈퇴", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             .alert(isPresented: $showingUnlink) {
                 let firstButton = Alert.Button.cancel(Text("취소")) {
