@@ -16,7 +16,6 @@ struct ChatView: View {
     
     @State var chatText = ""
     @State var loginUser: User?
-    @State var userEmail: String
     @State var room: ChatRoom
     
     // MARK: 통합 뷰
@@ -132,7 +131,6 @@ struct ChatView: View {
 
 //#Preview {
 //    NavigationView {
-//        //ChatView(loginedUser: User, userEmail: userEmail)
 //        ChatView(loginUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu")
 //                 , userEmail: "b@gmail.com", room: ChatRoom(userEmail: "b@gmail.com", userName: "서감자", date: Timestamp(date: Date()), id: "h30LSY4MBubwggDHhR6n", lastMessageText: nil))
 //    }
