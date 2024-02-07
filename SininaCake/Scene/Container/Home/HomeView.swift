@@ -8,7 +8,15 @@
 import SwiftUI
 import KakaoSDKAuth
 
+//enum Tab: String, CaseIterable {
+//    case chat = ""
+//    case home = ""
+//    case profile = ""
+//}
+
 struct HomeView: View {
+    @StateObject var homeVM = HomeViewModel()
+    
     var body: some View {
         // TODO: MyPage로 이동 예정
         ScrollView {

@@ -10,6 +10,7 @@ struct CalendarView: View {
 
     @Environment(\.sizeCategory) var sizeCategory
 
+
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -19,11 +20,14 @@ struct CalendarView: View {
     }
 
 
+
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
+    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
 
 
     @State var currentDate = Date()
+    
     @State var daysList = [[DateValue]]()
     
     //@State var clickedDates: Set<Date> = []
@@ -42,14 +46,8 @@ struct CalendarView: View {
     
     @State private var showAlert = false
     
-    private func customFont(size: CGFloat, maxSize: CGFloat) -> Font {
-        let scaledSize = min(size, maxSize)
-        
-        guard let customFont = UIFont(name: "Pretendard", size: scaledSize) else {
-            return Font.system(size: scaledSize)
-        }
-        return Font(customFont)
-    }
+
+
     
     var body: some View {
         
@@ -150,8 +148,6 @@ struct CalendarView: View {
                 ForEach(days.indices, id: \.self) { index in
                     Text(days[index])
                         .font(.custom("Pretendard-SemiBold",fixedSize: 18))
-                    
-                    
                         .foregroundColor(Color(red: 0.44, green: 0.44, blue: 0.44))
                         .aspectRatio(contentMode: .fill)
                         .foregroundColor(index == 0 ? .red : (index == days.count - 1 ? Color(UIColor.customBlue) : .black))
@@ -167,13 +163,14 @@ struct CalendarView: View {
         .frame(height: 40)
             
         
+
     }
     
     private var cardView: some View {
+        
         VStack() {
-            
-
             ForEach(daysList.indices, id: \.self) { i in
+                
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
                         Button(action: {
@@ -260,13 +257,17 @@ struct CalendarView: View {
                     }
                     
                     Spacer()
+                    
                 } else {
+                    
                     Spacer()
                 }
                     
                     
             }
             .offset(x: 10, y: -10)
+            
+            
             HStack {
                 
                 
@@ -401,17 +402,21 @@ struct CalendarView: View {
      */
     func extractDate() -> [[DateValue]] {
         let calendar = Calendar.current
+        
         let currentMonth = getCurrentMonth()
         
         var days = currentMonth.getAllDates().compactMap { date -> DateValue in
-            let day = calendar.component(.day, from: date)
+            
+        let day = calendar.component(.day, from: date)
             
             return DateValue(day: day, date: date)
         }
         
         //이전달 일수로 남은 공간 채우기
         let firstWeekDay = calendar.component(.weekday, from: days.first?.date ?? Date())
+        
         let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: days.first?.date ?? Date())
+        
         let prevMonthLastDay = prevMonthDate?.getLastDayInMonth() ?? 0
         
         for i in 0..<firstWeekDay - 1 {
@@ -420,7 +425,9 @@ struct CalendarView: View {
         
         //다음달 일수로 남은 공간 채우기
         let lastWeekDay = calendar.component(.weekday, from: days.last?.date ?? Date())
+        
         let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: days.first?.date ?? Date())
+        
         let nextMonthFirstDay = nextMonthDate?.getFirstDayInMonth() ?? 0
         
         for i in 0..<7 - lastWeekDay {
@@ -429,6 +436,7 @@ struct CalendarView: View {
         
         //달력과 같은 배치의 이차원 배열로 변환하여 리턴
         var result = [[DateValue]]()
+        
         days.forEach {
             if result.isEmpty || result.last?.count == 7 {
                 result.append([$0])
@@ -438,12 +446,11 @@ struct CalendarView: View {
         }
         
         return result
+
     }
+
+
 }
-
-
-
-
 
 extension UIScreen {
    static let screenWidth = UIScreen.main.bounds.size.width
