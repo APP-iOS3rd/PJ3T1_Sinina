@@ -17,7 +17,14 @@ struct DateValue: Identifiable {
     var isNotCurrentMonth: Bool = false
     var isSelected: Bool = false
     
+    mutating func selectedToggle() {
+            self.isSelected.toggle()
+        }
 }
+
+
+
+
 
 /**
  일정 정보

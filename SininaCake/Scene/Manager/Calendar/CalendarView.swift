@@ -190,65 +190,67 @@ struct CalendarView: View {
     
 
 
-    @ViewBuilder
-    func CardView(value: DateValue, schedule: Schedule) -> some View {
-        
-        
-        var selected = value.isSelected
-        
-        ZStack() {
-            ZStack() {
-                if clicked {
-                                Circle()
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(.red) // 클릭된 경우 Circle의 색상
-                }
-            }
-            
-            HStack {
-                
-            
-                if value.day > 0 {
-                    if value.isNotCurrentMonth {
-                        Text("\(value.day)")
-                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                            .foregroundColor(Color(red: 0.87, green: 0.87, blue: 0.87))
-                            .padding([.leading, .bottom], 10)
-                    } else {
-                        if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
-                        {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    
-                                    selected.toggle() // 클릭할 때마다 클릭 여부를 변경
-                                    print("tap \(selected)")
-                                                    }
-                                
-                        } else {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
-                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
-                                .padding([.leading, .bottom], 10)
-                        }
-                    }
-                }
-               // Spacer()
-                
-                
-            }
-            
-        }
-        .frame(width: UIScreen.main.bounds.width / 13)
-        .frame(height: 40)
-        //.frame(maxHeight: .infinity)
-        //.contentShape(Rectangle())
-        
-    }
+//    @ViewBuilder
+//    func CardView(value: DateValue, schedule: Schedule) -> some View {
+//        
+//        var value = value
+//        var selected = value.isSelected
+//        
+//        ZStack() {
+//            ZStack() {
+//                if selected {
+//                                Circle()
+//                                    .frame(width: 20, height: 20)
+//                                    .foregroundColor(.red) // 클릭된 경우 Circle의 색상
+//                }
+//            }
+//            
+//            HStack {
+//                
+//            
+//                if value.day > 0 {
+//                    if value.isNotCurrentMonth {
+//                        Text("\(value.day)")
+//                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                            .foregroundColor(Color(red: 0.87, green: 0.87, blue: 0.87))
+//                            .padding([.leading, .bottom], 10)
+//                    } else {
+//                        if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
+//                        {
+//                            Text("\(value.day)")
+//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                                .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
+//                                .padding([.leading, .bottom], 10)
+//                                .onTapGesture {
+//                                    
+//                                    selected.toggle()// 클릭할 때마다 클릭 여부를 변경
+//                                    print("tap \(selected)")
+//                                    value.selected(isSelected: true)
+//                                                    }
+//                                
+//                        } else {
+//                            Text("\(value.day)")
+//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                                .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
+//                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+//                                .padding([.leading, .bottom], 10)
+//                        }
+//                    }
+//                }
+//               // Spacer()
+//                
+//                
+//            }
+//            
+//        }
+//        .frame(width: UIScreen.main.bounds.width / 13)
+//        .frame(height: 40)
+//        //.frame(maxHeight: .infinity)
+//        //.contentShape(Rectangle())
+//        
+//    }
     
+
     
     private var bookingView: some View {
         HStack() {
@@ -266,7 +268,7 @@ struct CalendarView: View {
 
                 )
                 .onTapGesture {
-                    
+                
                 }
             
             Text("예약 마감")
@@ -435,20 +437,101 @@ struct CalendarView: View {
 
 
 
+struct CardView: View {
+    
+    @State var value: DateValue
+    
+    @State var schedule: Schedule
+    
+    var body: some View {
+        ZStack() {
+//            ZStack() {
+//                if value.isSelected {
+//                    Text("\(value.day)")
+//                        .foregroundStyle(.white)
+//                    Circle()
+//                        .frame(width: 30, height: 30)
+//                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+//                        
+//                        .offset(x:5.5,y:-3.5)
+//                }
+//                
+//            }  클릭시 Circle 효과
+            
+            HStack {
+                
+                if value.day > 0 {
+                    if value.isNotCurrentMonth {
+                        Text("\(value.day)")
+                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                            .foregroundColor(Color(red: 0.87, green: 0.87, blue: 0.87))
+                            .padding([.leading, .bottom], 10)
+                    } else {
+                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
+                        {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
+                                .padding([.leading, .bottom], 10)
+                                .onTapGesture {
+                                    
+                                    value.selectedToggle()// 클릭할 때마다 클릭 여부를 변경
+                                    
+                                    print("tap\(value.isSelected)")
+//                                    value.selected(isSelected: true)
+                                }
+                            
+                        } else if schedule.startDate.withoutTime() == value.date {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(.white)
+                                .padding([.leading, .bottom], 10)
+                                .background(Circle()
+                                        .frame(width: 40, height: 40)
+                                         
+                                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+                                        .offset(x:5.2,y:-3.7)
+                                )
+                                
+                                        
+                        } else {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
+                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+                                .padding([.leading, .bottom], 10)
+                                .onTapGesture {
+                                    
+                                    value.selectedToggle()// 클릭할 때마다 클릭 여부를 변경
+                                    print("tap\(value.isSelected)")
+//                                    value.selected(isSelected: true)
+                                }
+                        }
+                    }
+                }
+                
+                // Spacer()
+                
+                
+            }
+            
+        }
+        .frame(width: UIScreen.main.bounds.width / 13)
+        .frame(height: 40)
+        //.frame(maxHeight: .infinity)
+        //.contentShape(Rectangle())
+        
+    }
+}
+
+
+
 
 extension UIScreen {
    static let screenWidth = UIScreen.main.bounds.size.width
    static let screenHeight = UIScreen.main.bounds.size.height
    static let screenSize = UIScreen.main.bounds.size
 }
-
-
-
-
-
-
-
-
 
 
 #Preview {
