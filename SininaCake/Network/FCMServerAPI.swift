@@ -15,20 +15,18 @@ class AppInfo {
 }
 
 class FCMServerAPI: ObservableObject {
-    func sendFCM() {
-        let fcmServerURL = URL(string: "https://fcm.googleapis.com/fcm/send")!
+    func sendFCM(deviceToken: String, body: String) {
+        guard let fcmServerURL = URL(string: "https://fcm.googleapis.com/fcm/send") else {
+            print("Cannot Found Server URL")
+            return
+        }
         
         guard let infoDic = Bundle.main.infoDictionary else {
             return
         }
         
-        guard let deviceToken = AppInfo.shared.deviceToken else {
-            print("Cannot Found Device Token")
-            return
-        }
-        
-        let serverKey = "AAAALcAFAJA:APA91bEfcDGaylY9yGXGCmT4zWqUzAM7FQs-4Ds9yk8vDQfoUEnsY6dtAhv5HUw_yXd_TaFl8iPjer8fMopTUR6MFhSXGM4RrDcYPg-IZ2IyxMnp5QJfxwq8vFShupkpu6ft4F9X9zGk"
-//        String(describing: infoDic["FCM_SERVER_KEY"])
+        let serverKey = infoDic["FCM_SERVER_KEY"] as! String
+        print("Key: \(serverKey)")
         
         var request = URLRequest(url: fcmServerURL)
         request.httpMethod = "POST"
@@ -38,8 +36,8 @@ class FCMServerAPI: ObservableObject {
         let message: [String: Any] = [
             "to": deviceToken,
             "notification": [
-                "title": "Test",
-                "body": "Test Message"
+                "title": "시니나케이크",
+                "body": body
             ]
         ]
         

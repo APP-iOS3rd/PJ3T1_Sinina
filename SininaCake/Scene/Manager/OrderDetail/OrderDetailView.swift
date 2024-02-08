@@ -93,6 +93,7 @@ struct OrderDetailView: View {
         }
         .onAppear {
             orderDetailVM.downloadImage(orderItem.imageURL)
+            orderDetailVM.getDeviceToken(orderItem.email)
         }
     }
 }
@@ -375,6 +376,7 @@ struct PriceView: View {
 
 // MARK: - BottomButton
 struct BottomButton: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var orderDetailVM: OrderDetailViewModel
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
@@ -407,7 +409,7 @@ struct BottomButton: View {
 
     var body: some View {
         CustomButton(action: {
-            fcmAPI.sendFCM()
+            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: "Test Message")
             
             if orderItem.status == .notAssign {
                 orderDetailVM.updateStatus(orderItem: orderItem)
@@ -415,6 +417,8 @@ struct BottomButton: View {
             } else {
                 orderDetailVM.updateStatus(orderItem: orderItem)
             }
+            
+            presentationMode.wrappedValue.dismiss()
         }, title: buttonStyle.0, titleColor: .white, backgroundColor: buttonStyle.1, leading: 24, trailing: 24)
             .padding(.top, 29)
             .disabled(buttonToggle)
