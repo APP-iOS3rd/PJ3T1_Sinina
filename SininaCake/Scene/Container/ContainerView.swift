@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 enum Tab: String, CaseIterable {
     case chat = "icon_chat"
@@ -26,16 +27,18 @@ func getTab(tab: Tab) -> String {
 
 struct ContainerView: View {
     @State var currentTab: Tab = .home
+    @ObservedObject var LoginVM = LoginViewModel.shared
     
     init() {
         UITabBar.appearance().isHidden = true
+        print("로그인한 유저 이메일 \(LoginVM.loginUserEmail)")
     }
     
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
                 // FIXME: - ChatView() 파라미터 전달
-                HomeView()
+                ChatListView(loginUserEmail: LoginVM.loginUserEmail)
                     .tag(Tab.chat)
                 HomeView()
                     .tag(Tab.home)

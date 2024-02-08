@@ -17,37 +17,39 @@ import KakaoSDKUser
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
     @Published var isLoggedin: Bool = false
     var currentNonce: String?
+    var loginUserEmail: String?
+    static let shared = LoginViewModel()
     
     private func randomNonceString(length: Int = 32) -> String {
-      precondition(length > 0)
-      var randomBytes = [UInt8](repeating: 0, count: length)
-      let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
-      if errorCode != errSecSuccess {
-        fatalError(
-          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
-      }
-
-      let charset: [Character] =
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
         Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-
-      let nonce = randomBytes.map { byte in
-        // Pick a random character from the set, wrapping around if needed.
-        charset[Int(byte) % charset.count]
-      }
-
-      return String(nonce)
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
     }
     
     @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
-      let inputData = Data(input.utf8)
-      let hashedData = SHA256.hash(data: inputData)
-      let hashString = hashedData.compactMap {
-        String(format: "%02x", $0)
-      }.joined()
-
-      return hashString
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
     
     // MARK: - 애플 로그인
@@ -97,7 +99,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     /// 구글 로그인
     func handleGoogleLogin() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
+        
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
@@ -175,7 +177,8 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             }
             
             guard let user = result?.user else { return }
-            print(user)
+            self.loginUserEmail = user.email
+            print("로그인한 사람: \(self.loginUserEmail)")
             self.isLoggedin = true
             self.getAndStoreFirebaseUserInfo(user: user)
         }
@@ -186,6 +189,8 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         let email = user.email ?? ""
         let imgURL = user.photoURL?.absoluteString ?? ""
         let userName = user.displayName ?? ""
+        
+        //        loginUserEmail = email // 로그인한 유저 이메일 저장
         
         Task {
             await self.addUserInfoToFirestore(email: email,
@@ -200,14 +205,14 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         let db = Firestore.firestore()
         
         do {
-          try await db.collection("Users").document(email).setData([
-            "email": email,
-            "userName": userName,
-            "imgURL": imgURL
-          ], merge: true)
-          print("Document successfully written!")
+            try await db.collection("Users").document(email).setData([
+                "email": email,
+                "userName": userName,
+                "imgURL": imgURL
+            ], merge: true)
+            print("Document successfully written!")
         } catch {
-          print("Error writing document: \(error)")
+            print("Error writing document: \(error)")
         }
     }
 }

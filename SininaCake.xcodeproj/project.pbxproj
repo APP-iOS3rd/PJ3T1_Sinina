@@ -93,7 +93,6 @@
 		9A7EA6032B6A235D004788E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A7EA6022B6A235D004788E2 /* GoogleService-Info.plist */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
-		9AA04FFA2B720D76004F671E /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9AA04FF92B720D76004F671E /* ApiKeys.xcconfig */; };
 		9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA04FFC2B72110D004F671E /* ContainerView.swift */; };
 		9AA04FFF2B72111B004F671E /* ContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA04FFE2B72111B004F671E /* ContainerViewModel.swift */; };
 		9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */; };
@@ -164,7 +163,6 @@
 		9A7EA6022B6A235D004788E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
-		9AA04FF92B720D76004F671E /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		9AA04FFC2B72110D004F671E /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		9AA04FFE2B72111B004F671E /* ContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewModel.swift; sourceTree = "<group>"; };
 		9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -244,7 +242,6 @@
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
-				9AA04FF92B720D76004F671E /* ApiKeys.xcconfig */,
 				9A7EA6022B6A235D004788E2 /* GoogleService-Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
@@ -623,7 +620,6 @@
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
-				9AA04FFA2B720D76004F671E /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
 			);
@@ -738,7 +734,6 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AA04FF92B720D76004F671E /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -802,7 +797,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AA04FF92B720D76004F671E /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

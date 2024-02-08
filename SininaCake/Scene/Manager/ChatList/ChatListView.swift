@@ -3,22 +3,21 @@
 //  SininaCake
 //
 //  Created by  zoa0945 on 1/15/24.
-//
-
 import SwiftUI
 import Firebase
 
 struct ChatListView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
-    @ObservedObject var userStore = UserStore.shared
-    @State var loginUser: User? // 현재 접속자(본인)
+//    @ObservedObject var loginVM = LoginViewModel.shared
+//    @ObservedObject var userStore = UserStore.shared
+    @State var loginUserEmail: String? // 현재 접속자(본인)
  
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVStack(spacing: 10) {
                     ForEach(chatVM.chatRooms, id: \.self){ room in
-                        NavigationLink(destination: ChatView(loginUser: loginUser, room: room)){
+                        NavigationLink(destination: ChatView(loginUserEmail: loginUserEmail ?? "", room: room)){
                             HStack {
                                 Image(systemName: "person.crop.circle.fill")
                                     .resizable()
@@ -40,7 +39,6 @@ struct ChatListView: View {
                                     
                                     HStack {
                                         if let lastMessageText = chatVM.lastMessageText[room.id] {
-                                            
                                             CustomText(title: "\(lastMessageText)", textColor: .customGray, textWeight: .regular, textSize: 16)
                                         }
                                         
@@ -48,16 +46,12 @@ struct ChatListView: View {
                                         
                                         CustomText(title: "1", textColor: .customGray, textWeight: .regular, textSize: 16)
                                             .frame(alignment: .leading)
-                                        
                                     }
                                 }
-                                
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                             .padding()
-                            
                         }
-                        
                     }
                 }
             }
@@ -72,5 +66,5 @@ struct ChatListView: View {
 }
 
 #Preview {
-    ChatListView(loginUser: User(name: "아무개", email: "k@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu"))
+    ChatListView(loginUserEmail: LoginViewModel().loginUserEmail)
 }
