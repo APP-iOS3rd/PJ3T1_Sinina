@@ -44,12 +44,12 @@ struct SininaCakeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CalendarView()
-//            LoginView().onOpenURL(perform: { url in
-//                if (AuthApi.isKakaoTalkLoginUrl(url)) {
-//                    AuthController.handleOpenUrl(url: url)
-//                }
-//            })
+            
+            LoginView().onOpenURL(perform: { url in
+                if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                    AuthController.handleOpenUrl(url: url)
+                }
+            })
         }
     }
 }
