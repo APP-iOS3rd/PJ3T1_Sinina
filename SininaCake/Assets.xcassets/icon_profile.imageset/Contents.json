@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "🦆 icon _home simple door_.png",
+      "filename" : "🦆 icon _user_.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "🦆 icon _home simple door_@2x.png",
+      "filename" : "🦆 icon _user_@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "🦆 icon _home simple door_@3x.png",
+      "filename" : "🦆 icon _user_@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
