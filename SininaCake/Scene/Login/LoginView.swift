@@ -42,8 +42,7 @@ struct LoginView: View {
         }
         .fullScreenCover(
             isPresented: $loginVM.isLoggedin,
-//            content: { ProfileView() })
-            content: { OrderListView() })
+            content: { ProfileView() })
     }
 }
 

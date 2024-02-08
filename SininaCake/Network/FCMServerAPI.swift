@@ -26,7 +26,6 @@ class FCMServerAPI: ObservableObject {
         }
         
         let serverKey = infoDic["FCM_SERVER_KEY"] as! String
-        print("Key: \(serverKey)")
         
         var request = URLRequest(url: fcmServerURL)
         request.httpMethod = "POST"
