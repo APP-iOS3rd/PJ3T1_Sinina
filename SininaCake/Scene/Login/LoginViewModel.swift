@@ -18,42 +18,42 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     static let shared = LoginViewModel()
     @Published var isLoggedin: Bool = false
     
-    @Published var email: String?
+    @Published var loginUserEmail: String?
     @Published var imgURL: String?
     @Published var userName: String?
     
     var currentNonce: String?
     
     private func randomNonceString(length: Int = 32) -> String {
-      precondition(length > 0)
-      var randomBytes = [UInt8](repeating: 0, count: length)
-      let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
-      if errorCode != errSecSuccess {
-        fatalError(
-          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
-      }
-
-      let charset: [Character] =
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
         Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-
-      let nonce = randomBytes.map { byte in
-        // Pick a random character from the set, wrapping around if needed.
-        charset[Int(byte) % charset.count]
-      }
-
-      return String(nonce)
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
     }
     
     @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
-      let inputData = Data(input.utf8)
-      let hashedData = SHA256.hash(data: inputData)
-      let hashString = hashedData.compactMap {
-        String(format: "%02x", $0)
-      }.joined()
-
-      return hashString
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
     
     // MARK: - 애플 로그인
@@ -105,7 +105,7 @@ extension LoginViewModel {
     /// 구글 로그인
     func handleGoogleLogin() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
+        
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
@@ -174,7 +174,7 @@ extension LoginViewModel {
                 let userName = user?.kakaoAccount?.profile?.nickname ?? ""
                 
                 // TODO: - 함수로 축약
-                self.email = email
+                self.loginUserEmail = email
                 self.imgURL = imgURL
                 self.userName = userName
                 
@@ -199,7 +199,8 @@ extension LoginViewModel {
             }
             
             guard let user = result?.user else { return }
-            print(user)
+            self.loginUserEmail = user.email
+            print("로그인한 사람: \(self.loginUserEmail)")
             self.isLoggedin = true
             self.getAndStoreFirebaseUserInfo(user: user)
         }
@@ -215,7 +216,7 @@ extension LoginViewModel {
         let userName = user.displayName ?? ""
         
         // TODO: - 함수로 축약
-        self.email = email
+        self.loginUserEmail = email
         self.imgURL = imgURL
         self.userName = userName
         
@@ -241,7 +242,7 @@ extension LoginViewModel {
           ], merge: true)
           print("Document successfully written!")
         } catch {
-          print("Error writing document: \(error)")
+            print("Error writing document: \(error)")
         }
     }
 }

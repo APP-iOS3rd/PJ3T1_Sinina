@@ -11,11 +11,8 @@ import Firebase
 struct ChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
-    @ObservedObject var fbManager = FirebaseManager.shared
-    @ObservedObject var userStore = UserStore.shared
-    
     @State var chatText = ""
-    @State var loginUser: User?
+    @State var loginUserEmail: String?
     @State var room: ChatRoom
     
     // MARK: 통합 뷰
@@ -24,6 +21,11 @@ struct ChatView: View {
             messagesView
             chatBottomBar
         }
+//        .onAppear {
+//            if loginUserEmail != "c@gmail.com" {
+//                chatVM.fetchOwnerRoom(userEmail: "c@gmail.com")
+//            }
+//        }
     }
     
     // MARK: 메세지 창 띄우는 뷰
@@ -34,7 +36,7 @@ struct ChatView: View {
                     VStack {
                         ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
                             // 나
-                            if loginUser?.name == msg.userName {
+                            if loginUserEmail == msg.userEmail {
                                 blueMessageBubble(message: msg)
                                 
                             // 상대
@@ -44,13 +46,6 @@ struct ChatView: View {
                             
                         }
                         .background(Color.clear)
-//                        .onAppear(){
-//                            withAnimation {
-//                                // 마지막 말풍선을 따라 스크롤로 내려감
-//                                proxy.scrollTo(chatVM.messages[room.id]??.last?.id, anchor: .bottom)
-//
-//                            }
-//                        }
                         .onChange(of: chatVM.lastMessageId){ id in
                             withAnimation {
                                 // 마지막 말풍선을 따라 스크롤로 내려감
@@ -86,9 +81,9 @@ struct ChatView: View {
             }
             
             Button {
-                let msg = Message(text: chatText, userName: loginUser?.name ?? "", timestamp: Date())
-                
+                let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
                 chatVM.sendMessage(chatRoom: room, message: msg)
+                
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(Color(.customGray))

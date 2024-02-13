@@ -12,12 +12,12 @@ struct Message: Identifiable, Codable {
     var id: String // 아이디로 말풍선 위치 결정
     var text: String
     var timestamp: Date
-    var userName: String
+    var userEmail: String?
     
-    init(text: String, userName: String, timestamp: Date, id: String = UUID().uuidString) {
+    init(text: String, userEmail: String, timestamp: Date, id: String = UUID().uuidString) {
         self.id = id
         self.text = text
-        self.userName = userName
+        self.userEmail = userEmail
         self.timestamp = timestamp
     }
 }
