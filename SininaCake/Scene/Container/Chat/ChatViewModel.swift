@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-class ChatViewModel: ObservableObject {
+class ChatViewModel: ObservableObject{
     static let shared = ChatViewModel()
     private var fireStore = FirebaseManager.shared.firestore
     
@@ -21,8 +21,29 @@ class ChatViewModel: ObservableObject {
     var listeners = [ListenerRegistration]()
     
     // 모든 방 리스트를 받아옴
-    func fetchAllRooms() {
-        fireStore.collection(collectionName).getDocuments { (snapshot, error) in
+    func fetchAllRooms(){
+        fireStore.collection(collectionName).getDocuments{ (snapshot, error) in
+            guard error == nil else { return }
+            
+            self.chatRooms.removeAll() // ChatRoom 전부 지우고
+            
+            for document in snapshot!.documents{
+                if let data = try? document.data(as: ChatRoom.self) {
+                    self.chatRooms.append(data) // 다시 채움
+                    
+                    print("fetchAllRoom: ", data)
+                    
+                    self.startListening(chatRoom: data) // 여기서 읽어오는 거 시작
+                }
+            }
+        }
+    }
+    
+    func fetchOwnerRoom(userEmail: String){
+        fireStore.collection(collectionName)
+            .whereField("userEmail", arrayContains: userEmail)
+            .getDocuments { (snapshot, error) in
+                
             guard error == nil else { return }
             
             self.chatRooms.removeAll() // ChatRoom 전부 지우고

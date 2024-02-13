@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject var loginVM = LoginViewModel()
+    @StateObject var loginVM = LoginViewModel.shared
     
     var body: some View {
         VStack {
@@ -40,9 +40,9 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 70)
         }
-        .fullScreenCover(
-            isPresented: $loginVM.isLoggedin,
-            content: { ContainerView() })
+        .fullScreenCover(isPresented: $loginVM.isLoggedin) {
+            ContainerView().environmentObject(loginVM)
+        }
     }
 }
 

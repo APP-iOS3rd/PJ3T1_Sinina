@@ -27,18 +27,18 @@ func getTab(tab: Tab) -> String {
 
 struct ContainerView: View {
     @State var currentTab: Tab = .home
-    @ObservedObject var LoginVM = LoginViewModel.shared
+    @ObservedObject var loginVM = LoginViewModel.shared
+    @ObservedObject var chatVM = ChatViewModel.shared
     
     init() {
         UITabBar.appearance().isHidden = true
-        print("로그인한 유저 이메일 \(LoginVM.loginUserEmail)")
     }
     
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
                 // FIXME: - ChatView() 파라미터 전달
-                ChatListView(loginUserEmail: LoginVM.loginUserEmail)
+                ChatListView(loginUserEmail: loginVM.loginUserEmail)
                     .tag(Tab.chat)
                 HomeView()
                     .tag(Tab.home)
