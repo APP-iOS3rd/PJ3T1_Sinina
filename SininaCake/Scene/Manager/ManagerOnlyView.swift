@@ -26,6 +26,7 @@ func getManagerTab(tab: ManagerTab) -> String {
 
 struct ManagerOnlyView: View {
     @State var currentTab: ManagerTab = .list
+    @Environment(\.presentationMode) var presentationMode
     
     init() {
         UITabBar.appearance().isHidden = true

@@ -102,6 +102,7 @@
 		9AC123002B73CBE200DC9A42 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC122FE2B73CBE200DC9A42 /* ChatRoom.swift */; };
 		9AC123012B73CBE200DC9A42 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC122FF2B73CBE200DC9A42 /* Message.swift */; };
 		9AC123032B73D30C00DC9A42 /* Preview Content in Resources */ = {isa = PBXBuildFile; fileRef = 9AC123022B73D30C00DC9A42 /* Preview Content */; };
+		9AC123052B746B9B00DC9A42 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC123042B746B9B00DC9A42 /* UIScreen+.swift */; };
 		9AEACEAE2B624EE400AE041F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAD2B624EE400AE041F /* GoogleSignIn */; };
 		9AEACEB02B624EE400AE041F /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9AEACEAF2B624EE400AE041F /* GoogleSignInSwift */; };
 		9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEACEB12B6255DE00AE041F /* Utilities.swift */; };
@@ -175,6 +176,7 @@
 		9AC122FE2B73CBE200DC9A42 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatRoom.swift; path = SininaCake/Scene/Chat/ChatRoom.swift; sourceTree = SOURCE_ROOT; };
 		9AC122FF2B73CBE200DC9A42 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Message.swift; path = SininaCake/Scene/Chat/Message.swift; sourceTree = SOURCE_ROOT; };
 		9AC123022B73D30C00DC9A42 /* Preview Content */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "Preview Content"; path = "SininaCake/Preview Content"; sourceTree = SOURCE_ROOT; };
+		9AC123042B746B9B00DC9A42 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		9AEACEB12B6255DE00AE041F /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		AC2A35757B1DF682C450E618 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -301,6 +303,7 @@
 				23D682D32B738A0200A2036A /* Date.swift */,
 				8ECB219A2B1DBF81003BF8B0 /* UIFont+.swift */,
 				8ECB219D2B1DBF9A003BF8B0 /* UIColor+.swift */,
+				9AC123042B746B9B00DC9A42 /* UIScreen+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -493,11 +496,11 @@
 		9AA04FFB2B72109D004F671E /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				9AA04FFC2B72110D004F671E /* ContainerView.swift */,
+				9AA04FFE2B72111B004F671E /* ContainerViewModel.swift */,
 				8ECF5FC62B54EE5B00D6BCF6 /* Home */,
 				8ECF5FC92B54EE7400D6BCF6 /* Chat */,
 				8E874BB22B00B53B00ECEF08 /* Customer */,
-				9AA04FFC2B72110D004F671E /* ContainerView.swift */,
-				9AA04FFE2B72111B004F671E /* ContainerViewModel.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -617,6 +620,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A7EA6032B6A235D004788E2 /* GoogleService-Info.plist in Resources */,
 				9AC123032B73D30C00DC9A42 /* Preview Content in Resources */,
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
@@ -711,6 +715,7 @@
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
 				23D6829B2B7380AD00A2036A /* User.swift in Sources */,
+				9AC123052B746B9B00DC9A42 /* UIScreen+.swift in Sources */,
 				9AA04FFF2B72111B004F671E /* ContainerViewModel.swift in Sources */,
 				9A27E6AD2B55154200E7E699 /* CustomerCalendarViewModel.swift in Sources */,
 				9A27E6B22B55156C00E7E699 /* InstagramViewModel.swift in Sources */,
@@ -883,8 +888,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -928,8 +932,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (

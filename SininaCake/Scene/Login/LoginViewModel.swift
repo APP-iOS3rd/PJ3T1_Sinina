@@ -15,7 +15,13 @@ import GoogleSignIn
 import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
+    static let shared = LoginViewModel()
     @Published var isLoggedin: Bool = false
+    
+    @Published var email: String?
+    @Published var imgURL: String?
+    @Published var userName: String?
+    
     var currentNonce: String?
     
     private func randomNonceString(length: Int = 32) -> String {
@@ -92,8 +98,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         // Handle error.
         print("Sign in with Apple errored: \(error)")
     }
-    
-    // MARK: - 구글 로그인
+}
+
+// MARK: - 구글 로그인
+extension LoginViewModel {
     /// 구글 로그인
     func handleGoogleLogin() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
@@ -120,8 +128,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             self.signInFirebase(credential: credential)
         }
     }
-    
-    // MARK: - 카카오 로그인
+}
+
+// MARK: - 카카오 로그인
+extension LoginViewModel {
     /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -162,6 +172,12 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                 let email = user?.kakaoAccount?.email ?? ""
                 let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
                 let userName = user?.kakaoAccount?.profile?.nickname ?? ""
+                
+                // TODO: - 함수로 축약
+                self.email = email
+                self.imgURL = imgURL
+                self.userName = userName
+                
                 Task {
                     await self.addUserInfoToFirestore(email: email,
                                                       imgURL: imgURL,
@@ -171,7 +187,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             }
         }
     }
-    
+}
+
+// MARK: - 파이어베이스 저장
+extension LoginViewModel {
     func signInFirebase(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { result, error in
             if let error = error {
@@ -194,6 +213,11 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         let email = user.email ?? ""
         let imgURL = user.photoURL?.absoluteString ?? ""
         let userName = user.displayName ?? ""
+        
+        // TODO: - 함수로 축약
+        self.email = email
+        self.imgURL = imgURL
+        self.userName = userName
         
         Task {
             await self.addUserInfoToFirestore(email: email,
