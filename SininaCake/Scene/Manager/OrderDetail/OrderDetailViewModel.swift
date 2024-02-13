@@ -13,6 +13,7 @@ class OrderDetailViewModel: ObservableObject {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     @Published var images: [UIImage?] = []
+    @Published var deviceToken: String = ""
     
     func updatePrice(orderItem: OrderItem, _ price: Int) {
 //        db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["confirmedPrice":price])
@@ -38,16 +39,34 @@ class OrderDetailViewModel: ObservableObject {
         for imageName in imageNames {
             let storageRef = storage.reference().child(imageName)
             
-            storageRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+            storageRef.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
                 if let error = error {
                     print("Cannot download image \(error.localizedDescription)")
                     return
                 } else {
-                    if let imageData = data, let uiImage = UIImage(data: imageData) {
+                    if let imageData = data, let self = self, let uiImage = UIImage(data: imageData) {
                         DispatchQueue.main.async {
                             self.images.append(uiImage)
                         }
                     }
+                }
+            }
+        }
+    }
+    
+    func getDeviceToken(_ email: String) {
+        let docRef = db.collection("Users").document(email)
+        
+        docRef.getDocument { [weak self] doc, error in
+            if let error = error {
+                print("FireStore Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let doc = doc, doc.exists, let self = self {
+                let data = doc.data()
+                if let data = data {
+                    self.deviceToken = data["deviceToken"] as? String ?? ""
                 }
             }
         }

@@ -16,21 +16,18 @@ struct LoginView: View {
             
             Image("sininaCakeImage")
                 .resizable()
-                .frame(width: 120, height: 120)
+                .frame(width: 180, height: 180)
             
             Spacer()
             
             HStack {
                 CustomText(
-                    title: "🍰 로그인하기",
+                    title: "간편 로그인하기",
                     textColor: .black,
                     textWeight: .semibold,
                     textSize: 24
                 )
-                
-                Spacer()
             }
-            .padding(.leading, 42)
             
             Spacer()
                 .frame(height: 32)
