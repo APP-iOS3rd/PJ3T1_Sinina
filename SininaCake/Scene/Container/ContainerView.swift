@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ContainerView: View {
     @State var currentTab: Tab = .home
+    @ObservedObject var loginVM = LoginViewModel.shared
+    @ObservedObject var chatVM = ChatViewModel.shared
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -18,7 +21,7 @@ struct ContainerView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
                 // FIXME: - ChatView() 파라미터 전달
-                HomeView()
+                ChatListView(loginUserEmail: loginVM.loginUserEmail)
                     .tag(Tab.chat)
                 HomeView()
                     .tag(Tab.home)

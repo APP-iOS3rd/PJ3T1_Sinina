@@ -37,9 +37,9 @@ struct LoginView: View {
             Spacer()
                 .frame(height: 70)
         }
-        .fullScreenCover(
-            isPresented: $loginVM.isLoggedin,
-            content: { ContainerView() })
+        .fullScreenCover(isPresented: $loginVM.isLoggedin) {
+            ContainerView().environmentObject(loginVM)
+        }
     }
 }
 
