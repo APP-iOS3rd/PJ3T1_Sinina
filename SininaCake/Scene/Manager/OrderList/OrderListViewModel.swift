@@ -33,16 +33,12 @@ class OrderListViewModel: ObservableObject {
         let query: Query = ordersRef.order(by: "id")
         
         query.getDocuments { [weak self] querySnapshot, error in
-            if let error: Error = error {
+            if let error = error {
                 fatalError("Error getting documents: \(error.localizedDescription)")
-            } else if querySnapshot?.documents.isEmpty == true {
-                // snapshot이 비어있을 때
-                
             } else {
                 if let snapshot = querySnapshot, let self = self {
                     for doc in snapshot.documents {
                         let documentData: [String: Any] = doc.data()
-                        print(documentData)
                         
                         let id: String = documentData["id"] as? String ?? ""
                         let email: String = documentData["email"] as? String ?? ""

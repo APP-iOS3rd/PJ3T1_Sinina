@@ -159,6 +159,10 @@ extension LoginViewModel {
     
     // MARK: - 카카오 유저 정보 획득
     func getAndStoreKakaoUserInfo() {
+        guard let deviceToken = AppInfo.shared.deviceToken else {
+            return
+        }
+        
         UserApi.shared.me() {(user, error) in
             if let error = error {
                 print(error)
@@ -175,7 +179,10 @@ extension LoginViewModel {
                 self.userName = userName
                 
                 Task {
-                    await self.addUserInfoToFirestore(email: email, imgURL: imgURL, userName: userName)
+                    await self.addUserInfoToFirestore(email: email,
+                                                      imgURL: imgURL,
+                                                      userName: userName,
+                                                      deviceToken: deviceToken)
                 }
             }
         }
@@ -199,6 +206,9 @@ extension LoginViewModel {
     }
     
     func getAndStoreFirebaseUserInfo(user: FirebaseAuth.User) {
+        guard let deviceToken = AppInfo.shared.deviceToken else {
+            return
+        }
         // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
         let email = user.email ?? ""
         let imgURL = user.photoURL?.absoluteString ?? ""
@@ -210,20 +220,24 @@ extension LoginViewModel {
         self.userName = userName
         
         Task {
-            await self.addUserInfoToFirestore(email: email, imgURL: imgURL, userName: userName)
+            await self.addUserInfoToFirestore(email: email,
+                                              imgURL: imgURL,
+                                              userName: userName,
+                                              deviceToken: deviceToken)
         }
     }
     
     // MARK: - 유저 정보 파이어스토어에 저장
     // FIXME: - 회원가입일때만 저장
-    func addUserInfoToFirestore(email: String, imgURL: String, userName: String) async {
+    func addUserInfoToFirestore(email: String, imgURL: String, userName: String, deviceToken: String) async {
         let db = Firestore.firestore()
         
         do {
           try await db.collection("Users").document(email).setData([
             "email": email,
             "userName": userName,
-            "imgURL": imgURL
+            "imgURL": imgURL,
+            "deviceToken": deviceToken
           ], merge: true)
           print("Document successfully written!")
         } catch {
