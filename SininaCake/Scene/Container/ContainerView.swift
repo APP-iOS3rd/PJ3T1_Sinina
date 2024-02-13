@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-enum Tab: String, CaseIterable {
-    case chat = "icon_chat"
-    case home = "icon_home"
-    case profile = "icon_profile"
-}
-
-func getTab(tab: Tab) -> String {
-    switch tab {
-    case .chat:
-        return "icon_selected_chat"
-    case .home:
-        return "icon_selected_home"
-    case .profile:
-        return "icon_selected_profile"
-    }
-}
-
 struct ContainerView: View {
     @State var currentTab: Tab = .home
     
@@ -46,6 +29,23 @@ struct ContainerView: View {
        
             CustomTabView(selection: $currentTab)
         }
+    }
+}
+
+enum Tab: String, CaseIterable {
+    case chat = "icon_chat"
+    case home = "icon_home"
+    case profile = "icon_profile"
+}
+
+func getTab(tab: Tab) -> String {
+    switch tab {
+    case .chat:
+        return "icon_selected_chat"
+    case .home:
+        return "icon_selected_home"
+    case .profile:
+        return "icon_selected_profile"
     }
 }
 

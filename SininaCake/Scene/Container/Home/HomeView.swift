@@ -8,6 +8,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeVM = HomeViewModel()
+    @ObservedObject var loginVM = LoginViewModel.shared
     @State private var showManager = false
     
     var body: some View {
@@ -28,20 +29,22 @@ struct HomeView: View {
                 ToolbarItem(placement: .principal) {
                     Image("sininaCakeLogo")
                         .resizable()
-                        .frame(width: UIScreen.UIWidth(40)
-                                , height: UIScreen.UIHeight(40))
+                        .frame(width: UIScreen.UIWidth(40),
+                               height: UIScreen.UIHeight(40))
                 }
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Trailing item if needed
                     Button {
                         showManager = true
                     } label: {
-                        Image(systemName: "person.crop.circle.badge.checkmark")
+//                        if (loginVM.email == "jongwon5113@gmail.com") {
+                            Image(systemName: "person.crop.circle.badge.checkmark")
+//                        }
                     }
+//                    .disabled(loginVM.email != "jongwon5113@gmail.com")
                     .navigationDestination(isPresented: $showManager) {
                         ManagerOnlyView()
-//                            .navigationBarHidden(true)
+                            .navigationBarHidden(true)
                     }
                 }
             }

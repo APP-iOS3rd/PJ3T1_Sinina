@@ -25,6 +25,7 @@ struct SininaCakeApp: App {
     
     var body: some Scene {
         WindowGroup {
+//            ContainerView()
             LoginView().onOpenURL(perform: { url in
                 if (AuthApi.isKakaoTalkLoginUrl(url)) {
                     AuthController.handleOpenUrl(url: url)
