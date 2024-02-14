@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		234ABD892B6A2C4E007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		234ABD8B2B6A3BBB007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		2367639C2B6691DC008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		234ABD892B6A2C4E007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		2367639C2B6691DC008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		2367639E2B66BF8D008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		236763A42B67AE57008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
 		23D682A82B73878A00A2036A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A72B73878A00A2036A /* FirebaseAnalytics */; };
 		23D682AA2B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A92B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -110,6 +110,7 @@
 /* Begin PBXFileReference section */
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		8E1C76502B7C5E6A00C70E2B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BAC2B00B40D00ECEF08 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -248,6 +249,9 @@
 			isa = PBXGroup;
 			children = (
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
+				23D682DF2B7B652E00A2036A /* ApiKeys.xcconfig */,
+				23D682E02B7B653700A2036A /* GoogleService-Info.plist */,
+				23D682E22B7B653D00A2036A /* Sinina_Release.mobileprovision */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
@@ -375,6 +379,7 @@
 				9AC122FE2B73CBE200DC9A42 /* ChatRoom.swift */,
 				9AC122FF2B73CBE200DC9A42 /* Message.swift */,
 				8ECF5FC72B54EE6F00D6BCF6 /* ChatViewModel.swift */,
+				23D682E92B7C514600A2036A /* ChatView2.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -642,9 +647,9 @@
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
-				9A53C57F2B7C8B5A00892E94 /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
+				23D682E52B7B653D00A2036A /* Sinina_Debug.mobileprovision in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,20 +717,21 @@
 				8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */,
 				8ECF5FB32B54C1CB00D6BCF6 /* ChatView.swift in Sources */,
 				9AC123002B73CBE200DC9A42 /* ChatRoom.swift in Sources */,
-				2367639C2B6691DC008C8244 /* (null) in Sources */,
+				2367639C2B6691DC008C8244 /* BuildFile in Sources */,
 				8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */,
 				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
 				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
-				236763A42B67AE57008C8244 /* (null) in Sources */,
+				236763A42B67AE57008C8244 /* BuildFile in Sources */,
 				8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */,
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
-				234ABD892B6A2C4E007199E2 /* (null) in Sources */,
+				234ABD892B6A2C4E007199E2 /* BuildFile in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
+				23D682EA2B7C514600A2036A /* ChatView2.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
 				9AC123052B746B9B00DC9A42 /* UIScreen+.swift in Sources */,
 				9AA04FFF2B72111B004F671E /* ContainerViewModel.swift in Sources */,
@@ -734,7 +740,7 @@
 				9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */,
 				23D682D42B738A0200A2036A /* Date.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
-				2367639E2B66BF8D008C8244 /* (null) in Sources */,
+				2367639E2B66BF8D008C8244 /* BuildFile in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
 				8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */,
 				8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */,
@@ -742,7 +748,7 @@
 				8E874BB62B00B59800ECEF08 /* OrderView.swift in Sources */,
 				8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */,
 				8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */,
-				234ABD8B2B6A3BBB007199E2 /* (null) in Sources */,
+				234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
 				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */,

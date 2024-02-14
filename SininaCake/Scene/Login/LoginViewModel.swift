@@ -243,7 +243,6 @@ extension LoginViewModel {
             print("로그인한 사람: \(self.loginUserEmail)")
             AppInfo.shared.currentUser = user
             let userInfo = self.getFirebaseUserInfo(user: user)
-            print("errrrrror \(userInfo.0) -- \(userInfo.1), \(userInfo.2)")
             self.storeUserInfo(email: userInfo.0,
                                imgURL: userInfo.1,
                                userName: userInfo.2)
