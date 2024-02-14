@@ -30,6 +30,7 @@ struct SininaCakeApp: App {
                     AuthController.handleOpenUrl(url: url)
                 }
             })
+            
         }
     }
 }

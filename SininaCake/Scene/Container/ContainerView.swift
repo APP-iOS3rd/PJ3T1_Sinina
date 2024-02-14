@@ -38,7 +38,8 @@ struct ContainerView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
                 // FIXME: - ChatView() 파라미터 전달
-                ChatListView(loginUserEmail: loginVM.loginUserEmail)
+//                ChatListView(loginUserEmail: loginVM.loginUserEmail)
+                ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", userName: "이찰떡", date: Date(), id: "iDe7zgI8rZTbXKTSb7id"))
                     .tag(Tab.chat)
                 HomeView()
                     .tag(Tab.home)

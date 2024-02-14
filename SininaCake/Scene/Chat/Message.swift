@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Message: Identifiable, Codable {
+struct Message: Identifiable, Codable, Hashable {
     var id: String // 아이디로 말풍선 위치 결정
     var text: String
     var timestamp: Date
