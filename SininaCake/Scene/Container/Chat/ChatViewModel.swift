@@ -26,6 +26,7 @@ class ChatViewModel: ObservableObject{
             guard error == nil else { return }
             
             self.chatRooms.removeAll() // ChatRoom 전부 지우고
+            //self.messages.removeAll()
             
             for document in snapshot!.documents{
                 if let data = try? document.data(as: ChatRoom.self) {
@@ -39,26 +40,35 @@ class ChatViewModel: ObservableObject{
         }
     }
     
-    func fetchOwnerRoom(userEmail: String){
-        fireStore.collection(collectionName)
-            .whereField("userEmail", arrayContains: userEmail)
-            .getDocuments { (snapshot, error) in
-                
-            guard error == nil else { return }
+    // 받아오는 room
+    func fetchRoom(userEmail: String) {
+        print("fetchRoom: \(userEmail)")
+        
+        fireStore.collection(collectionName).whereField("userEmail", isEqualTo: userEmail).getDocuments() { (snapshot, error) in
+            guard error == nil else { print("fetch Room 에러 : \(error)")
+                return }
             
-            self.chatRooms.removeAll() // ChatRoom 전부 지우고
+            // 기존 목록 비우기
+            self.chatRooms.removeAll()
+            self.messages.removeAll()
             
+            
+            print("쿼리 결과: \(snapshot!.documents.count)")
+            // 쿼리 결과인 snapshot의 chatRoom을 가져옴
             for document in snapshot!.documents {
                 if let data = try? document.data(as: ChatRoom.self) {
-                    self.chatRooms.append(data) // 다시 채움
                     
-                    print("fetchAllRoom: ", data)
+                    self.chatRooms.append(data)
+                    print("data", data)
                     
-                    self.startListening(chatRoom: data) // 여기서 읽어오는 거 시작
+                    // 동시에 해당 chatRoom의 메세지를 가져옴
+                    self.startListening(chatRoom: data)
+                    
                 }
             }
         }
     }
+        
     
     // 채팅룸 추가
     func addChatRoom(chatRoom: ChatRoom) {

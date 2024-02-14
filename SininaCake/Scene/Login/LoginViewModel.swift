@@ -202,6 +202,7 @@ extension LoginViewModel {
             self.loginUserEmail = user.email
             print("로그인한 사람: \(self.loginUserEmail)")
             AppInfo.shared.currentUser = user
+
             self.isLoggedin = true
             self.getAndStoreFirebaseUserInfo(user: user)
         }
