@@ -18,9 +18,11 @@ struct CalendarView: View {
         return dateString
     }
     
-    
-    
-    //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
+
+
+
+//    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
+
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     
@@ -639,6 +641,7 @@ struct CalendarView: View {
             
         }
     }
+
     
     //struct pickerView: View {
     //    @Environment(\.dismiss) var dismiss
@@ -699,6 +702,7 @@ struct CalendarView: View {
     //
     //}
     
+
 
 extension UIScreen {
    static let screenWidth = UIScreen.main.bounds.size.width

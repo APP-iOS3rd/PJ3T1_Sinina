@@ -34,23 +34,25 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack {
-                        ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
-                            // 나
-                            if loginUserEmail == msg.userEmail {
-                                blueMessageBubble(message: msg)
+                        if chatVM.messages[room.id] != nil {
+                            ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
+                                // 나
+                                if loginUserEmail == msg.userEmail {
+                                    blueMessageBubble(message: msg)
+                                    
+                                    // 상대
+                                } else {
+                                    grayMessageBubble(message: msg)
+                                }
                                 
-                            // 상대
-                            } else {
-                                grayMessageBubble(message: msg)
                             }
-                            
-                        }
-                        .background(Color.clear)
-                        .onChange(of: chatVM.lastMessageId){ id in
-                            withAnimation {
-                                // 마지막 말풍선을 따라 스크롤로 내려감
-                                proxy.scrollTo(id, anchor: .bottom)
-                                print("update scroll \(id)")
+                            .background(Color.clear)
+                            .onChange(of: chatVM.lastMessageId){ id in
+                                withAnimation {
+                                    // 마지막 말풍선을 따라 스크롤로 내려감
+                                    proxy.scrollTo(id, anchor: .bottom)
+                                    print("update scroll \(id)")
+                                }
                             }
                         }
                     }
