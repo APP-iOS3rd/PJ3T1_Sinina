@@ -26,11 +26,15 @@ struct SininaCakeApp: App {
     var body: some Scene {
         WindowGroup {
 //            ContainerView()
-            LoginView().onOpenURL(perform: { url in
-                if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                    AuthController.handleOpenUrl(url: url)
-                }
-            })
+            if AppInfo.shared.currentUser != nil {
+                ContainerView()
+            } else {
+                LoginView().onOpenURL(perform: { url in
+                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                        AuthController.handleOpenUrl(url: url)
+                    }
+                })
+            }
         }
     }
 }
