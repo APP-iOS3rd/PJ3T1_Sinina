@@ -29,6 +29,8 @@
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>$(REVERSED_CLIENT_ID)</string>
+	<key>FCM_SERVER_KEY</key>
+	<string>$(FCM_SERVER_KEY)</string>
 	<key>NMFClientId</key>
 	<string>$(NMFClientId)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -37,15 +39,11 @@
 		<string>kakaolink</string>
 		<string>kakaoplus</string>
 	</array>
-	<key>NMFClientId</key>
-	<string>$(NMFClientId)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<false/>
 	</dict>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>$(REVERSED_CLIENT_ID)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Black.otf</string>

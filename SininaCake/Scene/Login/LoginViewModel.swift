@@ -15,10 +15,14 @@ import GoogleSignIn
 import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
-    @Published var isLoggedin: Bool = false
-    var currentNonce: String?
-    var loginUserEmail: String?
     static let shared = LoginViewModel()
+    @Published var isLoggedin: Bool = false
+    
+    @Published var loginUserEmail: String?
+    @Published var imgURL: String?
+    @Published var userName: String?
+    
+    var currentNonce: String?
     
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
@@ -94,8 +98,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         // Handle error.
         print("Sign in with Apple errored: \(error)")
     }
-    
-    // MARK: - 구글 로그인
+}
+
+// MARK: - 구글 로그인
+extension LoginViewModel {
     /// 구글 로그인
     func handleGoogleLogin() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
@@ -122,8 +128,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             self.signInFirebase(credential: credential)
         }
     }
-    
-    // MARK: - 카카오 로그인
+}
+
+// MARK: - 카카오 로그인
+extension LoginViewModel {
     /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -151,6 +159,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     
     // MARK: - 카카오 유저 정보 획득
     func getAndStoreKakaoUserInfo() {
+        guard let deviceToken = AppInfo.shared.deviceToken else {
+            return
+        }
+        
         UserApi.shared.me() {(user, error) in
             if let error = error {
                 print(error)
@@ -160,15 +172,25 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                 let email = user?.kakaoAccount?.email ?? ""
                 let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
                 let userName = user?.kakaoAccount?.profile?.nickname ?? ""
+                
+                // TODO: - 함수로 축약
+                self.loginUserEmail = email
+                self.imgURL = imgURL
+                self.userName = userName
+                
                 Task {
                     await self.addUserInfoToFirestore(email: email,
                                                       imgURL: imgURL,
-                                                      userName: userName)
+                                                      userName: userName,
+                                                      deviceToken: deviceToken)
                 }
             }
         }
     }
-    
+}
+
+// MARK: - 파이어베이스 저장
+extension LoginViewModel {
     func signInFirebase(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { result, error in
             if let error = error {
@@ -185,32 +207,40 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     }
     
     func getAndStoreFirebaseUserInfo(user: FirebaseAuth.User) {
+        guard let deviceToken = AppInfo.shared.deviceToken else {
+            return
+        }
         // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
         let email = user.email ?? ""
         let imgURL = user.photoURL?.absoluteString ?? ""
         let userName = user.displayName ?? ""
         
-        //        loginUserEmail = email // 로그인한 유저 이메일 저장
+        // TODO: - 함수로 축약
+        self.loginUserEmail = email
+        self.imgURL = imgURL
+        self.userName = userName
         
         Task {
             await self.addUserInfoToFirestore(email: email,
                                               imgURL: imgURL,
-                                              userName: userName)
+                                              userName: userName,
+                                              deviceToken: deviceToken)
         }
     }
     
     // MARK: - 유저 정보 파이어스토어에 저장
     // FIXME: - 회원가입일때만 저장
-    func addUserInfoToFirestore(email: String, imgURL: String, userName: String) async {
+    func addUserInfoToFirestore(email: String, imgURL: String, userName: String, deviceToken: String) async {
         let db = Firestore.firestore()
         
         do {
-            try await db.collection("Users").document(email).setData([
-                "email": email,
-                "userName": userName,
-                "imgURL": imgURL
-            ], merge: true)
-            print("Document successfully written!")
+          try await db.collection("Users").document(email).setData([
+            "email": email,
+            "userName": userName,
+            "imgURL": imgURL,
+            "deviceToken": deviceToken
+          ], merge: true)
+          print("Document successfully written!")
         } catch {
             print("Error writing document: \(error)")
         }
