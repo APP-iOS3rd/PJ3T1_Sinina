@@ -142,11 +142,11 @@ extension LoginViewModel {
                     print(error)
                 } else {
                     print("loginWithKakaoTalk() success.")
-                    self.isLoggedin = true
                     let userInfo = self.getKakaoUserInfo()
                     self.storeUserInfo(email: userInfo.0,
                                        imgURL: userInfo.1,
                                        userName: userInfo.2)
+                    self.isLoggedin = true
                 }
             }
         } else {
@@ -155,11 +155,11 @@ extension LoginViewModel {
                     print(error)
                 } else {
                     print("loginWithKakaoAccount() success.")
-                    self.isLoggedin = true
                     let userInfo = self.getKakaoUserInfo()
                     self.storeUserInfo(email: userInfo.0,
                                        imgURL: userInfo.1,
                                        userName: userInfo.2)
+                    self.isLoggedin = true
                 }
             }
         }
@@ -242,11 +242,11 @@ extension LoginViewModel {
                 return
             }
             
+            self.isLoggedin = true
             guard let user = result?.user else { return }
             self.loginUserEmail = user.email
             print("로그인한 사람: \(self.loginUserEmail)")
             AppInfo.shared.currentUser = user
-            self.isLoggedin = true
             let userInfo = self.getFirebaseUserInfo()
             self.storeUserInfo(email: userInfo.0,
                                imgURL: userInfo.1,
