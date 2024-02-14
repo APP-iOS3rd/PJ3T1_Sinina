@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+class MainMessagesViewModel: ObservableObject {
+    init() {
+        
+    }
+    
+}

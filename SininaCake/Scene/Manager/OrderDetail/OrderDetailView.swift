@@ -15,15 +15,16 @@ struct OrderDetailView: View {
     @State private var isEditing: Bool = false
     @State private var scrollTarget: String?
     @StateObject var orderDetailVM = OrderDetailViewModel()
+    @StateObject var fcmServerAPI = FCMServerAPI()
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
         case .assign:
-            return ("승인 주문건 현황", .customBlue, "assignCheckImage")
+            return ("승인 주문건 현황", .customBlue, "VectorTrue")
         case .notAssign:
-            return ("미승인 주문건 현황", .customLightgray, "checkImage")
+            return ("미승인 주문건 현황", .customGray, "VectorFalse")
         case .complete:
-            return ("완료 주문건 현황", .black, "assignCheckImage")
+            return ("완료 주문건 현황", .black, "VectorTrue")
         }
     }
     
@@ -76,7 +77,7 @@ struct OrderDetailView: View {
                     PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, isEditing: $isEditing, scrollTarget: $scrollTarget, scrollProxy: proxy)
                 }
                 
-                BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice)
+                BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, fcmAPI: fcmServerAPI)
                     .opacity(opacity)
             }
         }
@@ -92,6 +93,7 @@ struct OrderDetailView: View {
         }
         .onAppear {
             orderDetailVM.downloadImage(orderItem.imageURL)
+            orderDetailVM.getDeviceToken(orderItem.email)
         }
     }
 }
@@ -116,10 +118,10 @@ struct OrderInfoView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "픽업날짜", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "픽업시간", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "이름", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "휴대전화", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "픽업날짜", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "픽업시간", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "이름", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "휴대전화", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             
             Spacer()
@@ -145,10 +147,10 @@ struct CakeInfoView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "사이즈", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "시트(빵)", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "속크링", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "문구/글씨 색상", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "사이즈", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "시트(빵)", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "속크링", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "문구/글씨 색상", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             }
             
             Spacer()
@@ -177,7 +179,7 @@ struct PhotoView: View {
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: "사진", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "사진", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
             }
             
@@ -188,7 +190,7 @@ struct PhotoView: View {
                 if orderItem.imageURL.isEmpty {
                     ForEach(0...1, id: \.self) { _ in
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customLightgray))
+                            .stroke(Color(.customGray))
                             .frame(width: imageWidth, height: imageWidth)
                             .foregroundStyle(.clear)
                             .overlay(
@@ -202,7 +204,7 @@ struct PhotoView: View {
                     ForEach(orderDetailVM.images, id: \.self) { image in
                         if let image = image {
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.customLightgray))
+                                .stroke(Color(.customGray))
                                 .frame(width: imageWidth, height: imageWidth)
                                 .foregroundStyle(.clear)
                                 .overlay(
@@ -216,7 +218,7 @@ struct PhotoView: View {
                     
                     if orderItem.imageURL.count % 2 == 1 {
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customLightgray))
+                            .stroke(Color(.customGray))
                             .frame(width: imageWidth, height: imageWidth)
                             .foregroundStyle(.clear)
                             .overlay(
@@ -251,8 +253,8 @@ struct EtcView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "보냉팩 / 보냉백", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "보냉팩 / 보냉백", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "추가 요청 사항", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
             }
             
@@ -302,7 +304,7 @@ struct PriceView: View {
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: priceText.0, textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 45)
                 CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
@@ -310,7 +312,7 @@ struct PriceView: View {
             }
             
             HStack {
-                CustomText(title: "총 확정금액", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "총 확정금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 24)
                 HStack {
@@ -345,14 +347,14 @@ struct PriceView: View {
                         .overlay(
                             HStack {
                                 Spacer()
-                                CustomText(title: "원", textColor: .customGray, textWeight: .semibold, textSize: 20)
+                                CustomText(title: "원", textColor: .customDarkGray, textWeight: .semibold, textSize: 20)
                             }
                             .padding(.trailing, 18)
                         )
                 }
                 .overlay(
                     RoundedRectangle(cornerRadius: 27.5)
-                        .stroke(Color(.customLightgray))
+                        .stroke(Color(.customGray))
                 )
                 Spacer()
             }
@@ -374,16 +376,18 @@ struct PriceView: View {
 
 // MARK: - BottomButton
 struct BottomButton: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var orderDetailVM: OrderDetailViewModel
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
     @Binding var totalPrice: String
+    @ObservedObject var fcmAPI: FCMServerAPI
     
     var buttonStyle: (String, UIColor) {
         switch orderItem.status {
         case .notAssign:
             if toggle {
-                return ("승인하기", .customLightgray)
+                return ("승인하기", .customGray)
             } else {
                 return ("승인하기", .customBlue)
             }
@@ -405,12 +409,16 @@ struct BottomButton: View {
 
     var body: some View {
         CustomButton(action: {
+            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: "Test Message")
+            
             if orderItem.status == .notAssign {
                 orderDetailVM.updateStatus(orderItem: orderItem)
                 orderDetailVM.updatePrice(orderItem: orderItem, stringToInt(totalPrice))
             } else {
                 orderDetailVM.updateStatus(orderItem: orderItem)
             }
+            
+            presentationMode.wrappedValue.dismiss()
         }, title: buttonStyle.0, titleColor: .white, backgroundColor: buttonStyle.1, leading: 24, trailing: 24)
             .padding(.top, 29)
             .disabled(buttonToggle)

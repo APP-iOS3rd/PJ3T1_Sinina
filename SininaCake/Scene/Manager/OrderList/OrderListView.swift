@@ -55,16 +55,16 @@ struct ListView: View {
             
             if orderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color(.customLightgray))
+                    .stroke(Color(.customGray))
                     .frame(height: 100)
                     .overlay(
                         VStack {
                             Image(systemName: "cart")
                                 .resizable()
                                 .scaledToFit()
-                                .foregroundStyle(Color(.customLightgray))
+                                .foregroundStyle(Color(.customGray))
                                 .frame(width: 20, height: 20)
-                            CustomText(title: "주문 내역이 없습니다.", textColor: .customLightgray, textWeight: .semibold, textSize: 16)
+                            CustomText(title: "주문 내역이 없습니다.", textColor: .customGray, textWeight: .semibold, textSize: 16)
                         }
                     )
             } else {
@@ -95,7 +95,7 @@ private struct CellView: View {
             case .assign:
                 return .customBlue
             case .notAssign:
-                return .customLightgray
+                return .customGray
             case .complete:
                 return .black
             }
@@ -122,9 +122,9 @@ private struct CellView: View {
             
             HStack {
                 CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
-                CustomText(title: orderItem.sheet, textColor: .customGray, textWeight: .regular, textSize: 16)
-                CustomText(title: "/", textColor: .customGray, textWeight: .regular, textSize: 16)
-                CustomText(title: orderItem.cream, textColor: .customGray, textWeight: .regular, textSize: 16)
+                CustomText(title: orderItem.sheet, textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                CustomText(title: "/", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                CustomText(title: orderItem.cream, textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                 Spacer()
             }
             
@@ -132,8 +132,8 @@ private struct CellView: View {
             
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: 10) {
-                    CustomText(title: "예약자", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                    CustomText(title: "전화번호", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                    CustomText(title: "예약자", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                    CustomText(title: "전화번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 }
                 
                 VStack(alignment: .leading, spacing: 10) {
@@ -165,7 +165,7 @@ private func intToString(_ price: Int) -> String {
     for str in priceString.reversed() {
         result += String(str)
         count += 1
-        if count % 3 == 0 {
+        if count % 3 == 0 && count != priceString.count {
             result += ","
         }
     }

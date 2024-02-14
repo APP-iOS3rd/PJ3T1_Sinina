@@ -15,7 +15,25 @@ struct DateValue: Identifiable {
     var day: Int
     var date: Date
     var isNotCurrentMonth: Bool = false
+    var isSelected: Bool = false
+    
+    var isSecondSelected = false
+
+        mutating func selectedToggle() {
+            if isSelected {
+                isSelected = false
+                isSecondSelected = true
+            } else if isSecondSelected {
+                isSecondSelected = false
+            } else {
+                isSelected = true
+            }
+        }
 }
+
+
+
+
 
 /**
  일정 정보
@@ -34,6 +52,7 @@ struct Schedule: Decodable {
         case name, startDate, endDate
     }
 }
+
 
 extension Date {
     /**

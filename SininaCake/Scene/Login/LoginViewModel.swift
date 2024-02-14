@@ -12,42 +12,50 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 import GoogleSignIn
+import KakaoSDKCommon
+import KakaoSDKAuth
 import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
+    static let shared = LoginViewModel()
     @Published var isLoggedin: Bool = false
+    
+    @Published var loginUserEmail: String?
+    @Published var imgURL: String?
+    @Published var userName: String?
+    
     var currentNonce: String?
     
     private func randomNonceString(length: Int = 32) -> String {
-      precondition(length > 0)
-      var randomBytes = [UInt8](repeating: 0, count: length)
-      let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
-      if errorCode != errSecSuccess {
-        fatalError(
-          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
-      }
-
-      let charset: [Character] =
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
         Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-
-      let nonce = randomBytes.map { byte in
-        // Pick a random character from the set, wrapping around if needed.
-        charset[Int(byte) % charset.count]
-      }
-
-      return String(nonce)
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
     }
     
     @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
-      let inputData = Data(input.utf8)
-      let hashedData = SHA256.hash(data: inputData)
-      let hashString = hashedData.compactMap {
-        String(format: "%02x", $0)
-      }.joined()
-
-      return hashString
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
     
     // MARK: - 애플 로그인
@@ -92,12 +100,14 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         // Handle error.
         print("Sign in with Apple errored: \(error)")
     }
-    
-    // MARK: - 구글 로그인
+}
+
+// MARK: - 구글 로그인
+extension LoginViewModel {
     /// 구글 로그인
     func handleGoogleLogin() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
+        
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
@@ -120,8 +130,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             self.signInFirebase(credential: credential)
         }
     }
-    
-    // MARK: - 카카오 로그인
+}
+
+// MARK: - 카카오 로그인
+extension LoginViewModel {
     /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -130,8 +142,8 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                     print(error)
                 } else {
                     print("loginWithKakaoTalk() success.")
+                    self.getKakaoUserInfo()
                     self.isLoggedin = true
-                    self.getAndStoreKakaoUserInfo()
                 }
             }
         } else {
@@ -140,15 +152,15 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                     print(error)
                 } else {
                     print("loginWithKakaoAccount() success.")
+                    self.getKakaoUserInfo()
                     self.isLoggedin = true
-                    self.getAndStoreKakaoUserInfo()
                 }
             }
         }
     }
     
-    // MARK: - 카카오 유저 정보 획득
-    func getAndStoreKakaoUserInfo() {
+    /// 카카오 유저 정보 획득
+    func getKakaoUserInfo() {
         UserApi.shared.me() {(user, error) in
             if let error = error {
                 print(error)
@@ -158,15 +170,67 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                 let email = user?.kakaoAccount?.email ?? ""
                 let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
                 let userName = user?.kakaoAccount?.profile?.nickname ?? ""
-                Task {
-                    await self.addUserInfoToFirestore(email: email,
-                                                      imgURL: imgURL,
-                                                      userName: userName)
-                }
+                
+                self.loginUserEmail = email
+                self.imgURL = imgURL
+                self.userName = userName
+                
+                self.storeUserInfo(email: email,
+                                   imgURL: imgURL,
+                                   userName: userName)
             }
         }
     }
     
+    /// 유저 정보 저장
+    func storeUserInfo(email: String, imgURL: String, userName: String) {
+        guard let deviceToken = AppInfo.shared.deviceToken else {
+            return
+        }
+        
+        Task {
+            await self.addUserInfoToFirestore(email: email,
+                                              imgURL: imgURL,
+                                              userName: userName,
+                                              deviceToken: deviceToken)
+        }
+    }
+    
+    /// 카카오 자동 로그인
+    func checkKakaoAutoLogin() -> Bool {
+        var isAutoLogin = false
+
+        return isAutoLogin
+    }
+//        if (AuthApi.hasToken()) {
+//            UserApi.shared.accessTokenInfo { (_, error) in
+//                if let error = error {
+//                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  {
+//                        //로그인 필요
+//                        return
+//                    }
+//                    else {
+//                        //기타 에러
+//                        return
+//                    }
+//                }
+//                else {
+//                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
+//                    isAutoLogin = true
+//                    return
+//                }
+//            }
+//        }
+//        else {
+//            //로그인 필요
+//            return false
+//        }
+//        return isAutoLogin
+//    }
+}
+
+// MARK: - 파이어베이스 제공 간편 로그인
+extension LoginViewModel {
     func signInFirebase(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { result, error in
             if let error = error {
@@ -175,39 +239,99 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             }
             
             guard let user = result?.user else { return }
-            print(user)
+            self.loginUserEmail = user.email
+            print("로그인한 사람: \(self.loginUserEmail)")
+            AppInfo.shared.currentUser = user
+            let userInfo = self.getFirebaseUserInfo(user: user)
+            self.storeUserInfo(email: userInfo.0,
+                               imgURL: userInfo.1,
+                               userName: userInfo.2)
             self.isLoggedin = true
-            self.getAndStoreFirebaseUserInfo(user: user)
         }
     }
     
-    func getAndStoreFirebaseUserInfo(user: FirebaseAuth.User) {
-        // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
-        let email = user.email ?? ""
-        let imgURL = user.photoURL?.absoluteString ?? ""
-        let userName = user.displayName ?? ""
-        
-        Task {
-            await self.addUserInfoToFirestore(email: email,
-                                              imgURL: imgURL,
-                                              userName: userName)
-        }
-    }
-    
-    // MARK: - 유저 정보 파이어스토어에 저장
     // FIXME: - 회원가입일때만 저장
-    func addUserInfoToFirestore(email: String, imgURL: String, userName: String) async {
+    /// 유저 정보 파이어스토어에 저장
+    func addUserInfoToFirestore(email: String, imgURL: String, userName: String, deviceToken: String) async {
         let db = Firestore.firestore()
         
         do {
           try await db.collection("Users").document(email).setData([
             "email": email,
             "userName": userName,
-            "imgURL": imgURL
+            "imgURL": imgURL,
+            "deviceToken": deviceToken
           ], merge: true)
           print("Document successfully written!")
         } catch {
-          print("Error writing document: \(error)")
+            print("Error writing document: \(error)")
         }
+    }
+    
+    // MARK: - 파이어베이스
+    /// 파이어베이스 유저 정보 획득
+    func getFirebaseUserInfo(user: FirebaseAuth.User) -> (String, String, String) {
+        let email = user.email ?? ""
+        let imgURL = user.photoURL?.absoluteString ?? ""
+        let userName = user.displayName ?? ""
+        
+        // TODO: - 함수로 축약
+        self.loginUserEmail = email
+        self.imgURL = imgURL
+        self.userName = userName
+        return (email, imgURL, userName)
+    }
+}
+
+// MARK: - 로그아웃, 회원탈퇴
+extension LoginViewModel {
+    /// 카카오 로그아웃
+    func handleKakaoLogout() {
+        UserApi.shared.logout {(error) in
+            if let error = error {
+                print(error)
+            } else {
+                print("logout() success.")
+            }
+        }
+        isLoggedin = false
+    }
+    
+    /// 카카오 회원 탈퇴
+    func handleKakaoUnlink() {
+        UserApi.shared.unlink {(error) in
+            if let error = error {
+                print(error)
+            }
+            else {
+                print("unlink() success.")
+            }
+        }
+        isLoggedin = false
+    }
+    
+    /// 파이어베이스 Auth 로그아웃
+    func handleFBAuthLogout() {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
+        isLoggedin = false
+    }
+    
+    /// 파이어베이스 Auth 회원 탈퇴
+    func handleFBAuthUnlink() {
+        let user = Auth.auth().currentUser
+        
+        user?.delete { error in
+            if let error = error {
+                // An error happened.
+            } else {
+                // Account deleted.
+            }
+        }
+        isLoggedin = false
     }
 }
