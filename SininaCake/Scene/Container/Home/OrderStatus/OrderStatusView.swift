@@ -9,8 +9,13 @@ import SwiftUI
 
 struct OrderStatusView: View {
 
-
-    
+    enum OrderStatus {
+        case notAssign
+        case assign
+        case complete
+    }
+    //임시
+    var status: OrderStatus = .notAssign
     
     var body: some View {
         
@@ -29,7 +34,7 @@ struct OrderStatusView: View {
         }
         )
         
-        if true {
+        if status == OrderStatus.assign {
             
                 Rectangle()
                     .foregroundColor(.clear)
@@ -41,7 +46,7 @@ struct OrderStatusView: View {
                             Rectangle()
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
-                                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 4)
+                                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
                             
                             VStack() {
                                 Rectangle()
@@ -77,7 +82,7 @@ struct OrderStatusView: View {
                             Rectangle()
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
-                                .shadow(color: .black.opacity(10), radius: 10, x: 0, y: 4)
+                                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
                             
                             VStack() {
                                 
@@ -94,8 +99,7 @@ struct OrderStatusView: View {
                                 ZStack() {
                                     
                                     //NavigationLink(destination: OrderView()) {
-                                    Button(action: {
-                                    }) {
+                                    
                                         Text("주문하러 가기")
                                             .frame(width: 161, height: 43)
                                             .background(Color(red: 0.45, green: 0.76, blue: 0.87))
@@ -107,8 +111,10 @@ struct OrderStatusView: View {
                                             )
                                             .kerning(0.4)
                                             .foregroundColor(.white)
-                                        
-                                    }
+                                            .onTapGesture {
+                                                CalendarView()
+                                            }
+                                    
                                 }
                                 
                             }
