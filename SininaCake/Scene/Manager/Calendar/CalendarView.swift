@@ -9,7 +9,7 @@ struct CalendarView: View {
 
     @Environment(\.sizeCategory) var sizeCategory
 
-    
+
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -19,11 +19,14 @@ struct CalendarView: View {
     }
 
 
+
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
+    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
 
 
     @State var currentDate = Date()
+    
     @State var daysList = [[DateValue]]()
     
     //@State var clickedDates: Set<Date> = []
@@ -36,6 +39,7 @@ struct CalendarView: View {
     @State var monthOffset = 0
     
     
+
     private func customFont(size: CGFloat, maxSize: CGFloat) -> Font {
         let scaledSize = min(size, maxSize)
         
@@ -44,6 +48,7 @@ struct CalendarView: View {
         }
         return Font(customFont)
     }
+
     
     var body: some View {
         
@@ -154,9 +159,9 @@ struct CalendarView: View {
                 
                 ForEach(days.indices, id: \.self) { index in
                     Text(days[index])
+
                         .font(.custom("Pretendard",fixedSize: 18))
-                    
-                    
+
                         .foregroundColor(Color(red: 0.44, green: 0.44, blue: 0.44))
                         .aspectRatio(contentMode: .fill)
                         .foregroundColor(index == 0 ? .red : (index == days.count - 1 ? Color(UIColor.customBlue) : .black))
@@ -172,11 +177,14 @@ struct CalendarView: View {
         .frame(height: 40)
             
         
+
     }
     
     private var cardView: some View {
+        
         VStack() {
             ForEach(daysList.indices, id: \.self) { i in
+                
                 HStack() {
                     
                     ForEach(daysList[i].indices, id: \.self) { j in
@@ -204,6 +212,7 @@ struct CalendarView: View {
     
 
 
+
 //    @ViewBuilder
 //    func CardView(value: DateValue, schedule: Schedule) -> some View {
 //        
@@ -217,6 +226,81 @@ struct CalendarView: View {
 //                                    .frame(width: 20, height: 20)
 //                                    .foregroundColor(.red) // 클릭된 경우 Circle의 색상
 //                }
+
+//     @ViewBuilder
+//     func CardView(value: DateValue, schedule: Schedule) -> some View {
+//         //var clicked: Bool = false
+        
+//         ZStack() {
+//             ZStack() {
+//                 if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate {
+                
+                       
+//                     if schedule.startDate.day == value.day {
+                        
+//                             Text(schedule.name)
+
+//                                 .font(.custom("Pretendard-SemiBold", fixedSize: 12))
+//                                 .foregroundStyle(.black)
+//                                 //.foregroundColor(Color(UIColor.customBlue))
+//                                 .lineLimit(2)
+//                                 .multilineTextAlignment(.trailing)
+//                                 .fixedSize()
+//                                 //.frame(width: geometry.size.width, alignment: .trailing)
+                        
+//                     } else  {
+// //                        Rectangle()
+// //                            .frame(width: .infinity, height: 20)
+// //                            .foregroundColor(schedule.color)
+// //
+//                     }
+                    
+//                     Spacer()
+                    
+//                 } else {
+                    
+//                     Spacer()
+//                 }
+                    
+                    
+//             }
+//             .offset(x: 10, y: -10)
+            
+            
+//             HStack {
+                
+                
+//                 if value.day > 0 {
+//                     if value.isNotCurrentMonth {
+//                         Text("\(value.day)")
+//                             .font(.custom("Pretendard-SemiBold", size: 18))
+//                             .foregroundColor(Color(UIColor.customDarkGray))
+//                             .padding([.leading, .bottom], 10)
+//                     } else {
+                        
+//                         if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
+//                         {
+//                             Text("\(value.day)")
+//                                 .font(.custom("Pretendard-SemiBold", size: 18))
+//                                 .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
+//                                 .padding([.leading, .bottom], 10)
+//                         } else {
+//                             Text("\(value.day)")
+//                                 .font(.custom("Pretendard-SemiBold", size: 18))
+//                                 .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
+//                             //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+//                                 .padding([.leading, .bottom], 10)
+//                         }
+//                     }
+//                 }
+//                // Spacer()
+//             }
+//             //커스텀 줄
+// //            Path { path in
+// //                path.move(to: CGPoint(x:-10, y: 0))
+// //                path.addLine(to: CGPoint(x: 30, y: 0))
+// //
+// >>>>>>> develop
 //            }
 //            
 //            HStack {
@@ -408,17 +492,21 @@ struct CalendarView: View {
      */
     func extractDate() -> [[DateValue]] {
         let calendar = Calendar.current
+        
         let currentMonth = getCurrentMonth()
         
         var days = currentMonth.getAllDates().compactMap { date -> DateValue in
-            let day = calendar.component(.day, from: date)
+            
+        let day = calendar.component(.day, from: date)
             
             return DateValue(day: day, date: date)
         }
         
         //이전달 일수로 남은 공간 채우기
         let firstWeekDay = calendar.component(.weekday, from: days.first?.date ?? Date())
+        
         let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: days.first?.date ?? Date())
+        
         let prevMonthLastDay = prevMonthDate?.getLastDayInMonth() ?? 0
         
         for i in 0..<firstWeekDay - 1 {
@@ -427,7 +515,9 @@ struct CalendarView: View {
         
         //다음달 일수로 남은 공간 채우기
         let lastWeekDay = calendar.component(.weekday, from: days.last?.date ?? Date())
+        
         let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: days.first?.date ?? Date())
+        
         let nextMonthFirstDay = nextMonthDate?.getFirstDayInMonth() ?? 0
         
         for i in 0..<7 - lastWeekDay {
@@ -436,6 +526,7 @@ struct CalendarView: View {
         
         //달력과 같은 배치의 이차원 배열로 변환하여 리턴
         var result = [[DateValue]]()
+        
         days.forEach {
             if result.isEmpty || result.last?.count == 7 {
                 result.append([$0])
@@ -445,9 +536,8 @@ struct CalendarView: View {
         }
         
         return result
-    }
-}
 
+    }
 
 
 
@@ -608,6 +698,7 @@ struct CardView: View {
 //    
 //   
 //}
+
 
 
 extension UIScreen {

@@ -29,6 +29,8 @@
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>$(REVERSED_CLIENT_ID)</string>
+	<key>FCM_SERVER_KEY</key>
+	<string>$(FCM_SERVER_KEY)</string>
 	<key>NMFClientId</key>
 	<string>$(NMFClientId)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -53,6 +55,10 @@
 		<string>Pretendard-Regular.otf</string>
 		<string>Pretendard-SmiBold.otf</string>
 		<string>Pretendard-Thin.otf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>
