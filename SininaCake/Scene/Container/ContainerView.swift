@@ -22,7 +22,11 @@ struct ContainerView: View {
             TabView(selection: $currentTab) {
                 // FIXME: - ChatView() 파라미터 전달
 //                ChatListView(loginUserEmail: loginVM.loginUserEmail)
-                ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", userName: "이찰떡", date: Date(), id: "iDe7zgI8rZTbXKTSb7id"))
+                
+                // FIXME: 여기서 room에 새로운 uuid가 들어가는 것이 아니라, 해당 유저의 채팅방으로 들어가줘야함
+                // 해당 유저의 uuid를 찾아 여기서 넣어줘야함
+                // uuid를 사용하지 않고 고유값을 이메일로 해보자
+                ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? ""))
                 
                 HomeView()
                     .tag(Tab.home)

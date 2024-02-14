@@ -12,7 +12,7 @@ struct ChatView2: View {
     @ObservedObject var chatVM = ChatViewModel.shared
     @State var chatText = ""
     @State var loginUserEmail: String? // 로그인 유저
-    @State var room: ChatRoom // 로그인한 유저의 채팅방
+    @State var room: ChatRoom
     @State private var isChatTextEmpty = true
     
     
@@ -146,5 +146,5 @@ struct ChatView2: View {
 }
 
 #Preview {
-    ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", userName: "이찰떡", date: Date(), id: "iDe7zgI8rZTbXKTSb7id"))
+    ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", id: "iDe7zgI8rZTbXKTSb7id"))
 }

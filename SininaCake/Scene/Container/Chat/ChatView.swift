@@ -58,7 +58,7 @@ struct ChatView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal){
-                CustomText(title: "\(room.userName)", textColor: .black, textWeight: .semibold, textSize: 24)
+                CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 24)
             }
         }
     }

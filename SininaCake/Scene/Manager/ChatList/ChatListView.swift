@@ -25,7 +25,7 @@ struct ChatListView: View {
                                 
                                 VStack {
                                     HStack {
-                                        CustomText(title: "\(room.userName)", textColor: .black, textWeight: .semibold, textSize: 18)
+                                        CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 18)
                                             .frame(alignment: .leading)
                                         
                                         Spacer()

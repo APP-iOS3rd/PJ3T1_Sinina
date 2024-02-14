@@ -23,6 +23,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     @Published var loginUserEmail: String?
     @Published var imgURL: String?
     @Published var userName: String?
+    @Published var chatVM = ChatViewModel.shared
     
     var currentNonce: String?
     
@@ -266,6 +267,9 @@ extension LoginViewModel {
         } catch {
             print("Error writing document: \(error)")
         }
+        
+        // 회원가입과 동시에 채팅방 생성
+        chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: loginUserEmail ?? "nil"))
     }
     
     // MARK: - 파이어베이스
