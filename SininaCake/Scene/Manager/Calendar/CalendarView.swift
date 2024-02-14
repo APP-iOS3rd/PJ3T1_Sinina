@@ -6,10 +6,10 @@
 //
 import SwiftUI
 struct CalendarView: View {
-
+    
     @Environment(\.sizeCategory) var sizeCategory
-
-
+    
+    
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -17,7 +17,7 @@ struct CalendarView: View {
         let dateString = myFormatter.string(from: date)
         return dateString
     }
-
+    
 
 
 //    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
@@ -697,7 +697,7 @@ struct CardView: View {
 //    
 //    
 //   
-//}
+}
 
 
 
