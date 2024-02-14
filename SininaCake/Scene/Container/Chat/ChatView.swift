@@ -21,6 +21,11 @@ struct ChatView: View {
             messagesView
             chatBottomBar
         }
+//        .onAppear {
+//            if loginUserEmail != "c@gmail.com" {
+//                chatVM.fetchOwnerRoom(userEmail: "c@gmail.com")
+//            }
+//        }
     }
     
     // MARK: 메세지 창 띄우는 뷰
