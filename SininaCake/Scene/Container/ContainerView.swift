@@ -6,6 +6,34 @@
 //
 
 import SwiftUI
+import Firebase
+
+struct ContainerView: View {
+    @State var currentTab: Tab = .home
+    @ObservedObject var loginVM = LoginViewModel.shared
+    @ObservedObject var chatVM = ChatViewModel.shared
+    
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
+    
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            TabView(selection: $currentTab) {
+                // FIXME: - ChatView() 파라미터 전달
+                ChatListView(loginUserEmail: loginVM.loginUserEmail)
+                    .tag(Tab.chat)
+                HomeView()
+                    .tag(Tab.home)
+                ProfileView()
+                    .tag(Tab.profile)
+            }
+            .padding(.bottom, 60)
+       
+            CustomTabView(selection: $currentTab)
+        }
+    }
+}
 
 enum Tab: String, CaseIterable {
     case chat = "icon_chat"
@@ -21,31 +49,6 @@ func getTab(tab: Tab) -> String {
         return "icon_selected_home"
     case .profile:
         return "icon_selected_profile"
-    }
-}
-
-struct ContainerView: View {
-    @State var currentTab: Tab = .home
-    
-    init() {
-        UITabBar.appearance().isHidden = true
-    }
-    
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            TabView(selection: $currentTab) {
-                // FIXME: - ChatView() 파라미터 전달
-                HomeView()
-                    .tag(Tab.chat)
-                HomeView()
-                    .tag(Tab.home)
-                ProfileView()
-                    .tag(Tab.profile)
-            }
-            .padding(.bottom, 60)
-       
-            CustomTabView(selection: $currentTab)
-        }
     }
 }
 

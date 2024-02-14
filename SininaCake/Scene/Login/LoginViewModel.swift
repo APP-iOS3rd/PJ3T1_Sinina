@@ -15,39 +15,45 @@ import GoogleSignIn
 import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
+    static let shared = LoginViewModel()
     @Published var isLoggedin: Bool = false
+    
+    @Published var loginUserEmail: String?
+    @Published var imgURL: String?
+    @Published var userName: String?
+    
     var currentNonce: String?
     
     private func randomNonceString(length: Int = 32) -> String {
-      precondition(length > 0)
-      var randomBytes = [UInt8](repeating: 0, count: length)
-      let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
-      if errorCode != errSecSuccess {
-        fatalError(
-          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-        )
-      }
-
-      let charset: [Character] =
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
         Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-
-      let nonce = randomBytes.map { byte in
-        // Pick a random character from the set, wrapping around if needed.
-        charset[Int(byte) % charset.count]
-      }
-
-      return String(nonce)
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
     }
     
     @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
-      let inputData = Data(input.utf8)
-      let hashedData = SHA256.hash(data: inputData)
-      let hashString = hashedData.compactMap {
-        String(format: "%02x", $0)
-      }.joined()
-
-      return hashString
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
     
     // MARK: - 애플 로그인
@@ -92,12 +98,14 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         // Handle error.
         print("Sign in with Apple errored: \(error)")
     }
-    
-    // MARK: - 구글 로그인
+}
+
+// MARK: - 구글 로그인
+extension LoginViewModel {
     /// 구글 로그인
     func handleGoogleLogin() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
+        
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
@@ -120,8 +128,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             self.signInFirebase(credential: credential)
         }
     }
-    
-    // MARK: - 카카오 로그인
+}
+
+// MARK: - 카카오 로그인
+extension LoginViewModel {
     /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -162,6 +172,12 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
                 let email = user?.kakaoAccount?.email ?? ""
                 let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
                 let userName = user?.kakaoAccount?.profile?.nickname ?? ""
+                
+                // TODO: - 함수로 축약
+                self.loginUserEmail = email
+                self.imgURL = imgURL
+                self.userName = userName
+                
                 Task {
                     await self.addUserInfoToFirestore(email: email,
                                                       imgURL: imgURL,
@@ -171,7 +187,10 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             }
         }
     }
-    
+}
+
+// MARK: - 파이어베이스 저장
+extension LoginViewModel {
     func signInFirebase(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { result, error in
             if let error = error {
@@ -180,7 +199,8 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
             }
             
             guard let user = result?.user else { return }
-            print(user)
+            self.loginUserEmail = user.email
+            print("로그인한 사람: \(self.loginUserEmail)")
             self.isLoggedin = true
             self.getAndStoreFirebaseUserInfo(user: user)
         }
@@ -194,6 +214,11 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
         let email = user.email ?? ""
         let imgURL = user.photoURL?.absoluteString ?? ""
         let userName = user.displayName ?? ""
+        
+        // TODO: - 함수로 축약
+        self.loginUserEmail = email
+        self.imgURL = imgURL
+        self.userName = userName
         
         Task {
             await self.addUserInfoToFirestore(email: email,
@@ -217,7 +242,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
           ], merge: true)
           print("Document successfully written!")
         } catch {
-          print("Error writing document: \(error)")
+            print("Error writing document: \(error)")
         }
     }
 }
