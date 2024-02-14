@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @StateObject private var profileVM = ProfileViewModel()
+    @StateObject private var loginVM = LoginViewModel.shared
     
     var body: some View {
         VStack(alignment: .center) {
             HStack() {
-                AsyncImage(url: profileVM.profileImageURL)
+                AsyncImage(url: URL(string: loginVM.imgURL ?? "www.google.com"))
                     .frame(width: 80, height: 80)
                     .clipShape(Circle())
                 
-                Text(profileVM.nickname)
+                Text(loginVM.userName ?? "이름없음")
                 
                 Spacer()
             }
@@ -25,14 +25,14 @@ struct ProfileView: View {
             
             Spacer()
             
-            AccountButton(profileVM: profileVM)
+            UnlinkButton(loginVM: loginVM)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
-struct AccountButton: View {
-    @ObservedObject var profileVM: ProfileViewModel
+struct UnlinkButton: View {
+    @ObservedObject var loginVM: LoginViewModel
     @State private var showingLogout = false
     @State private var showingUnlink = false
     @State private var isNextScreenActive = false
@@ -47,8 +47,8 @@ struct AccountButton: View {
 
                 }
                 let secondButton = Alert.Button.destructive(Text("로그아웃")) {
-                    profileVM.handleKakaoLogout()
-                    profileVM.handleFBAuthLogout()
+                    loginVM.handleKakaoLogout()
+                    loginVM.handleFBAuthLogout()
                     
                     isNextScreenActive = true
                 }
@@ -67,8 +67,8 @@ struct AccountButton: View {
 
                 }
                 let secondButton = Alert.Button.destructive(Text("회원탈퇴")) {
-                    profileVM.handleKakaoUnlink()
-                    profileVM.handleFBAuthUnlink()
+                    loginVM.handleKakaoUnlink()
+                    loginVM.handleFBAuthUnlink()
                     
                     isNextScreenActive = true
                 }

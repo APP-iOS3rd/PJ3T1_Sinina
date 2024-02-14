@@ -12,6 +12,8 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 import GoogleSignIn
+import KakaoSDKCommon
+import KakaoSDKAuth
 import KakaoSDKUser
 
 class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate {
@@ -141,7 +143,10 @@ extension LoginViewModel {
                 } else {
                     print("loginWithKakaoTalk() success.")
                     self.isLoggedin = true
-                    self.getAndStoreKakaoUserInfo()
+                    let userInfo = self.getKakaoUserInfo()
+                    self.storeUserInfo(email: userInfo.0,
+                                       imgURL: userInfo.1,
+                                       userName: userInfo.2)
                 }
             }
         } else {
@@ -151,17 +156,20 @@ extension LoginViewModel {
                 } else {
                     print("loginWithKakaoAccount() success.")
                     self.isLoggedin = true
-                    self.getAndStoreKakaoUserInfo()
+                    let userInfo = self.getKakaoUserInfo()
+                    self.storeUserInfo(email: userInfo.0,
+                                       imgURL: userInfo.1,
+                                       userName: userInfo.2)
                 }
             }
         }
     }
     
-    // MARK: - 카카오 유저 정보 획득
-    func getAndStoreKakaoUserInfo() {
-        guard let deviceToken = AppInfo.shared.deviceToken else {
-            return
-        }
+    /// 카카오 유저 정보 획득
+    func getKakaoUserInfo() -> (String, String, String) {
+        var email: String = ""
+        var imgURL: String = ""
+        var userName: String = ""
         
         UserApi.shared.me() {(user, error) in
             if let error = error {
@@ -169,27 +177,63 @@ extension LoginViewModel {
             }
             else {
                 print("me() success.")
-                let email = user?.kakaoAccount?.email ?? ""
-                let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
-                let userName = user?.kakaoAccount?.profile?.nickname ?? ""
+                email = user?.kakaoAccount?.email ?? ""
+                imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
+                userName = user?.kakaoAccount?.profile?.nickname ?? ""
                 
-                // TODO: - 함수로 축약
                 self.loginUserEmail = email
                 self.imgURL = imgURL
                 self.userName = userName
-                
-                Task {
-                    await self.addUserInfoToFirestore(email: email,
-                                                      imgURL: imgURL,
-                                                      userName: userName,
-                                                      deviceToken: deviceToken)
+            }
+        }
+        return (email, imgURL, userName)
+    }
+    
+    /// 유저 정보 저장
+    func storeUserInfo(email: String, imgURL: String, userName: String) {
+        guard let deviceToken = AppInfo.shared.deviceToken else {
+            return
+        }
+        
+        Task {
+            await self.addUserInfoToFirestore(email: email,
+                                              imgURL: imgURL,
+                                              userName: userName,
+                                              deviceToken: deviceToken)
+        }
+    }
+    
+    /// 카카오 자동 로그인
+    func checkKakaoAutoLogin() -> Bool {
+        var isAutoLogin = false
+        
+        if (AuthApi.hasToken()) {
+            UserApi.shared.accessTokenInfo { (_, error) in
+                if let error = error {
+                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  {
+                        //로그인 필요
+                        return
+                    }
+                    else {
+                        //기타 에러
+                        return
+                    }
+                }
+                else {
+                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
+                    isAutoLogin = true
                 }
             }
         }
+        else {
+            //로그인 필요
+            return false
+        }
+        return isAutoLogin
     }
 }
 
-// MARK: - 파이어베이스 저장
+// MARK: - 파이어베이스 제공 간편 로그인
 extension LoginViewModel {
     func signInFirebase(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { result, error in
@@ -203,34 +247,15 @@ extension LoginViewModel {
             print("로그인한 사람: \(self.loginUserEmail)")
             AppInfo.shared.currentUser = user
             self.isLoggedin = true
-            self.getAndStoreFirebaseUserInfo(user: user)
+            let userInfo = self.getFirebaseUserInfo()
+            self.storeUserInfo(email: userInfo.0,
+                               imgURL: userInfo.1,
+                               userName: userInfo.2)
         }
     }
     
-    func getAndStoreFirebaseUserInfo(user: FirebaseAuth.User) {
-        guard let deviceToken = AppInfo.shared.deviceToken else {
-            return
-        }
-        // FIXME: - 로그인 할때마다 사용자를 저장하게 됨
-        let email = user.email ?? ""
-        let imgURL = user.photoURL?.absoluteString ?? ""
-        let userName = user.displayName ?? ""
-        
-        // TODO: - 함수로 축약
-        self.loginUserEmail = email
-        self.imgURL = imgURL
-        self.userName = userName
-        
-        Task {
-            await self.addUserInfoToFirestore(email: email,
-                                              imgURL: imgURL,
-                                              userName: userName,
-                                              deviceToken: deviceToken)
-        }
-    }
-    
-    // MARK: - 유저 정보 파이어스토어에 저장
     // FIXME: - 회원가입일때만 저장
+    /// 유저 정보 파이어스토어에 저장
     func addUserInfoToFirestore(email: String, imgURL: String, userName: String, deviceToken: String) async {
         let db = Firestore.firestore()
         
@@ -245,5 +270,79 @@ extension LoginViewModel {
         } catch {
             print("Error writing document: \(error)")
         }
+    }
+    
+    // MARK: - 파이어베이스
+    /// 파이어베이스 유저 정보 획득
+    func getFirebaseUserInfo() -> (String, String, String) {
+        var email: String = ""
+        var imgURL: String = ""
+        var userName: String = ""
+        
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if Auth.auth().currentUser != nil {
+                email = user?.email ?? ""
+                imgURL = user?.photoURL?.absoluteString ?? ""
+                userName = user?.displayName ?? ""
+                
+                self.loginUserEmail = email
+                self.imgURL = imgURL
+                self.userName = userName
+            }
+        }
+        return (email, imgURL, userName)
+    }
+}
+
+// MARK: - 로그아웃, 회원탈퇴
+extension LoginViewModel {
+    /// 카카오 로그아웃
+    func handleKakaoLogout() {
+        UserApi.shared.logout {(error) in
+            if let error = error {
+                print(error)
+            } else {
+                print("logout() success.")
+            }
+        }
+        isLoggedin = false
+    }
+    
+    /// 카카오 회원 탈퇴
+    func handleKakaoUnlink() {
+        UserApi.shared.unlink {(error) in
+            if let error = error {
+                print(error)
+            }
+            else {
+                print("unlink() success.")
+            }
+        }
+        isLoggedin = false
+    }
+    
+    /// 파이어베이스 Auth 로그아웃
+    func handleFBAuthLogout() {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
+        isLoggedin = false
+    }
+    
+    /// 파이어베이스 Auth 회원 탈퇴
+    func handleFBAuthUnlink() {
+        let user = Auth.auth().currentUser
+        
+        user?.delete { error in
+            if let error = error {
+                // An error happened.
+            } else {
+                // Account deleted.
+            }
+        }
+        isLoggedin = false
     }
 }
