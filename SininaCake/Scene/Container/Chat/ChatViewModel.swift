@@ -22,11 +22,11 @@ class ChatViewModel: ObservableObject{
     
     // 모든 방 리스트를 받아옴
     func fetchAllRooms(){
-        fireStore.collection(collectionName).getDocuments{ (snapshot, error) in
+        fireStore.collection(collectionName).getDocuments { (snapshot, error) in
             guard error == nil else { return }
             
             self.chatRooms.removeAll() // ChatRoom 전부 지우고
-            //self.messages.removeAll()
+            self.messages.removeAll()
             
             for document in snapshot!.documents{
                 if let data = try? document.data(as: ChatRoom.self) {
@@ -41,7 +41,7 @@ class ChatViewModel: ObservableObject{
     }
     
     // 받아오는 room
-    func fetchRoom(userEmail: String) {
+    func fetchRoom(userEmail: String){
         print("fetchRoom: \(userEmail)")
         
         fireStore.collection(collectionName).whereField("userEmail", isEqualTo: userEmail).getDocuments() { (snapshot, error) in
