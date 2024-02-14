@@ -28,6 +28,9 @@ struct ProfileView: View {
             UnlinkButton(loginVM: loginVM)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            loginVM.getKakaoUserInfo()
+        }
     }
 }
 

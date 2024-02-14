@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 struct SplashView: View {
     @StateObject var loginVM = LoginViewModel.shared
-    @State var isAutoLogin = false
+
     @State var changeView = false
     
     var body: some View {
@@ -17,14 +19,17 @@ struct SplashView: View {
             .resizable()
             .frame(width: 180, height: 180)
             .onAppear {
-                isAutoLogin = loginVM.checkKakaoAutoLogin()
                 changeView = true
             }
             .fullScreenCover(isPresented: $changeView) {
-                if isAutoLogin {
+                if AuthApi.hasToken() {
                     ContainerView().environmentObject(loginVM)
                 } else {
-                    LoginView()
+                    LoginView().onOpenURL(perform: { url in
+                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                            AuthController.handleOpenUrl(url: url)
+                        }
+                    })
                 }
             }
     }

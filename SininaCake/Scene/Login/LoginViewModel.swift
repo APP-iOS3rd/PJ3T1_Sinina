@@ -142,10 +142,7 @@ extension LoginViewModel {
                     print(error)
                 } else {
                     print("loginWithKakaoTalk() success.")
-                    let userInfo = self.getKakaoUserInfo()
-                    self.storeUserInfo(email: userInfo.0,
-                                       imgURL: userInfo.1,
-                                       userName: userInfo.2)
+                    self.getKakaoUserInfo()
                     self.isLoggedin = true
                 }
             }
@@ -155,10 +152,7 @@ extension LoginViewModel {
                     print(error)
                 } else {
                     print("loginWithKakaoAccount() success.")
-                    let userInfo = self.getKakaoUserInfo()
-                    self.storeUserInfo(email: userInfo.0,
-                                       imgURL: userInfo.1,
-                                       userName: userInfo.2)
+                    self.getKakaoUserInfo()
                     self.isLoggedin = true
                 }
             }
@@ -166,27 +160,26 @@ extension LoginViewModel {
     }
     
     /// 카카오 유저 정보 획득
-    func getKakaoUserInfo() -> (String, String, String) {
-        var email: String = ""
-        var imgURL: String = ""
-        var userName: String = ""
-        
+    func getKakaoUserInfo() {
         UserApi.shared.me() {(user, error) in
             if let error = error {
                 print(error)
             }
             else {
                 print("me() success.")
-                email = user?.kakaoAccount?.email ?? ""
-                imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
-                userName = user?.kakaoAccount?.profile?.nickname ?? ""
+                let email = user?.kakaoAccount?.email ?? ""
+                let imgURL = user?.kakaoAccount?.profile?.thumbnailImageUrl?.absoluteString ?? ""
+                let userName = user?.kakaoAccount?.profile?.nickname ?? ""
                 
                 self.loginUserEmail = email
                 self.imgURL = imgURL
                 self.userName = userName
+                
+                self.storeUserInfo(email: email,
+                                   imgURL: imgURL,
+                                   userName: userName)
             }
         }
-        return (email, imgURL, userName)
     }
     
     /// 유저 정보 저장
@@ -206,31 +199,34 @@ extension LoginViewModel {
     /// 카카오 자동 로그인
     func checkKakaoAutoLogin() -> Bool {
         var isAutoLogin = false
-        
-        if (AuthApi.hasToken()) {
-            UserApi.shared.accessTokenInfo { (_, error) in
-                if let error = error {
-                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  {
-                        //로그인 필요
-                        return
-                    }
-                    else {
-                        //기타 에러
-                        return
-                    }
-                }
-                else {
-                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
-                    isAutoLogin = true
-                }
-            }
-        }
-        else {
-            //로그인 필요
-            return false
-        }
+
         return isAutoLogin
     }
+//        if (AuthApi.hasToken()) {
+//            UserApi.shared.accessTokenInfo { (_, error) in
+//                if let error = error {
+//                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  {
+//                        //로그인 필요
+//                        return
+//                    }
+//                    else {
+//                        //기타 에러
+//                        return
+//                    }
+//                }
+//                else {
+//                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
+//                    isAutoLogin = true
+//                    return
+//                }
+//            }
+//        }
+//        else {
+//            //로그인 필요
+//            return false
+//        }
+//        return isAutoLogin
+//    }
 }
 
 // MARK: - 파이어베이스 제공 간편 로그인
@@ -242,15 +238,16 @@ extension LoginViewModel {
                 return
             }
             
-            self.isLoggedin = true
             guard let user = result?.user else { return }
             self.loginUserEmail = user.email
             print("로그인한 사람: \(self.loginUserEmail)")
             AppInfo.shared.currentUser = user
-            let userInfo = self.getFirebaseUserInfo()
+            let userInfo = self.getFirebaseUserInfo(user: user)
+            print("errrrrror \(userInfo.0) -- \(userInfo.1), \(userInfo.2)")
             self.storeUserInfo(email: userInfo.0,
                                imgURL: userInfo.1,
                                userName: userInfo.2)
+            self.isLoggedin = true
         }
     }
     
@@ -274,22 +271,15 @@ extension LoginViewModel {
     
     // MARK: - 파이어베이스
     /// 파이어베이스 유저 정보 획득
-    func getFirebaseUserInfo() -> (String, String, String) {
-        var email: String = ""
-        var imgURL: String = ""
-        var userName: String = ""
+    func getFirebaseUserInfo(user: FirebaseAuth.User) -> (String, String, String) {
+        let email = user.email ?? ""
+        let imgURL = user.photoURL?.absoluteString ?? ""
+        let userName = user.displayName ?? ""
         
-        Auth.auth().addStateDidChangeListener { auth, user in
-            if Auth.auth().currentUser != nil {
-                email = user?.email ?? ""
-                imgURL = user?.photoURL?.absoluteString ?? ""
-                userName = user?.displayName ?? ""
-                
-                self.loginUserEmail = email
-                self.imgURL = imgURL
-                self.userName = userName
-            }
-        }
+        // TODO: - 함수로 축약
+        self.loginUserEmail = email
+        self.imgURL = imgURL
+        self.userName = userName
         return (email, imgURL, userName)
     }
 }
