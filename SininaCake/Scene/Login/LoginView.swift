@@ -53,7 +53,7 @@ struct LoginButtonView: View {
         VStack(spacing: 18) {
             // 카카오 로그인 버튼
             Button(action: { loginVM.handleKakaoLogin() }, label: {
-                Image("kakaoLogin")
+                Image("kakaoLoginen")
                     .resizable()
                     .scaledToFit()
             })
@@ -62,7 +62,7 @@ struct LoginButtonView: View {
             
             // 구글 로그인 버튼
             Button(action: { loginVM.handleGoogleLogin() }, label: {
-                Image("googleLogin")
+                Image("googleLoginen")
                     .resizable()
                     .scaledToFit()
             })
@@ -71,7 +71,7 @@ struct LoginButtonView: View {
             
             // 애플 로그인 버튼
             Button(action: loginVM.startSignInWithAppleFlow, label: {
-                Image("appleLogin")
+                Image("appleLoginen")
                     .resizable()
                     .scaledToFit()
             })
