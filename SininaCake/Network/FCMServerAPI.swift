@@ -12,6 +12,7 @@ class AppInfo {
     static let shared = AppInfo()
     
     var deviceToken: String? = nil
+    var currentUser: Firebase.User? = Auth.auth().currentUser
 }
 
 class FCMServerAPI: ObservableObject {
