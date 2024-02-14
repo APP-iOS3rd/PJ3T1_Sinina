@@ -165,7 +165,7 @@ private func intToString(_ price: Int) -> String {
     for str in priceString.reversed() {
         result += String(str)
         count += 1
-        if count % 3 == 0 {
+        if count % 3 == 0 && count != priceString.count {
             result += ","
         }
     }

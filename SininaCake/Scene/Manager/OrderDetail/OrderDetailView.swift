@@ -20,11 +20,11 @@ struct OrderDetailView: View {
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
         case .assign:
-            return ("승인 주문건 현황", .customBlue, "assignCheckImage")
+            return ("승인 주문건 현황", .customBlue, "VectorTrue")
         case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "checkImage")
+            return ("미승인 주문건 현황", .customGray, "VectorFalse")
         case .complete:
-            return ("완료 주문건 현황", .black, "assignCheckImage")
+            return ("완료 주문건 현황", .black, "VectorTrue")
         }
     }
     
@@ -253,8 +253,8 @@ struct EtcView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "보냉팩 / 보냉백", textColor: .customGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "추가 요청 사항", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "보냉팩 / 보냉백", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: "추가 요청 사항", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
             }
             
@@ -304,7 +304,7 @@ struct PriceView: View {
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: priceText.0, textColor: .customGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 45)
                 CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
@@ -347,7 +347,7 @@ struct PriceView: View {
                         .overlay(
                             HStack {
                                 Spacer()
-                                CustomText(title: "원", textColor: .customGray, textWeight: .semibold, textSize: 20)
+                                CustomText(title: "원", textColor: .customDarkGray, textWeight: .semibold, textSize: 20)
                             }
                             .padding(.trailing, 18)
                         )
