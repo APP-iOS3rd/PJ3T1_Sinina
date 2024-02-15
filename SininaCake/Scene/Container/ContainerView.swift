@@ -25,7 +25,7 @@ struct ContainerView: View {
                 
                 // FIXME: loginUser의 chatRoom id를 넣어야함
                 // id 값을 안 넣어주면 새로운 채팅방이 계속 생김(uuid 랜덤값)
-                ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: "4C0A47F4-63A7-45A5-BD88-49EE3F216DF8"))
+                ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
                 
                 HomeView()
                     .tag(Tab.home)
