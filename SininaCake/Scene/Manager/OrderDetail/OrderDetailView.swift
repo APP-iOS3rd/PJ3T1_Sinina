@@ -82,6 +82,7 @@ struct OrderDetailView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("주문현황")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

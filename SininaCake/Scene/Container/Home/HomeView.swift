@@ -37,14 +37,13 @@ struct HomeView: View {
                     Button {
                         showManager = true
                     } label: {
-//                        if (loginVM.email == "jongwon5113@gmail.com") {
-                            Image(systemName: "person.crop.circle.badge.checkmark")
-//                        }
+                        //                        if (loginVM.email == "jongwon5113@gmail.com") {
+                        Image("icon_manager")
+                        //                        }
                     }
-//                    .disabled(loginVM.email != "jongwon5113@gmail.com")
-                    .navigationDestination(isPresented: $showManager) {
+                    //                    .disabled(loginVM.email != "jongwon5113@gmail.com")
+                    .fullScreenCover(isPresented: $showManager) {
                         ManagerOnlyView()
-                            .navigationBarHidden(true)
                     }
                 }
             }
