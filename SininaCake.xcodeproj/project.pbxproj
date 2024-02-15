@@ -17,7 +17,6 @@
 		23C35E982B7CE42F00A61406 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E932B7CE42F00A61406 /* Message.swift */; };
 		23C35E9D2B7CE4B900A61406 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */; };
 		23C35E9F2B7CE4EA00A61406 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ChatView.swift */; };
-		23C35EA42B7D92A200A61406 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23C35EA22B7D92A200A61406 /* GoogleService-Info.plist */; };
 		23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */; };
 		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
 		23D682A82B73878A00A2036A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A72B73878A00A2036A /* FirebaseAnalytics */; };
@@ -44,6 +43,8 @@
 		23D682D22B7389D000A2036A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D12B7389D000A2036A /* FirebaseMessaging */; };
 		23D682D42B738A0200A2036A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682D32B738A0200A2036A /* Date.swift */; };
 		23D682D62B73AEB000A2036A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D52B73AEB000A2036A /* FirebaseStorage */; };
+		5E1A63672B7E3E810017D9CF /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5E1A63632B7E3DFA0017D9CF /* ApiKeys.xcconfig */; };
+		5E1A63682B7E3F2C0017D9CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E1A63622B7E3DFA0017D9CF /* GoogleService-Info.plist */; };
 		8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */; };
 		8E5C00562B7E363700F8A685 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
@@ -116,11 +117,12 @@
 		23C35E932B7CE42F00A61406 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		23C35E9E2B7CE4EA00A61406 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		23C35EA22B7D92A200A61406 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		3FEFDCF97D4B57D0F0B7F253 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
+		5E1A63622B7E3DFA0017D9CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		5E1A63632B7E3DFA0017D9CF /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = SOURCE_ROOT; };
 		7DE8675A3B1DF785ADDF1389 /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
 		8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
@@ -256,8 +258,6 @@
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
-				23C35EA22B7D92A200A61406 /* GoogleService-Info.plist */,
-				8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
@@ -641,17 +641,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E1A63682B7E3F2C0017D9CF /* GoogleService-Info.plist in Resources */,
+				5E1A63672B7E3E810017D9CF /* ApiKeys.xcconfig in Resources */,
 				9AC123032B73D30C00DC9A42 /* Preview Content in Resources */,
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
-				23C35EA42B7D92A200A61406 /* GoogleService-Info.plist in Resources */,
 				9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
-				8E5C00562B7E363700F8A685 /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
 			);
@@ -770,7 +770,6 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -897,7 +896,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SininaCake/SininaCake.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Jongwon Lee (9QU3KQTN43)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -942,7 +941,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SininaCake/SininaCake.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Jongwon Lee (2252348JAM)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SininaCake/Preview Content\"";
