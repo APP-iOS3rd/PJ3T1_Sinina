@@ -16,7 +16,6 @@ struct DateValue: Identifiable {
     var date: Date
     var isNotCurrentMonth: Bool = false
     var isSelected: Bool = false
-    
     var isSecondSelected = false
 
         mutating func selectedToggle() {

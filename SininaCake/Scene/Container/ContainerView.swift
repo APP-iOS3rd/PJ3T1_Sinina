@@ -10,6 +10,7 @@ import Firebase
 
 struct ContainerView: View {
     @State var currentTab: Tab = .home
+    @State private var showManager = false
     @ObservedObject var loginVM = LoginViewModel.shared
     @ObservedObject var chatVM = ChatViewModel.shared
     
@@ -20,24 +21,29 @@ struct ContainerView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
-                // FIXME: - ChatView() 파라미터 전달
-//                ChatListView(loginUserEmail: loginVM.loginUserEmail)
-                
-                // FIXME: loginUser의 chatRoom id를 넣어야함
-                // id 값을 안 넣어주면 새로운 채팅방이 계속 생김(uuid 랜덤값)
-                ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
-                
                 HomeView()
                     .tag(Tab.home)
+                
                 ProfileView()
                     .tag(Tab.profile)
             }
             .padding(.bottom, 60)
-       
+            
             CustomTabView(selection: $currentTab)
+        }
+        .fullScreenCover(isPresented: $showManager, content: {
+            ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
+        })
+        .onChange(of: currentTab) { newValue in
+            if newValue == .chat {
+                showManager = true
+            } else {
+                showManager = false
+            }
         }
     }
 }
+
 
 enum Tab: String, CaseIterable {
     case chat = "icon_chat"
@@ -66,7 +72,7 @@ struct CustomTabView: View {
                     selection = tab
                 } label: {
                     Image(selection != tab ? tab.rawValue : getTab(tab: tab))
-                        .frame(width: 120, height: UIScreen.main.bounds.size.height * (50/932))
+                        .frame(width: UIScreen.UIWidth(120), height: UIScreen.UIHeight(50))
                         .contentShape(Rectangle())
                         .scaleEffect(selection == tab ? 1.1 : 0.9)
                 }
