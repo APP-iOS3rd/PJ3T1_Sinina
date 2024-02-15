@@ -11,6 +11,7 @@ import KakaoSDKAuth
 
 struct SplashView: View {
     @StateObject var loginVM = LoginViewModel.shared
+    @StateObject var splashVM = SplashViewModel()
     @State var changeView = false
     
     var body: some View {
@@ -18,10 +19,11 @@ struct SplashView: View {
             .resizable()
             .frame(width: 180, height: 180)
             .onAppear {
+                splashVM.fetchUserData()
                 changeView = true
             }
             .fullScreenCover(isPresented: $changeView) {
-                if AuthApi.hasToken() {
+                if loginVM.loginUserEmail != nil {
                     ContainerView().environmentObject(loginVM)
                 } else {
                     LoginView().onOpenURL(perform: { url in
