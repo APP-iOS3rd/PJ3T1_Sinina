@@ -10,6 +10,7 @@ import Firebase
 
 struct ContainerView: View {
     @State var currentTab: Tab = .home
+    @State private var showManager = false
     @ObservedObject var loginVM = LoginViewModel.shared
     @ObservedObject var chatVM = ChatViewModel.shared
     
@@ -21,20 +22,31 @@ struct ContainerView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
                 // FIXME: - ChatView() 파라미터 전달
-//                ChatListView(loginUserEmail: loginVM.loginUserEmail)
-                ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", userName: "이찰떡", date: Date(), id: "iDe7zgI8rZTbXKTSb7id"))
-                    .tag(Tab.chat)
+                //                ChatListView(loginUserEmail: loginVM.loginUserEmail)
+                
                 HomeView()
                     .tag(Tab.home)
+                
                 ProfileView()
                     .tag(Tab.profile)
             }
             .padding(.bottom, 60)
-       
+            
             CustomTabView(selection: $currentTab)
+        }
+        .fullScreenCover(isPresented: $showManager, content: {
+            ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", userName: "이찰떡", date: Date(), id: "iDe7zgI8rZTbXKTSb7id"))
+        })
+        .onChange(of: currentTab) { newValue in
+            if newValue == .chat {
+                showManager = true
+            } else {
+                showManager = false
+            }
         }
     }
 }
+
 
 enum Tab: String, CaseIterable {
     case chat = "icon_chat"
@@ -63,7 +75,7 @@ struct CustomTabView: View {
                     selection = tab
                 } label: {
                     Image(selection != tab ? tab.rawValue : getTab(tab: tab))
-                        .frame(width: 120, height: UIScreen.main.bounds.size.height * (50/932))
+                        .frame(width: UIScreen.UIWidth(120), height: UIScreen.UIHeight(50))
                         .contentShape(Rectangle())
                         .scaleEffect(selection == tab ? 1.1 : 0.9)
                 }

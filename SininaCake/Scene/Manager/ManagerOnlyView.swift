@@ -33,18 +33,30 @@ struct ManagerOnlyView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            TabView(selection: $currentTab) {
-                OrderListView()
-                    .tag(ManagerTab.list)
-                CalendarView()
-                    .tag(ManagerTab.calendar)
-                ChatListView()
-                    .tag(ManagerTab.chat)
+        NavigationStack {
+            ZStack(alignment: .top) {
+                TabView(selection: $currentTab) {
+                    OrderListView()
+                        .tag(ManagerTab.list)
+                    CalendarView()
+                        .tag(ManagerTab.calendar)
+                    ChatListView()
+                        .tag(ManagerTab.chat)
+                }
+                .padding(.top, 60)
+                
+                ManagerTabView(selection: $currentTab)
             }
-            .padding(.top, 60)
-            
-            ManagerTabView(selection: $currentTab)
+            .navigationBarBackButtonHidden()
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("관리자 전용")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
+                        Image("angle-left-black")
+                    })
+                }
+            }
         }
     }
 }
@@ -73,7 +85,7 @@ struct ManagerTabView: View {
                 }
             }
         }
-        .padding(.vertical, 20)
+        .padding(.vertical, 5)
     }
 }
 
