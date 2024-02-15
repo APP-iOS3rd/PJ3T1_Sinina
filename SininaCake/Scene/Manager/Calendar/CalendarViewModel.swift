@@ -12,7 +12,7 @@ import FirebaseFirestore
 /**
  날짜 칸 표시를 위한 일자 정보
  */
-struct DateValue: Identifiable, Decodable {
+struct DateValue: Identifiable, Codable {
     var id = UUID().uuidString
     var day: Int
     var date: Date
@@ -37,7 +37,7 @@ struct DateValue: Identifiable, Decodable {
 /**
  일정 정보
  */
-struct Schedule: Decodable {
+struct Schedule: Codable {
     var name: String
     var startDate: Date
     var endDate: Date

@@ -10,6 +10,7 @@ struct CalendarView: View {
     @Environment(\.sizeCategory) var sizeCategory
     
     @ObservedObject var dateValueViewModel = DateValueViewModel()
+    
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -41,7 +42,6 @@ struct CalendarView: View {
     var body: some View {
         
         VStack() {
-            
             //            Text("🗓️ 이달의 스케줄")
             //                .font(
             //                    Font.custom("Pretendard", fixedSize: 24)
@@ -343,7 +343,7 @@ struct CardView: View {
     
     @State var schedule: Schedule
     
-    @ObservedObject var dateValueViewModel = DateValueViewModel()
+    @ObservedObject var dateValueViewModel: DateValueViewModel
 
     @State private var selectedDate = Date()
     
