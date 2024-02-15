@@ -1,21 +1,16 @@
 //
-//  OrderDetailView.swift
+//  UserDetailView.swift
 //  SininaCake
 //
-//  Created by  zoa0945 on 1/15/24.
+//  Created by  zoa0945 on 2/15/24.
 //
 
 import SwiftUI
 
-struct OrderDetailView: View {
+struct UserDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
-    @State private var totalPrice = ""
-    @State private var isButtonActive = true
-    @State private var isEditing: Bool = false
-    @State private var scrollTarget: String?
     @StateObject var orderDetailVM = OrderDetailViewModel()
-    @StateObject var fcmServerAPI = FCMServerAPI()
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
@@ -55,30 +50,25 @@ struct OrderDetailView: View {
                 Spacer()
                     .frame(height: 42)
                 
-                OrderInfoView(orderItem: $orderItem)
+                UserOrderInfoView(orderItem: $orderItem)
                 
-                DividerView()
+                UserDividerView()
                 
-                CakeInfoView(orderItem: $orderItem)
+                UserCakeInfoView(orderItem: $orderItem)
                 
                 Spacer()
                     .frame(height: 18)
                 
-                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
+                UserPhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
                 
                 Spacer()
                     .frame(height: 32)
                 
-                EtcView(orderItem: $orderItem)
+                UserEtcView(orderItem: $orderItem)
                 
-                DividerView()
+                UserDividerView()
                 
-                ScrollViewReader { proxy in
-                    PriceView(orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, isEditing: $isEditing, scrollTarget: $scrollTarget, scrollProxy: proxy)
-                }
-                
-                BottomButton(orderDetailVM: orderDetailVM, orderItem: $orderItem, toggle: $isButtonActive, totalPrice: $totalPrice, fcmAPI: fcmServerAPI)
-                    .opacity(opacity)
+                UserPriceView(orderItem: $orderItem)
             }
         }
         .navigationBarBackButtonHidden()
@@ -93,13 +83,12 @@ struct OrderDetailView: View {
         }
         .onAppear {
             orderDetailVM.downloadImage(orderItem.imageURL)
-            orderDetailVM.getDeviceToken(orderItem.email)
         }
     }
 }
 
 // MARK: - DividerView
-struct DividerView: View {
+struct UserDividerView: View {
     var body: some View {
         Spacer()
             .frame(height: 32)
@@ -112,7 +101,7 @@ struct DividerView: View {
 }
 
 // MARK: - OrderInfoView
-struct OrderInfoView: View {
+struct UserOrderInfoView: View {
     @Binding var orderItem: OrderItem
     
     var body: some View {
@@ -141,7 +130,7 @@ struct OrderInfoView: View {
 }
 
 // MARK: - CakeInfoView
-struct CakeInfoView: View {
+struct UserCakeInfoView: View {
     @Binding var orderItem: OrderItem
     
     var body: some View {
@@ -170,7 +159,7 @@ struct CakeInfoView: View {
 }
 
 // MARK: - PhotoView
-struct PhotoView: View {
+struct UserPhotoView: View {
     @Binding var orderItem: OrderItem
     @ObservedObject var orderDetailVM: OrderDetailViewModel
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
@@ -237,7 +226,7 @@ struct PhotoView: View {
 }
 
 // MARK: - EtcView
-struct EtcView: View {
+struct UserEtcView: View {
     @Binding var orderItem: OrderItem
     var icePackTitle: String {
         switch orderItem.icePack {
@@ -273,15 +262,9 @@ struct EtcView: View {
     }
 }
 
-// MARK: - PriceView
-struct PriceView: View {
+// MARK: - UserPriceView
+struct UserPriceView: View {
     @Binding var orderItem: OrderItem
-    @Binding var toggle: Bool
-    @Binding var totalPrice: String
-    @Binding var isEditing: Bool
-    @Binding var scrollTarget: String?
-    var scrollProxy: ScrollViewProxy
-    @FocusState var isFocused: Bool
     
     var priceText: (String, String) {
         switch orderItem.status {
@@ -292,136 +275,16 @@ struct PriceView: View {
         }
     }
     
-    var opacity: Double {
-        switch orderItem.status {
-        case .notAssign:
-            return 1
-        case .assign, .complete:
-            return 0
-        }
-    }
-    
     var body: some View {
-        VStack {
-            HStack {
-                CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                Spacer()
-                    .frame(width: 45)
-                CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
-                Spacer()
-            }
-            
-            HStack {
-                CustomText(title: "총 확정금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                Spacer()
-                    .frame(width: 24)
-                HStack {
-                    TextField("", text: $totalPrice, onEditingChanged: { editing in
-                        scrollTarget = "priceTextField"
-                        withAnimation {
-                            isEditing = editing
-                        }
-                    })
-                        .padding()
-                        .background(Color(.white))
-                        .keyboardType(.numberPad)
-                        .font(.custom("Pretendard", fixedSize: 20))
-                        .fontWeight(.semibold)
-                        .id("priceTextField")
-                        .focused($isFocused)
-                        .onTapGesture {
-                            totalPrice = ""
-                        }
-                        .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                Spacer()
-                                Button(action: {
-                                    toggle = false
-                                    isFocused = false
-                                    totalPrice = String(intToString(Int(totalPrice) ?? 0).dropLast())
-                                }, label: {
-                                    CustomText(title: "Done", textColor: .customBlue, textWeight: .semibold, textSize: 18)
-                                })
-                            }
-                        }
-                        .overlay(
-                            HStack {
-                                Spacer()
-                                CustomText(title: "원", textColor: .customDarkGray, textWeight: .semibold, textSize: 20)
-                            }
-                            .padding(.trailing, 18)
-                        )
-                }
-                .overlay(
-                    RoundedRectangle(cornerRadius: 27.5)
-                        .stroke(Color(.customGray))
-                )
-                Spacer()
-            }
-            .opacity(opacity)
+        HStack {
+            CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+            Spacer()
+                .frame(width: 45)
+            CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
+            Spacer()
         }
         .padding(.leading, 24)
         .padding(.trailing, 24)
-        .onChange(of: scrollTarget) { target in
-            if let target = target {
-                withAnimation {
-                    scrollProxy.scrollTo(target, anchor: .top)
-                    
-                    scrollTarget = nil
-                }
-            }
-        }
-    }
-}
-
-// MARK: - BottomButton
-struct BottomButton: View {
-    @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var orderDetailVM: OrderDetailViewModel
-    @Binding var orderItem: OrderItem
-    @Binding var toggle: Bool
-    @Binding var totalPrice: String
-    @ObservedObject var fcmAPI: FCMServerAPI
-    
-    var buttonStyle: (String, UIColor) {
-        switch orderItem.status {
-        case .notAssign:
-            if toggle {
-                return ("승인하기", .customGray)
-            } else {
-                return ("승인하기", .customBlue)
-            }
-        case .assign:
-            return ("제작완료", .customBlue)
-        case .complete:
-            return ("", .black)
-        }
-    }
-    
-    var buttonToggle: Bool {
-        switch orderItem.status {
-        case .assign:
-            return false
-        default:
-            return toggle
-        }
-    }
-
-    var body: some View {
-        CustomButton(action: {
-            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: "Test Message")
-            
-            if orderItem.status == .notAssign {
-                orderDetailVM.updateStatus(orderItem: orderItem)
-                orderDetailVM.updatePrice(orderItem: orderItem, stringToInt(totalPrice))
-            } else {
-                orderDetailVM.updateStatus(orderItem: orderItem)
-            }
-            
-            presentationMode.wrappedValue.dismiss()
-        }, title: buttonStyle.0, titleColor: .white, backgroundColor: buttonStyle.1, leading: 24, trailing: 24)
-            .padding(.top, 29)
-            .disabled(buttonToggle)
     }
 }
 

@@ -34,6 +34,7 @@ class OrderDetailViewModel: ObservableObject {
     }
     
     func downloadImage(_ imageNames: [String]) {
+        images = []
         let storage = Storage.storage()
         
         for imageName in imageNames {
