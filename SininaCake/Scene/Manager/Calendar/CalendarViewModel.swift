@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseFirestore
 
 /**
  날짜 칸 표시를 위한 일자 정보
  */
-struct DateValue: Identifiable {
+struct DateValue: Identifiable, Decodable {
     var id = UUID().uuidString
     var day: Int
     var date: Date
@@ -195,4 +196,65 @@ extension DateValue {
             }
         }
     }
+    
 }
+
+
+class DateValueViewModel: ObservableObject {
+    @Published var dateValues: [DateValue] = []
+
+    private var listener: ListenerRegistration?
+
+    init() {
+        observeFirestoreChanges()
+    }
+
+    func observeFirestoreChanges() {
+            let db = Firestore.firestore()
+            let collectionReference = db.collection("dateValues")
+
+            listener = collectionReference.addSnapshotListener { querySnapshot, error in
+                guard let documents = querySnapshot?.documents else {
+                    print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
+                    return
+                }
+
+                self.dateValues = documents.compactMap { queryDocumentSnapshot in
+                    do {
+                        // Firestore에서 직렬화된 데이터를 가져와서 DateValue로 변환
+                        let data = try queryDocumentSnapshot.data(as: DateValue.self)
+                        return data
+                    } catch {
+                        print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
+                        return nil
+                    }
+                }
+            }
+        }
+    
+    func loadDataFromFirestore() {
+        let db = Firestore.firestore()
+        let collectionReference = db.collection("dateValues")
+
+        collectionReference.getDocuments { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
+                return
+            }
+
+            self.dateValues = documents.compactMap { queryDocumentSnapshot in
+                do {
+                    let data = try queryDocumentSnapshot.data(as: DateValue.self)
+                    return data
+                } catch {
+                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
+                    return nil
+                }
+            }
+        }
+    }
+
+        deinit {
+            listener?.remove()
+        }
+    }

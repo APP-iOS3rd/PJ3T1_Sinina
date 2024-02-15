@@ -9,7 +9,7 @@ struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     
-    
+    @ObservedObject var dateValueViewModel = DateValueViewModel()
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
         let myFormatter = DateFormatter()
@@ -164,7 +164,7 @@ struct CalendarView: View {
                     
                     ForEach(daysList[i].indices, id: \.self) { j in
                         
-                        CardView(isReadOnly: false, value: $daysList[i][j], schedule: testSchedule)
+                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueViewModel:dateValueViewModel,isReadOnly: false)
                         
                         
                     }
@@ -173,7 +173,7 @@ struct CalendarView: View {
                 
             }
         }
-        
+        .onDisappear()
         .onChange(of: monthOffset) { _ in
             // updating Month...
             currentDate = getCurrentMonth()
@@ -338,12 +338,17 @@ struct CalendarView: View {
 
 struct CardView: View {
     
-    @State var isReadOnly: Bool
+    
     @Binding var value: DateValue
     
     @State var schedule: Schedule
     
+    @ObservedObject var dateValueViewModel = DateValueViewModel()
+
     @State private var selectedDate = Date()
+    
+    @State var isReadOnly: Bool
+    
     
     func selectedDate2() {
         if isReadOnly == false {
@@ -402,8 +407,7 @@ struct CardView: View {
                         else {
                             Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customDarkGray) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
-                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
                                     
@@ -418,6 +422,10 @@ struct CardView: View {
                 
                 
             }
+            .onAppear {
+                        
+                dateValueViewModel.loadDataFromFirestore()
+                    }
             
         }
         .frame(width: UIScreen.main.bounds.width / 13)
