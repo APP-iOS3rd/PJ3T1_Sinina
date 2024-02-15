@@ -18,11 +18,8 @@ struct CalendarView: View {
         return dateString
     }
     
-
-
-//    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
-
-
+    
+    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     
     
@@ -38,14 +35,7 @@ struct CalendarView: View {
     
     
     
-    private func customFont(size: CGFloat, maxSize: CGFloat) -> Font {
-        let scaledSize = min(size, maxSize)
-        
-        guard let customFont = UIFont(name: "Pretendard", size: scaledSize) else {
-            return Font.system(size: scaledSize)
-        }
-        return Font(customFont)
-    }
+    
     
     
     var body: some View {
@@ -76,9 +66,9 @@ struct CalendarView: View {
                             headerView
                             Divider()
                                 .frame(width: 302)
-<
+                            
                             weekView
-
+                            
                             
                             cardView
                             Divider()
@@ -94,20 +84,7 @@ struct CalendarView: View {
                 )
             
         }
-        //        Rectangle()
-        //            .foregroundColor(.clear)
-        //            .frame(width: 342, height:231)
-        //            .background(
-        //                ZStack {
-        //                    Rectangle()
-        //                        .foregroundColor(.white)
-        //                        .cornerRadius(12)
-        //                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
-        //                    VStack {
-        //                        pickerView()
-        //                    }
-        //                }
-        //                )
+        
     }
     
     
@@ -153,9 +130,7 @@ struct CalendarView: View {
         let days = ["  일", "월", "화", "수", "목", "금", "토"]
         
         
-        return
-        
-        HStack(spacing:24) {
+        return HStack(spacing:24) {
             
             ForEach(days.indices, id: \.self) { index in
                 Text(days[index])
@@ -188,9 +163,9 @@ struct CalendarView: View {
                 HStack() {
                     
                     ForEach(daysList[i].indices, id: \.self) { j in
-
-                        CardView(value: $daysList[i][j], schedule: testSchedule)
-
+                        
+                        CardView(isReadOnly: false, value: $daysList[i][j], schedule: testSchedule)
+                        
                         
                     }
                 }
@@ -211,7 +186,7 @@ struct CalendarView: View {
         
     }
     
-
+    
     private var bookingView: some View {
         HStack() {
             Text("예약 가능")
@@ -265,51 +240,7 @@ struct CalendarView: View {
         }
     }
     
-    //    private var bookingView: some View {
-    //
-    //
-    //            VStack(alignment:.leading) {
-    //                HStack {
-    //                    Image("Ellipse 62")
-    //                        .frame(width: 12, height: 12)
-    //
-    //                    Text("예약 가능")
-    //                        .font(
-    //                            Font.custom("Pretendard", fixedSize: 14)
-    //                                .weight(.semibold)
-    //                        )
-    //                        .kerning(0.35)
-    //                        .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
-    //
-    //                }
-    //                HStack {
-    //                    Image("Ellipse 63")
-    //                        .frame(width: 12, height: 12)
-    //
-    //                    Text("예약 마감")
-    //                        .font(
-    //                            Font.custom("Pretendard", fixedSize: 14)
-    //                                .weight(.semibold)
-    //                        )
-    //                        .kerning(0.35)
-    //                        .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
-    //                }
-    //
-    //                HStack {
-    //                    Image("Ellipse 64")
-    //                        .frame(width: 12, height: 12)
-    //                    Text("휴무")
-    //                        .font(
-    //                            Font.custom("Pretendard", fixedSize: 14)
-    //                                .weight(.semibold)
-    //                        )
-    //                        .kerning(0.35)
-    //                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
-    //                }
-    //            }
-    //
-    //
-    //    }
+    
     
     /**
      현재 날짜 년도
@@ -402,170 +333,169 @@ struct CalendarView: View {
     }
     
 }
+
+
+
+struct CardView: View {
     
-    struct CardView: View {
+    @State var isReadOnly: Bool
+    @Binding var value: DateValue
+    
+    @State var schedule: Schedule
+    
+    @State private var showSheet = false
+    @State private var selectedDate = Date()
+    
+    func selectedDate2() {
+        if isReadOnly == false {
+            value.selectedToggle()
+            // 클릭할 때마다 클릭 여부를 변경
+            
+            print("tap\(value.isSelected)")
+        }
+    }
+    
+    
+    var body: some View {
         
-
-        @Binding var value: DateValue
-
-        
-        @State var schedule: Schedule
-        
-        @State private var showSheet = false
-        @State private var selectedDate = Date()
-
-        var body: some View {
-            ZStack() {
-                ZStack() {
-                    if value.isSelected {
-                        
-                        
-                    }
-                }
+        ZStack() {
+            //                ZStack() {
+            //                    if showSheet == false {
+            //                        NavigationLink(destination: OrderView()){
+            //                            Text("\(value.day)")
+            //                        }
+            //                    }
+            //                }
+            
+            HStack {
                 
-                
-                
-                
-                HStack {
-                    
-                    if value.day > 0 {
-                        if value.isNotCurrentMonth {
+                if value.day > 0 {
+                    if value.isNotCurrentMonth {
+                        Text("\(value.day)")
+                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                            .foregroundColor(Color(UIColor.customGray))
+                            .padding([.leading, .bottom], 10)
+                    } else {
+                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
+                        {
                             Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(Color(red: 0.87, green: 0.87, blue: 0.87))
+                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
                                 .padding([.leading, .bottom], 10)
-                        } else {
-                            if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
-                            {
-                                Text("\(value.day)")
-                                    .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                    .foregroundColor(value.isSelected ? Color(red: 0.45, green: 0.76, blue: 0.87) : (value.isSecondSelected ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : Color(red: 1, green: 0.27, blue: 0.27)))
-                                //                                .foregroundColor(value.isSelected ? Color(red: 0.45, green: 0.76, blue: 0.87) : Color(red: 1, green: 0.27, blue: 0.27))
-                                    .padding([.leading, .bottom], 10)
-                                    .onTapGesture {
-                                        
-                                        value.selectedToggle()
-                                        // 클릭할 때마다 클릭 여부를 변경
-                                        
-                                        print("tap\(value.isSelected)")
-                                        //                                    value.selected(isSelected: true)
-                                    }
-                                
-                            } else if schedule.startDate.withoutTime() == value.date {
-                                Text("\(value.day)")
-                                    .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                    .foregroundColor(.white)
-                                    .padding([.leading, .bottom], 10)
-                                    .background(Circle()
-                                        .frame(width: 40, height: 40)
-                                                
-                                        .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
-                                        .offset(x:5.2,y:-3.7)
-                                    )
-                                
-                            } else if schedule.startDate.withoutTime() > value.date {
-                                Text("\(value.day)")
-                                    .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                    .foregroundColor(value.isSelected ? Color(red: 0.45, green: 0.76, blue: 0.87) : (value.isSecondSelected ? Color(red: 1, green: 0.27, blue: 0.27) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1))))
-                                    .padding([.leading, .bottom], 10)
-                                //                                .onTapGesture {
-                                //
-                                //                                    value.selectedToggle()// 클릭할 때마다 클릭 여부를 변경
-                                //                                    print("tap\(value.isSelected)")
-                                //                                    value.selected(isSelected: true)
-                                //                                }
-                            }
-                            else {
-                                Text("\(value.day)")
-                                    .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                    .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : (value.isSelected ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : (value.isSecondSelected ? Color(red: 1, green: 0.27, blue: 0.27) : Color(UIColor.customBlue))))
-                                //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
-                                    .padding([.leading, .bottom], 10)
-                                    .onTapGesture {
-                                        
-                                        value.selectedToggle()// 클릭할 때마다 클릭 여부를 변경
-                                        print("tap\(value.isSelected)")
-                                        //                                    value.selected(isSelected: true)
-                                    }
-                            }
+                                .onTapGesture {
+                                    selectedDate2()
+                                    
+                                }
+                            
+                        } else if schedule.startDate.withoutTime() == value.date {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(.white)
+                                .padding([.leading, .bottom], 10)
+                                .background(Circle()
+                                    .frame(width: 40, height: 40)
+                                            
+                                    .foregroundColor(Color(UIColor.customBlue))
+                                    .offset(x:5.2,y:-3.7)
+                                )
+                            
+                        } else if schedule.startDate.withoutTime() > value.date {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray)))
+                                .padding([.leading, .bottom], 10)
+                            
+                        }
+                        else {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customDarkGray) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
+                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
+                                .padding([.leading, .bottom], 10)
+                                .onTapGesture {
+                                    
+                                    selectedDate2()
+                                }
+                            
                         }
                     }
-                    
-                    // Spacer()
-                    
-                    
                 }
                 
+                // Spacer()
+                
+                
             }
-            .frame(width: UIScreen.main.bounds.width / 13)
-            .frame(height: 40)
-            //.frame(maxHeight: .infinity)
-            //.contentShape(Rectangle())
             
         }
- 
+        .frame(width: UIScreen.main.bounds.width / 13)
+        .frame(height: 40)
+        //.frame(maxHeight: .infinity)
+        //.contentShape(Rectangle())
+        
     }
+}
 
-   
-    //struct pickerView: View {
-    //    @Environment(\.dismiss) var dismiss
-    //    @Environment(\.colorScheme) var colorScheme
-    //    @State private var selectedDate = Date()
-    //
-    //
-    //
-    //    //@State private var selectedFlavor = Flavor.chocolate
-    //    init() {
-    //     UIDatePicker.appearance().backgroundColor = UIColor.init(.clear) // changes bg color
-    //            UIDatePicker.appearance().tintColor = UIColor.init(.blue) // changes font color
-    //
-    //    }
-    //
-    //
-    //    var body: some View {
-    //        HStack {
-    //
-    //
-    //            DatePicker("", selection: $selectedDate, in: Date()..., displayedComponents: [.date, .hourAndMinute])
-    //
-    //
-    //                        //.environment(\.colorScheme, .light)
-    //                .colorMultiply(Color(red: 0.45, green: 0.76, blue: 0.87))
-    //                        //.colorInvert()
-    //                            .labelsHidden()
-    //                            //.accentColor(.clear)
-    //                            .datePickerStyle(WheelDatePickerStyle())
-    //                            .environment(\.locale, Locale(identifier: "ko_GB"))
-    //                            .opacity(1)
-    //                            .onAppear {
-    //                                UIDatePicker.appearance().locale?.hourCycle
-    //                                UIDatePicker.appearance().minuteInterval = 10
-    //
-    //                            }
-    //                            .onTapGesture {
-    //                                dismiss()
-    //                            }
-    //                            .foregroundColor(Color.red)
-    //                            .background(
-    //                                RoundedRectangle(cornerRadius: 10)
-    //                                    .foregroundColor(.clear)
-    //                                    .frame(width: 342, height: 241)
-    //                                    .opacity(1.0)
-    //                                    .padding()
-    //                            )
-    //                            .padding()
-    //
-    //
-    //
-    //        }
-    //
-    //    }
-    //
-    //
-    //
-    //
-    //}
-    
+
+
+//struct pickerView: View {
+//    @Environment(\.dismiss) var dismiss
+//    @Environment(\.colorScheme) var colorScheme
+//    @State private var selectedDate = Date()
+//
+//
+//
+//    //@State private var selectedFlavor = Flavor.chocolate
+//    init() {
+//     UIDatePicker.appearance().backgroundColor = UIColor.init(.clear) // changes bg color
+//            UIDatePicker.appearance().tintColor = UIColor.init(.blue) // changes font color
+//
+//    }
+//
+//
+//    var body: some View {
+//        HStack {
+//
+//
+//            DatePicker("", selection: $selectedDate, in: Date()..., displayedComponents: [.date, .hourAndMinute])
+//
+//
+//                        //.environment(\.colorScheme, .light)
+//                .colorMultiply(Color(red: 0.45, green: 0.76, blue: 0.87))
+//                        //.colorInvert()
+//                            .labelsHidden()
+//                            //.accentColor(.clear)
+//                            .datePickerStyle(WheelDatePickerStyle())
+//                            .environment(\.locale, Locale(identifier: "ko_GB"))
+//                            .opacity(1)
+//                            .onAppear {
+//                                UIDatePicker.appearance().locale?.hourCycle
+//                                UIDatePicker.appearance().minuteInterval = 10
+//
+//                            }
+//                            .onTapGesture {
+//                                dismiss()
+//                            }
+//                            .foregroundColor(Color.red)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .foregroundColor(.clear)
+//                                    .frame(width: 342, height: 241)
+//                                    .opacity(1.0)
+//                                    .padding()
+//                            )
+//                            .padding()
+//
+//
+//
+//        }
+//
+//    }
+//
+//
+//
+//
+//}
+
 
 
 

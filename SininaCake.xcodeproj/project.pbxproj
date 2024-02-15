@@ -262,9 +262,6 @@
 				8ECB219C2B1DBF89003BF8B0 /* Extension */,
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
-				8E874BA22B00B37400ECEF08 /* Assets.xcassets */,
-				8EA135DB2B70E577006D4FB4 /* GoogleService-Info.plist */,
-				8E874BA42B00B37400ECEF08 /* Preview Content */,
 			);
 			path = SininaCake;
 			sourceTree = "<group>";
