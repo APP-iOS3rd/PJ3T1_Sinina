@@ -112,10 +112,7 @@ struct ChatView2: View {
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
-                    } else {
-                        print("UIImage를 Data로 변환하는 데 실패")
                     }
-                    
                     self.selectedImage = nil
                    
                 // text 전송
