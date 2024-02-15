@@ -9,28 +9,203 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var loginVM = LoginViewModel.shared
+    @StateObject private var profileVM = ProfileViewModel()
     
     var body: some View {
-        VStack(alignment: .center) {
-            HStack() {
-                AsyncImage(url: URL(string: loginVM.imgURL ?? "www.google.com"))
-                    .frame(width: 80, height: 80)
-                    .clipShape(Circle())
+        NavigationStack {
+            VStack(alignment: .center) {
+                ImageAndNameView(profileVM: profileVM)
                 
-                Text(loginVM.userName ?? "이름없음")
+                ScrollView {
+                    MyOrderListView(profileVM: profileVM, orderData: profileVM.myOrderData)
+                }
                 
                 Spacer()
+                
+                UnlinkButton(loginVM: loginVM)
             }
-            .padding(16)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .navigationDestination(for: OrderItem.self, destination: { item in
+                UserDetailView(orderItem: item)
+            })
+            .onAppear {
+                loginVM.getKakaoUserInfo()
+                profileVM.fetchData()
+                profileVM.downloadProfileImage()
+            }
+        }
+    }
+}
+
+struct ImageAndNameView: View {
+    @ObservedObject var profileVM: ProfileViewModel
+    
+    var title: String {
+        switch profileVM.loginVM.userName {
+        case "", nil:
+            return "닉네임없음"
+        default:
+            return profileVM.loginVM.userName ?? ""
+        }
+    }
+    
+    var body: some View {
+        HStack {
+            if let image = profileVM.profileImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+            } else {
+                Image("icon_profile")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+            }
             
             Spacer()
+                .frame(width: 18)
             
-            UnlinkButton(loginVM: loginVM)
+            CustomText(title: title, textColor: .black, textWeight: .semibold, textSize: 18)
+            
+            Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.leading, 24)
+        .padding(.top, 24)
+    }
+}
+
+struct MyOrderListView: View {
+    @ObservedObject var profileVM: ProfileViewModel
+    let orderData: [OrderItem]
+    
+    var body: some View {
+        VStack(spacing: 14) {
+            HStack {
+                CustomText(title: "MY", textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                CustomText(title: "주문내역", textColor: .black, textWeight: .semibold, textSize: 18)
+                Spacer()
+            }
+            
+            if orderData.isEmpty {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color(.customGray))
+                    .frame(height: 100)
+                    .overlay(
+                        VStack {
+                            Image(systemName: "cart")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(Color(.customGray))
+                                .frame(width: 20, height: 20)
+                            CustomText(title: "주문 내역이 없습니다.", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                        }
+                    )
+            } else {
+                ForEach(0..<orderData.count, id: \.self) { i in
+                    NavigationLink(value: orderData[i]) {
+                        MyOrderView(profileVM: profileVM, orderItem: orderData[i])
+                    }
+                }
+            }
+        }
+        .padding(.leading, 24)
+        .padding(.trailing, 24)
+        .padding(.top, 32)
+    }
+}
+
+struct MyOrderView: View {
+    @ObservedObject var profileVM: ProfileViewModel
+    let orderItem: OrderItem
+    
+    var body: some View {
+        VStack {
+            if let image = profileVM.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: UIScreen.main.bounds.width - 96, height: UIScreen.main.bounds.width / 2)
+                    .clipped()
+            } else {
+                Image("emptyPhoto")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: UIScreen.main.bounds.width - 96, height: UIScreen.main.bounds.width / 2)
+                    .clipped()
+            }
+            InfoView(orderItem: orderItem)
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.customGray))
+        )
+        .overlay(
+            VStack {
+                HStack {
+                    StatusTextView(orderItem: orderItem)
+                    Spacer()
+                }
+                Spacer()
+            }
+        )
         .onAppear {
-            loginVM.getKakaoUserInfo()
+            profileVM.downloadImage(orderItem.id, orderItem.imageURL[0])
         }
+    }
+}
+
+struct StatusTextView: View {
+    let orderItem: OrderItem
+    
+    var titleAndColor: (String, UIColor) {
+        switch orderItem.status {
+        case .assign:
+            return ("예약완료", .white)
+        case .notAssign:
+            return ("예약대기", .customDarkGray)
+        case .complete:
+            return ("제작완료", .black)
+        }
+    }
+    
+    var body: some View {
+        CustomText(title: titleAndColor.0, textColor: titleAndColor.1, textWeight: .semibold, textSize: 14)
+            .frame(width: UIScreen.UIWidth(75), height: UIScreen.UIHeight(30))
+            .background(Color(.customBlue))
+            .cornerRadius(15)
+            .padding()
+    }
+}
+
+struct InfoView: View {
+    let orderItem: OrderItem
+    
+    var body: some View {
+        VStack(spacing: 18) {
+            HStack {
+                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
+                Spacer()
+                Image(systemName: "clock")
+                    .frame(width: 18, height: 18)
+                    .foregroundStyle(Color(.customBlue))
+                CustomText(title: dateToTime(orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
+            }
+            
+            HStack {
+                CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
+                CustomText(title: "\(orderItem.sheet) / \(orderItem.cream)", textColor: .customGray, textWeight: .regular, textSize: 16)
+                Spacer()
+                CustomText(title: intToString(orderItem.confirmedPrice), textColor: .black, textWeight: .semibold, textSize: 18)
+            }
+        }
+        .background(Color(.white))
+        .padding(24)
+        .clipShape(
+            .rect(bottomLeadingRadius: 12, bottomTrailingRadius: 12)
+        )
     }
 }
 
@@ -85,6 +260,35 @@ struct UnlinkButton: View {
     }
 }
 
-#Preview {
-    ProfileView()
+private func intToString(_ price: Int) -> String {
+    let priceString = String(price)
+    var result = ""
+    var count = 0
+    
+    for str in priceString.reversed() {
+        result += String(str)
+        count += 1
+        if count % 3 == 0 && count != priceString.count {
+            result += ","
+        }
+    }
+    
+    return result.reversed() + "원"
+}
+
+private func dateToString(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko-KR")
+    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
+    
+    let dateString = dateFormatter.string(from: date)
+    return dateString
+}
+
+private func dateToTime(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    
+    let timeString = dateFormatter.string(from: date)
+    return timeString
 }

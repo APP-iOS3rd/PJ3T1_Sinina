@@ -11,7 +11,6 @@ import KakaoSDKAuth
 
 struct SplashView: View {
     @StateObject var loginVM = LoginViewModel.shared
-
     @State var changeView = false
     
     var body: some View {
