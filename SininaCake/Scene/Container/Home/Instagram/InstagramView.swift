@@ -32,7 +32,7 @@ struct InstagramView: View {
                 .frame(height: 200)
             }
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 24)
         .onAppear() {
             instaVM.fetchInstaData()
         }
