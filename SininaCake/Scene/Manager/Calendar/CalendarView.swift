@@ -18,7 +18,11 @@ struct CalendarView: View {
         return dateString
     }
     
-    
+
+
+//    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
+
+
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     
     
@@ -72,7 +76,9 @@ struct CalendarView: View {
                             headerView
                             Divider()
                                 .frame(width: 302)
+<
                             weekView
+
                             
                             cardView
                             Divider()
@@ -182,7 +188,9 @@ struct CalendarView: View {
                 HStack() {
                     
                     ForEach(daysList[i].indices, id: \.self) { j in
+
                         CardView(value: $daysList[i][j], schedule: testSchedule)
+
                         
                     }
                 }
@@ -202,10 +210,8 @@ struct CalendarView: View {
         
         
     }
+    
 
-    
-    
-    
     private var bookingView: some View {
         HStack() {
             Text("예약 가능")
@@ -399,14 +405,15 @@ struct CalendarView: View {
     
     struct CardView: View {
         
+
         @Binding var value: DateValue
+
         
         @State var schedule: Schedule
         
         @State private var showSheet = false
         @State private var selectedDate = Date()
 
-        
         var body: some View {
             ZStack() {
                 ZStack() {
@@ -496,11 +503,10 @@ struct CalendarView: View {
             //.contentShape(Rectangle())
             
         }
-        
-        
+ 
     }
 
-    
+   
     //struct pickerView: View {
     //    @Environment(\.dismiss) var dismiss
     //    @Environment(\.colorScheme) var colorScheme
