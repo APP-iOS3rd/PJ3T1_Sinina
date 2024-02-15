@@ -1,11 +1,10 @@
 
-
 import SwiftUI
 import FirebaseStorage
 import PhotosUI
 
 struct OrderView: View {
-    @StateObject var chart = OrderVM(orderItem: OrderItem(email: "", date: Date(), orderTime: Date(), cakeSize: "", sheet: "", cream: "", icePack: .none, name: "", phoneNumber: "", text: "", imageURL: [""], comment: "", expectedPrice: 0, confirmedPrice: 0, status: .notAssign))
+    @StateObject var chart = OrderVM(orderItem: OrderItem(email: "", date: Date(), orderTime: Date(), cakeSize: "", sheet: "", cream: "", icePack: .none, name: "", phoneNumber: "", text: "", imageURL: ["","","",""], comment: "", expectedPrice: 0, confirmedPrice: 0, status: .notAssign))
     @StateObject private var photoVM = PhotoPickerVm()
     
     var body: some View {
@@ -542,7 +541,6 @@ struct ScrollOrderTitleView: View {
                             .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 185/930)
                             .cornerRadius(12)
                             .padding(.horizontal, 24)
-                        
                     }
                 }
                 .padding(.bottom, 42)
@@ -649,7 +647,7 @@ private struct BottomView: View {
                     .fontWeight(.semibold)
             }
             
-            CustomButton(action: {defer {chart.addOrderItem()}; for i in 0...photoVM.selectedImages.count - 1 {photoVM.uploadPhoto(i, chart.orderItem.id)}}, title: "예약하기", titleColor: .white, backgroundColor: chart.isallcheck() ? .customBlue : .textFieldColor, leading: 110, trailing: 24)
+            CustomButton(action: {defer {chart.addOrderItem()}; for i in 0...photoVM.selectedImages.count - 1 {photoVM.uploadPhoto(i, chart.orderItem.id); chart.imgURL(i)}; chart.orderItem.expectedPrice = chart.expectedPrice()}, title: "예약하기", titleColor: .white, backgroundColor: chart.isallcheck() ? .customBlue : .textFieldColor, leading: 110, trailing: 24)
                 .kerning(0.45)
                 .padding(.vertical, 12)
                 .disabled(!chart.isallcheck())

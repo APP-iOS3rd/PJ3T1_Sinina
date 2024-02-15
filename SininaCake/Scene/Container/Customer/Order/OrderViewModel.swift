@@ -1,4 +1,5 @@
 
+
 import Foundation
 import SwiftUI
 import Firebase
@@ -97,6 +98,10 @@ class OrderVM: ObservableObject {
         }
         
         return check
+    }
+    
+    func imgURL(_ i: Int) {
+        orderItem.imageURL[i].append("\(i + 1)")
     }
     
 }
