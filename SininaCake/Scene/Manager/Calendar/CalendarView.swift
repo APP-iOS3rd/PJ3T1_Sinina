@@ -18,11 +18,6 @@ struct CalendarView: View {
         return dateString
     }
     
-
-
-
-//    var testSchedule: Schedule { Schedule(name: "이벤트 기간 \(dateString ?? "") ~  ", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 5, to: Date()) ?? Date()) }
-
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     
@@ -32,10 +27,7 @@ struct CalendarView: View {
     @State var daysList = [[DateValue]]()
     
     //@State var clickedDates: Set<Date> = []
-    @State private var clickedDates: Set<Date> = Set()
-    
-    @State var clicked: Bool = false
-    
+    //@State private var clickedDates: Set<Date> = Set()
     
     //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
@@ -80,7 +72,7 @@ struct CalendarView: View {
                             headerView
                             Divider()
                                 .frame(width: 302)
-                            monthView
+                            weekView
                             
                             cardView
                             Divider()
@@ -150,7 +142,7 @@ struct CalendarView: View {
         
     }
     
-    private var monthView: some View {
+    private var weekView: some View {
         //let weekdaySymbols = Calendar.current.veryShortWeekdaySymbols
         let days = ["  일", "월", "화", "수", "목", "금", "토"]
         
@@ -190,7 +182,7 @@ struct CalendarView: View {
                 HStack() {
                     
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: daysList[i][j], schedule: testSchedule)
+                        CardView(value: $daysList[i][j], schedule: testSchedule)
                         
                     }
                 }
@@ -210,145 +202,7 @@ struct CalendarView: View {
         
         
     }
-    
-    
-    
-    
-    
-    //    @ViewBuilder
-    //    func CardView(value: DateValue, schedule: Schedule) -> some View {
-    //
-    //        var value = value
-    //        var selected = value.isSelected
-    //
-    //        ZStack() {
-    //            ZStack() {
-    //                if selected {
-    //                                Circle()
-    //                                    .frame(width: 20, height: 20)
-    //                                    .foregroundColor(.red) // 클릭된 경우 Circle의 색상
-    //                }
-    
-    //     @ViewBuilder
-    //     func CardView(value: DateValue, schedule: Schedule) -> some View {
-    //         //var clicked: Bool = false
-    
-    //         ZStack() {
-    //             ZStack() {
-    //                 if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate {
-    
-    
-    //                     if schedule.startDate.day == value.day {
-    
-    //                             Text(schedule.name)
-    
-    //                                 .font(.custom("Pretendard-SemiBold", fixedSize: 12))
-    //                                 .foregroundStyle(.black)
-    //                                 //.foregroundColor(Color(UIColor.customBlue))
-    //                                 .lineLimit(2)
-    //                                 .multilineTextAlignment(.trailing)
-    //                                 .fixedSize()
-    //                                 //.frame(width: geometry.size.width, alignment: .trailing)
-    
-    //                     } else  {
-    // //                        Rectangle()
-    // //                            .frame(width: .infinity, height: 20)
-    // //                            .foregroundColor(schedule.color)
-    // //
-    //                     }
-    
-    //                     Spacer()
-    
-    //                 } else {
-    
-    //                     Spacer()
-    //                 }
-    
-    
-    //             }
-    //             .offset(x: 10, y: -10)
-    
-    
-    //             HStack {
-    
-    
-    //                 if value.day > 0 {
-    //                     if value.isNotCurrentMonth {
-    //                         Text("\(value.day)")
-    //                             .font(.custom("Pretendard-SemiBold", size: 18))
-    //                             .foregroundColor(Color(UIColor.customDarkGray))
-    //                             .padding([.leading, .bottom], 10)
-    //                     } else {
-    
-    //                         if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
-    //                         {
-    //                             Text("\(value.day)")
-    //                                 .font(.custom("Pretendard-SemiBold", size: 18))
-    //                                 .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
-    //                                 .padding([.leading, .bottom], 10)
-    //                         } else {
-    //                             Text("\(value.day)")
-    //                                 .font(.custom("Pretendard-SemiBold", size: 18))
-    //                                 .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
-    //                             //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
-    //                                 .padding([.leading, .bottom], 10)
-    //                         }
-    //                     }
-    //                 }
-    //                // Spacer()
-    //             }
-    //             //커스텀 줄
-    // //            Path { path in
-    // //                path.move(to: CGPoint(x:-10, y: 0))
-    // //                path.addLine(to: CGPoint(x: 30, y: 0))
-    // //
-    // >>>>>>> develop
-    //            }
-    //
-    //            HStack {
-    //
-    //
-    //                if value.day > 0 {
-    //                    if value.isNotCurrentMonth {
-    //                        Text("\(value.day)")
-    //                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-    //                            .foregroundColor(Color(red: 0.87, green: 0.87, blue: 0.87))
-    //                            .padding([.leading, .bottom], 10)
-    //                    } else {
-    //                        if schedule.startDate.withoutTime() <= value.date && value.date <= schedule.endDate
-    //                        {
-    //                            Text("\(value.day)")
-    //                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-    //                                .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
-    //                                .padding([.leading, .bottom], 10)
-    //                                .onTapGesture {
-    //
-    //                                    selected.toggle()// 클릭할 때마다 클릭 여부를 변경
-    //                                    print("tap \(selected)")
-    //                                    value.selected(isSelected: true)
-    //                                                    }
-    //
-    //                        } else {
-    //                            Text("\(value.day)")
-    //                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-    //                                .foregroundColor(!(value.date.weekday == 1 || value.date.weekday == 2) ? Color(UIColor.customBlue) : .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)))
-    //                            //                            .foregroundColor(value.date.weekday == 1 || value.date.weekday == 2 ? .init(cgColor: CGColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)) : value.date.weekday == 7 ? Color(UIColor.customBlue) : .black) //일요일 red 토요일 blue
-    //                                .padding([.leading, .bottom], 10)
-    //                        }
-    //                    }
-    //                }
-    //               // Spacer()
-    //
-    //
-    //            }
-    //
-    //        }
-    //        .frame(width: UIScreen.main.bounds.width / 13)
-    //        .frame(height: 40)
-    //        //.frame(maxHeight: .infinity)
-    //        //.contentShape(Rectangle())
-    //
-    //    }
+
     
     
     
@@ -545,12 +399,14 @@ struct CalendarView: View {
     
     struct CardView: View {
         
-        @State var value: DateValue
+        @Binding var value: DateValue
         
         @State var schedule: Schedule
         
         @State private var showSheet = false
         @State private var selectedDate = Date()
+
+        
         var body: some View {
             ZStack() {
                 ZStack() {
@@ -640,6 +496,8 @@ struct CalendarView: View {
             //.contentShape(Rectangle())
             
         }
+        
+        
     }
 
     
@@ -702,14 +560,6 @@ struct CalendarView: View {
     //
     //}
     
-
-
-extension UIScreen {
-   static let screenWidth = UIScreen.main.bounds.size.width
-   static let screenHeight = UIScreen.main.bounds.size.height
-   static let screenSize = UIScreen.main.bounds.size
-}
-
 
 
 
