@@ -11,14 +11,14 @@ import FirebaseFirestore
 struct ChatRoom: Codable, Hashable, Identifiable {
     var id: String
     var userEmail: String
-    var userName: String
-    var date: Date
+//    var userName: String?
+//    var date: Date?
     
-    init(userEmail: String, userName: String, date: Date, id: String = UUID().uuidString) {
-        self.id = id
+    init(userEmail: String, id: String) {
+        self.id = userEmail
         self.userEmail = userEmail
-        self.userName = userName
-        self.date = date
+//        self.userName = userName
+//        self.date = date
     }
 }
 

@@ -21,9 +21,6 @@ struct ContainerView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $currentTab) {
-                // FIXME: - ChatView() 파라미터 전달
-                //                ChatListView(loginUserEmail: loginVM.loginUserEmail)
-                
                 HomeView()
                     .tag(Tab.home)
                 
@@ -35,7 +32,7 @@ struct ContainerView: View {
             CustomTabView(selection: $currentTab)
         }
         .fullScreenCover(isPresented: $showManager, content: {
-            ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", userName: "이찰떡", date: Date(), id: "iDe7zgI8rZTbXKTSb7id"))
+            ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
         })
         .onChange(of: currentTab) { newValue in
             if newValue == .chat {

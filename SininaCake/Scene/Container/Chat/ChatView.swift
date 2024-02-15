@@ -14,6 +14,7 @@ struct ChatView: View {
     @State var chatText = ""
     @State var loginUserEmail: String?
     @State var room: ChatRoom
+    @State private var isChatTextEmpty = true
     
     // MARK: 통합 뷰
     var body: some View {
@@ -21,11 +22,6 @@ struct ChatView: View {
             messagesView
             chatBottomBar
         }
-//        .onAppear {
-//            if loginUserEmail != "c@gmail.com" {
-//                chatVM.fetchOwnerRoom(userEmail: "c@gmail.com")
-//            }
-//        }
     }
     
     // MARK: 메세지 창 띄우는 뷰
@@ -62,7 +58,7 @@ struct ChatView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal){
-                CustomText(title: "\(room.userName)", textColor: .black, textWeight: .semibold, textSize: 24)
+                CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 24)
             }
         }
     }
@@ -70,16 +66,28 @@ struct ChatView: View {
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
         HStack(spacing: 16) {
-            Image(systemName: "plus")
-                .frame(width: 24, height: 24)
-                .foregroundColor(Color(.customGray))
+            Button {
+                let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
+                chatVM.sendMessage(chatRoom: room, message: msg)
+                
+            } label: {
+                Image(systemName: "plus")
+                    .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : Color(.customBlue))
+                    .frame(width: 24, height: 24)
+                    .padding(10)
+                    .background(isChatTextEmpty ? Color(.customGray) : .white)
+                    .cornerRadius(45)
+            }
             
             ZStack {
                 TextField("", text: $chatText)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(Color(.textFieldColor))
+                    .background(Color(.customLightGray))
                     .cornerRadius(45)
+                    .onChange(of: chatText){ value in
+                        isChatTextEmpty = value.isEmpty
+                    }
             }
             
             Button {
@@ -88,10 +96,17 @@ struct ChatView: View {
                 
             } label: {
                 Image(systemName: "paperplane")
-                    .foregroundColor(Color(.customGray))
+                    .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : .white)
                     .frame(width: 24, height: 24)
+                    .padding(10)
+                    .background(isChatTextEmpty ? Color(.customGray) : Color(.customBlue))
+                    .cornerRadius(45)
             }
         }
+        .padding(.horizontal, 5)
+        .padding(.vertical, 5)
+        .background(Color(.customLightGray))
+        .cornerRadius(45)
         .padding()
     }
     
@@ -100,7 +115,7 @@ struct ChatView: View {
         HStack {
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-            CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
+            CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
                 .padding()
                 .background(Color(.customBlue))
                 .cornerRadius(30)
@@ -113,7 +128,7 @@ struct ChatView: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.text, textColor: .black, textWeight: .regular, textSize: 16)
+            CustomText(title: message.text ?? "", textColor: .black, textWeight: .regular, textSize: 16)
                 .padding()
                 .background(Color(.textFieldColor))
                 .cornerRadius(30)
