@@ -46,6 +46,7 @@
 		5E1A63672B7E3E810017D9CF /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5E1A63632B7E3DFA0017D9CF /* ApiKeys.xcconfig */; };
 		5E1A63682B7E3F2C0017D9CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E1A63622B7E3DFA0017D9CF /* GoogleService-Info.plist */; };
 		8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */; };
+		8E5C00562B7E363700F8A685 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BAD2B00B40D00ECEF08 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BAC2B00B40D00ECEF08 /* LoginView.swift */; };
 		8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BB32B00B58E00ECEF08 /* CautionView.swift */; };
@@ -124,6 +125,7 @@
 		5E1A63632B7E3DFA0017D9CF /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = SOURCE_ROOT; };
 		7DE8675A3B1DF785ADDF1389 /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
 		8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
+		8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BAC2B00B40D00ECEF08 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -256,8 +258,6 @@
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
-				5E1A63632B7E3DFA0017D9CF /* ApiKeys.xcconfig */,
-				5E1A63622B7E3DFA0017D9CF /* GoogleService-Info.plist */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
@@ -833,6 +833,7 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

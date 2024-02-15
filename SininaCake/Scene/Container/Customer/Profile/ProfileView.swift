@@ -214,6 +214,7 @@ struct UnlinkButton: View {
     @State private var showingLogout = false
     @State private var showingUnlink = false
     @State private var isNextScreenActive = false
+    let appInfo = AppInfo.shared
     
     var body: some View {
         HStack {
@@ -229,6 +230,11 @@ struct UnlinkButton: View {
                     loginVM.handleFBAuthLogout()
                     
                     isNextScreenActive = true
+                    
+                    loginVM.loginUserEmail = nil
+                    loginVM.userName = nil
+                    loginVM.imgURL = nil
+                    appInfo.currentUser = nil
                 }
                 return Alert(title: Text("로그아웃"),
                              message: Text("정말로 로그아웃 하시겠습니까?"),
@@ -249,6 +255,11 @@ struct UnlinkButton: View {
                     loginVM.handleFBAuthUnlink()
                     
                     isNextScreenActive = true
+                    
+                    loginVM.loginUserEmail = nil
+                    loginVM.userName = nil
+                    loginVM.imgURL = nil
+                    appInfo.currentUser = nil
                 }
                 return Alert(title: Text("회원탈퇴"),
                              message: Text("정말로 회원탈퇴 하시겠습니까?"),
