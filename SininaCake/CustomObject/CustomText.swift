@@ -26,5 +26,7 @@ struct CustomText: View {
             .font(.custom("Pretendard", fixedSize: textSize))
             .fontWeight(textWeight)
             .foregroundStyle(Color(textColor))
+            .minimumScaleFactor(0.2)
+            .scaledToFit()
     }
 }
