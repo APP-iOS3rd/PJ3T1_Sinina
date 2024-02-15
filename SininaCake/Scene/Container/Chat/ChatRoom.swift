@@ -14,8 +14,8 @@ struct ChatRoom: Codable, Hashable, Identifiable {
 //    var userName: String?
 //    var date: Date?
     
-    init(userEmail: String, id: String = UUID().uuidString) {
-        self.id = id
+    init(userEmail: String, id: String) {
+        self.id = userEmail
         self.userEmail = userEmail
 //        self.userName = userName
 //        self.date = date

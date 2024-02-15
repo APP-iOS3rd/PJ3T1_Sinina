@@ -14,6 +14,8 @@ struct ChatView2: View {
     @State var loginUserEmail: String? // 로그인 유저
     @State var room: ChatRoom
     @State private var isChatTextEmpty = true
+    @State private var isImagePickerPresented = false
+    @State private var selectedImage: UIImage?
     
     
     // MARK: 통합 뷰
@@ -71,8 +73,7 @@ struct ChatView2: View {
     private var chatBottomBar: some View {
         HStack(spacing: 16) {
             Button {
-                let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
-                chatVM.sendMessage(chatRoom: room, message: msg)
+                isImagePickerPresented.toggle()
                 
             } label: {
                 Image(systemName: "plus")
@@ -82,22 +83,48 @@ struct ChatView2: View {
                     .background(isChatTextEmpty ? Color(.customGray) : .white)
                     .cornerRadius(45)
             }
+            .sheet(isPresented: $isImagePickerPresented){
+                ImagePicker(selectedImage: $selectedImage)
+            }
             
-            ZStack {
-                TextField("", text: $chatText)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color(.customLightGray))
-                    .cornerRadius(45)
-                    .onChange(of: chatText){ value in
-                        isChatTextEmpty = value.isEmpty
-                    }
+            if let selectedImage = selectedImage {
+                Image(uiImage: selectedImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50, height: 50)
+            } else {
+                ZStack {
+                    TextField("", text: $chatText)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color(.customLightGray))
+                        .cornerRadius(45)
+                        .onChange(of: chatText){ value in
+                            isChatTextEmpty = value.isEmpty
+                        }
+                }
             }
             
             Button {
-                let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
-                chatVM.sendMessage(chatRoom: room, message: msg)
+                // 사진을 보낼 때
+                if let selectedImage = selectedImage {
+                    if let image = selectedImage.jpegData(compressionQuality: 1){
+                        let msg = Message(imageData: image, imageURL: "", userEmail: loginUserEmail ?? "", timestamp: Date())
+                        
+                        chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                    } else {
+                        print("UIImage를 Data로 변환하는 데 실패")
+                    }
+                    
+                    self.selectedImage = nil
+                   
+                // text 전송
+                } else {
+                    let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
+                    chatVM.sendMessage(chatRoom: room, message: msg)
+                }
                 
+                chatText = ""
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : .white)
@@ -119,7 +146,7 @@ struct ChatView2: View {
         HStack {
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-            CustomText(title: message.text, textColor: .white, textWeight: .regular, textSize: 16)
+            CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
                 .padding()
                 .background(Color(.customBlue))
                 .cornerRadius(30)
@@ -132,7 +159,7 @@ struct ChatView2: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.text, textColor: .black, textWeight: .regular, textSize: 16)
+            CustomText(title: message.text ?? "", textColor: .black, textWeight: .regular, textSize: 16)
                 .padding()
                 .background(Color(.textFieldColor))
                 .cornerRadius(30)

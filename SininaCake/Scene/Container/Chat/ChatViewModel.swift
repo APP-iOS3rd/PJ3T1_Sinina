@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseStorage
 
 class ChatViewModel: ObservableObject{
     static let shared = ChatViewModel()
@@ -68,7 +69,7 @@ class ChatViewModel: ObservableObject{
             }
         }
     }
-        
+    
     
     // 채팅룸 추가
     func addChatRoom(chatRoom: ChatRoom) {
@@ -86,6 +87,7 @@ class ChatViewModel: ObservableObject{
     // 메세지 패치(메세지 가져오기)
     func startListening(chatRoom: ChatRoom) {
         
+        print("listeningRoom: \(chatRoom)")
         let listener = fireStore.collection(collectionName).document(chatRoom.id).collection("message").addSnapshotListener { querySnapshot, error in
             DispatchQueue.main.async {
                 guard let snapshot = querySnapshot, error == nil else {
@@ -143,6 +145,55 @@ class ChatViewModel: ObservableObject{
             print("sendMessage 함수 실행: \(message)추가")
             print("sendMessage 함수 실행(방이름): \(chatRoom)추가")
         }
-    }    
+    }
+    
+    // 이미지가 있는 경우 Firestore에 메시지를 저장하는 함수
+    func sendMessageWithImage(chatRoom: ChatRoom, message: Message) {
+        print("sendMessageWithImage: chatRoom 정보 \(chatRoom) 메세지 정보 \(message)")
+        
+        if let imageData = message.imageData {
+            // 이미지 데이터를 스토리지에 업로드
+            uploadImageToStorage(imageData: imageData) { result in
+                switch result {
+                case .success(let downloadURL):
+                    // 이미지가 업로드되고 다운로드 URL이 성공적으로 가져온 경우
+                    // 해당 URL을 메세지에 설정, FireStore에 저장
+                    
+                    var updatedMessage = message
+                    updatedMessage.imageURL = downloadURL.absoluteString // 이미지의 URL을 메세지에 설정
+                    
+                    print("updatedMessage: \(updatedMessage)")
+                    // FIRESTORE에 메세지를 저장
+                    try? self.fireStore.collection(self.collectionName).document(chatRoom.id)
+                        .collection("message").document(message.id).setData(from: updatedMessage)
+               
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+
+    
+    func uploadImageToStorage(imageData: Data, completion: @escaping (Result<URL, Error>) -> Void) {
+        
+        print("스토리지에 업데이트할 데이터: \(imageData)")
+        let storageRef = Storage.storage().reference().child("chatImages/\(UUID().uuidString).jpg")
+        storageRef.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            storageRef.downloadURL { url, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                if let downloadURL = url {
+                    completion(.success(downloadURL))
+                }
+            }
+        }
+    }
 }
 
