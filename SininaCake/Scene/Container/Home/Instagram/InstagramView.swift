@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InstagramView: View {
-    @StateObject var instaVM = InstagramViewModel()
+    @StateObject var instaAPI = InstagramAPI()
     //private var instaData: [InstaData]
     
     var body: some View {
@@ -16,7 +16,7 @@ struct InstagramView: View {
             CustomText(title: "새로운 케이크", textColor: .black, textWeight: .semibold, textSize: 24)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top) {
-                    ForEach(instaVM.instaData) { data in
+                    ForEach(instaAPI.instaData) { data in
                         AsyncImage(url: URL(string: data.mediaURL)) { image in
                             image.image?
                                 .resizable()
@@ -34,7 +34,7 @@ struct InstagramView: View {
         }
         .padding(.horizontal, 24)
         .onAppear() {
-            instaVM.fetchInstaData()
+            instaAPI.fetchInstaData()
         }
     }
 }
