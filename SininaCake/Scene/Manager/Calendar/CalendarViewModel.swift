@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 /**
  날짜 칸 표시를 위한 일자 정보
@@ -29,8 +30,6 @@ struct DateValue: Identifiable {
             }
         }
 }
-
-
 
 
 
@@ -129,3 +128,71 @@ extension Date {
 }
 
 
+
+//
+extension DateValue {
+    
+    
+    init?(documentData: [String: Any]) {
+        guard
+            let day = documentData["day"] as? Int,
+            let dateTimestamp = documentData["date"] as? Timestamp,
+            let isNotCurrentMonth = documentData["isNotCurrentMonth"] as? Bool,
+            let isSelected = documentData["isSelected"] as? Bool,
+            let isSecondSelected = documentData["isSecondSelected"] as? Bool
+        else {
+            return nil
+        }
+
+        self.day = day
+        self.date = dateTimestamp.dateValue()
+        self.isNotCurrentMonth = isNotCurrentMonth
+        self.isSelected = isSelected
+        self.isSecondSelected = isSecondSelected
+    }
+
+    var toFirestore: [String: Any] {
+        [
+            "day": day,
+            "date": Timestamp(date: date),
+            "isNotCurrentMonth": isNotCurrentMonth,
+            "isSelected": isSelected,
+            "isSecondSelected": isSecondSelected
+        ]
+    }
+    
+    
+    func saveDateValueToFirestore(dateValue: DateValue) {
+        let db = Firestore.firestore()
+        let documentReference = db.collection("dateValues").document(dateValue.id)
+        
+        documentReference.setData(dateValue.toFirestore) { error in
+            if let error = error {
+                print("Error saving DateValue to Firestore: \(error.localizedDescription)")
+            } else {
+                print("DateValue saved to Firestore successfully.")
+            }
+        }
+    }
+
+    // Firestore 데이터 읽어오기
+    func getDateValueFromFirestore(documentID: String, completion: @escaping (DateValue?) -> Void) {
+        let db = Firestore.firestore()
+        let documentReference = db.collection("dateValues").document(documentID)
+        
+        documentReference.getDocument { document, error in
+            if let error = error {
+                print("Error getting DateValue from Firestore: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            if let documentData = document?.data(),
+               let dateValue = DateValue(documentData: documentData) {
+                completion(dateValue)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+}

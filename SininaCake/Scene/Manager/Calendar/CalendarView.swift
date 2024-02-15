@@ -343,13 +343,13 @@ struct CardView: View {
     
     @State var schedule: Schedule
     
-    @State private var showSheet = false
     @State private var selectedDate = Date()
     
     func selectedDate2() {
         if isReadOnly == false {
             value.selectedToggle()
             // 클릭할 때마다 클릭 여부를 변경
+            value.saveDateValueToFirestore(dateValue: value)
             
             print("tap\(value.isSelected)")
         }
@@ -359,13 +359,6 @@ struct CardView: View {
     var body: some View {
         
         ZStack() {
-            //                ZStack() {
-            //                    if showSheet == false {
-            //                        NavigationLink(destination: OrderView()){
-            //                            Text("\(value.day)")
-            //                        }
-            //                    }
-            //                }
             
             HStack {
                 
@@ -429,75 +422,10 @@ struct CardView: View {
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
-        //.frame(maxHeight: .infinity)
-        //.contentShape(Rectangle())
+        
         
     }
 }
-
-
-
-//struct pickerView: View {
-//    @Environment(\.dismiss) var dismiss
-//    @Environment(\.colorScheme) var colorScheme
-//    @State private var selectedDate = Date()
-//
-//
-//
-//    //@State private var selectedFlavor = Flavor.chocolate
-//    init() {
-//     UIDatePicker.appearance().backgroundColor = UIColor.init(.clear) // changes bg color
-//            UIDatePicker.appearance().tintColor = UIColor.init(.blue) // changes font color
-//
-//    }
-//
-//
-//    var body: some View {
-//        HStack {
-//
-//
-//            DatePicker("", selection: $selectedDate, in: Date()..., displayedComponents: [.date, .hourAndMinute])
-//
-//
-//                        //.environment(\.colorScheme, .light)
-//                .colorMultiply(Color(red: 0.45, green: 0.76, blue: 0.87))
-//                        //.colorInvert()
-//                            .labelsHidden()
-//                            //.accentColor(.clear)
-//                            .datePickerStyle(WheelDatePickerStyle())
-//                            .environment(\.locale, Locale(identifier: "ko_GB"))
-//                            .opacity(1)
-//                            .onAppear {
-//                                UIDatePicker.appearance().locale?.hourCycle
-//                                UIDatePicker.appearance().minuteInterval = 10
-//
-//                            }
-//                            .onTapGesture {
-//                                dismiss()
-//                            }
-//                            .foregroundColor(Color.red)
-//                            .background(
-//                                RoundedRectangle(cornerRadius: 10)
-//                                    .foregroundColor(.clear)
-//                                    .frame(width: 342, height: 241)
-//                                    .opacity(1.0)
-//                                    .padding()
-//                            )
-//                            .padding()
-//
-//
-//
-//        }
-//
-//    }
-//
-//
-//
-//
-//}
-
-
-
 
 
 #Preview {
