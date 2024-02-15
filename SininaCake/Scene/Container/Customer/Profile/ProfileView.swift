@@ -186,12 +186,12 @@ struct InfoView: View {
     var body: some View {
         VStack(spacing: 18) {
             HStack {
-                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
+                CustomText(title: orderItem.date.dateToString(), textColor: .black, textWeight: .semibold, textSize: 18)
                 Spacer()
                 Image(systemName: "clock")
                     .frame(width: 18, height: 18)
                     .foregroundStyle(Color(.customBlue))
-                CustomText(title: dateToTime(orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                CustomText(title: orderItem.date.dateToTime(), textColor: .customBlue, textWeight: .semibold, textSize: 18)
             }
             
             HStack {
@@ -274,21 +274,4 @@ private func intToString(_ price: Int) -> String {
     }
     
     return result.reversed() + "원"
-}
-
-private func dateToString(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "ko-KR")
-    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
-    
-    let dateString = dateFormatter.string(from: date)
-    return dateString
-}
-
-private func dateToTime(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm"
-    
-    let timeString = dateFormatter.string(from: date)
-    return timeString
 }

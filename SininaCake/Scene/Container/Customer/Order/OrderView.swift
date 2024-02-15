@@ -125,7 +125,7 @@ struct ScrollOrderTitleView: View {
             CustomButton(action:{chart.orderItem.cakeSize = "도시락"; size["도시락"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 24)
                 .overlay (
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(size["도시락"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                        .stroke(size["도시락"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
                         .overlay (alignment: .leading) {
                             HStack{
@@ -159,7 +159,7 @@ struct ScrollOrderTitleView: View {
             CustomButton(action: {chart.orderItem.cakeSize = "미니"; size["미니"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 24)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(size["미니"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                        .stroke(size["미니"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
                         .overlay (alignment: .leading) {
                             HStack{
@@ -193,7 +193,7 @@ struct ScrollOrderTitleView: View {
             CustomButton(action: {chart.orderItem.cakeSize = "1호"; size["1호"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 24)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(size["1호"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                        .stroke(size["1호"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
                         .overlay (alignment: .leading) {
                             HStack{
@@ -230,7 +230,7 @@ struct ScrollOrderTitleView: View {
             CustomButton(action: {chart.orderItem.cakeSize = "2호"; size["2호"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 24)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(size["2호"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                        .stroke(size["2호"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
                         .overlay (alignment: .leading) {
                             HStack{
@@ -267,7 +267,7 @@ struct ScrollOrderTitleView: View {
             CustomButton(action: {chart.orderItem.cakeSize = "3호"; size["3호"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 24)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(size["3호"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                        .stroke(size["3호"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
                         .overlay (alignment: .leading) {
                             HStack{
@@ -314,7 +314,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.sheet = "바닐라 시트"; sheet["바닐라 시트"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 6)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(sheet["바닐라 시트"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(sheet["바닐라 시트"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.leading, 24)
                             .padding(.trailing, 5.5)
@@ -338,7 +338,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.sheet = "초코 시트"; sheet["초코 시트"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 6, trailing: 24)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(sheet["초코 시트"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(sheet["초코 시트"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.trailing,24)
                             .padding(.leading, 5.5)
@@ -371,7 +371,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.cream = "크림치즈 프로스팅"; cream["크림치즈 프로스팅"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 6)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(cream["크림치즈 프로스팅"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(cream["크림치즈 프로스팅"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.leading, 24)
                             .padding(.trailing, 6)
@@ -398,7 +398,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.cream = "오레오"; cream["오레오"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 6, trailing: 24)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(cream["오레오"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(cream["오레오"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.trailing,24)
                             .padding(.leading, 6)
@@ -427,7 +427,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.cream = "블루베리"; cream["블루베리"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 6)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(cream["블루베리"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(cream["블루베리"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.leading, 24)
                             .padding(.trailing, 6)
@@ -453,7 +453,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.cream = "초코"; cream["초코"]?.toggle()}, title: "", titleColor: .black, backgroundColor: .white, leading: 6, trailing: 24)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(cream["초코"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(cream["초코"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.trailing,24)
                             .padding(.leading, 6)
@@ -553,7 +553,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.icePack = IcePack.icePack; icepack["보냉팩"]?.toggle(); icepackCheck()}, title: "", titleColor: .black, backgroundColor: .white, leading: 24, trailing: 6)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(icepack["보냉팩"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(icepack["보냉팩"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.leading, 24)
                             .padding(.trailing, 5.5)
@@ -581,7 +581,7 @@ struct ScrollOrderTitleView: View {
                 CustomButton(action: {chart.orderItem.icePack = IcePack.iceBag; icepack["보냉백"]?.toggle(); icepackCheck()}, title: "", titleColor: .black, backgroundColor: .white, leading: 6, trailing: 24)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(icepack["보냉백"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customLightgray))
+                            .stroke(icepack["보냉백"] ?? false ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             .frame(height: 90)
                             .padding(.trailing,24)
                             .padding(.leading, 5.5)
