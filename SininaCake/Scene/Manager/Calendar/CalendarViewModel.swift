@@ -166,7 +166,6 @@ extension DateValue {
         ]
     }
     
-    
     func saveDateValueToFirestore(dateValue: DateValue) {
         let db = Firestore.firestore()
         let documentReference = db.collection("dateValues").document(dateValue.id)
@@ -180,7 +179,7 @@ extension DateValue {
         }
     }
 
-    // Firestore 데이터 읽어오기
+    /// Firestore 데이터 읽어오기
     func getDateValueFromFirestore(documentID: String, completion: @escaping (DateValue?) -> Void) {
         let db = Firestore.firestore()
         let documentReference = db.collection("dateValues").document(documentID)
@@ -201,6 +200,8 @@ extension DateValue {
         }
     }
     
+
+    
 }
 
 
@@ -212,6 +213,10 @@ class DateValueViewModel: ObservableObject {
     init() {
         observeFirestoreChanges()
     }
+    
+    
+
+ 
 
     func observeFirestoreChanges() {
             let db = Firestore.firestore()
@@ -235,6 +240,36 @@ class DateValueViewModel: ObservableObject {
                 }
             }
         }
+    
+//    func observeFirestoreChanges() {
+//        let db = Firestore.firestore()
+//        let collectionReference = db.collection("dateValues")
+//
+//        listener = collectionReference.addSnapshotListener { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
+//                return
+//            }
+//
+//            // 기존의 데이터를 유지한 채로 새로운 데이터를 추가
+//            var updatedDateValues = self.dateValues
+//
+//            for queryDocumentSnapshot in documents {
+//                do {
+//                    // Firestore에서 직렬화된 데이터를 가져와서 DateValue로 변환
+//                    let data = try queryDocumentSnapshot.data(as: DateValue.self)
+//                    
+//                    if !updatedDateValues.contains(where: { $0.id == data.id }) {
+//                        updatedDateValues.append(data)
+//                    }
+//                } catch {
+//                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
+//                }
+//            }
+//
+//            self.dateValues = updatedDateValues
+//        }
+//    }
     
     func loadDataFromFirestore() {
         let db = Firestore.firestore()
@@ -289,7 +324,7 @@ class DateValueViewModel: ObservableObject {
         let collectionReference = db.collection("dateValues")
 
         let query = collectionReference
-            .whereField("day", isEqualTo: dateValue.day)
+            .whereField("date", isEqualTo: dateValue.date.withoutTime())
             .limit(to: 2) // 중복된 경우 2개 이상이 될 수 있으므로 limit을 설정
 
         query.getDocuments { querySnapshot, error in
@@ -313,6 +348,47 @@ class DateValueViewModel: ObservableObject {
                             }
                         }
                     }
+    
+    func getTextColorForDateValue(_ dateValue: DateValue) -> Color {
+            if dateValue.isSelected {
+                return Color(UIColor.customBlue)
+            } else if dateValue.isSecondSelected {
+                return Color(UIColor.customRed)
+            } else {
+                return Color(UIColor.customDarkGray)
+            }
+        }
+    
+    
+    
+    
+    func removePastDateValues() {
+        let db = Firestore.firestore()
+        let collectionReference = db.collection("dateValues")
+
+        // 현재 날짜와 비교해서 현재 시간 이전인 데이터를 쿼리
+        let query = collectionReference
+            .whereField("date", isLessThan: Timestamp(date: Date()))
+        
+        query.getDocuments { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("과거 데이터 조회 중 오류: \(error?.localizedDescription ?? "알 수 없는 오류")")
+                return
+            }
+
+            // 조회된 데이터를 모두 삭제
+            for document in documents {
+                let documentID = document.documentID
+                db.collection("dateValues").document(documentID).delete { error in
+                    if let error = error {
+                        print("과거 데이터 삭제 중 오류: \(error.localizedDescription)")
+                    } else {
+                        print("과거 데이터 삭제 완료")
+                    }
+                }
+            }
+        }
+    }
 
         deinit {
             listener?.remove()

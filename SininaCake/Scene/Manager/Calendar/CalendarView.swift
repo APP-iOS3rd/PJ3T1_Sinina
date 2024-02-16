@@ -343,27 +343,35 @@ struct CardView: View {
     
     @ObservedObject var dateValueViewModel: DateValueViewModel
 
-    @State private var selectedDate = Date()
+    //@State private var selectedDate = Date()
     
     @State var isReadOnly: Bool
     
     
     func selectedDate2() {
         if isReadOnly == false {
+            value.saveDateValueToFirestore(dateValue: value)
             value.selectedToggle()
             // 클릭할 때마다 클릭 여부를 변경
-            value.saveDateValueToFirestore(dateValue: value)
             
             print("tap\(value.isSelected)")
         }
     }
     
-    
+ 
     
     var body: some View {
         
+        
         ZStack() {
-            
+            if true {
+                
+                ZStack() {
+                    Text(".")
+                        .font(.system(size: 30))  // 텍스트 크기를 조절하여 점처럼 보이게 함
+                        .foregroundColor(Color.black)
+                }
+            }
             HStack {
                 
                 if value.day > 0 {
@@ -372,17 +380,20 @@ struct CardView: View {
                             .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
+                        
                     } else {
                         if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
                         {
                             Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                                 .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
+                                //.foregroundColor(dateValueViewModel.getTextColorForDateValue(value))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
+                                    
                                     selectedDate2()
-                                    let DateValue = DateValue(day: 1, date: Date())
-                                                   dateValueViewModel.removeDuplicateDay(dateValue: DateValue)
+                                    let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                    dateValueViewModel.removeDuplicateDay(dateValue: dateValue)
                                     
                                 }
                             
@@ -413,8 +424,10 @@ struct CardView: View {
                                 .onTapGesture {
                                     let DateValue = DateValue(day: value.day, date: Date())
                                     dateValueViewModel.removeDuplicateDay(dateValue: DateValue)
-                                    
+                                
                                     selectedDate2()
+                                    
+                                    
                                 }
                             
                         }
