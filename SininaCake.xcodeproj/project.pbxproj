@@ -19,6 +19,10 @@
 		23C35E9F2B7CE4EA00A61406 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ChatView.swift */; };
 		23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */; };
 		23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA82B7E45CB00A61406 /* ChatView2.swift */; };
+		23C35EB12B7F39D000A61406 /* Sinina_Release.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 23C35EAD2B7F39D000A61406 /* Sinina_Release.mobileprovision */; };
+		23C35EB22B7F39D000A61406 /* Sinina_Debug.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 23C35EAE2B7F39D000A61406 /* Sinina_Debug.mobileprovision */; };
+		23C35EB32B7F39D000A61406 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 23C35EAF2B7F39D000A61406 /* ApiKeys.xcconfig */; };
+		23C35EB42B7F39D000A61406 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23C35EB02B7F39D000A61406 /* GoogleService-Info.plist */; };
 		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
 		23D682A82B73878A00A2036A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A72B73878A00A2036A /* FirebaseAnalytics */; };
 		23D682AA2B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A92B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -44,10 +48,9 @@
 		23D682D22B7389D000A2036A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D12B7389D000A2036A /* FirebaseMessaging */; };
 		23D682D42B738A0200A2036A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682D32B738A0200A2036A /* Date.swift */; };
 		23D682D62B73AEB000A2036A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D52B73AEB000A2036A /* FirebaseStorage */; };
-		5E1A63672B7E3E810017D9CF /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5E1A63632B7E3DFA0017D9CF /* ApiKeys.xcconfig */; };
-		5E1A63682B7E3F2C0017D9CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E1A63622B7E3DFA0017D9CF /* GoogleService-Info.plist */; };
+		5E1A63672B7E3E810017D9CF /* (null) in Resources */ = {isa = PBXBuildFile; };
+		5E1A63682B7E3F2C0017D9CF /* (null) in Resources */ = {isa = PBXBuildFile; };
 		8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */; };
-		8E5C00562B7E363700F8A685 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BAD2B00B40D00ECEF08 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BAC2B00B40D00ECEF08 /* LoginView.swift */; };
 		8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BB32B00B58E00ECEF08 /* CautionView.swift */; };
@@ -120,6 +123,11 @@
 		23C35E9E2B7CE4EA00A61406 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		23C35EA82B7E45CB00A61406 /* ChatView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView2.swift; sourceTree = "<group>"; };
+		23C35EAD2B7F39D000A61406 /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = Sinina_Release.mobileprovision; path = ../../file/Sinina_Release.mobileprovision; sourceTree = "<group>"; };
+		23C35EAE2B7F39D000A61406 /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
+		23C35EAF2B7F39D000A61406 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../file/ApiKeys.xcconfig; sourceTree = "<group>"; };
+		23C35EB02B7F39D000A61406 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../file/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		23C35EB52B7F3A1700A61406 /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = Sinina_Release.mobileprovision; path = ../../file/Sinina_Release.mobileprovision; sourceTree = "<group>"; };
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
@@ -255,6 +263,10 @@
 			isa = PBXGroup;
 			children = (
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
+				23C35EAF2B7F39D000A61406 /* ApiKeys.xcconfig */,
+				23C35EB02B7F39D000A61406 /* GoogleService-Info.plist */,
+				23C35EAE2B7F39D000A61406 /* Sinina_Debug.mobileprovision */,
+				23C35EAD2B7F39D000A61406 /* Sinina_Release.mobileprovision */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
@@ -501,6 +513,7 @@
 				9A1E87A02B7C490400788053 /* ApiKeys.xcconfig */,
 				9A53C5632B7C83F700892E94 /* GoogleService-Info.plist */,
 				9A53C5622B7C83F700892E94 /* ApiKeys.xcconfig */,
+				8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -538,7 +551,7 @@
 			isa = PBXGroup;
 			children = (
 				C2B055241573B040AB61801E /* Pods-SininaCake.debug.xcconfig */,
-				305FDF97D218C7E57D91F9B9 /* Pods-SininaCake.release.xcconfig */,
+				23C35EB52B7F3A1700A61406 /* Sinina_Release.mobileprovision */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -641,15 +654,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E1A63682B7E3F2C0017D9CF /* GoogleService-Info.plist in Resources */,
-				5E1A63672B7E3E810017D9CF /* ApiKeys.xcconfig in Resources */,
+				5E1A63682B7E3F2C0017D9CF /* (null) in Resources */,
+				5E1A63672B7E3E810017D9CF /* (null) in Resources */,
 				9AC123032B73D30C00DC9A42 /* Preview Content in Resources */,
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
+				23C35EB32B7F39D000A61406 /* ApiKeys.xcconfig in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
 				9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
+				23C35EB22B7F39D000A61406 /* Sinina_Debug.mobileprovision in Resources */,
+				23C35EB12B7F39D000A61406 /* Sinina_Release.mobileprovision in Resources */,
+				23C35EB42B7F39D000A61406 /* GoogleService-Info.plist in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
@@ -834,7 +851,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8E5C00552B7E363700F8A685 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -936,7 +952,7 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 305FDF97D218C7E57D91F9B9 /* Pods-SininaCake.release.xcconfig */;
+			baseConfigurationReference = C2B055241573B040AB61801E /* Pods-SininaCake.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

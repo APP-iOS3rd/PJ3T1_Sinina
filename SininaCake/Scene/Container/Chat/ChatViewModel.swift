@@ -9,6 +9,16 @@ import Foundation
 import Firebase
 import FirebaseStorage
 
+//class ListenerRegistration {
+//    let chatRoom: ChatRoom
+//    let listener: ListenerRegistration
+//    
+//    init(chatRoom: ChatRoom, listener: ListenerRegistration) {
+//        self.chatRoom = chatRoom
+//        self.listener = listener
+//    }
+//}
+
 class ChatViewModel: ObservableObject{
     static let shared = ChatViewModel()
     private var fireStore = FirebaseManager.shared.firestore
@@ -20,9 +30,11 @@ class ChatViewModel: ObservableObject{
     @Published var lastMessageTimestamp = [String: String]()
     let collectionName = "chatRoom"
     var listeners = [ListenerRegistration]()
+//    var listeners : [ListenerRegistration] = []
     
     // 모든 방 리스트를 받아옴
     func fetchAllRooms(){
+        
         fireStore.collection(collectionName).getDocuments { (snapshot, error) in
             guard error == nil else { return }
             
@@ -45,16 +57,22 @@ class ChatViewModel: ObservableObject{
     func fetchRoom(userEmail: String){
         print("fetchRoom: \(userEmail)")
         
+        // userEmail과 일치하는 방을 찾아서 불러옴
         fireStore.collection(collectionName).whereField("userEmail", isEqualTo: userEmail).getDocuments() { (snapshot, error) in
             guard error == nil else { print("fetch Room 에러 : \(error)")
                 return }
             
+            print("AllListeners: \(self.listeners)")
+            
             // 기존 목록 비우기
             self.chatRooms.removeAll()
             self.messages.removeAll()
+            self.listeners.removeAll()
             
+            print("AllListeners: \(self.listeners)")
             
             print("쿼리 결과: \(snapshot!.documents.count)")
+            
             // 쿼리 결과인 snapshot의 chatRoom을 가져옴
             for document in snapshot!.documents {
                 if let data = try? document.data(as: ChatRoom.self) {
@@ -64,7 +82,6 @@ class ChatViewModel: ObservableObject{
                     
                     // 동시에 해당 chatRoom의 메세지를 가져옴
                     self.startListening(chatRoom: data)
-                    
                 }
             }
         }
@@ -85,10 +102,13 @@ class ChatViewModel: ObservableObject{
     
     // 메세지 패치(메세지 가져오기)
     func startListening(chatRoom: ChatRoom) {
-        
+//        if listeners.contains(where: { $0.chatRoom.id == chatRoom.id }) {
+//                print("이미 채팅방을 관찰 중입니다: \(chatRoom)")
+//                return
+//        }
         print("listeningRoom: \(chatRoom)")
+        
         let listener = fireStore.collection(collectionName).document(chatRoom.id).collection("message").addSnapshotListener { querySnapshot, error in
-            DispatchQueue.main.async {
                 guard let snapshot = querySnapshot, error == nil else {
                     print("Error: \(error!)")
                     return
@@ -97,13 +117,18 @@ class ChatViewModel: ObservableObject{
                 // 추가된 게 관찰되면 data를 message에 추가
                 snapshot.documentChanges.forEach { diff in
                     if (diff.type == .added) {
+                        print(".add 호출")
                         if let data = try? diff.document.data(as: Message.self) {
                             
                             if self.messages[chatRoom.id] == nil {
                                 self.messages[chatRoom.id] = [data]
                             } else {
                                 self.messages[chatRoom.id]??.append(data)
+                                print("data message에 저장: \(data.text)")
+                                print("messages[20subi@gmail.com] = \(self.messages[chatRoom.id])")
                             }
+                            
+                        //---
                             
                             // 시간 순에 맞게 정렬
                             self.messages[chatRoom.id]??.sort { $0.timestamp < $1.timestamp }
@@ -128,14 +153,15 @@ class ChatViewModel: ObservableObject{
                         }
                     }
                 }
-            }
         }
+        
         listeners.append(listener)
     }
     
     // 메세지 보냄(방 데이터, 보내는 사람, 메세지 필요)
     func sendMessage(chatRoom: ChatRoom?, message: Message) {
         
+        // 해당 메세지를 chatRoom에 저장
         if let chatRoom = chatRoom {
             try? fireStore.collection(collectionName).document(chatRoom.id)
                 .collection("message").document(message.id).setData(from: message)
