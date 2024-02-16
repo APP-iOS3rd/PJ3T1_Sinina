@@ -9,7 +9,7 @@ struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     
-    @ObservedObject var dateValueViewModel = DateValueViewModel()
+    @ObservedObject var dateValueVM = DateValueViewModel()
     
     var dateString: String? {
         let date =  Date()                     // 넣을 데이터(현재 시간)
@@ -162,7 +162,7 @@ struct CalendarView: View {
                     
                     ForEach(daysList[i].indices, id: \.self) { j in
                         
-                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueViewModel:dateValueViewModel,isReadOnly: false)
+                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueViewModel:dateValueVM,isReadOnly: false)
                         
                         
                     }
