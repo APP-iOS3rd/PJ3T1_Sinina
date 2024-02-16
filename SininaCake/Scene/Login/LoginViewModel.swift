@@ -315,6 +315,7 @@ extension LoginViewModel {
 
 // MARK: - 관리자 확인
 extension LoginViewModel {
+    @MainActor
     func checkManager(email: String) async {
         let firestore = Firestore.firestore()
         let docs = firestore.collection("Managers").document("Manager")
@@ -324,9 +325,7 @@ extension LoginViewModel {
             if managers.exists {
                 if let emailArray = managers.data()?["email"] as? [String] {
                     print("Document data: \(emailArray)")
-                    DispatchQueue.main.async {
-                        self.isManager = emailArray.contains(email)
-                    }
+                    self.isManager = emailArray.contains(email)
                 }
                 else {
                     print("Email array not found in document data.")
