@@ -17,7 +17,7 @@ struct ProfileView: View {
                 ImageAndNameView(profileVM: profileVM)
                 
                 ScrollView {
-                    MyOrderListView(profileVM: profileVM, orderData: profileVM.myOrderData)
+                    MyOrderListView(profileVM: profileVM)
                 }
                 
                 Spacer()
@@ -79,7 +79,6 @@ struct ImageAndNameView: View {
 
 struct MyOrderListView: View {
     @ObservedObject var profileVM: ProfileViewModel
-    let orderData: [OrderItem]
     
     var body: some View {
         VStack(spacing: 14) {
@@ -89,7 +88,7 @@ struct MyOrderListView: View {
                 Spacer()
             }
             
-            if orderData.isEmpty {
+            if profileVM.myOrderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(.customGray))
                     .frame(height: 100)
@@ -104,9 +103,9 @@ struct MyOrderListView: View {
                         }
                     )
             } else {
-                ForEach(0..<orderData.count, id: \.self) { i in
-                    NavigationLink(value: orderData[i]) {
-                        MyOrderView(profileVM: profileVM, orderItem: orderData[i])
+                ForEach(0..<profileVM.myOrderData.count, id: \.self) { i in
+                    NavigationLink(value: profileVM.myOrderData[i]) {
+                        MyOrderView(profileVM: profileVM, orderItem: profileVM.myOrderData[i])
                     }
                 }
             }

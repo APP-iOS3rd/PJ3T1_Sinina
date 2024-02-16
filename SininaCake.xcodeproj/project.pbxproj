@@ -63,6 +63,8 @@
 		8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A62B1DC00A003BF8B0 /* Pretendard-Bold.otf */; };
 		8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A72B1DC00A003BF8B0 /* Pretendard-SemiBold.otf */; };
 		8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A82B1DC00A003BF8B0 /* Pretendard-Light.otf */; };
+		8ECD816B2B7EF88100CE6FB3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */; };
+		8ECD816D2B7F187900CE6FB3 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */; };
 		8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FAB2B54C12000D6BCF6 /* CustomButton.swift */; };
 		8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FAD2B54C12900D6BCF6 /* CustomText.swift */; };
 		8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FB02B54C1C300D6BCF6 /* HomeView.swift */; };
@@ -144,6 +146,8 @@
 		8ECB21A72B1DC00A003BF8B0 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		8ECB21A82B1DC00A003BF8B0 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		8ECB21B22B1DC05E003BF8B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../../ApiKeys.xcconfig; sourceTree = "<group>"; };
 		8ECF5FAB2B54C12000D6BCF6 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		8ECF5FAD2B54C12900D6BCF6 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		8ECF5FB02B54C1C300D6BCF6 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -254,6 +258,8 @@
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
+				8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */,
+				8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */,
 				9A5791512B7F4047004FDB17 /* GoogleService-Info.plist */,
@@ -648,7 +654,9 @@
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
 				9A5791542B7F4047004FDB17 /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
+				8ECD816D2B7F187900CE6FB3 /* ApiKeys.xcconfig in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
+				8ECD816B2B7EF88100CE6FB3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,7 +774,7 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */;
+			baseConfigurationReference = 8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
