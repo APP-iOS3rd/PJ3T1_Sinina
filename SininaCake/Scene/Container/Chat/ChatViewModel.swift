@@ -41,7 +41,7 @@ class ChatViewModel: ObservableObject{
         }
     }
     
-    // 받아오는 room
+    // 하나의 방만 불러옴
     func fetchRoom(userEmail: String){
         print("fetchRoom: \(userEmail)")
         
@@ -73,7 +73,6 @@ class ChatViewModel: ObservableObject{
     
     // 채팅룸 추가
     func addChatRoom(chatRoom: ChatRoom) {
-        // 여기를 user의 이메일로 바로 저장해버리면??
         try? fireStore.collection(collectionName).document(chatRoom.id).setData(from: chatRoom)
     }
     
