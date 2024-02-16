@@ -22,7 +22,7 @@ struct OrderStatusView: View {
             }
             .padding(.leading, 24)
             .padding(.trailing, 24)
-            .padding(.top, 36)
+            .padding(.top, 24)
             .navigationDestination(for: OrderItem.self) { item in
                 UserDetailView(orderItem: item)
             }
@@ -39,16 +39,31 @@ struct StatusView: View {
     var body: some View {
         if orderStatusVM.myOrderData.isEmpty {
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(.customGray))
-                .frame(height: 100)
+                .foregroundStyle(Color(.white))
+                .frame(height: UIScreen.main.bounds.width - 96)
                 .overlay(
-                    VStack {
-                        Image(systemName: "cart")
+                    VStack() {
+                        Image("cake")
                             .resizable()
                             .scaledToFit()
                             .foregroundStyle(Color(.customGray))
                             .frame(width: 20, height: 20)
-                        CustomText(title: "주문 내역이 없습니다.", textColor: .customGray, textWeight: .semibold, textSize: 16)
+                        CustomText(title: "예약된 주문이 아직 없어요!", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                        
+                        Spacer()
+                            .frame(height: 18)
+                        
+                        NavigationLink(destination: CautionView()) {
+                            HStack {
+                                Spacer()
+                                CustomText(title: "주문하러 가기", textColor: .white, textWeight: .semibold, textSize: 16)
+                                    .frame(minHeight: 45)
+                                Spacer()
+                            }
+                            .background(Color(.customBlue))
+                            .cornerRadius(22.5)
+                            .padding(.horizontal, 110)
+                        }
                     }
                 )
         } else {
