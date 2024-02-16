@@ -22,10 +22,6 @@ struct ChatView2: View {
     var body: some View {
         VStack {
             messagesView
-//                .navigationTitle(chatVM.currentRoom?.userName ?? "")
-//                .navigationBarTitleDisplayMode(.inline)
-                .padding(.top, 10)
-            
             chatBottomBar
         }
     }
@@ -52,8 +48,12 @@ struct ChatView2: View {
                                 .background(Color.clear)
                                 .onChange(of: chatVM.lastMessageId){ id in
                                     withAnimation {
-                                        // 마지막 말풍선을 따라 스크롤로 내려감
                                         proxy.scrollTo(id, anchor: .bottom)
+                                    }
+                                }
+                                .onAppear(){
+                                    withAnimation {
+                                        proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
                                     }
                                 }
                             }
@@ -129,6 +129,8 @@ struct ChatView2: View {
                 }
                 
                 chatText = ""
+                isChatTextEmpty = true
+                
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : .white)
@@ -137,6 +139,7 @@ struct ChatView2: View {
                     .background(isChatTextEmpty ? Color(.customGray) : Color(.customBlue))
                     .cornerRadius(45)
             }
+            .disabled(isChatTextEmpty)
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 5)
