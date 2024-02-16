@@ -23,6 +23,7 @@ class LoginViewModel: NSObject, ObservableObject, ASAuthorizationControllerDeleg
     @Published var loginUserEmail: String?
     @Published var imgURL: String?
     @Published var userName: String?
+    @Published var isManager: Bool = false
     @Published var chatVM = ChatViewModel.shared
     
     var currentNonce: String?
@@ -190,44 +191,14 @@ extension LoginViewModel {
         }
         
         Task {
+            await self.checkManager(email: email)
+            
             await self.addUserInfoToFirestore(email: email,
                                               imgURL: imgURL,
                                               userName: userName,
                                               deviceToken: deviceToken)
         }
     }
-    
-    /// 카카오 자동 로그인
-    func checkKakaoAutoLogin() -> Bool {
-        var isAutoLogin = false
-
-        return isAutoLogin
-    }
-//        if (AuthApi.hasToken()) {
-//            UserApi.shared.accessTokenInfo { (_, error) in
-//                if let error = error {
-//                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true  {
-//                        //로그인 필요
-//                        return
-//                    }
-//                    else {
-//                        //기타 에러
-//                        return
-//                    }
-//                }
-//                else {
-//                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
-//                    isAutoLogin = true
-//                    return
-//                }
-//            }
-//        }
-//        else {
-//            //로그인 필요
-//            return false
-//        }
-//        return isAutoLogin
-//    }
 }
 
 // MARK: - 파이어베이스 제공 간편 로그인
@@ -244,9 +215,7 @@ extension LoginViewModel {
             print("로그인한 사람: \(self.loginUserEmail)")
             AppInfo.shared.currentUser = user
             let userInfo = self.getFirebaseUserInfo(user: user)
-            self.storeUserInfo(email: userInfo.0,
-                               imgURL: userInfo.1,
-                               userName: userInfo.2)
+            
             self.isLoggedin = true
         }
     }
@@ -275,7 +244,7 @@ extension LoginViewModel {
     
     // MARK: - 파이어베이스
     /// 파이어베이스 유저 정보 획득
-    func getFirebaseUserInfo(user: FirebaseAuth.User) -> (String, String, String) {
+    func getFirebaseUserInfo(user: FirebaseAuth.User) {
         let email = user.email ?? ""
         let imgURL = user.photoURL?.absoluteString ?? ""
         let userName = user.displayName ?? ""
@@ -284,7 +253,10 @@ extension LoginViewModel {
         self.loginUserEmail = email
         self.imgURL = imgURL
         self.userName = userName
-        return (email, imgURL, userName)
+        
+        self.storeUserInfo(email: email,
+                           imgURL: imgURL,
+                           userName: userName)
     }
 }
 
@@ -338,5 +310,32 @@ extension LoginViewModel {
             }
         }
         isLoggedin = false
+    }
+}
+
+// MARK: - 관리자 확인
+extension LoginViewModel {
+    func checkManager(email: String) async {
+        let firestore = Firestore.firestore()
+        let docs = firestore.collection("Managers").document("Manager")
+        
+        do {
+            let managers = try await docs.getDocument()
+            if managers.exists {
+                if let emailArray = managers.data()?["email"] as? [String] {
+                    print("Document data: \(emailArray)")
+                    DispatchQueue.main.async {
+                        self.isManager = emailArray.contains(email)
+                    }
+                }
+                else {
+                    print("Email array not found in document data.")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        } catch {
+            print("Error getting document: \(error)")
+        }
     }
 }

@@ -37,11 +37,11 @@ struct HomeView: View {
                     Button {
                         showManager = true
                     } label: {
-                        //                        if (loginVM.email == "jongwon5113@gmail.com") {
+                        if (loginVM.isManager) {
                         Image("icon_manager")
-                        //                        }
+                        }
                     }
-                    //                    .disabled(loginVM.email != "jongwon5113@gmail.com")
+                    .disabled(!loginVM.isManager)
                     .fullScreenCover(isPresented: $showManager) {
                         ManagerOnlyView()
                     }
