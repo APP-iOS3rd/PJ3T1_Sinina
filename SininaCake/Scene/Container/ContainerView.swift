@@ -49,11 +49,11 @@ struct ContainerView: View {
                     Button {
                         showNavManager = true
                     } label: {
-                        //                        if (loginVM.email == "jongwon5113@gmail.com") {
-                        Image("icon_manager")
-                        //                        }
+                        if (loginVM.isManager) {
+                            Image("icon_manager")
+                        }
                     }
-                    //                    .disabled(loginVM.email != "jongwon5113@gmail.com")
+                    .disabled(!loginVM.isManager)
                     .fullScreenCover(isPresented: $showNavManager) {
                         ManagerOnlyView()
                     }

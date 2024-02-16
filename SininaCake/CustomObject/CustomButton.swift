@@ -29,9 +29,9 @@ struct CustomButton: View {
         Button(action: action, label: {
             Spacer()
             CustomText(title: title, textColor: titleColor, textWeight: .semibold, textSize: 18)
+                .frame(minHeight: 55)
             Spacer()
         })
-        .frame(minHeight: 55)
         .background(Color(backgroundColor))
         .cornerRadius(27.5)
         .padding(.leading, leading)

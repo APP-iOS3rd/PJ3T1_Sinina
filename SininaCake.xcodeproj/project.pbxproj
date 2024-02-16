@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		234ABD892B6A2C4E007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		2367639C2B6691DC008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		2367639E2B66BF8D008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		236763A42B67AE57008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		234ABD892B6A2C4E007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		234ABD8B2B6A3BBB007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		2367639C2B6691DC008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E902B7CE42F00A61406 /* ChatRoom.swift */; };
 		23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* ChatView2.swift */; };
 		23C35E982B7CE42F00A61406 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E932B7CE42F00A61406 /* Message.swift */; };
@@ -63,8 +63,6 @@
 		8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A62B1DC00A003BF8B0 /* Pretendard-Bold.otf */; };
 		8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A72B1DC00A003BF8B0 /* Pretendard-SemiBold.otf */; };
 		8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8ECB21A82B1DC00A003BF8B0 /* Pretendard-Light.otf */; };
-		8ECD816B2B7EF88100CE6FB3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */; };
-		8ECD816D2B7F187900CE6FB3 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */; };
 		8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FAB2B54C12000D6BCF6 /* CustomButton.swift */; };
 		8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FAD2B54C12900D6BCF6 /* CustomText.swift */; };
 		8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FB02B54C1C300D6BCF6 /* HomeView.swift */; };
@@ -146,8 +144,6 @@
 		8ECB21A72B1DC00A003BF8B0 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		8ECB21A82B1DC00A003BF8B0 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		8ECB21B22B1DC05E003BF8B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = ../../../ApiKeys.xcconfig; sourceTree = "<group>"; };
 		8ECF5FAB2B54C12000D6BCF6 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		8ECF5FAD2B54C12900D6BCF6 /* CustomText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomText.swift; sourceTree = "<group>"; };
 		8ECF5FB02B54C1C300D6BCF6 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -258,8 +254,6 @@
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
-				8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */,
-				8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */,
 				9A5791512B7F4047004FDB17 /* GoogleService-Info.plist */,
@@ -654,9 +648,7 @@
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
 				9A5791542B7F4047004FDB17 /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
-				8ECD816D2B7F187900CE6FB3 /* ApiKeys.xcconfig in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
-				8ECD816B2B7EF88100CE6FB3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,19 +714,19 @@
 				9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */,
 				9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */,
 				8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */,
-				2367639C2B6691DC008C8244 /* BuildFile in Sources */,
+				2367639C2B6691DC008C8244 /* (null) in Sources */,
 				8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */,
 				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
 				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
-				236763A42B67AE57008C8244 /* BuildFile in Sources */,
+				236763A42B67AE57008C8244 /* (null) in Sources */,
 				8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */,
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
-				234ABD892B6A2C4E007199E2 /* BuildFile in Sources */,
+				234ABD892B6A2C4E007199E2 /* (null) in Sources */,
 				23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
@@ -746,7 +738,7 @@
 				23D682D42B738A0200A2036A /* Date.swift in Sources */,
 				23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
-				2367639E2B66BF8D008C8244 /* BuildFile in Sources */,
+				2367639E2B66BF8D008C8244 /* (null) in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
 				8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */,
 				8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */,
@@ -756,7 +748,7 @@
 				8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */,
 				8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */,
 				8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */,
-				234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */,
+				234ABD8B2B6A3BBB007199E2 /* (null) in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
 				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */,
@@ -774,7 +766,7 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */;
+			baseConfigurationReference = 9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
