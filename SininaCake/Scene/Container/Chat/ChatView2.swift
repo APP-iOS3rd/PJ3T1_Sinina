@@ -119,10 +119,7 @@ struct ChatView2: View {
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
-                    } else {
-                        print("UIImage를 Data로 변환하는 데 실패")
                     }
-                    
                     self.selectedImage = nil
                    
                 // text 전송
@@ -153,11 +150,27 @@ struct ChatView2: View {
         HStack {
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-            CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
-                .padding()
-                .background(Color(.customBlue))
-                .cornerRadius(30)
-            
+            if let imageURL = message.imageURL, !imageURL.isEmpty {
+                
+                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 150, maxHeight: 150)
+                        .padding()
+                        .background(Color(.customBlue))
+                        .cornerRadius(30)
+                        
+                },
+                           placeholder: {
+                    ProgressView()
+                })
+                
+            } else {
+                CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
+                    .padding()
+                    .background(Color(.customBlue))
+                    .cornerRadius(30)
+            }
         } // VStack
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 10)
