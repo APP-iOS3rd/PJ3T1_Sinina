@@ -32,8 +32,12 @@ struct ContainerView: View {
             CustomTabView(selection: $currentTab)
         }
         .fullScreenCover(isPresented: $showManager, content: {
-            ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
-        })
+                    ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
+                        .onDisappear() {
+                            currentTab = .home
+                            chatVM.listener?.remove()
+                        }
+                })
         .onChange(of: currentTab) { newValue in
             if newValue == .chat {
                 showManager = true

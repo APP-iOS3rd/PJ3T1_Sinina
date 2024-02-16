@@ -61,6 +61,9 @@ struct ChatView: View {
                 CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 24)
             }
         }
+        .onAppear(){
+            chatVM.fetchRoom(userEmail: room.userEmail)
+        }
     }
     
     //MARK: 채팅 치는 뷰
