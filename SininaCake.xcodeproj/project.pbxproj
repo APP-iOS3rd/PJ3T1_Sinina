@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		234ABD892B6A2C4E007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		234ABD8B2B6A3BBB007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		2367639C2B6691DC008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		234ABD892B6A2C4E007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		2367639C2B6691DC008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		2367639E2B66BF8D008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		236763A42B67AE57008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E902B7CE42F00A61406 /* ChatRoom.swift */; };
 		23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* ChatView2.swift */; };
 		23C35E982B7CE42F00A61406 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E932B7CE42F00A61406 /* Message.swift */; };
@@ -98,6 +98,8 @@
 		9A27E6CE2B56B7F800E7E699 /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CD2B56B7F800E7E699 /* KakaoSDKCertCore */; };
 		9A27E6D02B56B7F800E7E699 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CF2B56B7F800E7E699 /* KakaoSDKCommon */; };
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
+		9A5791532B7F4047004FDB17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5791512B7F4047004FDB17 /* GoogleService-Info.plist */; };
+		9A5791542B7F4047004FDB17 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
 		9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA04FFC2B72110D004F671E /* ContainerView.swift */; };
@@ -121,6 +123,7 @@
 		23C35EA82B7E45CB00A61406 /* ChatView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView2.swift; sourceTree = "<group>"; };
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		829373E48DB00E2F41B54DC3 /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
 		8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
+		9A5791512B7F4047004FDB17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		9AA04FFC2B72110D004F671E /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
@@ -256,6 +261,8 @@
 				8ECD816A2B7EF88100CE6FB3 /* GoogleService-Info.plist */,
 				8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
+				9A5791522B7F4047004FDB17 /* ApiKeys.xcconfig */,
+				9A5791512B7F4047004FDB17 /* GoogleService-Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
@@ -532,7 +539,7 @@
 			isa = PBXGroup;
 			children = (
 				C2B055241573B040AB61801E /* Pods-SininaCake.debug.xcconfig */,
-				305FDF97D218C7E57D91F9B9 /* Pods-SininaCake.release.xcconfig */,
+				829373E48DB00E2F41B54DC3 /* Pods-SininaCake.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -640,10 +647,12 @@
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
+				9A5791532B7F4047004FDB17 /* GoogleService-Info.plist in Resources */,
 				9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
 				8ECB21AD2B1DC00A003BF8B0 /* Pretendard-Regular.otf in Resources */,
+				9A5791542B7F4047004FDB17 /* ApiKeys.xcconfig in Resources */,
 				8ECB21A92B1DC00A003BF8B0 /* Pretendard-Medium.otf in Resources */,
 				8ECD816D2B7F187900CE6FB3 /* ApiKeys.xcconfig in Resources */,
 				8ECB21AA2B1DC00A003BF8B0 /* Pretendard-Black.otf in Resources */,
@@ -713,19 +722,19 @@
 				9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */,
 				9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */,
 				8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */,
-				2367639C2B6691DC008C8244 /* (null) in Sources */,
+				2367639C2B6691DC008C8244 /* BuildFile in Sources */,
 				8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */,
 				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
 				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
-				236763A42B67AE57008C8244 /* (null) in Sources */,
+				236763A42B67AE57008C8244 /* BuildFile in Sources */,
 				8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */,
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
-				234ABD892B6A2C4E007199E2 /* (null) in Sources */,
+				234ABD892B6A2C4E007199E2 /* BuildFile in Sources */,
 				23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
@@ -737,7 +746,7 @@
 				23D682D42B738A0200A2036A /* Date.swift in Sources */,
 				23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
-				2367639E2B66BF8D008C8244 /* (null) in Sources */,
+				2367639E2B66BF8D008C8244 /* BuildFile in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
 				8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */,
 				8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */,
@@ -747,7 +756,7 @@
 				8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */,
 				8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */,
 				8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */,
-				234ABD8B2B6A3BBB007199E2 /* (null) in Sources */,
+				234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
 				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */,
@@ -829,7 +838,6 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8ECD816C2B7F187900CE6FB3 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -931,7 +939,7 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 305FDF97D218C7E57D91F9B9 /* Pods-SininaCake.release.xcconfig */;
+			baseConfigurationReference = 829373E48DB00E2F41B54DC3 /* Pods-SininaCake.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
