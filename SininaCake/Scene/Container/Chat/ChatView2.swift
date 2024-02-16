@@ -16,7 +16,7 @@ struct ChatView2: View {
     @State private var isChatTextEmpty = true
     @State private var isImagePickerPresented = false
     @State private var selectedImage: UIImage?
-    
+    @Environment(\.presentationMode) var presentationMode
     
     // MARK: 통합 뷰
     var body: some View {
@@ -66,6 +66,13 @@ struct ChatView2: View {
             }
             .navigationTitle("시니나케이크")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
+                        Image("angle-left-black")
+                    })
+                }
+            }
         }
     }
     

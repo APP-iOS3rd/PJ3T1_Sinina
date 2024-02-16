@@ -54,6 +54,7 @@ struct ScrollOrderTitleView: View {
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/930)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                .padding(.leading, 24)
                 .padding(.bottom, 36)
             
             /// 휴대폰 번호
@@ -71,8 +72,9 @@ struct ScrollOrderTitleView: View {
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/930)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                .padding(.leading, 24)
                 .padding(.bottom, 36)
-            
+
             HStack {
                 CustomText(title: "픽업 날짜/시간", textColor: .black, textWeight: .semibold , textSize: 18)
                     .padding(.leading, 24)
@@ -82,6 +84,7 @@ struct ScrollOrderTitleView: View {
                     .padding(.leading, 82)
                 CustomText(title: dateToTime(chart.orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
             }
+            .scaledToFit()
             
             DatePicker (
                 "Select Date",
@@ -559,11 +562,10 @@ struct ScrollOrderTitleView: View {
                             .padding(.trailing, 5.5)
                             .overlay {
                                 HStack{
-                                    Image("VectorTrue")
+                                    Image(icepack["보냉팩"] ?? false ? "orderVectorTrue" : "orderVectorFalse")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24, height: 14)
-                                        .padding(.leading, 16)
+                                        .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/930)
                                     HStack{
                                         CustomText(title: "보냉팩", textColor: .black, textWeight: .semibold, textSize: 18)
                                         CustomText(title: "(+1000원)", textColor: .black, textWeight: .regular, textSize: 12)
@@ -587,11 +589,10 @@ struct ScrollOrderTitleView: View {
                             .padding(.leading, 5.5)
                             .overlay {
                                 HStack{
-                                    Image("VectorTrue")
+                                    Image(icepack["보냉백"] ?? false ? "orderVectorTrue" : "orderVectorFalse")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24, height: 14)
-                                        .padding(.leading, 22)
+                                        .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/930)
                                     HStack{
                                         CustomText(title: "보냉백", textColor: .black, textWeight: .semibold, textSize: 18)
                                         CustomText(title: "(+5000원)", textColor: .black, textWeight: .regular, textSize: 12)
