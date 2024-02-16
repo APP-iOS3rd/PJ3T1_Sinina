@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		234ABD892B6A2C4E007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		2367639C2B6691DC008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		2367639E2B66BF8D008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		236763A42B67AE57008C8244 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		234ABD892B6A2C4E007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		234ABD8B2B6A3BBB007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		2367639C2B6691DC008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E902B7CE42F00A61406 /* ChatRoom.swift */; };
 		23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* ChatView2.swift */; };
 		23C35E982B7CE42F00A61406 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E932B7CE42F00A61406 /* Message.swift */; };
@@ -44,6 +44,8 @@
 		23D682D22B7389D000A2036A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D12B7389D000A2036A /* FirebaseMessaging */; };
 		23D682D42B738A0200A2036A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682D32B738A0200A2036A /* Date.swift */; };
 		23D682D62B73AEB000A2036A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D52B73AEB000A2036A /* FirebaseStorage */; };
+		3BD583BC2B7EF1A200861F92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */; };
+		3BD583BD2B7EF1A200861F92 /* ApiKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3BD583BB2B7EF1A200861F92 /* ApiKeys.xcconfig */; };
 		8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BAD2B00B40D00ECEF08 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BAC2B00B40D00ECEF08 /* LoginView.swift */; };
@@ -121,6 +123,8 @@
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		32F716DF1EE73F5129CFB1B2 /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
+		3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "SininaCake/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3BD583BB2B7EF1A200861F92 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = ApiKeys.xcconfig; path = SininaCake/ApiKeys.xcconfig; sourceTree = "<group>"; };
 		8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
@@ -161,8 +165,6 @@
 		8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		8EFA75322B73428000BEDF0C /* FCMServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMServerAPI.swift; sourceTree = "<group>"; };
 		8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SininaCake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A1E87A02B7C490400788053 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
-		9A1E87A12B7C490400788053 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusView.swift; sourceTree = "<group>"; };
 		9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusViewModel.swift; sourceTree = "<group>"; };
 		9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerCalendarView.swift; sourceTree = "<group>"; };
@@ -173,8 +175,6 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
-		9A53C5622B7C83F700892E94 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
-		9A53C5632B7C83F700892E94 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		9AA04FFC2B72110D004F671E /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
@@ -496,10 +496,8 @@
 		9A53C55D2B7C835100892E94 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				9A1E87A12B7C490400788053 /* GoogleService-Info.plist */,
-				9A1E87A02B7C490400788053 /* ApiKeys.xcconfig */,
-				9A53C5632B7C83F700892E94 /* GoogleService-Info.plist */,
-				9A53C5622B7C83F700892E94 /* ApiKeys.xcconfig */,
+				3BD583BB2B7EF1A200861F92 /* ApiKeys.xcconfig */,
+				3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -640,12 +638,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BD583BC2B7EF1A200861F92 /* GoogleService-Info.plist in Resources */,
 				9AC123032B73D30C00DC9A42 /* Preview Content in Resources */,
 				8ECB21B02B1DC00A003BF8B0 /* Pretendard-SemiBold.otf in Resources */,
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
 				23C35EA42B7D92A200A61406 /* GoogleService-Info.plist in Resources */,
+				3BD583BD2B7EF1A200861F92 /* ApiKeys.xcconfig in Resources */,
 				9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
@@ -717,19 +717,19 @@
 				9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */,
 				9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */,
 				8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */,
-				2367639C2B6691DC008C8244 /* BuildFile in Sources */,
+				2367639C2B6691DC008C8244 /* (null) in Sources */,
 				8ECF5FB72B54C22800D6BCF6 /* ChatListView.swift in Sources */,
 				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
 				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
-				236763A42B67AE57008C8244 /* BuildFile in Sources */,
+				236763A42B67AE57008C8244 /* (null) in Sources */,
 				8ECF5FB92B54C3EA00D6BCF6 /* NaverMapAPI.swift in Sources */,
 				8ECF5FAC2B54C12000D6BCF6 /* CustomButton.swift in Sources */,
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
-				234ABD892B6A2C4E007199E2 /* BuildFile in Sources */,
+				234ABD892B6A2C4E007199E2 /* (null) in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
 				9AC123052B746B9B00DC9A42 /* UIScreen+.swift in Sources */,
@@ -740,7 +740,7 @@
 				23D682D42B738A0200A2036A /* Date.swift in Sources */,
 				23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
-				2367639E2B66BF8D008C8244 /* BuildFile in Sources */,
+				2367639E2B66BF8D008C8244 /* (null) in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
 				8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */,
 				8ECB219E2B1DBF9A003BF8B0 /* UIColor+.swift in Sources */,
@@ -750,7 +750,7 @@
 				8ECF5FAE2B54C12900D6BCF6 /* CustomText.swift in Sources */,
 				8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */,
 				8ECF5FC22B54EE3D00D6BCF6 /* LoginViewModel.swift in Sources */,
-				234ABD8B2B6A3BBB007199E2 /* BuildFile in Sources */,
+				234ABD8B2B6A3BBB007199E2 /* (null) in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
 				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */,

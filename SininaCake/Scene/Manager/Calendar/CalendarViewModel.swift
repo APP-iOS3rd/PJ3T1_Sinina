@@ -12,7 +12,7 @@ import FirebaseFirestore
 /**
  날짜 칸 표시를 위한 일자 정보
  */
-struct DateValue: Identifiable, Codable {
+struct DateValue: Identifiable, Codable, Comparable {
     var id = UUID().uuidString
     var day: Int
     var date: Date
@@ -29,6 +29,10 @@ struct DateValue: Identifiable, Codable {
             } else {
                 isSelected = true
             }
+        }
+    
+    static func < (lhs: DateValue, rhs: DateValue) -> Bool {
+            return lhs.day < rhs.day
         }
 }
 
@@ -253,6 +257,62 @@ class DateValueViewModel: ObservableObject {
             }
         }
     }
+    
+    
+//    func handleTap(for dateValue: DateValue) {
+//            if let existingDate = dateValues.first(where: { $0.day == dateValue.day && $0.id != dateValue.id }) {
+//                // Data with the same day already exists, delete the existing data
+//                deleteDateValueFromFirestore(dateValue: existingDate)
+//            } else {
+//                // Data doesn't exist or is unique, create a new one or perform other actions
+//                // For now, just print a message
+//                print("No duplicate data for this date. You can create or perform other actions.")
+//            }
+//        }
+//
+//        private func deleteDateValueFromFirestore(dateValue: DateValue) {
+//            let db = Firestore.firestore()
+//            let documentReference = db.collection("dateValues").document(dateValue.id)
+//
+//            documentReference.delete { error in
+//                if let error = error {
+//                    print("Error deleting DateValue from Firestore: \(error.localizedDescription)")
+//                } else {
+//                    // After successfully deleting, update the UI or perform other actions
+//                    print("DateValue deleted from Firestore successfully.")
+//                }
+//            }
+//        }
+    
+    func removeDuplicateDay(dateValue: DateValue) {
+        let db = Firestore.firestore()
+        let collectionReference = db.collection("dateValues")
+
+        let query = collectionReference
+            .whereField("day", isEqualTo: dateValue.day)
+            .limit(to: 2) // 중복된 경우 2개 이상이 될 수 있으므로 limit을 설정
+
+        query.getDocuments { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("중복된 데이터 조회 중 오류: \(error?.localizedDescription ?? "알 수 없는 오류")")
+                return
+            }
+
+            // 중복된 데이터가 2개 이상이면 삭제
+            if documents.count >= 2 {
+                                for i in 1..<documents.count {
+                                    let documentID = documents[i].documentID
+                                    db.collection("dateValues").document(documentID).delete { error in
+                                        if let error = error {
+                                            print("중복된 데이터 삭제 중 오류: \(error.localizedDescription)")
+                                        } else {
+                                            print("중복된 데이터 삭제 완료")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
         deinit {
             listener?.remove()

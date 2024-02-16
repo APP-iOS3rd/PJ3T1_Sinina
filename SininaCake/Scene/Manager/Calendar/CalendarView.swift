@@ -28,9 +28,7 @@ struct CalendarView: View {
     
     @State var daysList = [[DateValue]]()
     
-    //@State var clickedDates: Set<Date> = []
-    //@State private var clickedDates: Set<Date> = Set()
-    
+
     //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
     
@@ -361,6 +359,7 @@ struct CardView: View {
     }
     
     
+    
     var body: some View {
         
         ZStack() {
@@ -382,6 +381,8 @@ struct CardView: View {
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
                                     selectedDate2()
+                                    let DateValue = DateValue(day: 1, date: Date())
+                                                   dateValueViewModel.removeDuplicateDay(dateValue: DateValue)
                                     
                                 }
                             
@@ -410,6 +411,8 @@ struct CardView: View {
                                 .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
+                                    let DateValue = DateValue(day: value.day, date: Date())
+                                    dateValueViewModel.removeDuplicateDay(dateValue: DateValue)
                                     
                                     selectedDate2()
                                 }
