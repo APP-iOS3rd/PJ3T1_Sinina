@@ -15,10 +15,11 @@ struct HomeView: View {
         
         NavigationStack {
             ScrollView {
-                VStack {
+                VStack(spacing: 64) {
                     OrderStatusView()
                     InstagramView()
                     MapView()
+                    Spacer()
                 }
             }
             .background(Color(.customLightGray))
@@ -32,6 +33,7 @@ struct HomeView: View {
                         .frame(width: UIScreen.UIWidth(40),
                                height: UIScreen.UIHeight(40))
                 }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Trailing item if needed
                     Button {
@@ -49,9 +51,4 @@ struct HomeView: View {
             }
         }
     }
-}
-
-
-#Preview {
-    HomeView()
 }
