@@ -2,29 +2,38 @@
 import SwiftUI
 
 struct CautionView: View {
-    @State private var cautionAll: Bool
-    @State private var pickUp: Bool
-    @State private var cakeCaution: Bool
-    @State private var instaUpload: Bool
-    @State private var Next: Bool
+    @Environment(\.presentationMode) var presentationMode
+    @State private var cautionAll: Bool = false
+    @State private var pickUp: Bool = false
+    @State private var cakeCaution: Bool = false
+    @State private var instaUpload: Bool = false
+    @State private var Next: Bool = false
     
-    init(cautionAll: Bool, pickUp: Bool, cakeCaution: Bool, instaUpload: Bool, Next: Bool) {
-        self.cautionAll = cautionAll
-        self.pickUp = pickUp
-        self.cakeCaution = cakeCaution
-        self.instaUpload = instaUpload
-        self.Next = Next
-    }
+//    init(cautionAll: Bool, pickUp: Bool, cakeCaution: Bool, instaUpload: Bool, Next: Bool) {
+//        self.cautionAll = cautionAll
+//        self.pickUp = pickUp
+//        self.cakeCaution = cakeCaution
+//        self.instaUpload = instaUpload
+//        self.Next = Next
+//    }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false){
                     ScrollTitleView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
                 }
-                .navigationBarTitle("주문 전 확인사항")
-                .navigationBarTitleDisplayMode(.inline)
- 
+            }
+            .navigationBarBackButtonHidden()
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("주문 전 확인사항")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
+                        Image("angle-left")
+                            .foregroundStyle(Color.black)
+                    })
+                }
             }
         }
         cautionbottomView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
@@ -255,6 +264,6 @@ struct cautionbottomView: View {
 }
 
 #Preview {
-    CautionView(cautionAll: false, pickUp: false, cakeCaution: false, instaUpload: false, Next: false)
+    CautionView()
 }
 

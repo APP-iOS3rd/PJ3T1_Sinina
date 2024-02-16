@@ -8,248 +8,220 @@
 import SwiftUI
 
 struct OrderStatusView: View {
-    
-    
-    @StateObject var orderListVM = OrderListViewModel()
-    
-    @State var toto = false
+    @StateObject var orderStatusVM = OrderStatusViewModel()
     
     var body: some View {
         NavigationStack {
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 342, height: 30)
-                .background(
-                    HStack() {
-                        
-                        Text("주문현황")
-                            .font(
-                                Font.custom("Pretendard", fixedSize: 24)
-                                    .weight(.semibold)
-                            )
-                        Spacer()
-                    }
-                )
-            
-            if false {
+            VStack {
+                HStack {
+                    CustomText(title: "주문현황", textColor: .black, textWeight: .semibold, textSize: 24)
+                    Spacer()
+                }
                 
-                Rectangle()
-                    .foregroundColor(.clear)
-                    .frame(width: 342, height: 383)
-                    .background(
-                        ZStack {
-                            
-                            
-                            Rectangle()
-                                .foregroundColor(.white)
-                                .cornerRadius(12)
-                                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
-                            
-                            VStack() {
-                                Rectangle()
-                                    .foregroundColor(.clear)
-                                    .frame(width: 342, height: 170)
-                                    .background(
-                                        Image("jingjing")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 306, height: 170)
-                                            .clipped()
-                                        
-                                    )
-                                statusView
-                            }
-                            
-                            
-                        }
-                        
-                        
-                    )
-                
+                StatusView(orderStatusVM: orderStatusVM)
             }
-            else {
-                Rectangle()
-                    .foregroundColor(.clear)
-                    .frame(width: 342, height: 403)
-                    .background(
-                        
-                        ZStack {
-                            
-                            
-                            Rectangle()
-                                .foregroundColor(.white)
-                                .cornerRadius(12)
-                                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 4)
-                            
-                            VStack() {
-                                
-                                Image("cake")
-                                    .resizable()
-                                    .frame(width: 34, height: 25.54)
-                                Text("예약된 주문이 아직 없어요!")
-                                    .font(
-                                        Font.custom("Pretendard", fixedSize: 18)
-                                            .weight(.semibold)
-                                    )
-                                    .kerning(0.45)
-                                    .foregroundColor(Color(UIColor.customDarkGray))
-                                ZStack() {
-                                    if toto == true {
-                                        NavigationLink(destination: OrderView()){
-                                            
-                                            Text("주문하러 가기")
-                                                .frame(width: 161, height: 43)
-                                                .background(Color(UIColor.customBlue))
-                                            
-                                                .cornerRadius(45)
-                                                .font(
-                                                    Font.custom("Pretendard", fixedSize: 16)
-                                                        .weight(.semibold)
-                                                )
-                                                .kerning(0.4)
-                                                .foregroundColor(.white)
-                                        }
-                                    } else { NavigationLink(destination: CalendarView()){
-                                        
-                                        Text("주문하러 가기")
-                                            .frame(width: 161, height: 43)
-                                            .background(Color(UIColor.customBlue))
-                                        
-                                            .cornerRadius(45)
-                                            .font(
-                                                Font.custom("Pretendard", fixedSize: 16)
-                                                    .weight(.semibold)
-                                            )
-                                            .kerning(0.4)
-                                            .foregroundColor(.white)
-                                        }
-                                    }
-                                }
-                                
-                            }
-                            
-                        }
-                    )
+            .padding(.leading, 24)
+            .padding(.trailing, 24)
+            .padding(.top, 24)
+            .navigationDestination(for: OrderItem.self) { item in
+                UserDetailView(orderItem: item)
+            }
+            .onAppear {
+                orderStatusVM.fetchData()
             }
         }
     }
+}
+
+struct StatusView: View {
+    @ObservedObject var orderStatusVM: OrderStatusViewModel
     
-    
-    
-    
-    
-    private var statusView: some View {
-        let orderItem: OrderItem = OrderItem(id:"", email:"" ,date: Date(), orderTime: Date(), cakeSize: "", sheet: "초코시트", cream: "블루베리",icePack: .none, name: "이찰떡", phoneNumber: "010-1234-5678", text: "", imageURL: [""], comment: "",expectedPrice:25000, confirmedPrice:25000, status: .assign)
-        
-        
-        
-        return Rectangle()
-            .foregroundColor(.clear)
-            .frame(width: 312, height: 203)
-            .background(
-                VStack(alignment:.leading, spacing: 15) {
-                    Spacer()
-                    
-                    HStack {
-                        CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
+    var body: some View {
+        if orderStatusVM.myOrderData.isEmpty {
+            RoundedRectangle(cornerRadius: 12)
+                .foregroundStyle(Color(.white))
+                .frame(height: UIScreen.main.bounds.width - 96)
+                .overlay(
+                    VStack() {
+                        Image("cake")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(Color(.customGray))
+                            .frame(width: 20, height: 20)
+                        CustomText(title: "예약된 주문이 아직 없어요!", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                         
                         Spacer()
-                        Spacer()
-                        Spacer()
-                        Spacer()
+                            .frame(height: 18)
                         
-                        Image(systemName: "clock")
-                            .font(.custom("PreTendard", fixedSize: 18))
-                            .foregroundStyle(Color(.customBlue))
-                        
-                        CustomText(title: dateToTime(orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
-                    }
-                    
-                    HStack {
-                        
-                        CustomText(title: orderItem.sheet, textColor: .customDarkGray, textWeight: .regular, textSize: 16)
-                        CustomText(title: "/", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
-                        CustomText(title: orderItem.cream, textColor: .customDarkGray, textWeight: .regular, textSize: 16)
-                        
-                    }
-                    
-                    Divider()
-                        .frame(width: 300)
-                    
-                    HStack() {
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            CustomText(title: "예약자", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                            CustomText(title: "전화번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                        NavigationLink(destination: CautionView()) {
+                            HStack {
+                                Spacer()
+                                CustomText(title: "주문하러 가기", textColor: .white, textWeight: .semibold, textSize: 16)
+                                    .frame(minHeight: 45)
+                                Spacer()
+                            }
+                            .background(Color(.customBlue))
+                            .cornerRadius(22.5)
+                            .padding(.horizontal, 110)
                         }
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            CustomText(title: orderItem.name, textColor: .black, textWeight: .regular, textSize: 16)
-                            CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .regular, textSize: 16)
-                        }
-                        
-                        Spacer()
-                        
                     }
+                )
+        } else {
+            ForEach(0..<orderStatusVM.myOrderData.count, id: \.self) { i in
+                NavigationLink(value: orderStatusVM.myOrderData[i]) {
+                    StatusInfo(orderStatusVM: orderStatusVM, orderItem: orderStatusVM.myOrderData[i])
+                }
+            }
+        }
+    }
+}
+
+struct StatusInfo: View {
+    @ObservedObject var orderStatusVM: OrderStatusViewModel
+    let orderItem: OrderItem
+    let imageWidth = UIScreen.main.bounds.width - 96
+    
+    var body: some View {
+        VStack {
+            if let image = orderStatusVM.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: imageWidth, height: imageWidth / 2)
+                    .clipped()
+            } else {
+                Image("emptyPhoto")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: imageWidth, height: imageWidth / 2)
+                    .clipped()
+            }
+            DetailInfoView(orderItem: orderItem)
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(.customGray))
+        )
+        .overlay(
+            VStack {
+                HStack {
+                    DdayView(orderItem: orderItem)
                     Spacer()
                 }
-            )
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    var dateString: String? {
-        let date =  Date()                     // 넣을 데이터(현재 시간)
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "YYYY/MM/dd(EEEEE)"  // 변환할 형식
-        myFormatter.locale = Locale(identifier: "ko_KR")
-        let dateString = myFormatter.string(from: date)
-        
-        return dateString
-    }
-    
-    
-    
-    var timeString: String? {
-        let date =  Date()                     // 넣을 데이터(현재 시간)
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "HH:mm"  // 변환할 형식
-        myFormatter.locale = Locale(identifier: "ko_KR")
-        let timeString = myFormatter.string(from: date)
-        
-        return timeString
-    }
-    
-    private func dateToString(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko-KR")
-        dateFormatter.dateFormat = "yyyy/MM/dd(E)"
-        
-        let dateString = dateFormatter.string(from: date)
-        return dateString
-    }
-    
-    private func dateToTime(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        
-        let timeString = dateFormatter.string(from: date)
-        return timeString
+                Spacer()
+            }
+        )
+        .onAppear {
+            orderStatusVM.downloadImage(orderItem.id, orderItem.imageURL[0])
+        }
     }
 }
 
-
-
-
-
-
-
-#Preview {
-    OrderStatusView()
+struct DdayView: View {
+    let orderItem: OrderItem
+    
+    var titleAndColor: (String, UIColor) {
+        switch orderItem.status {
+        case .assign, .complete:
+            return (dateToDday(orderItem.date), .white)
+        case .notAssign:
+            return ("예약대기", .customDarkGray)
+        }
+    }
+    
+    var body: some View {
+        CustomText(title: titleAndColor.0, textColor: titleAndColor.1, textWeight: .semibold, textSize: 14)
+            .frame(width: UIScreen.UIWidth(75), height: UIScreen.UIHeight(30))
+            .background(Color(.customBlue))
+            .cornerRadius(15)
+            .padding()
+    }
 }
 
+struct DetailInfoView: View {
+    let orderItem: OrderItem
+    
+    var body: some View {
+        VStack(spacing: 18) {
+            HStack {
+                CustomText(title: orderItem.date.dateToString(), textColor: .black, textWeight: .semibold, textSize: 18)
+                Spacer()
+                Image(systemName: "clock")
+                    .frame(width: 18, height: 18)
+                    .foregroundStyle(Color(.customBlue))
+                CustomText(title: orderItem.date.dateToTime(), textColor: .customBlue, textWeight: .semibold, textSize: 18)
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 24)
+            
+            HStack {
+                CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 18)
+                CustomText(title: "\(orderItem.sheet) / \(orderItem.cream)", textColor: .customGray, textWeight: .regular, textSize: 16)
+                Spacer()
+            }
+            .padding(.horizontal, 24)
+            
+            Divider()
+            
+            HStack(spacing: 32) {
+                CustomText(title: "예약자", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.name, textColor: .black, textWeight: .regular, textSize: 16)
+                Spacer()
+            }
+            .padding(.horizontal, 24)
+            
+            HStack(spacing: 18) {
+                CustomText(title: "전화번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .regular, textSize: 16)
+                Spacer()
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+        .background(Color(.white))
+        .clipShape(
+            .rect(bottomLeadingRadius: 12, bottomTrailingRadius: 12)
+        )
+    }
+}
+
+private func intToString(_ price: Int) -> String {
+    let priceString = String(price)
+    var result = ""
+    var count = 0
+    
+    for str in priceString.reversed() {
+        result += String(str)
+        count += 1
+        if count % 3 == 0 && count != priceString.count {
+            result += ","
+        }
+    }
+    
+    return result.reversed() + "원"
+}
+
+private func dateToDday(_ completeDate: Date) -> String {
+    var dayCount = 0
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    let dateString = formatter.string(from: completeDate)
+    
+    guard let startDate = formatter.date(from: dateString) else { return "" }
+    dayCount = days(from: startDate)
+    if dayCount > 0 {
+        return "D - \(dayCount)"
+    } else if dayCount == 0 {
+        return "D - Day"
+    } else {
+        return "D + \(dayCount * -1)"
+    }
+}
+
+private func days(from date: Date) -> Int {
+    if let dDay = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
+        return dDay
+    }
+    
+    return 0
+}
