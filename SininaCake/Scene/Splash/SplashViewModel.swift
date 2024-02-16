@@ -15,9 +15,6 @@ class SplashViewModel: ObservableObject {
     func fetchUserData() {
         if let userInfo = appInfo.currentUser {
             print("google apple")
-//            loginVM.loginUserEmail = userInfo.email ?? ""
-//            loginVM.userName = userInfo.displayName ?? ""
-//            loginVM.imgURL = userInfo.photoURL?.absoluteString ?? ""
             loginVM.getFirebaseUserInfo(user: userInfo)
         } else if AuthApi.hasToken() {
             print("kakao")
