@@ -129,8 +129,8 @@ struct OrderInfoView: View {
                 .frame(width: 63)
             
             VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: dateToTime(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.date.dateToString(), textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.date.dateToTime(), textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.name, textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .semibold, textSize: 16)
             }
@@ -441,23 +441,6 @@ private func intToString(_ price: Int) -> String {
     }
     
     return result.reversed() + "원"
-}
-
-private func dateToString(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "ko-KR")
-    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
-    
-    let dateString = dateFormatter.string(from: date)
-    return dateString
-}
-
-private func dateToTime(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm"
-    
-    let timeString = dateFormatter.string(from: date)
-    return timeString
 }
 
 private func stringToInt(_ str: String) -> Int {

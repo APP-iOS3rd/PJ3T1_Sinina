@@ -12,7 +12,7 @@ struct InstagramView: View {
     //private var instaData: [InstaData]
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 24) {
             CustomText(title: "새로운 케이크", textColor: .black, textWeight: .semibold, textSize: 24)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top) {
@@ -29,7 +29,7 @@ struct InstagramView: View {
                         .clipShape(.rect(cornerRadius: 12))
                     }
                 }
-                .frame(height: 200)
+                .frame(height: 185)
             }
         }
         .padding(.horizontal, 24)

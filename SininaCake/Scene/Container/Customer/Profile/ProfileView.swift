@@ -17,7 +17,7 @@ struct ProfileView: View {
                 ImageAndNameView(profileVM: profileVM)
                 
                 ScrollView {
-                    MyOrderListView(profileVM: profileVM, orderData: profileVM.myOrderData)
+                    MyOrderListView(profileVM: profileVM)
                 }
                 
                 Spacer()
@@ -79,7 +79,6 @@ struct ImageAndNameView: View {
 
 struct MyOrderListView: View {
     @ObservedObject var profileVM: ProfileViewModel
-    let orderData: [OrderItem]
     
     var body: some View {
         VStack(spacing: 14) {
@@ -89,7 +88,7 @@ struct MyOrderListView: View {
                 Spacer()
             }
             
-            if orderData.isEmpty {
+            if profileVM.myOrderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(.customGray))
                     .frame(height: 100)
@@ -104,9 +103,9 @@ struct MyOrderListView: View {
                         }
                     )
             } else {
-                ForEach(0..<orderData.count, id: \.self) { i in
-                    NavigationLink(value: orderData[i]) {
-                        MyOrderView(profileVM: profileVM, orderItem: orderData[i])
+                ForEach(0..<profileVM.myOrderData.count, id: \.self) { i in
+                    NavigationLink(value: profileVM.myOrderData[i]) {
+                        MyOrderView(profileVM: profileVM, orderItem: profileVM.myOrderData[i])
                     }
                 }
             }
@@ -186,12 +185,12 @@ struct InfoView: View {
     var body: some View {
         VStack(spacing: 18) {
             HStack {
-                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
+                CustomText(title: orderItem.date.dateToString(), textColor: .black, textWeight: .semibold, textSize: 18)
                 Spacer()
                 Image(systemName: "clock")
                     .frame(width: 18, height: 18)
                     .foregroundStyle(Color(.customBlue))
-                CustomText(title: dateToTime(orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                CustomText(title: orderItem.date.dateToTime(), textColor: .customBlue, textWeight: .semibold, textSize: 18)
             }
             
             HStack {
@@ -214,6 +213,7 @@ struct UnlinkButton: View {
     @State private var showingLogout = false
     @State private var showingUnlink = false
     @State private var isNextScreenActive = false
+    let appInfo = AppInfo.shared
     
     var body: some View {
         HStack {
@@ -229,6 +229,11 @@ struct UnlinkButton: View {
                     loginVM.handleFBAuthLogout()
                     
                     isNextScreenActive = true
+                    
+                    loginVM.loginUserEmail = nil
+                    loginVM.userName = nil
+                    loginVM.imgURL = nil
+                    appInfo.currentUser = nil
                 }
                 return Alert(title: Text("로그아웃"),
                              message: Text("정말로 로그아웃 하시겠습니까?"),
@@ -249,6 +254,11 @@ struct UnlinkButton: View {
                     loginVM.handleFBAuthUnlink()
                     
                     isNextScreenActive = true
+                    
+                    loginVM.loginUserEmail = nil
+                    loginVM.userName = nil
+                    loginVM.imgURL = nil
+                    appInfo.currentUser = nil
                 }
                 return Alert(title: Text("회원탈퇴"),
                              message: Text("정말로 회원탈퇴 하시겠습니까?"),
@@ -274,21 +284,4 @@ private func intToString(_ price: Int) -> String {
     }
     
     return result.reversed() + "원"
-}
-
-private func dateToString(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "ko-KR")
-    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
-    
-    let dateString = dateFormatter.string(from: date)
-    return dateString
-}
-
-private func dateToTime(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm"
-    
-    let timeString = dateFormatter.string(from: date)
-    return timeString
 }

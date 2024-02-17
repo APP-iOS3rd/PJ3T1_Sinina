@@ -16,16 +16,12 @@ struct ChatView2: View {
     @State private var isChatTextEmpty = true
     @State private var isImagePickerPresented = false
     @State private var selectedImage: UIImage?
-    
+    @Environment(\.presentationMode) var presentationMode
     
     // MARK: 통합 뷰
     var body: some View {
         VStack {
             messagesView
-//                .navigationTitle(chatVM.currentRoom?.userName ?? "")
-//                .navigationBarTitleDisplayMode(.inline)
-                .padding(.top, 10)
-            
             chatBottomBar
         }
     }
@@ -52,8 +48,12 @@ struct ChatView2: View {
                                 .background(Color.clear)
                                 .onChange(of: chatVM.lastMessageId){ id in
                                     withAnimation {
-                                        // 마지막 말풍선을 따라 스크롤로 내려감
                                         proxy.scrollTo(id, anchor: .bottom)
+                                    }
+                                }
+                                .onAppear(){
+                                    withAnimation {
+                                        proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
                                     }
                                 }
                             }
@@ -66,6 +66,15 @@ struct ChatView2: View {
             }
             .navigationTitle("시니나케이크")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        Image("angle-left-black")
+                    })
+                }
+            }
         }
     }
     
@@ -112,10 +121,7 @@ struct ChatView2: View {
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
-                    } else {
-                        print("UIImage를 Data로 변환하는 데 실패")
                     }
-                    
                     self.selectedImage = nil
                    
                 // text 전송
@@ -125,6 +131,8 @@ struct ChatView2: View {
                 }
                 
                 chatText = ""
+                isChatTextEmpty = true
+                
             } label: {
                 Image(systemName: "paperplane")
                     .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : .white)
@@ -133,6 +141,7 @@ struct ChatView2: View {
                     .background(isChatTextEmpty ? Color(.customGray) : Color(.customBlue))
                     .cornerRadius(45)
             }
+            .disabled(isChatTextEmpty)
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 5)
@@ -146,11 +155,27 @@ struct ChatView2: View {
         HStack {
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-            CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
-                .padding()
-                .background(Color(.customBlue))
-                .cornerRadius(30)
-            
+            if let imageURL = message.imageURL, !imageURL.isEmpty {
+                
+                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 150, maxHeight: 150)
+                        .padding()
+                        .background(Color(.customBlue))
+                        .cornerRadius(30)
+                        
+                },
+                           placeholder: {
+                    ProgressView()
+                })
+                
+            } else {
+                CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
+                    .padding()
+                    .background(Color(.customBlue))
+                    .cornerRadius(30)
+            }
         } // VStack
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 10)
