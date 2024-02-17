@@ -2,29 +2,30 @@
 import SwiftUI
 
 struct CautionView: View {
-    @State private var cautionAll: Bool
-    @State private var pickUp: Bool
-    @State private var cakeCaution: Bool
-    @State private var instaUpload: Bool
-    @State private var Next: Bool
-    
-    init(cautionAll: Bool, pickUp: Bool, cakeCaution: Bool, instaUpload: Bool, Next: Bool) {
-        self.cautionAll = cautionAll
-        self.pickUp = pickUp
-        self.cakeCaution = cakeCaution
-        self.instaUpload = instaUpload
-        self.Next = Next
-    }
+    @Environment(\.presentationMode) var presentationMode
+    @State private var cautionAll: Bool = false
+    @State private var pickUp: Bool = false
+    @State private var cakeCaution: Bool = false
+    @State private var instaUpload: Bool = false
+    @State private var Next: Bool = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView(showsIndicators: false){
                     ScrollTitleView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
                 }
-                .navigationBarTitle("주문 전 확인사항")
-                .navigationBarTitleDisplayMode(.inline)
- 
+            }
+            .navigationBarBackButtonHidden()
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("주문 전 확인사항")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
+                        Image("angle-left")
+                            .foregroundStyle(Color.black)
+                    })
+                }
             }
         }
         cautionbottomView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
@@ -37,7 +38,7 @@ private struct TitleView: View {
             .font(.custom("Pretendard", size: 24))
             .fontWeight(.semibold)
             .foregroundStyle(.black)
-            .padding(.vertical, 21)
+            .padding(.vertical, UIScreen.UIWidth(21))
     }
 }
 
@@ -51,178 +52,169 @@ struct ScrollTitleView: View {
     
     
     var body: some View {
-        LazyVStack(alignment: .center){
+        LazyVStack(alignment: .center) {
             
             // 예약/픽업 날짜
-                Button(action: {self.cautionAll.toggle()}, label: {
-                    Image(cautionAll ? "VectorWhite" : "VectorFalse")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 14)
-                        .padding(.leading, 26)
-                    
-                    CustomText(title: "전체동의", textColor: cautionAll ? .white : .customGray , textWeight: .semibold, textSize: 18)
-                        .multilineTextAlignment(.leading)
-                    Spacer()
-                })
-                .frame(width: 382, height: 70)
-                .background(Color(cautionAll ? .customBlue : .textFieldColor))
-                .cornerRadius(27.5)
-                .padding(.top, 24)
-                .padding(.bottom, 12)
+            Button(action: {self.cautionAll.toggle()}, label: {
+                Image(cautionAll ? "VectorWhite" : "VectorFalse")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
+                    .padding(.leading, UIScreen.UIWidth(24))
                 
-                Button(action: {
-                    self.pickUp.toggle()
-                }){
-                    RoundedRectangle(cornerRadius: 12.0)
-                        .stroke(pickUp ? Color(uiColor: .customBlue) : .white )
-                        .foregroundColor(.clear)
-                        .frame(width: 382, height: 205)
-                        .background(.white)
-                        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
-                        .overlay( VStack(alignment: .leading){
+                CustomText(title: "전체 동의", textColor: cautionAll ? .white : .customDarkGray , textWeight: .semibold, textSize: 18)
+                    .multilineTextAlignment(.leading)
+                    .padding(.leading, UIScreen.UIWidth(24))
+                Spacer()
+            })
+            .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(70))
+            .background(Color(cautionAll ? .customBlue : .textFieldColor))
+            .cornerRadius(45)
+            .padding(.top, UIScreen.UIWidth(24))
+            .padding(.bottom, UIScreen.UIWidth(12))
+            
+            Button(action: {
+                self.pickUp.toggle()
+            }){
+                RoundedRectangle(cornerRadius: 12.0)
+                    .stroke(pickUp ? Color(uiColor: .customBlue) : .white )
+                    .foregroundColor(.clear)
+                    .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(205))
+                    .background(.white)
+                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
+                    .overlay( VStack(alignment: .leading){
+                        
+                        HStack {
+                            Image(pickUp ? "VectorTrue" : "VectorFalse")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
                             
-                            HStack {
-                                Image(pickUp ? "VectorTrue" : "VectorFalse")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24, height: 14)
-                                
-                                
-                                Text("예약/픽업 날짜")
-                                    .font(.custom("Pretendard", size: 18))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                                
-                                Text ("(필수)")
-                                    .font(.custom("Pretendard", size: 18))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color(UIColor.customBlue))
-                            }
                             
-                            Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: 334, height: 1)
-                                .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                                .padding(.bottom, 12)
+                            CustomText(title: "예약/픽업 날짜", textColor: .black, textWeight: .semibold, textSize: 16)
                             
-                            HStack{
-                                Text("ㆍ픽업을 원하는 날짜")
-                                    .modifier(CustomTextModifier(fontColor: UIColor.textFieldTextColor))
-                                Text("최소 3일 전")
-                                    .modifier(CustomTextModifier(fontColor: .customRed))
-                                Text("에 예약해주세요.")
-                                    .modifier(CustomTextModifier(fontColor: UIColor.textFieldTextColor))
-                            }
-                            Text("ㆍ예약은 입금순으로 마감됩니다. \nㆍ원하시는 디자인의 사진 또는 도안을 보내주세요. \nㆍ케이크 작업 중에는 답변이 느릴 수 있습니다. \nㆍ순차적으로 답변 드리니 조금만 기다려주세요~")
-                                .modifier(CustomTextModifier(fontColor: UIColor.textFieldTextColor))
-                        })
-                }
-                .padding(.bottom, 12)
-                .onChange(of: [cautionAll]) { _ in
-                    self.pickUp = self.cautionAll
-                }
+                            CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                            
+                        }
+                        .padding(.leading, UIScreen.UIWidth(12))
+                        
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(width: UIScreen.UIWidth(334), height: UIScreen.UIHeight(1))
+                            .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                            .padding(.bottom, UIScreen.UIWidth(12))
+                        
+                        
+                        HStack{
+                            CustomText(title: "ㆍ픽업을 원하는 날짜", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            CustomText(title: "최소 3일 전", textColor: .customRed, textWeight: .semibold, textSize: 16)
+                                .padding(.leading, UIScreen.UIWidth(-4))
+                            CustomText(title: "에 예약해주세요.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                                .padding(.leading, UIScreen.UIWidth(-8))
+                        }
+                        
+                        CustomText(title: "ㆍ예약은 입금순으로 마감됩니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        CustomText(title: "ㆍ원하시는 디자인의 사진 또는 도안을 보내주세요.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        CustomText(title: "ㆍ케이크 작업 중에는 답변이 느릴 수 있습니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        CustomText(title: "ㆍ순차적으로 답변 드리니 조금만 기다려주세요~", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        
+                    })
+            }
+            .padding(.bottom, UIScreen.UIWidth(12))
+            .onChange(of: [cautionAll]) { _ in
+                self.pickUp = self.cautionAll
+            }
             
             // 케이크 주의사항
-                Button(action: {
-                    self.cakeCaution.toggle()
-                }){
-                    RoundedRectangle(cornerRadius: 12.0)
-                        .stroke(cakeCaution ? Color(uiColor: .customBlue) : .white )
-                        .foregroundColor(.clear)
-                        .frame(width: 382, height: 292)
-                        .background(.white)
-                        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
-                        .overlay( VStack(alignment: .leading){
+            Button(action: {
+                self.cakeCaution.toggle()
+            }){
+                RoundedRectangle(cornerRadius: 12.0)
+                    .stroke(cakeCaution ? Color(uiColor: .customBlue) : .white )
+                    .foregroundColor(.clear)
+                    .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(292))
+                    .background(.white)
+                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
+                    .overlay( VStack(alignment: .leading){
+                        
+                        HStack {
+                            Image(cakeCaution ? "VectorTrue" : "VectorFalse")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
                             
-                            HStack {
-                                Image(cakeCaution ? "VectorTrue" : "VectorFalse")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24, height: 14)
-                                
-                                
-                                Text("케이크 주의사항")
-                                    .font(.custom("Pretendard", size: 18))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                                
-                                Text ("(필수)")
-                                    .font(.custom("Pretendard", size: 18))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color(UIColor.customBlue))
-                            }
+                            CustomText(title: "케이크 주의사항", textColor: .black, textWeight: .semibold, textSize: 16)
                             
-                            Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: 334, height: 1)
-                                .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                                .padding(.bottom, 12)
+                            CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                        }
+                        .padding(.leading, UIScreen.UIWidth(12))
+                        
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(width: UIScreen.UIWidth(334), height: UIScreen.UIHeight(1))
+                            .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                            .padding(.bottom, 12)
+                        
+                        VStack(alignment: .leading){
+                            CustomText(title: "ㆍ글씨와 색깔은 사람의 손으로 하는 것이라 차이가", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            CustomText(title: "   있을 수 있습니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            CustomText(title: "ㆍ색소는 온도와 경과 시간에 따라 번짐이 생깁니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                             
-                            VStack(alignment: .leading){
-                                Text("ㆍ글씨와 색깔은 사람의 손으로 하는 것이라 차이가 \n   있을 수 있습니다. \nㆍ화면과 기종에 따라 색감차이가 있습니다. \nㆍ색소는 온도와 경과 시간에 따라 번짐이 생깁니다.")
-                                    .modifier(CustomTextModifier(fontColor: .textFieldTextColor))
-                                Text("   최대한 픽업한 날 바로 사용해 주세요. ")
-                                    .modifier(CustomTextModifier(fontColor: .customRed))
-                                Text("   국내에서 허가된 식용색소만 사용하며 진한 컬러\n   (빨강, 검정 등)의 경우 색소침착이 발생하나\n   시간이 지나면 자연히 사라집니다. \n   민감하신 분들은 고려해 주세요.")
-                                    .modifier(CustomTextModifier(fontColor: .textFieldTextColor))
-                            }
-                        })
-                }
-                .padding(.bottom, 12)
-                .onChange(of: [cautionAll]) { _ in
-                    self.cakeCaution = self.cautionAll
-                }
-                
-            // 인스타 그램 업로드
-                Button(action: {
-                    self.instaUpload.toggle()
-                }){
-                    RoundedRectangle(cornerRadius: 12.0)
-                        .stroke(instaUpload ? Color(uiColor: .customBlue) : .white )
-                        .foregroundColor(.clear)
-                        .frame(width: 382, height: 139)
-                        .background(.white)
-                        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
-                        .overlay( VStack(alignment: .leading){
+                            CustomText(title: "   최대한 픽업한 날 바로 사용해 주세요. ", textColor: .customRed, textWeight: .semibold, textSize: 16)
                             
-                            HStack {
-                                Image(instaUpload ? "VectorTrue" : "VectorFalse")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24, height: 14)
-                                
-                                Text("인스타그램 업로드")
-                                    .font(.custom("Pretendard", size: 18))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                                
-                                Text ("(필수)")
-                                    .font(.custom("Pretendard", size: 18))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color(UIColor.customBlue))
-                            }
-                            
-                            Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: 334, height: 1)
-                                .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                                .padding(.bottom, 12)
-                            
-                            VStack(alignment: .leading){
-                                Text("ㆍ완성된 케이크 사진은 인스타에 게시됩니다. ")
-                                    .modifier(CustomTextModifier(fontColor: .textFieldTextColor))
-                                Text("ㆍ원치 않으실 경우 미리 말씀해주세요. ")
-                                    .modifier(CustomTextModifier(fontColor: .customRed))
-                            }
-                        })
-                }
-                .padding(.bottom, 12)
-                .onChange(of: [cautionAll]) { _ in
-                    self.instaUpload = self.cautionAll
-                }
+                            CustomText(title: "   국내에서 허가된 식용색소만 사용하며 진한 컬러", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            CustomText(title: "   (빨강, 검정 등)의 경우 색소침착이 발생하나", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            CustomText(title: "   시간이 지나면 자연히 사라집니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            CustomText(title: "   민감하신 분들은 고려해 주세요.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        }
+                    })
             }
-        
+            .padding(.bottom, 12)
+            .onChange(of: [cautionAll]) { _ in
+                self.cakeCaution = self.cautionAll
+            }
+            
+            // 인스타 그램 업로드
+            Button(action: {
+                self.instaUpload.toggle()
+            }){
+                RoundedRectangle(cornerRadius: 12.0)
+                    .stroke(instaUpload ? Color(uiColor: .customBlue) : .white )
+                    .foregroundColor(.clear)
+                    .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(139))
+                    .background(.white)
+                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
+                    .overlay( VStack(alignment: .leading){
+                        
+                        HStack {
+                            Image(instaUpload ? "VectorTrue" : "VectorFalse")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
+                            
+                            CustomText(title: "인스타그램 업로드", textColor: .black, textWeight: .semibold, textSize: 16)
+                            
+                            CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
+                        }
+                        
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(width: UIScreen.UIWidth(334), height: UIScreen.UIHeight(1))
+                            .background(Color(red: 0.95, green: 0.95, blue: 0.95))
+                            .padding(.bottom, 12)
+                        
+                        VStack(alignment: .leading){
+                            CustomText(title: "ㆍ완성된 케이크 사진은 인스타에 게시됩니다. ", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            
+                            CustomText(title: "ㆍ원치 않으실 경우 미리 말씀해주세요. ", textColor: .customRed, textWeight: .semibold, textSize: 16)
+                        }
+                    })
+            }
+            .padding(.bottom, 12)
+            .onChange(of: [cautionAll]) { _ in
+                self.instaUpload = self.cautionAll
+            }
+        }
     }
 }
 
@@ -246,7 +238,7 @@ struct cautionbottomView: View {
     @Binding  var Next: Bool
     
     var body: some View {
-        CustomButton(action: {}, title: "확인", titleColor: Next ? .white : .customGray , backgroundColor: Next ? .customBlue : .textFieldColor, leading: 24, trailing: 24)
+        CustomButton(action: {}, title: "확인", titleColor: Next ? .white : .customDarkGray , backgroundColor: Next ? .customBlue : .textFieldColor, leading: 24, trailing: 24)
             .disabled(!Next)
             .onChange(of: [cautionAll, pickUp, cakeCaution, instaUpload]) { _ in
                 self.Next = isAllChecked(self.pickUp, self.cakeCaution, self.instaUpload)
@@ -255,6 +247,6 @@ struct cautionbottomView: View {
 }
 
 #Preview {
-    CautionView(cautionAll: false, pickUp: false, cakeCaution: false, instaUpload: false, Next: false)
+    CautionView()
 }
 

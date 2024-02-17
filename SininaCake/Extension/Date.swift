@@ -27,4 +27,21 @@ extension Date {
         let formattedDate = dateFormatter.string(from: self)
         return formattedDate
     }
+    
+    func dateToString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko-KR")
+        dateFormatter.dateFormat = "yyyy/MM/dd(E)"
+        
+        let dateString = dateFormatter.string(from: self)
+        return dateString
+    }
+
+    func dateToTime() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        
+        let timeString = dateFormatter.string(from: self)
+        return timeString
+    }
 }

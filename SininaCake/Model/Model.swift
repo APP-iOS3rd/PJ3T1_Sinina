@@ -8,7 +8,7 @@
 import Foundation
 
 struct OrderItem: Hashable {
-    var id: String
+    var id = UUID().uuidString
     var email: String
     var date: Date
     var orderTime: Date

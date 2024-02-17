@@ -305,23 +305,6 @@ private func intToString(_ price: Int) -> String {
     return result.reversed() + "원"
 }
 
-private func dateToString(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "ko-KR")
-    dateFormatter.dateFormat = "yyyy/MM/dd(E)"
-    
-    let dateString = dateFormatter.string(from: date)
-    return dateString
-}
-
-private func dateToTime(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm"
-    
-    let timeString = dateFormatter.string(from: date)
-    return timeString
-}
-
 private func stringToInt(_ str: String) -> Int {
     let numbers = "0123456789"
     var result = ""
