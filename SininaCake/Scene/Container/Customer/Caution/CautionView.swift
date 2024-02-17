@@ -27,8 +27,13 @@ struct CautionView: View {
                     })
                 }
             }
+            NavigationLink(destination: OrderView().navigationBarBackButtonHidden(), label: {
+                ConfirmButton(cautionAll: $cautionAll,
+                              pickUp: $pickUp,
+                              cakeCaution: $cakeCaution,
+                              instaUpload: $instaUpload,
+                              isAgreed: $Next)})
         }
-        cautionbottomView(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, Next: $Next)
     }
 }
 
@@ -53,26 +58,8 @@ struct ScrollTitleView: View {
     
     var body: some View {
         LazyVStack(alignment: .center) {
-            
+            AllAgreeButton(cautionAll: $cautionAll, pickUp: $pickUp, cakeCaution: $cakeCaution, instaUpload: $instaUpload, isAgreed: $Next)
             // 예약/픽업 날짜
-            Button(action: {self.cautionAll.toggle()}, label: {
-                Image(cautionAll ? "VectorWhite" : "VectorFalse")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
-                    .padding(.leading, UIScreen.UIWidth(24))
-                
-                CustomText(title: "전체 동의", textColor: cautionAll ? .white : .customDarkGray , textWeight: .semibold, textSize: 18)
-                    .multilineTextAlignment(.leading)
-                    .padding(.leading, UIScreen.UIWidth(24))
-                Spacer()
-            })
-            .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(70))
-            .background(Color(cautionAll ? .customBlue : .textFieldColor))
-            .cornerRadius(45)
-            .padding(.top, UIScreen.UIWidth(24))
-            .padding(.bottom, UIScreen.UIWidth(12))
-            
             Button(action: {
                 self.pickUp.toggle()
             }){
@@ -105,7 +92,7 @@ struct ScrollTitleView: View {
                             .padding(.bottom, UIScreen.UIWidth(12))
                         
                         
-                        HStack{
+                        HStack {
                             CustomText(title: "ㆍ픽업을 원하는 날짜", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                             CustomText(title: "최소 3일 전", textColor: .customRed, textWeight: .semibold, textSize: 16)
                                 .padding(.leading, UIScreen.UIWidth(-4))
@@ -117,7 +104,6 @@ struct ScrollTitleView: View {
                         CustomText(title: "ㆍ원하시는 디자인의 사진 또는 도안을 보내주세요.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                         CustomText(title: "ㆍ케이크 작업 중에는 답변이 느릴 수 있습니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                         CustomText(title: "ㆍ순차적으로 답변 드리니 조금만 기다려주세요~", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
-                        
                     })
             }
             .padding(.bottom, UIScreen.UIWidth(12))
@@ -196,6 +182,7 @@ struct ScrollTitleView: View {
                             
                             CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                         }
+                        .padding(.leading, UIScreen.UIWidth(12))
                         
                         Rectangle()
                             .foregroundColor(.clear)
@@ -230,18 +217,46 @@ struct CustomTextModifier: ViewModifier {
     }
 }
 
-struct cautionbottomView: View {
-    @Binding  var cautionAll: Bool
-    @Binding  var pickUp: Bool
-    @Binding  var cakeCaution: Bool
-    @Binding  var instaUpload: Bool
-    @Binding  var Next: Bool
+struct AllAgreeButton: View {
+    @Binding var cautionAll: Bool
+    @Binding var pickUp: Bool
+    @Binding var cakeCaution: Bool
+    @Binding var instaUpload: Bool
+    @Binding var isAgreed: Bool
     
     var body: some View {
-        CustomButton(action: {}, title: "확인", titleColor: Next ? .white : .customDarkGray , backgroundColor: Next ? .customBlue : .textFieldColor, leading: 24, trailing: 24)
-            .disabled(!Next)
+        Button(action: {self.cautionAll.toggle()}, label: {
+            Image(isAgreed ? "VectorWhite" : "VectorFalse")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
+                .padding(.leading, UIScreen.UIWidth(32))
+            
+            CustomText(title: "전체 동의", textColor: isAgreed ? .white : .customDarkGray , textWeight: .semibold, textSize: 18)
+                .multilineTextAlignment(.leading)
+                .padding(.leading, UIScreen.UIWidth(24))
+            Spacer()
+        })
+        .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(65))
+        .background(Color(isAgreed ? .customBlue : .textFieldColor))
+        .cornerRadius(45)
+        .padding(.top, UIScreen.UIWidth(24))
+        .padding(.bottom, UIScreen.UIWidth(12))
+    }
+}
+
+struct ConfirmButton: View {
+    @Binding var cautionAll: Bool
+    @Binding var pickUp: Bool
+    @Binding var cakeCaution: Bool
+    @Binding var instaUpload: Bool
+    @Binding var isAgreed: Bool
+    
+    var body: some View {
+        CustomButton(action: {}, title: "확인", titleColor: isAgreed ? .white : .customDarkGray , backgroundColor: isAgreed ? .customBlue : .textFieldColor, leading: 24, trailing: 24)
+            .disabled(isAgreed)
             .onChange(of: [cautionAll, pickUp, cakeCaution, instaUpload]) { _ in
-                self.Next = isAllChecked(self.pickUp, self.cakeCaution, self.instaUpload)
+                self.isAgreed = isAllChecked(self.pickUp, self.cakeCaution, self.instaUpload)
             }
     }
 }
