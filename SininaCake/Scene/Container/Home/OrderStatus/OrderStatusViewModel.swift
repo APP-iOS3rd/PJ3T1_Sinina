@@ -79,8 +79,11 @@ class OrderStatusViewModel: ObservableObject {
                         
                         let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
+                        print(orderDate)
                         myOrderData.append(orderDate)
+                        print(myOrderData)
                     }
+                    print(myOrderData)
                 }
             }
         }
