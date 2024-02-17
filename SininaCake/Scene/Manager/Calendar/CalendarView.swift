@@ -28,7 +28,7 @@ struct CalendarView: View {
     
     @State var daysList = [[DateValue]]()
     
-
+    
     //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
     
@@ -174,11 +174,30 @@ struct CalendarView: View {
         .onDisappear()
         .onChange(of: monthOffset) { _ in
             // updating Month...
+            print("onchange - monthoffset, \(monthOffset)")
             currentDate = getCurrentMonth()
             daysList = extractDate()
+            dateValueVM.loadDataFromFirestore()
         }
-        .task {
-            daysList = extractDate()
+        .onChange(of:dateValueVM.dateValues) { _ in
+            print("onchange - dataValues , \(dateValueVM.dateValues.count)")
+            for dv in dateValueVM.dateValues {
+                if currentDate.month == dv.date.month {
+                    print("onchange - month : \(dv.date.month)")
+                    for i in daysList.indices {
+                        for j in daysList[i].indices {
+                            if daysList[i][j].day == dv.day {
+                                daysList[i][j] = dv
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
+        }
+        .onAppear() {
+            monthOffset = Int(month()) ?? 0
         }
         
         
@@ -232,14 +251,10 @@ struct CalendarView: View {
                     RoundedRectangle(cornerRadius: 45)
                         .inset(by: 0.5)
                         .stroke(Color(red: 0.6, green: 0.6, blue: 0.6), lineWidth: 1)
-                    
                 )
-            
         }
     }
-    
-    
-    
+   
     /**
      현재 날짜 년도
      */
@@ -332,17 +347,14 @@ struct CalendarView: View {
     
 }
 
-
-
 struct CardView: View {
-    
     
     @Binding var value: DateValue
     
     @State var schedule: Schedule
     
     @ObservedObject var dateValueViewModel: DateValueViewModel
-
+    
     //@State private var selectedDate = Date()
     
     @State var isReadOnly: Bool
@@ -350,7 +362,7 @@ struct CardView: View {
     
     func selectedDate2() {
         if isReadOnly == false {
-            value.saveDateValueToFirestore(dateValue: value)
+            
             value.selectedToggle()
             // 클릭할 때마다 클릭 여부를 변경
             
@@ -358,20 +370,11 @@ struct CardView: View {
         }
     }
     
- 
-    
     var body: some View {
         
         
         ZStack() {
-            if true {
-                
-                ZStack() {
-                    Text(".")
-                        .font(.system(size: 30))  // 텍스트 크기를 조절하여 점처럼 보이게 함
-                        .foregroundColor(Color.black)
-                }
-            }
+            
             HStack {
                 
                 if value.day > 0 {
@@ -387,12 +390,13 @@ struct CardView: View {
                             Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                                 .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
-                                //.foregroundColor(dateValueViewModel.getTextColorForDateValue(value))
+                            //.foregroundColor(dateValueViewModel.getTextColorForDateValue(value))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
                                     
                                     selectedDate2()
                                     let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                    value.saveDateValueToFirestore(dateValue: value)
                                     dateValueViewModel.removeDuplicateDay(dateValue: dateValue)
                                     
                                 }
@@ -422,32 +426,20 @@ struct CardView: View {
                                 .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                    let DateValue = DateValue(day: value.day, date: Date())
-                                    dateValueViewModel.removeDuplicateDay(dateValue: DateValue)
-                                
                                     selectedDate2()
+                                    let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                    value.saveDateValueToFirestore(dateValue: value)
+                                    dateValueViewModel.removeDuplicateDay(dateValue: dateValue)
                                     
                                     
                                 }
-                            
                         }
                     }
                 }
-                
-                // Spacer()
-                
-                
             }
-            .onAppear {
-                        
-                dateValueViewModel.loadDataFromFirestore()
-                    }
-            
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
-        
-        
     }
 }
 
