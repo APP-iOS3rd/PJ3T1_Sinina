@@ -68,7 +68,9 @@ struct ChatView2: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
                         Image("angle-left-black")
                     })
                 }
