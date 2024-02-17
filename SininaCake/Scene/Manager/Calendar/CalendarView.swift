@@ -124,6 +124,21 @@ struct CalendarView: View {
                 }
             }
         }
+        .onChange(of:dateValueVM.dateValues) { _ in
+            print("onchange - dataValues , \(dateValueVM.dateValues.count)")
+            for dv in dateValueVM.dateValues {
+                if currentDate.month == dv.date.month {
+                    print("onchange - month : \(dv.date.month)")
+                    for i in daysList.indices {
+                        for j in daysList[i].indices {
+                                if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                                    daysList[i][j] = dv
+                                }
+                        }
+                    }
+                }
+            }
+        }
         .onAppear() {
             monthOffset = Int(month()) ?? 0
             currentDate = getCurrentMonth()
