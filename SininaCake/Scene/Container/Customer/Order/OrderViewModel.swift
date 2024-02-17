@@ -20,7 +20,6 @@ class OrderViewModel: ObservableObject {
 
     func addOrderItem() {
         let db = Firestore.firestore()
-        let loginVM: LoginViewModel = LoginViewModel()
 
         /* let collection: Void =*/ db.collection("CurrentOrders").document(orderItem.id).setData([
             "comment": orderItem.comment,
