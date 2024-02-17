@@ -4,7 +4,7 @@ import FirebaseStorage
 import PhotosUI
 
 struct OrderView: View {
-    @StateObject var chart = OrderVM(orderItem: OrderItem(email: "", date: Date(), orderTime: Date(), cakeSize: "", sheet: "", cream: "", icePack: .none, name: "", phoneNumber: "", text: "", imageURL: ["","","",""], comment: "", expectedPrice: 0, confirmedPrice: 0, status: .notAssign))
+    @StateObject var chart = OrderVM(orderItem: OrderItem(id: UUID().uuidString, email: "", date: Date(), orderTime: Date(), cakeSize: "", sheet: "", cream: "", icePack: .none, name: "", phoneNumber: "", text: "", imageURL: ["","","",""], comment: "", expectedPrice: 0, confirmedPrice: 0, status: .notAssign))
     @StateObject private var photoVM = PhotoPickerVm()
     
     var body: some View {
