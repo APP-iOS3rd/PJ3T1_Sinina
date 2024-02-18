@@ -160,6 +160,8 @@ struct OrderCalendarView:View {
                 .padding(.leading,(UIScreen.main.bounds.width) * 24/430 )
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
         }
+    }
+}
 
 // MARK: - OrderCakeView
 struct OrderCakeView: View {
@@ -402,12 +404,12 @@ struct OrderTextView: View {
             CustomText(title: "문구/글씨 색상", textColor: .black, textWeight: .semibold , textSize: 18)
             
             TextField(" ex) 생일축하해 깐깐징어~!", text: $orderData.orderItem.text, axis: .vertical)
-                .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430, height:  (UIScreen.main.bounds.height) * 90/430))
+                .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430,
+                                                 height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
                 .onAppear(perform : UIApplication.shared.hideKeyboard)
-   
         }
     }
 }
@@ -549,8 +551,8 @@ struct OrderIcePackView: View {
     }
     
     private func disableSelection(for index: Int) -> Bool {
-        if orderData.orderItem.cakeSize == "도시락" {
-            return orderIcePackModel[index].title != "보냉팩"
+        if orderData.orderItem.cakeSize != "도시락" {
+            return orderIcePackModel[index].title != "보냉백"
         } else {
             return false
         }
@@ -583,7 +585,7 @@ struct OrderCommentView: View {
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
                 .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
-                .onAppear(perform : UIApplication.shared.hideKeyboard)  
+                .onAppear(perform : UIApplication.shared.hideKeyboard)
         }
     }
 }

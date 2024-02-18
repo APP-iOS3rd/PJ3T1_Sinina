@@ -39,7 +39,7 @@ class OrderDetailViewModel: ObservableObject {
         for imageName in imageNames {
             let storageRef = storage.reference().child("\(id)/\(imageName)")
             
-            storageRef.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
+            storageRef.getData(maxSize: 30 * 1024 * 1024) { [weak self] data, error in
                 if let error = error {
                     print("Cannot download image \(error.localizedDescription)")
                     return
