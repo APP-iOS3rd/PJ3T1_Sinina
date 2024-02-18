@@ -10,6 +10,8 @@ struct CalendarView: View {
     @Environment(\.sizeCategory) var sizeCategory
     @ObservedObject var dateValueVM = DateValueViewModel()
     @StateObject var orderListVM = OrderListViewModel()
+    @StateObject var orderDateVM = OrderDateViewModel()
+    
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     @State var currentDate = Date()
@@ -17,7 +19,7 @@ struct CalendarView: View {
     //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
     @State var edit: Bool = false
-    
+    @State var getData: Bool = false
     var body: some View {
         
         ScrollView {
@@ -48,8 +50,9 @@ struct CalendarView: View {
                     )
             }
             VStack {
-                if edit {
+                if edit && getData {
                     ListView(orderData: orderListVM.assignOrderData, title: "주문 내역", titleColor: .black)
+                    
                 }
             }
             .onAppear {
@@ -92,6 +95,7 @@ struct CalendarView: View {
             Button {
                 print("편집 작동, \(edit)")
                 edit.toggle()
+                getData.toggle()
             } label: {
                 Image(systemName:"list.clipboard.fill")
                     .foregroundColor(Color(.customBlue))
@@ -128,7 +132,7 @@ struct CalendarView: View {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM,isReadOnly: false, edit: $edit)
+                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM,isReadOnly: false, edit: $edit, getData: $getData)
                         
                     }
                 }
@@ -300,7 +304,7 @@ struct CardView: View {
     @ObservedObject var dateValueVM: DateValueViewModel
     @State var isReadOnly: Bool
     @Binding var edit: Bool
-    
+    @Binding var getData: Bool
     func selectedDate() {
         if isReadOnly == false {
             value.selectedToggle()
@@ -330,8 +334,8 @@ struct CardView: View {
                                     let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                     value.saveDateValueToFirestore(dateValue: value)
                                     dateValueVM.removeDuplicateDay(dateValue: dateValue)
-                                    
-                                        
+                                    } else {
+                                        getData.toggle()
                                     }
                                 }
                             
@@ -357,13 +361,13 @@ struct CardView: View {
                                 .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                    if edit == false {
+                                    if edit == false  {
                                     selectedDate()
                                     let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                     value.saveDateValueToFirestore(dateValue: value)
                                     dateValueVM.removeDuplicateDay(dateValue: dateValue)
-                                    
-                                        
+                                    } else {
+                                        getData.toggle()
                                     }
                                 }
                         }
