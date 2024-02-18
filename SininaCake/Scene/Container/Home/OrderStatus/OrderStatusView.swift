@@ -26,9 +26,6 @@ struct OrderStatusView: View {
             .navigationDestination(for: OrderItem.self) { item in
                 UserDetailView(orderItem: item)
             }
-            .onAppear {
-                orderStatusVM.fetchData()
-            }
         }
     }
 }
@@ -79,21 +76,24 @@ struct StatusView: View {
 struct StatusInfo: View {
     @ObservedObject var orderStatusVM: OrderStatusViewModel
     let orderItem: OrderItem
-    let imageWidth = UIScreen.main.bounds.width - 96
+    @State var thumbnailImage: UIImage? = nil
+    let imageWidth = UIScreen.main.bounds.width - 48
     
     var body: some View {
-        VStack {
-            if let image = orderStatusVM.image {
+        VStack(spacing: 0) {
+            if let image = thumbnailImage {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
                     .frame(width: imageWidth, height: imageWidth / 2)
+                    .cornerRadius(12)
                     .clipped()
             } else {
                 Image("emptyPhoto")
                     .resizable()
                     .scaledToFill()
                     .frame(width: imageWidth, height: imageWidth / 2)
+                    .cornerRadius(12)
                     .clipped()
             }
             DetailInfoView(orderItem: orderItem)
@@ -112,7 +112,13 @@ struct StatusInfo: View {
             }
         )
         .onAppear {
-            orderStatusVM.downloadImage(orderItem.id, orderItem.imageURL[0])
+            if orderItem.imageURL[0] != "" {
+                orderStatusVM.downloadImage(orderItem.id, orderItem.imageURL[0]) { image in
+                    DispatchQueue.main.async {
+                        self.thumbnailImage = image
+                    }
+                }
+            }
         }
     }
 }
@@ -120,19 +126,19 @@ struct StatusInfo: View {
 struct DdayView: View {
     let orderItem: OrderItem
     
-    var titleAndColor: (String, UIColor) {
+    var titleAndColor: (String, UIColor, UIColor) {
         switch orderItem.status {
         case .assign, .complete:
-            return (dateToDday(orderItem.date), .white)
+            return (dateToDday(orderItem.date), .white, .customBlue)
         case .notAssign:
-            return ("예약대기", .customDarkGray)
+            return ("예약대기", .customDarkGray, .customGray)
         }
     }
     
     var body: some View {
         CustomText(title: titleAndColor.0, textColor: titleAndColor.1, textWeight: .semibold, textSize: 14)
             .frame(width: UIScreen.UIWidth(75), height: UIScreen.UIHeight(30))
-            .background(Color(.customBlue))
+            .background(Color(titleAndColor.2))
             .cornerRadius(15)
             .padding()
     }

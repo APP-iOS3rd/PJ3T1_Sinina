@@ -87,13 +87,13 @@ struct OrderDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
-                    Image("angle-left")
+                    Image("angle-left-black")
                         .foregroundStyle(Color.black)
                 })
             }
         }
         .onAppear {
-            orderDetailVM.downloadImage(orderItem.imageURL)
+            orderDetailVM.downloadImage(orderItem.id, orderItem.imageURL)
             orderDetailVM.getDeviceToken(orderItem.email)
         }
     }
@@ -407,10 +407,21 @@ struct BottomButton: View {
             return toggle
         }
     }
+    
+    var messageText: String {
+        switch orderItem.status {
+        case .notAssign:
+            return "주문 예약이 완료되었습니다. 총 확정금액은 \(totalPrice)입니다!"
+        case .assign:
+            return "제작이 완료되었습니다. \(orderItem.date.dateToString()) \(orderItem.date.dateToTime())까지 시니나케이크로 와주세요!"
+        default:
+            return ""
+        }
+    }
 
     var body: some View {
         CustomButton(action: {
-            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: "Test Message")
+            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: messageText)
             
             if orderItem.status == .notAssign {
                 orderDetailVM.updateStatus(orderItem: orderItem)

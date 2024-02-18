@@ -33,12 +33,11 @@ class OrderDetailViewModel: ObservableObject {
         }
     }
     
-    func downloadImage(_ imageNames: [String]) {
+    func downloadImage(_ id: String, _ imageNames: [String]) {
         images = []
-        let storage = Storage.storage()
         
         for imageName in imageNames {
-            let storageRef = storage.reference().child(imageName)
+            let storageRef = storage.reference().child("\(id)/\(imageName)")
             
             storageRef.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
                 if let error = error {
@@ -46,6 +45,7 @@ class OrderDetailViewModel: ObservableObject {
                     return
                 } else {
                     if let imageData = data, let self = self, let uiImage = UIImage(data: imageData) {
+                        print("success download image")
                         DispatchQueue.main.async {
                             self.images.append(uiImage)
                         }

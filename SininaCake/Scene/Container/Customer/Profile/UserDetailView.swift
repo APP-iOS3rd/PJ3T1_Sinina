@@ -82,7 +82,7 @@ struct UserDetailView: View {
             }
         }
         .onAppear {
-            orderDetailVM.downloadImage(orderItem.imageURL)
+            orderDetailVM.downloadImage(orderItem.id, orderItem.imageURL)
         }
     }
 }
