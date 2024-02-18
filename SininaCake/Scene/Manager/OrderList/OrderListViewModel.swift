@@ -30,7 +30,7 @@ class OrderListViewModel: ObservableObject {
         notAssignOrderData = []
         completeOrderData = []
         
-        let query: Query = ordersRef.order(by: "id")
+        let query: Query = ordersRef.order(by: "orderTime")
         
         query.getDocuments { [weak self] querySnapshot, error in
             if let error = error {

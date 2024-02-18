@@ -93,7 +93,7 @@ struct OrderDetailView: View {
             }
         }
         .onAppear {
-            orderDetailVM.downloadImage(orderItem.imageURL)
+            orderDetailVM.downloadImage(orderItem.id, orderItem.imageURL)
             orderDetailVM.getDeviceToken(orderItem.email)
         }
     }

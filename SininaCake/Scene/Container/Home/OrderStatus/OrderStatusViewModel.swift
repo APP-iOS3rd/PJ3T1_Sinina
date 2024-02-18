@@ -13,7 +13,6 @@ class OrderStatusViewModel: ObservableObject {
     let loginVM = LoginViewModel.shared
     let storage = Storage.storage()
     @Published var myOrderData: [OrderItem] = []
-    @Published var image: UIImage? = nil
     
     var db: Firestore!
     var ordersRef: CollectionReference!
@@ -27,9 +26,8 @@ class OrderStatusViewModel: ObservableObject {
         ordersRef = db.collection("Users").document(loginVM.loginUserEmail ?? "").collection("Orders")
     }
     
-    func downloadImage(_ id: String, _ imageName: String) {
+    func downloadImage(_ id: String, _ imageName: String, completion: @escaping (UIImage) -> Void) {
         let storage = Storage.storage()
-        
         
         let storageRef = storage.reference().child("\(id)/\(imageName)")
         
@@ -39,9 +37,7 @@ class OrderStatusViewModel: ObservableObject {
                 return
             } else {
                 if let imageData = data, let self = self, let uiImage = UIImage(data: imageData) {
-                    DispatchQueue.main.async {
-                        self.image = uiImage
-                    }
+                    completion(uiImage)
                 }
             }
         }
@@ -50,7 +46,7 @@ class OrderStatusViewModel: ObservableObject {
     func fetchData() {
         myOrderData = []
         
-        let query: Query = ordersRef.order(by: "id")
+        let query: Query = ordersRef.order(by: "orderTime")
         
         query.getDocuments { [weak self] querySnapshot, error in
             if let error = error {
@@ -79,11 +75,8 @@ class OrderStatusViewModel: ObservableObject {
                         
                         let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
-                        print(orderDate)
                         myOrderData.append(orderDate)
-                        print(myOrderData)
                     }
-                    print(myOrderData)
                 }
             }
         }
