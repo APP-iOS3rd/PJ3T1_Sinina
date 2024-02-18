@@ -25,6 +25,8 @@ class ProfileViewModel: ObservableObject {
         
         db = Firestore.firestore()
         ordersRef = db.collection("Users").document(loginVM.loginUserEmail ?? "").collection("Orders")
+        
+        fetchData()
     }
     
     func downloadImage(_ id: String, _ imageName: String, completion: @escaping (UIImage) -> Void) {

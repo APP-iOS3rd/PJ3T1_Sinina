@@ -478,7 +478,21 @@ private struct BottomView: View {
 
             }
 
-            CustomButton(action: {defer {orderData.addOrderItem()}; for i in 0...photoVM.selectedImages.count - 1 {photoVM.uploadPhoto(i, orderData.orderItem.id); orderData.imgURL(i)}; orderData.orderItem.expectedPrice = orderData.expectedPrice(); orderData.orderItem.email = loginVM.loginUserEmail ?? ""}, title: "예약하기", titleColor: .white, backgroundColor: orderData.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor, leading: 110, trailing: 24)
+            CustomButton(action: {
+                defer {
+                    orderData.addOrderItem()
+                }
+                for i in 0...photoVM.selectedImages.count - 1 {
+                    photoVM.uploadPhoto(i, orderData.orderItem.id)
+                    orderData.imgURL(i)
+                }
+                orderData.orderItem.expectedPrice = orderData.expectedPrice()
+                orderData.orderItem.email = loginVM.loginUserEmail ?? ""
+            },
+                         title: "예약하기",
+                         titleColor: .white, 
+                         backgroundColor: orderData.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor, leading: 110, trailing: 24
+            )
                 .kerning(0.45)
                 .padding(.vertical, 12)
                 .disabled(!orderData.isallcheck() || photoVM.selectedImages.isEmpty)

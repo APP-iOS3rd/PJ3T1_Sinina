@@ -30,7 +30,6 @@ struct ProfileView: View {
             })
             .onAppear {
                 loginVM.getKakaoUserInfo()
-                profileVM.fetchData()
                 profileVM.downloadProfileImage()
             }
         }

@@ -26,9 +26,6 @@ struct OrderStatusView: View {
             .navigationDestination(for: OrderItem.self) { item in
                 UserDetailView(orderItem: item)
             }
-            .onAppear {
-                orderStatusVM.fetchData()
-            }
         }
     }
 }
