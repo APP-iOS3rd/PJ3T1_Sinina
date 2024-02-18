@@ -4,17 +4,24 @@ import FirebaseStorage
 import PhotosUI
 
 struct OrderView: View {
+
     @StateObject var OrderVM = OrderViewModel(orderItem: OrderItem(id: UUID().uuidString, email: "", date: Date(), orderTime: Date(), cakeSize: "도시락", sheet: "바닐라 시트", cream: "크림치즈 \n프로스팅", icePack: .none, name: "", phoneNumber: "", text: "", imageURL: ["","","",""], comment: "", expectedPrice: 0, confirmedPrice: 0, status: .notAssign))
     @StateObject private var photoVM = PhotoPickerViewModel()
     @StateObject var loginVM = LoginViewModel.shared
     
     
     
+
+
+
+
+
     var body: some View {
         NavigationView{
             VStack{
                 ScrollView(showsIndicators: false){
                     infoView(orderData: OrderVM)
+
                     
                     OrderCalendarView(orderData: OrderVM)
                     
@@ -30,6 +37,7 @@ struct OrderView: View {
                     
                     OrderIcePackView(orderData: OrderVM)
                     
+
                     OrderCommentView(orderData: OrderVM)
                 }
             }
@@ -50,31 +58,39 @@ struct infoView: View {
             CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
                 .kerning(0.45)
                 .padding(.leading, 24)
+
             
+
             TextField("ex) 시니나...", text: $orderData.orderItem.name)
                 .textFieldStyle(.plain)
                 .padding(.leading, 24)
                 .submitLabel(.done)
+
             
+
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
                 .padding(.leading, 24)
                 .padding(.bottom, 36)
-            
+
             /// 휴대폰 번호
             CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
                 .padding(.leading, 24)
+
             
+
             TextField("010 -", text: $orderData.orderItem.phoneNumber)
                 .textFieldStyle(.plain)
                 .submitLabel(.done)
                 .limitText($orderData.orderItem.phoneNumber, to: 11)
                 .padding(.leading, 24)
                 .kerning(0.5)
+
             
             
+
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
@@ -84,6 +100,7 @@ struct infoView: View {
         }
     }
 }
+
 
 
 
@@ -143,6 +160,7 @@ struct OrderCalendarView:View {
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
         }
         
+
     }
 }
 
@@ -151,9 +169,11 @@ struct OrderCalendarView:View {
 // MARK: - OrderCakeView
 struct OrderCakeView: View {
     @ObservedObject var orderData: OrderViewModel
+
     
     @State var selectedCakeIndex: Int?
     
+
     @State var orderCakeModel: [OrderCakeViewModel] = [
         OrderCakeViewModel(title: "도시락", sideTitle: "", bottomTitle: "지름 10cm", sizePricel: "20,000원", isOn: true),
         OrderCakeViewModel(title: "미니", sideTitle: "", bottomTitle: "지름 12cm", sizePricel: "33,000원", isOn: false),
@@ -161,7 +181,9 @@ struct OrderCakeView: View {
         OrderCakeViewModel(title: "2호", sideTitle: "4~6인분", bottomTitle: "원형 지름 기준 18Cm", sizePricel: "55,000원", isOn: false),
         OrderCakeViewModel(title: "3호", sideTitle: "6~8인분", bottomTitle: "원형 지름 기준 21Cm", sizePricel: "65,000원", isOn: false)
     ]
+
     
+
     var body: some View {
         VStack(alignment:.leading){
             CustomText(title: "케이크 사이즈", textColor: .black, textWeight: .semibold , textSize: 18)
@@ -177,6 +199,7 @@ struct OrderCakeView: View {
                             Image(orderCakeModel[index].title == orderData.orderItem.cakeSize ? "orderVectorTrue" : "orderVectorFalse")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+
                                 .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
                                 .padding(.leading,(UIScreen.main.bounds.width) * 22/430 )
                                 .padding(.trailing,(UIScreen.main.bounds.width) * 18/430 )
@@ -195,11 +218,13 @@ struct OrderCakeView: View {
                                 .padding(.trailing,(UIScreen.main.bounds.height) * 28/430)
                         }
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/932)
+
                         .background(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(orderCakeModel[index].title == orderData.orderItem.cakeSize ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                         )
                     })
+
                     .padding(.bottom,(UIScreen.main.bounds.height) * 12/932)
                 }
             }
@@ -268,6 +293,7 @@ struct OrderSheetView: View {
                 }
             }
             .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
+
         }
     }
     private func updateSelection(index: Int) {
@@ -282,28 +308,34 @@ struct OrderSheetView: View {
 // MARK: - OrderCreamView
 struct OrderCreamView: View {
     @ObservedObject var orderData: OrderViewModel
+
     
     @State var selectedCreamIndex: Int?
     
+
     @State var orderCreamModel: [OrderCakeViewModel] = [
         OrderCakeViewModel(title: "크림치즈 \n프로스팅", sideTitle: "", bottomTitle: "", sizePricel: "", isOn: true),
         OrderCakeViewModel(title: "오레오", sideTitle: "", bottomTitle: "", sizePricel: "", isOn: false),
         OrderCakeViewModel(title: "블루베리", sideTitle: "", bottomTitle: "", sizePricel: "", isOn: false),
         OrderCakeViewModel(title: "초코", sideTitle: "(+2000원)", bottomTitle: "", sizePricel: "", isOn: false)
     ]
+
     
     
     
+
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+
     
     
     var body: some View {
         VStack(alignment: .leading){
             CustomText(title: "속크림", textColor: .black, textWeight: .semibold , textSize: 18)
                 .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
+
             HStack{
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(orderCreamModel.indices, id: \.self) { index in
@@ -317,14 +349,17 @@ struct OrderCreamView: View {
                                 Image(orderCreamModel[index].title == orderData.orderItem.cream ? "orderVectorTrue" : "orderVectorFalse")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
+
                                     .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
                                     .padding(.leading, (UIScreen.main.bounds.width) * 22/430)
                                     .padding(.trailing, (UIScreen.main.bounds.width) * 7/430)
                                 
+
                                 VStack (alignment: .leading){
                                     HStack{
                                         CustomText(title: orderCreamModel[index].title, textColor: .black, textWeight: .semibold, textSize: 18)
                                         CustomText(title: orderCreamModel[index].sideTitle, textColor: .black, textWeight: .regular, textSize: 16)
+
                                             .padding(.leading, (UIScreen.main.bounds.width) * -4/430)
                                     }
                                 }
@@ -333,11 +368,13 @@ struct OrderCreamView: View {
                                 
                             }
                             .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
+
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(orderCreamModel[index].title == orderData.orderItem.cream ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
                             )
                         })
+
                         .padding(.bottom, (UIScreen.main.bounds.height) * 12/932)
                     }
                 }
@@ -541,10 +578,12 @@ struct OrderIcePackView: View {
 
 
 
+
 // MARK: - OrderCommentView
 
 struct OrderCommentView: View {
     @ObservedObject var orderData: OrderViewModel
+
     
     var body: some View {
         VStack(alignment: .leading){
@@ -563,24 +602,32 @@ struct OrderCommentView: View {
 }
 
 
+
 // MARK: - BottomView
 private struct BottomView: View {
     @ObservedObject var orderData: OrderViewModel
     @ObservedObject var photoVM: PhotoPickerViewModel
     @ObservedObject var loginVM: LoginViewModel
+
     
+
     var body: some View {
         HStack {
             VStack {
                 CustomText(title: "총 예상금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
                     .kerning(0.35)
+
                     .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
                 
+
                 Text("\(orderData.expectedPrice())원")
                     .font(.custom("Pretendard", size: 18))
                     .padding(.leading, 24)
                     .fontWeight(.semibold)
+
+
             }
+
             
             CustomButton(action: {defer {orderData.addOrderItem()}; for i in 0...photoVM.selectedImages.count - 1 {photoVM.uploadPhoto(i, orderData.orderItem.id); orderData.imgURL(i)}; orderData.orderItem.expectedPrice = orderData.expectedPrice(); orderData.orderItem.email = loginVM.loginUserEmail ?? ""}, title: "예약하기", titleColor: orderData.isallcheck() && !photoVM.selectedImages.isEmpty ? .white : .customDarkGray, backgroundColor: orderData.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor, leading: 110, trailing: 24)
                 .kerning(0.45)
@@ -591,6 +638,7 @@ private struct BottomView: View {
         }
     }
     
+
 }
 
 // MARK: - Modifier, extension etc...
@@ -599,7 +647,7 @@ private struct BottomView: View {
 struct LoginTextFieldModifier: ViewModifier {
     var width: CGFloat
     var height: CGFloat
-    
+
     func body(content: Content) -> some View {
         content
             .font(.system(size: 16))
@@ -613,6 +661,8 @@ struct LoginTextFieldModifier: ViewModifier {
             }
     }
 }
+
+
 
 
 extension View {
