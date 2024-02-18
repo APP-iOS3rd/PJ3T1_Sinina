@@ -30,6 +30,9 @@ struct DateValue: Identifiable, Codable, Comparable {
     static func < (lhs: DateValue, rhs: DateValue) -> Bool {
         return lhs.day < rhs.day
     }
+    
+    
+    
 }
 
  //일정 정보
@@ -63,6 +66,12 @@ extension Date {
     public var weekday: Int {
         return Calendar.current.component(.weekday, from: self)
     }
+    
+    func toDateString() -> String {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd"
+           return dateFormatter.string(from: self)
+       }
     
     func getAllDates() -> [Date] {
         let calendar = Calendar.current
@@ -124,9 +133,10 @@ extension DateValue {
         ]
     }
     
+    
     func saveDateValueToFirestore(dateValue: DateValue) {
         let db = Firestore.firestore()
-        let documentReference = db.collection("dateValues").document(dateValue.id ?? "")
+        let documentReference = db.collection("dateValues").document(dateValue.date.withoutTime().toDateString())
         print("\(dateValue.id ?? "")")
         documentReference.setData(dateValue.toFirestore) { error in
             if let error = error {

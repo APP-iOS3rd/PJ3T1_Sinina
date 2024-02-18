@@ -9,54 +9,67 @@ struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     @ObservedObject var dateValueVM = DateValueViewModel()
-    var dateString: String? {
-        let date =  Date()                     // 넣을 데이터(현재 시간)
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "MM-dd"  // 변환할 형식
-        let dateString = myFormatter.string(from: date)
-        return dateString
-    }
+    @StateObject var orderListVM = OrderListViewModel()
+    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
     //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
+    @State var edit: Bool = false
     
     var body: some View {
-        VStack() {
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 342, height: 441)
-                .background(
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
-                        VStack() {
-                            headerView
-                            Divider()
-                                .frame(width: 302)
-                            weekView
-                            cardView
-                            Divider()
-                                .frame(width: 302)
-                            bookingView
-                                .padding([.horizontal,.vertical], 24)
+        
+        ScrollView {
+            Spacer()
+            Spacer()
+            VStack() {
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .frame(width: 342, height: 441)
+                    .background(
+                        ZStack {
+                            Rectangle()
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
+                            VStack() {
+                                headerView
+                                Divider()
+                                    .frame(width: 302)
+                                weekView
+                                cardView
+                                Divider()
+                                    .frame(width: 302)
+                                bookingView
+                                    .padding([.horizontal,.vertical], 24)
+                            }
                         }
-                    }
-                )
+                    )
+            }
+            VStack {
+                if edit {
+                    ListView(orderData: orderListVM.assignOrderData, title: "주문 내역", titleColor: .black)
+                }
+            }
+            .onAppear {
+                orderListVM.fetchData()
+            }
         }
     }
     
     private var headerView: some View {
         HStack {
+            Spacer()
+            Spacer()
+            
             Button {
                 monthOffset -= 1
                 
             } label: {
                 Image("angle-left")
             }
+            .offset(x: 8)
             Text(month())
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -65,13 +78,30 @@ struct CalendarView: View {
                 .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
                 .minimumScaleFactor(0.7)
                 .padding()
+                .offset(x: 8)
             Button {
                 monthOffset += 1
             } label: {
                 Image("angle-right")
             }
+            .offset(x: 8)
+            
+            Spacer()
+            
+            
+            Button {
+                print("편집 작동, \(edit)")
+                edit.toggle()
+            } label: {
+                Image(systemName:"list.clipboard.fill")
+                    .foregroundColor(Color(.customBlue))
+            }
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
+        
+        
+        
     }
     
     private var weekView: some View {
@@ -98,7 +128,8 @@ struct CalendarView: View {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueViewModel:dateValueVM,isReadOnly: false)
+                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM,isReadOnly: false, edit: $edit)
+                        
                     }
                 }
                 .minimumScaleFactor(0.1)
@@ -116,9 +147,9 @@ struct CalendarView: View {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
                         for j in daysList[i].indices {
-                                if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                    daysList[i][j] = dv
-                                }
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                                daysList[i][j] = dv
+                            }
                         }
                     }
                 }
@@ -131,15 +162,16 @@ struct CalendarView: View {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
                         for j in daysList[i].indices {
-                                if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                    daysList[i][j] = dv
-                                }
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                                daysList[i][j] = dv
+                            }
                         }
                     }
                 }
             }
         }
         .onAppear() {
+            
             monthOffset = Int(month()) ?? 0
             currentDate = getCurrentMonth()
             daysList = extractDate()
@@ -260,14 +292,16 @@ struct CalendarView: View {
     }
 }
 
+
 struct CardView: View {
-    
+    //@Binding var edit : Bool
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var dateValueViewModel: DateValueViewModel
+    @ObservedObject var dateValueVM: DateValueViewModel
     @State var isReadOnly: Bool
+    @Binding var edit: Bool
     
-    func selectedDate2() {
+    func selectedDate() {
         if isReadOnly == false {
             value.selectedToggle()
             // 클릭할 때마다 클릭 여부를 변경
@@ -275,6 +309,7 @@ struct CardView: View {
         }
     }
     var body: some View {
+        
         ZStack() {
             HStack {
                 if value.day > 0 {
@@ -290,10 +325,14 @@ struct CardView: View {
                                 .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                    selectedDate2()
+                                    if edit == false {
+                                    selectedDate()
                                     let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                     value.saveDateValueToFirestore(dateValue: value)
-                                    dateValueViewModel.removeDuplicateDay(dateValue: dateValue)
+                                    dateValueVM.removeDuplicateDay(dateValue: dateValue)
+                                    
+                                        
+                                    }
                                 }
                             
                         } else if schedule.startDate.withoutTime() == value.date {
@@ -318,12 +357,15 @@ struct CardView: View {
                                 .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                    selectedDate2()
+                                    if edit == false {
+                                    selectedDate()
                                     let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                     value.saveDateValueToFirestore(dateValue: value)
-                                    dateValueViewModel.removeDuplicateDay(dateValue: dateValue)
+                                    dateValueVM.removeDuplicateDay(dateValue: dateValue)
+                                    
+                                        
+                                    }
                                 }
-                            
                         }
                     }
                 }
