@@ -226,8 +226,6 @@ func statusToString(_ status: OrderStatus) -> String {
         return "미승인"
     case .complete:
         return "완료"
-    default:
-        return "미승인"
     }
 }
 
@@ -239,8 +237,6 @@ func icePackToString(_ icePack: IcePack) -> String {
         return "보냉팩"
     case .iceBag:
         return "보냉백"
-    default:
-        return "없음"
     }
 }
 
