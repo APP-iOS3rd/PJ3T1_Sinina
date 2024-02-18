@@ -32,7 +32,7 @@ class ProfileViewModel: ObservableObject {
     func downloadImage(_ id: String, _ imageName: String, completion: @escaping (UIImage) -> Void) {
         let storageRef = storage.reference().child("\(id)/\(imageName)")
         
-        storageRef.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
+        storageRef.getData(maxSize: 30 * 1024 * 1024) { [weak self] data, error in
             if let error = error {
                 print("Cannot download image \(error.localizedDescription)")
                 return
