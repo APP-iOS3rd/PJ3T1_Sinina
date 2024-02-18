@@ -10,21 +10,22 @@ import Combine
 import _PhotosUI_SwiftUI
 
 
-class OrderVM: ObservableObject {
+class OrderViewModel: ObservableObject {
     @Published var orderItem: OrderItem
-    
+
     init(orderItem: OrderItem) {
         self.orderItem = orderItem
     }
-    
-    
+
+
     func addOrderItem() {
         let db = Firestore.firestore()
+
         /* let collection: Void =*/ db.collection("CurrentOrders").document(orderItem.id).setData([
             "comment": orderItem.comment,
             "cream": orderItem.cream,
             "date": orderItem.date,
-            "email": Auth.auth().currentUser?.email ?? "",
+            "email": orderItem.email,
             "expectedPrice": orderItem.expectedPrice,
             "icePack": icePackToString(orderItem.icePack),
             "id": orderItem.id,
@@ -37,11 +38,11 @@ class OrderVM: ObservableObject {
             "text": orderItem.text,
             "status": statusToString(orderItem.status)
         ])
-        /*let collection2: Void =*/ db.collection("Users").document(Auth.auth().currentUser?.email ?? orderItem.id).collection("Orders").document(orderItem.id).setData([
+        /*let collection2: Void =*/ db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).setData([
             "comment": orderItem.comment,
             "cream": orderItem.cream,
             "date": orderItem.date,
-            "email": Auth.auth().currentUser?.email ?? "",
+            "email": orderItem.email,
             "expectedPrice": orderItem.expectedPrice,
             "icePack": icePackToString(orderItem.icePack),
             "id": orderItem.id,
@@ -55,9 +56,10 @@ class OrderVM: ObservableObject {
             "status": statusToString(orderItem.status)
         ])
     }
+
     func expectedPrice() -> Int {
         var price = 0
-        
+
         switch orderItem.cakeSize {
         case "도시락" :
             price += 20000
@@ -72,11 +74,11 @@ class OrderVM: ObservableObject {
         default :
             price += 0
         }
-        
+
         if orderItem.cream == "초코" {
             price += 2000
         }
-        
+
         switch orderItem.icePack {
         case .none:
             price += 0
@@ -87,32 +89,64 @@ class OrderVM: ObservableObject {
         }
         return price
     }
-    
+
     func isallcheck() -> Bool {
         var check: Bool = false
-        
-        if orderItem.cakeSize.isEmpty || orderItem.cream.isEmpty || orderItem.phoneNumber.isEmpty || orderItem.sheet.isEmpty || orderItem.name.isEmpty || orderItem.text.isEmpty {
+
+        if orderItem.cakeSize.isEmpty || orderItem.cream.isEmpty || orderItem.phoneNumber.isEmpty || orderItem.sheet.isEmpty || orderItem.name.isEmpty || orderItem.text.isEmpty  {
             check = false
         } else {
             check = true
         }
-        
+
         return check
     }
-    
+
     func imgURL(_ i: Int) {
         orderItem.imageURL[i].append("\(i + 1)")
     }
-    
+
+}
+
+class OrderCakeViewModel: ObservableObject, Hashable {
+
+    static func == (lhs: OrderCakeViewModel, rhs: OrderCakeViewModel) -> Bool {
+        return lhs.title == rhs.title && lhs.sideTitle == rhs.sideTitle && lhs.bottomTitle == rhs.bottomTitle && lhs.sizePricel == rhs.sizePricel
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(sideTitle)
+        hasher.combine(bottomTitle)
+        hasher.combine(sizePricel)
+    }
+
+    var title: String
+    var sideTitle: String
+    var bottomTitle: String
+    var sizePricel: String
+    @Published var isOn: Bool
+
+    init(title: String, sideTitle: String, bottomTitle: String, sizePricel: String, isOn: Bool) {
+        self.title = title
+        self.sideTitle = sideTitle
+        self.bottomTitle = bottomTitle
+        self.sizePricel = sizePricel
+        self.isOn = isOn
+    }
+
+    func toggleIsOn() {
+        isOn.toggle()
+    }
 }
 
 class TextLimiter: ObservableObject {
     private let limit: Int
-    
+
     init(limit: Int) {
         self.limit = limit
     }
-    
+
     @Published var value = "" {
         didSet {
             if value.count > self.limit {
@@ -128,53 +162,58 @@ class TextLimiter: ObservableObject {
 
 
 @MainActor
-class PhotoPickerVm: ObservableObject {
+class PhotoPickerViewModel: ObservableObject {
     @Published var selectedImages: [UIImage] = []
     @Published var imageSelections: [PhotosPickerItem] = [] {
         didSet {
             setImages(from: imageSelections)
         }
     }
-    
+
+
     func setImages(from selections: [PhotosPickerItem]) {
         Task {
             var images: [UIImage] = []
             for selection in selections {
                 if let data = try? await selection.loadTransferable(type: Data.self) {
                     if let uiImage = UIImage(data: data) {
-                        if images.count < 4 {
-                            images.append(uiImage)
-                        } else {
-                            
-                        }
+                        images.append(uiImage)
                     }
                 }
             }
             selectedImages = images
         }
     }
-    
+
     func uploadPhoto(_ i: Int,_ path: String) {
-        
+
         guard let selectedimagesData = selectedImages[i].pngData() else { return }
-        
+
         let storageRef = Storage.storage().reference()
-        
+
         let fileRef = storageRef.child("\(path)/ \(i + 1)")
-        
+
         if !selectedimagesData.isEmpty {
             let uploadTask = fileRef.putData(selectedimagesData, metadata: nil) { metadata,
                 error in
-                
+
                 if error == nil && metadata != nil {
                     print("Success!")
                 }
             }
         } else {
-            
+
         }
     }
-    
+
+    func photoCheck() -> Bool{
+        if selectedImages.isEmpty {
+            return true
+        } else {
+            return false
+        }
+    }
+
 }
 
 func statusToString(_ status: OrderStatus) -> String {
@@ -208,7 +247,7 @@ func dateToString(_ date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "ko-KR")
     dateFormatter.dateFormat = "yyyy/MM/dd(E)"
-    
+
     let dateString = dateFormatter.string(from: date)
     return dateString
 }
@@ -216,7 +255,7 @@ func dateToString(_ date: Date) -> String {
 func dateToTime(_ date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "HH:mm"
-    
+
     let timeString = dateFormatter.string(from: date)
     return timeString
 }
