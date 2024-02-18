@@ -4,12 +4,11 @@ import FirebaseStorage
 import PhotosUI
 
 struct OrderView: View {
+    @Environment(\.presentationMode) var presentationMode
     @StateObject var OrderVM = OrderViewModel(orderItem: OrderItem(id: UUID().uuidString, email: "", date: Date(), orderTime: Date(), cakeSize: "", sheet: "", cream: "", icePack: .none, name: "", phoneNumber: "", text: "", imageURL: ["","","",""], comment: "", expectedPrice: 0, confirmedPrice: 0, status: .notAssign))
     @StateObject private var photoVM = PhotoPickerViewModel()
     @StateObject var loginVM = LoginViewModel.shared
-
-
-
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -31,10 +30,20 @@ struct OrderView: View {
                     OrderCommentView(orderData: OrderVM)
                 }
             }
-            .navigationTitle("주문하기")
+            .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("주문하기")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }, label: {
+                        Image("angle-left")
+                            .foregroundStyle(Color.black)
+                    })
+                }
+            }
         }
-        BottomView(orderData: OrderVM, photoVM: photoVM, loginVM: loginVM)
+        
+        BottomView(orderVM: OrderVM, photoVM: photoVM, loginVM: loginVM)
     }
 }
 
@@ -56,7 +65,7 @@ struct infoView: View {
 
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/930)
+                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
                 .padding(.leading, 24)
                 .padding(.bottom, 36)
@@ -68,14 +77,15 @@ struct infoView: View {
             TextField("010 -", text: $orderData.orderItem.phoneNumber)
                 .textFieldStyle(.plain)
                 .submitLabel(.done)
+                .keyboardType(.numberPad)
                 .limitText($orderData.orderItem.phoneNumber, to: 11)
                 .padding(.leading, 24)
                 .kerning(0.5)
-
+            
 
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/930)
+                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
                 .padding(.leading, 24)
                 .padding(.bottom, 36)
@@ -143,7 +153,6 @@ struct OrderCalendarView:View {
 
 
 // MARK: - OrderTextView
-
 struct OrderTextView: View {
     @ObservedObject var orderData: OrderViewModel
     var body: some View {
@@ -191,7 +200,7 @@ struct OrderCakeView: View {
                             Image(orderCakeModel[index].title == orderData.orderItem.cakeSize ? "orderVectorTrue" : "orderVectorFalse")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/930)
+                                .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
                                 .padding(.leading, 22)
                                 .padding(.trailing, 18)
 
@@ -208,7 +217,7 @@ struct OrderCakeView: View {
                             CustomText(title: orderCakeModel[index].sizePricel, textColor: .black, textWeight: .regular, textSize: 18)
                                 .padding(.trailing, 28)
                         }
-                        .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
+                        .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/932)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(orderCakeModel[index].title == orderData.orderItem.cakeSize ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
@@ -259,7 +268,7 @@ struct OrderSheetView: View {
                             Image(orderSheetModel[index].title == orderData.orderItem.sheet ? "orderVectorTrue" : "orderVectorFalse")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/930)
+                                .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
                                 .padding(.leading, 22)
                                 .padding(.trailing, 14)
 
@@ -272,7 +281,7 @@ struct OrderSheetView: View {
                             Spacer()
 
                         }
-                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/930)
+                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(orderSheetModel[index].title == orderData.orderItem.sheet ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
@@ -331,7 +340,7 @@ struct OrderCreamView: View {
                                 Image(orderCreamModel[index].title == orderData.orderItem.cream ? "orderVectorTrue" : "orderVectorFalse")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/930)
+                                    .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
                                     .padding(.leading, 22)
                                     .padding(.trailing, 14)
 
@@ -346,7 +355,7 @@ struct OrderCreamView: View {
                                 Spacer()
 
                             }
-                            .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/930)
+                            .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(orderCreamModel[index].title == orderData.orderItem.cream ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
@@ -405,13 +414,13 @@ private struct OrderPhotoView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.init(uiColor: .customGray), style: StrokeStyle(lineWidth: 1, dash: [5]))
                 .foregroundColor(.white)
-                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 185/930)
+                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 185/932)
                 .padding(.bottom, 42)
                 .overlay {
                     VStack {
                         Image(systemName: "photo")
                             .foregroundColor(Color(UIColor.customGray))
-                            .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 25/930)
+                            .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 25/932)
                             .padding(.bottom, 8)
                         CustomText(title: "사진을 첨부해주세요", textColor: .customGray, textWeight: .semibold, textSize: 16)
                         CustomText(title: "최대 4매까지 첨부가능합니다.", textColor: .customGray, textWeight: .semibold, textSize: 12)
@@ -423,7 +432,7 @@ private struct OrderPhotoView: View {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 185/930)
+                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 185/932)
                         .cornerRadius(12)
                         .padding(.horizontal, 24)
                         .padding(.bottom, 12)
@@ -437,7 +446,6 @@ private struct OrderPhotoView: View {
 
 
 // MARK: - OrderCommentView
-
 struct OrderCommentView: View {
     @ObservedObject var orderData: OrderViewModel
     var body: some View {
@@ -445,7 +453,8 @@ struct OrderCommentView: View {
             CustomText(title: "추가 요청 사항", textColor: .black, textWeight: .semibold , textSize: 18)
 
             TextField(" 잘 부탁드립니다 ~", text: $orderData.orderItem.comment, axis: .vertical)
-                .modifier(LoginTextFieldModifier(width: 382, height: 90))
+                .modifier(LoginTextFieldModifier(width: UIScreen.UIWidth(382), 
+                                                 height: UIScreen.UIHeight(90)))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
                 .submitLabel(.done)
@@ -453,15 +462,13 @@ struct OrderCommentView: View {
     }
 }
 
-
-
-
 // MARK: - BottomView
 private struct BottomView: View {
-    @ObservedObject var orderData: OrderViewModel
+    @ObservedObject var orderVM: OrderViewModel
     @ObservedObject var photoVM: PhotoPickerViewModel
     @ObservedObject var loginVM: LoginViewModel
-
+    @State var clickedConfirm = false
+    
     var body: some View {
         HStack {
             VStack {
@@ -469,28 +476,34 @@ private struct BottomView: View {
                     .kerning(0.35)
                     .padding(.leading, 24)
 
-
-                Text("\(orderData.expectedPrice())원")
+                Text("\(orderVM.expectedPrice())원")
                     .font(.custom("Pretendard", size: 18))
                     .padding(.leading, 24)
                     .fontWeight(.semibold)
-
-
             }
 
-            CustomButton(action: {defer {orderData.addOrderItem()}; for i in 0...photoVM.selectedImages.count - 1 {photoVM.uploadPhoto(i, orderData.orderItem.id); orderData.imgURL(i)}; orderData.orderItem.expectedPrice = orderData.expectedPrice(); orderData.orderItem.email = loginVM.loginUserEmail ?? ""}, title: "예약하기", titleColor: .white, backgroundColor: orderData.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor, leading: 110, trailing: 24)
+                CustomButton(action: {
+                    defer {
+                        clickedConfirm = true
+                    };
+                    for i in 0...photoVM.selectedImages.count - 1 {
+                        photoVM.uploadPhoto(i, orderVM.orderItem.id);
+                        orderVM.imgURL(i)
+                    };
+                    orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
+                    orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
+                             title: "예약하기",
+                             titleColor: .white,
+                             backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
+                             leading: 110, trailing: 24)
                 .kerning(0.45)
                 .padding(.vertical, 12)
-                .disabled(!orderData.isallcheck() || photoVM.selectedImages.isEmpty)
-
-
+                .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
+                .navigationDestination(isPresented: $clickedConfirm, destination: {
+                    UserConfirmOrderDetailView(orderVM: orderVM)})
         }
     }
-
 }
-
-
-
 
 struct LoginTextFieldModifier: ViewModifier {
     var width: CGFloat
@@ -500,18 +513,15 @@ struct LoginTextFieldModifier: ViewModifier {
         content
             .font(.system(size: 16))
             .textInputAutocapitalization(.never)
-            .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/930)
+            .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/932)
             .background {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color.init(uiColor: .customGray))
                     .foregroundColor(.white)
-                    .frame(maxWidth: (UIScreen.main.bounds.width) * 382/430, maxHeight: (UIScreen.main.bounds.height) * 90/930)
+                    .frame(maxWidth: (UIScreen.main.bounds.width) * 382/430, maxHeight: (UIScreen.main.bounds.height) * 90/932)
             }
     }
 }
-
-
-
 
 extension View {
     func loginTextFieldModifier(width: CGFloat, height: CGFloat) -> some View {

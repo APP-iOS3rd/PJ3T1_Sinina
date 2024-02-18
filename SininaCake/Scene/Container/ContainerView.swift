@@ -95,6 +95,7 @@ func getTab(tab: Tab) -> String {
 }
 
 struct OrderButtonView: View {
+    
     var body: some View {
         NavigationLink(destination: CautionView()) {
             HStack {
