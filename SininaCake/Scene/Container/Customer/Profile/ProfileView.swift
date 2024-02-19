@@ -151,7 +151,7 @@ struct MyOrderView: View {
             }
         )
         .onAppear {
-            if orderItem.imageURL[0] != "" {
+            if !orderItem.imageURL.isEmpty && orderItem.imageURL[0] != "" {
                 profileVM.downloadImage(orderItem.id, orderItem.imageURL[0]) { image in
                     DispatchQueue.main.async {
                         self.thumbnailImage = image

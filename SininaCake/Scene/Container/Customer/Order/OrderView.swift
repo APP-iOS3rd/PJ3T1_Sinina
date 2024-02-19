@@ -628,7 +628,7 @@ private struct BottomView: View {
                 .padding(.vertical, 12)
                 .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
                 .navigationDestination(isPresented: $clickedConfirm, destination: {
-                    UserConfirmOrderDetailView(orderVM: orderVM)})
+                    UserConfirmOrderDetailView(orderVM: orderVM, photoVM: photoVM)})
         }
     }
 }
