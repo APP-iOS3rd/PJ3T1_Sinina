@@ -55,7 +55,7 @@ struct CalListView: View {
             } else {
                 ForEach(0..<orderData.count, id: \.self) { i in
                     NavigationLink(value: orderData[i]) {
-                        CellView(orderItem: orderData[i])
+                        CalendarCellView(orderItem: orderData[i])
                     }
                 }
             }
@@ -66,7 +66,7 @@ struct CalListView: View {
     }
 }
 
-private struct CellView: View {
+private struct CalendarCellView: View {
     
     let orderItem: OrderItem
     

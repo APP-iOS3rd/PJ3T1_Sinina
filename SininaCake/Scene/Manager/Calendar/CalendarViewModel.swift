@@ -9,7 +9,7 @@ import Firebase
 import FirebaseFirestore
  //날짜 칸 표시를 위한 일자 정보
 struct DateValue: Identifiable, Codable, Comparable {
-    @DocumentID var id = UUID().uuidString
+    @DocumentID var id: String?
     var day: Int
     var date: Date
     var isNotCurrentMonth: Bool = false
@@ -137,7 +137,7 @@ extension DateValue {
     func saveDateValueToFirestore(dateValue: DateValue) {
         let db = Firestore.firestore()
         let documentReference = db.collection("dateValues").document(dateValue.date.withoutTime().toDateString())
-        print("\(dateValue.id ?? "")")
+        print("\(dateValue.date.withoutTime().toString() )")
         documentReference.setData(dateValue.toFirestore) { error in
             if let error = error {
                 print("Error saving DateValue to Firestore: \(error.localizedDescription)")

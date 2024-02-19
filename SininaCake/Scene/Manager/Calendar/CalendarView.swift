@@ -11,7 +11,7 @@ struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     @ObservedObject var dateValueVM = DateValueViewModel()
-    @StateObject var orderListVM = OrderListViewModel()
+    
     @StateObject var calendarListVM = CalendarListViewModel()
     @StateObject var loginVM = LoginViewModel()
     @State private var selectedDate: Date?
@@ -66,6 +66,7 @@ struct CalendarView: View {
             .onAppear {
                 calendarListVM.fetchData()
             }
+            
         }
     }
     
@@ -86,7 +87,7 @@ struct CalendarView: View {
             } label: {
                 Image("angle-left")
             }
-            .offset(x: 8)
+            .offset(x: 5)
             Text(month())
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -95,13 +96,13 @@ struct CalendarView: View {
                 .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
                 .minimumScaleFactor(0.7)
                 .padding()
-                .offset(x: 8)
+                .offset(x: 5)
             Button {
                 monthOffset += 1
             } label: {
                 Image("angle-right")
             }
-            .offset(x: 8)
+            .offset(x: 5)
             
             Spacer()
             
@@ -152,7 +153,7 @@ struct CalendarView: View {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM, edit: $edit, getData: $getData, loginVM: loginVM) { selectedDateValue in
+                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM, edit: $edit, getData: $getData, loginVM: loginVM, calendarListVM: calendarListVM) { selectedDateValue in
                             handleDateClick(dateValue: selectedDateValue)
                         }
                         
@@ -162,6 +163,12 @@ struct CalendarView: View {
             }
         }
         .onDisappear()
+        .onAppear() {
+            monthOffset = Int(month()) ?? 0
+            currentDate = getCurrentMonth()
+            daysList = extractDate()
+            dateValueVM.loadDataFromFirestore()
+        }
         .onChange(of: monthOffset) { _ in
             // updating Month...
             print("onchange - monthoffset, \(monthOffset)")
@@ -196,12 +203,7 @@ struct CalendarView: View {
                 }
             }
         }
-        .onAppear() {
-            monthOffset = Int(month()) ?? 0
-            currentDate = getCurrentMonth()
-            daysList = extractDate()
-            dateValueVM.loadDataFromFirestore()
-        }
+        
     }
     
     private var bookingView: some View {
@@ -250,7 +252,7 @@ struct CalendarView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
         let dateString = dateFormatter.string(from: dateValue.date)
-        let filteredOrders = orderListVM.assignOrderData.filter { order in
+        let filteredOrders = calendarListVM.allOrderData.filter { order in
             dateToString(order.date).contains(dateString)
         }
         // 필터링된 데이터를 사용하여 UI 업데이트 등을 수행
@@ -341,6 +343,7 @@ struct CardView: View {
     @Binding var edit: Bool
     @Binding var getData: Bool
     @StateObject var loginVM: LoginViewModel
+    @StateObject var calendarListVM: CalendarListViewModel
     var onDateClick: (DateValue) -> Void
     func selectedDate() {
         if loginVM.isManager {
@@ -349,11 +352,7 @@ struct CardView: View {
             print("tap\(value.isSelected)")
         }
     }
-    
-    func dateList() {
-        onDateClick(value)
-        print("Clicked Date: \(value.date)")
-    }
+
     var body: some View {
         
         ZStack() {
