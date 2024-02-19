@@ -416,69 +416,6 @@ struct OrderTextView: View {
 
 // MARK: - OrderPhotoView
 
-//private struct OrderPhotoView: View {
-//    @ObservedObject var photoVM: PhotoPickerViewModel
-//    
-//    let columns = [
-//        GridItem(.flexible(), spacing: 0),
-//        GridItem(.flexible(), spacing: 0)
-//    ]
-//    
-//    
-//    var body: some View {
-//        HStack {
-//            CustomText(title: "사진 첨부", textColor: .black, textWeight: .semibold , textSize: 18)
-//                .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-//            
-//            Spacer()
-//            
-//            PhotosPicker(selection: $photoVM.imageSelections, maxSelectionCount: 4, matching: .images) {
-//                Image("OrderPhotoVector")
-//                    .resizable()
-//                    .frame(width: (UIScreen.main.bounds.width) * 24/430, height: (UIScreen.main.bounds.height) * 24/932)
-//                    .foregroundColor(Color(UIColor.customBlue))
-//                
-//            }
-//            .padding(.trailing, (UIScreen.main.bounds.width) * 24/430)
-//            
-//        }
-//        if photoVM.selectedImages.isEmpty {
-//            RoundedRectangle(cornerRadius: 12)
-//                .stroke(Color.init(uiColor: .customGray), style: StrokeStyle(lineWidth: 1, dash: [5]))
-//                .foregroundColor(.white)
-//                .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 130/932)
-//                .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
-//                .overlay {
-//                    VStack {
-//                        Image(systemName: "photo")
-//                            .foregroundColor(Color(UIColor.customGray))
-//                            .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 25/932)
-//                            .padding(.bottom, (UIScreen.main.bounds.height) * 8/932)
-//                        CustomText(title: "사진을 첨부해주세요", textColor: .customGray, textWeight: .semibold, textSize: 16)
-//                        CustomText(title: "최대 4매까지 첨부가능합니다.", textColor: .customGray, textWeight: .semibold, textSize: 12)
-//                            .padding(.bottom,(UIScreen.main.bounds.height) * 26/932 )
-//                    }
-//                }
-//        } else {
-//            LazyVGrid(columns: columns, spacing: 0) {
-//                ForEach(photoVM.selectedImages, id: \.self) { image in
-//                    RoundedRectangle(cornerRadius: 12)
-//                        .stroke(Color(.customGray))
-//                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 185/932)
-//                        .foregroundStyle(.clear)
-//                        .overlay(
-//                            Image(uiImage: image)
-//                                .resizable()
-//                                .frame(width: (UIScreen.main.bounds.width) * 185/430 - 20, height: (UIScreen.main.bounds.height) * 185/932 - 20)
-//                                .scaledToFit()
-//                        )
-//                }
-//            }
-//            .padding()
-//            .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
-//        }
-//    }
-//}
 private struct OrderPhotoView: View {
     @ObservedObject var photoVM: PhotoPickerViewModel
     
