@@ -627,9 +627,9 @@ private struct BottomView: View {
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
 
                 CustomButton(action: {
-                    defer {
+//                    defer {
                         clickedConfirm = true
-                    };
+//                    };
                     for i in 0...photoVM.selectedImages.count - 1 {
                         photoVM.uploadPhoto(i, orderVM.orderItem.id);
                         orderVM.imgURL(i)
