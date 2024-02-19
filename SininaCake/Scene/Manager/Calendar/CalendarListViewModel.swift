@@ -25,7 +25,6 @@ class CalendarListViewModel: ObservableObject {
     func fetchData() {
         allOrderData = []
         
-        
         let query: Query = ordersRef.order(by: "id")
         
         query.getDocuments { [weak self] querySnapshot, error in
@@ -35,7 +34,6 @@ class CalendarListViewModel: ObservableObject {
                 if let snapshot = querySnapshot, let self = self {
                     for doc in snapshot.documents {
                         let documentData: [String: Any] = doc.data()
-                        
                         let id: String = documentData["id"] as? String ?? ""
                         let email: String = documentData["email"] as? String ?? ""
                         let date: Timestamp = documentData["date"] as? Timestamp ?? Timestamp()

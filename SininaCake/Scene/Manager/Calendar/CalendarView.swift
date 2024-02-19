@@ -13,9 +13,7 @@ struct CalendarView: View {
     @ObservedObject var dateValueVM = DateValueViewModel()
     @StateObject var orderListVM = OrderListViewModel()
     @StateObject var calendarListVM = CalendarListViewModel()
-    @StateObject var orderDateVM = OrderDateViewModel()
     @StateObject var loginVM = LoginViewModel()
-    
     @State private var selectedDate: Date?
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
@@ -26,10 +24,9 @@ struct CalendarView: View {
     @State var edit: Bool = false
     @State var getData: Bool = false
     
-    
     var body: some View {
-        
         ScrollView {
+            
             Spacer()
             Spacer()
             VStack() {
@@ -64,7 +61,6 @@ struct CalendarView: View {
                         CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString) }, title: "주문 내역", titleColor: .black)
                         let _ = print(formattedDateString)
                     }
-                    //                ListView(orderData: orderListVM.assignOrderData.filter { dateToString($0.date).contains("2024/02/19") }, title: "주문 내역", titleColor: .black)
                 }
             }
             .onAppear {
@@ -109,7 +105,7 @@ struct CalendarView: View {
             
             Spacer()
             
-//            if loginVM.isManager {
+            if loginVM.isManager {
                 Button {
                     print("편집 작동, \(edit)")
                     edit.toggle()
@@ -119,20 +115,17 @@ struct CalendarView: View {
                     Image(systemName:"list.clipboard.fill")
                         .foregroundColor(Color(.customBlue))
                 }
-//            }
+            }
             
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
-//        .task {
-//            // 로그인된 사용자의 이메일을 확인하고 매니저 여부를 결정합니다.
-//            if let userEmail = Auth.auth().currentUser?.email {
-//                await loginVM.checkManager(email: userEmail)
-//            }
-//        }
-        
-        
-        
+        .task {
+            // 로그인된 사용자의 이메일로 매니저 여부 확인
+            if let userEmail = Auth.auth().currentUser?.email {
+                await loginVM.checkManager(email: userEmail)
+            }
+        }
     }
     
     private var weekView: some View {
@@ -204,7 +197,6 @@ struct CalendarView: View {
             }
         }
         .onAppear() {
-            
             monthOffset = Int(month()) ?? 0
             currentDate = getCurrentMonth()
             daysList = extractDate()
@@ -257,12 +249,10 @@ struct CalendarView: View {
         selectedDate = dateValue.date.withoutTime()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
-//        let dateString = DateFormatter.localizedString(from: dateValue.date, dateStyle: .short, timeStyle: .none)
         let dateString = dateFormatter.string(from: dateValue.date)
         let filteredOrders = orderListVM.assignOrderData.filter { order in
             dateToString(order.date).contains(dateString)
         }
-
         // 필터링된 데이터를 사용하여 UI 업데이트 등을 수행
         // 여기에서는 print만 수행
         print("Filtered Orders for \(dateString): \(filteredOrders)")
@@ -344,19 +334,16 @@ struct CalendarView: View {
     }
 }
 
-
 struct CardView: View {
-    //@Binding var edit : Bool
     @Binding var value: DateValue
     @State var schedule: Schedule
     @ObservedObject var dateValueVM: DateValueViewModel
-    //@State var isReadOnly: Bool
     @Binding var edit: Bool
     @Binding var getData: Bool
     @StateObject var loginVM: LoginViewModel
     var onDateClick: (DateValue) -> Void
     func selectedDate() {
-        if true {
+        if loginVM.isManager {
             value.selectedToggle()
             // 클릭할 때마다 클릭 여부를 변경
             print("tap\(value.isSelected)")
@@ -385,12 +372,11 @@ struct CardView: View {
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
                                     if edit == false {
-                                    selectedDate()
-                                    let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
-                                    value.saveDateValueToFirestore(dateValue: value)
-                                    dateValueVM.removeDuplicateDay(dateValue: dateValue)
+                                        selectedDate()
+                                        let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                        value.saveDateValueToFirestore(dateValue: value)
+                                        dateValueVM.removeDuplicateDay(dateValue: dateValue)
                                     } else {
-                                        //getData.toggle()
                                         onDateClick(value)
                                         print("\(value) 클릭")
                                     }
@@ -419,12 +405,11 @@ struct CardView: View {
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
                                     if edit == false  {
-                                    selectedDate()
-                                    let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
-                                    value.saveDateValueToFirestore(dateValue: value)
-                                    dateValueVM.removeDuplicateDay(dateValue: dateValue)
+                                        selectedDate()
+                                        let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                        value.saveDateValueToFirestore(dateValue: value)
+                                        dateValueVM.removeDuplicateDay(dateValue: dateValue)
                                     } else {
-                                        //getData.toggle()
                                         onDateClick(value)
                                         print("\(value) 클릭")
                                     }
@@ -437,10 +422,10 @@ struct CardView: View {
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
         .task {
-                    if let userEmail = Auth.auth().currentUser?.email {
-                        await loginVM.checkManager(email: userEmail)
-                    }
-                }
+            if let userEmail = Auth.auth().currentUser?.email {
+                await loginVM.checkManager(email: userEmail)
+            }
+        }
     }
 }
 

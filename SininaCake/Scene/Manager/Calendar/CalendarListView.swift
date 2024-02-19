@@ -13,15 +13,12 @@ struct CalendarListView: View {
     var body: some View {
         ScrollView {
             ListView(orderData: calendarListVM.allOrderData, title: "모든 주문 현황", titleColor: .black)
-            
         }
-        
-            .onAppear {
-                calendarListVM.fetchData()
-            }
+        .onAppear {
+            calendarListVM.fetchData()
         }
     }
-
+}
 
 struct CalListView: View {
     let orderData: [OrderItem]
