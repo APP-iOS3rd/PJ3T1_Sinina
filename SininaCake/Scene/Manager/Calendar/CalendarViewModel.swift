@@ -249,6 +249,9 @@ class DateValueViewModel: ObservableObject {
             }
         }
     }
+    private func timestampToDate(_ date: Timestamp) -> Date {
+        return date.dateValue()
+    }
     
     func getTextColorForDateValue(_ dateValue: DateValue) -> Color {
         if dateValue.isSelected {

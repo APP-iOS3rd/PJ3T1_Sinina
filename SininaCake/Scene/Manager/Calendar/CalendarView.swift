@@ -5,13 +5,18 @@
 //  Created by  zoa0945 on 11/12/23.
 //
 import SwiftUI
+import FirebaseAuth
+import KakaoSDKAuth
 struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     @ObservedObject var dateValueVM = DateValueViewModel()
     @StateObject var orderListVM = OrderListViewModel()
+    @StateObject var calendarListVM = CalendarListViewModel()
     @StateObject var orderDateVM = OrderDateViewModel()
+    @StateObject var loginVM = LoginViewModel()
     
+    @State private var selectedDate: Date?
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     @State var currentDate = Date()
@@ -20,6 +25,8 @@ struct CalendarView: View {
     @State var monthOffset = 0
     @State var edit: Bool = false
     @State var getData: Bool = false
+    
+    
     var body: some View {
         
         ScrollView {
@@ -50,15 +57,26 @@ struct CalendarView: View {
                     )
             }
             VStack {
-                if edit && getData {
-                    ListView(orderData: orderListVM.assignOrderData, title: "주문 내역", titleColor: .black)
-                    
+                if edit == true {
+                    if let selectedDate = selectedDate {
+                        
+                        let formattedDateString = convert(date: selectedDate)
+                        CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString) }, title: "주문 내역", titleColor: .black)
+                        let _ = print(formattedDateString)
+                    }
+                    //                ListView(orderData: orderListVM.assignOrderData.filter { dateToString($0.date).contains("2024/02/19") }, title: "주문 내역", titleColor: .black)
                 }
             }
             .onAppear {
-                orderListVM.fetchData()
+                calendarListVM.fetchData()
             }
         }
+    }
+    
+    func convert(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: date)
     }
     
     private var headerView: some View {
@@ -91,18 +109,27 @@ struct CalendarView: View {
             
             Spacer()
             
+//            if loginVM.isManager {
+                Button {
+                    print("편집 작동, \(edit)")
+                    edit.toggle()
+                    getData.toggle()
+                    
+                } label: {
+                    Image(systemName:"list.clipboard.fill")
+                        .foregroundColor(Color(.customBlue))
+                }
+//            }
             
-            Button {
-                print("편집 작동, \(edit)")
-                edit.toggle()
-                getData.toggle()
-            } label: {
-                Image(systemName:"list.clipboard.fill")
-                    .foregroundColor(Color(.customBlue))
-            }
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
+//        .task {
+//            // 로그인된 사용자의 이메일을 확인하고 매니저 여부를 결정합니다.
+//            if let userEmail = Auth.auth().currentUser?.email {
+//                await loginVM.checkManager(email: userEmail)
+//            }
+//        }
         
         
         
@@ -132,7 +159,9 @@ struct CalendarView: View {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM,isReadOnly: false, edit: $edit, getData: $getData)
+                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM, edit: $edit, getData: $getData, loginVM: loginVM) { selectedDateValue in
+                            handleDateClick(dateValue: selectedDateValue)
+                        }
                         
                     }
                 }
@@ -220,6 +249,25 @@ struct CalendarView: View {
                         .stroke(Color(red: 0.6, green: 0.6, blue: 0.6), lineWidth: 1))
         }
     }
+    
+    
+    private func handleDateClick(dateValue: DateValue) {
+        // 날짜기준 ListView 데이터 필터링
+        // 예시로 "yyyy/MM/dd" 형식의 문자열을 기준으로 필터링하도록 구현
+        selectedDate = dateValue.date.withoutTime()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+//        let dateString = DateFormatter.localizedString(from: dateValue.date, dateStyle: .short, timeStyle: .none)
+        let dateString = dateFormatter.string(from: dateValue.date)
+        let filteredOrders = orderListVM.assignOrderData.filter { order in
+            dateToString(order.date).contains(dateString)
+        }
+
+        // 필터링된 데이터를 사용하여 UI 업데이트 등을 수행
+        // 여기에서는 print만 수행
+        print("Filtered Orders for \(dateString): \(filteredOrders)")
+    }
+    
     //현재 날짜 년도
     func year() -> String {
         let formatter = DateFormatter()
@@ -302,15 +350,22 @@ struct CardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
     @ObservedObject var dateValueVM: DateValueViewModel
-    @State var isReadOnly: Bool
+    //@State var isReadOnly: Bool
     @Binding var edit: Bool
     @Binding var getData: Bool
+    @StateObject var loginVM: LoginViewModel
+    var onDateClick: (DateValue) -> Void
     func selectedDate() {
-        if isReadOnly == false {
+        if true {
             value.selectedToggle()
             // 클릭할 때마다 클릭 여부를 변경
             print("tap\(value.isSelected)")
         }
+    }
+    
+    func dateList() {
+        onDateClick(value)
+        print("Clicked Date: \(value.date)")
     }
     var body: some View {
         
@@ -335,7 +390,9 @@ struct CardView: View {
                                     value.saveDateValueToFirestore(dateValue: value)
                                     dateValueVM.removeDuplicateDay(dateValue: dateValue)
                                     } else {
-                                        getData.toggle()
+                                        //getData.toggle()
+                                        onDateClick(value)
+                                        print("\(value) 클릭")
                                     }
                                 }
                             
@@ -367,7 +424,9 @@ struct CardView: View {
                                     value.saveDateValueToFirestore(dateValue: value)
                                     dateValueVM.removeDuplicateDay(dateValue: dateValue)
                                     } else {
-                                        getData.toggle()
+                                        //getData.toggle()
+                                        onDateClick(value)
+                                        print("\(value) 클릭")
                                     }
                                 }
                         }
@@ -377,6 +436,11 @@ struct CardView: View {
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
+        .task {
+                    if let userEmail = Auth.auth().currentUser?.email {
+                        await loginVM.checkManager(email: userEmail)
+                    }
+                }
     }
 }
 
