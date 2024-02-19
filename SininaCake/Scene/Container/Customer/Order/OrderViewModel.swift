@@ -103,7 +103,7 @@ class OrderViewModel: ObservableObject {
     }
 
     func imgURL(_ i: Int) {
-        orderItem.imageURL[i].append("\(i + 1)")
+        orderItem.imageURL.append("\(i + 1)")
     }
 
 }

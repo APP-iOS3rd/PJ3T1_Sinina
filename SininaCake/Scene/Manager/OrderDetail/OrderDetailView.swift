@@ -93,7 +93,7 @@ struct OrderDetailView: View {
             }
         }
         .onAppear {
-            orderDetailVM.downloadImage(orderItem.id, orderItem.imageURL)
+            orderDetailVM.downloadImageURL(orderItem.id, orderItem.imageURL)
             orderDetailVM.getDeviceToken(orderItem.email)
         }
     }
@@ -188,7 +188,7 @@ struct PhotoView: View {
                 .frame(height: 24)
 
             LazyVGrid(columns: columns) {
-                if orderItem.imageURL.count == 1 && orderItem.imageURL[0] == "" {
+                if orderItem.imageURL.isEmpty || orderItem.imageURL[0] == "" {
                     ForEach(0...1, id: \.self) { _ in
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.customGray))
@@ -202,19 +202,34 @@ struct PhotoView: View {
                             )
                     }
                 } else {
-                    ForEach(orderDetailVM.images, id: \.self) { image in
-                        if let image = image {
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.customGray))
-                                .frame(width: imageWidth, height: imageWidth)
-                                .foregroundStyle(.clear)
-                                .overlay(
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .frame(width: imageWidth - 20, height: imageWidth - 20)
-                                        .scaledToFit()
-                                )
-                        }
+                    ForEach(orderDetailVM.imageURLs, id: \.self) { url in
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.customGray))
+                            .frame(width: imageWidth, height: imageWidth)
+                            .foregroundStyle(.clear)
+                            .overlay(
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: imageWidth, height: imageWidth)
+                                            .clipShape(
+                                                .rect(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12, topTrailingRadius: 12)
+                                            )
+                                    case .failure:
+                                        Image("emptyPhoto")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .scaledToFit()
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                            )
                     }
                     
                     if orderItem.imageURL.count % 2 == 1 {
