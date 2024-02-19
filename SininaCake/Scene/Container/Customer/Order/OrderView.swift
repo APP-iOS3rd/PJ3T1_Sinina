@@ -625,26 +625,26 @@ private struct BottomView: View {
                 CustomText(title: "\(orderVM.expectedPrice())원", textColor: .black, textWeight: .semibold, textSize: 18)
             }
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-            
-            CustomButton(action: {
-                defer {
-                    clickedConfirm = true
-                };
-                for i in 0...photoVM.selectedImages.count - 1 {
-                    photoVM.uploadPhoto(i, orderVM.orderItem.id);
-                    orderVM.imgURL(i)
-                };
-                orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
-                orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
-                         title: "예약하기",
-                         titleColor: .white,
-                         backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
-                         leading: 110, trailing: 24)
-            .kerning(0.45)
-            .padding(.vertical, 12)
-            .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
-            .navigationDestination(isPresented: $clickedConfirm, destination: {
-                UserConfirmOrderDetailView(orderVM: orderVM)})
+
+                CustomButton(action: {
+                    defer {
+                        clickedConfirm = true
+                    };
+                    for i in 0...photoVM.selectedImages.count - 1 {
+                        photoVM.uploadPhoto(i, orderVM.orderItem.id);
+                        orderVM.imgURL(i)
+                    };
+                    orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
+                    orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
+                             title: "예약하기",
+                             titleColor: .white,
+                             backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
+                             leading: 110, trailing: 24)
+                .kerning(0.45)
+                .padding(.vertical, 12)
+                .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
+                .navigationDestination(isPresented: $clickedConfirm, destination: {
+                    UserConfirmOrderDetailView(orderVM: orderVM, photoVM: photoVM)})
         }
     }
 }

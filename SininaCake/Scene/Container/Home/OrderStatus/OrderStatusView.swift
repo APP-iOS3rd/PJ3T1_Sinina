@@ -112,7 +112,7 @@ struct StatusInfo: View {
             }
         )
         .onAppear {
-            if orderItem.imageURL[0] != "" {
+            if !orderItem.imageURL.isEmpty && orderItem.imageURL[0] != "" {
                 orderStatusVM.downloadImage(orderItem.id, orderItem.imageURL[0]) { image in
                     DispatchQueue.main.async {
                         self.thumbnailImage = image
