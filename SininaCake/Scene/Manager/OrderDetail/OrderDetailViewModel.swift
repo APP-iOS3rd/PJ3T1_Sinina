@@ -13,6 +13,7 @@ class OrderDetailViewModel: ObservableObject {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     @Published var images: [UIImage?] = []
+    @Published var imageURLs: [URL?] = []
     @Published var deviceToken: String = ""
     
     func updatePrice(orderItem: OrderItem, _ price: Int) {
@@ -30,6 +31,24 @@ class OrderDetailViewModel: ObservableObject {
             db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"완료"])
         default:
             return
+        }
+    }
+    
+    func downloadImageURL(_ id: String, _ imageNames: [String]) {
+        imageURLs = []
+        
+        for imageName in imageNames {
+            let imagePath = "\(id)/\(imageName)"
+            
+            let storageRef = storage.reference().child(imagePath)
+            
+            storageRef.downloadURL { [weak self] url, error in
+                if let error = error {
+                    print("Cannot found download url: \(error.localizedDescription)")
+                } else if let self = self {
+                    self.imageURLs.append(url)
+                }
+            }
         }
     }
     
@@ -53,6 +72,7 @@ class OrderDetailViewModel: ObservableObject {
                 }
             }
         }
+        print(images.count)
     }
     
     func getDeviceToken(_ email: String) {
