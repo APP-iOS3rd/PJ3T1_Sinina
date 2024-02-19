@@ -32,38 +32,45 @@ struct ChatView2: View {
             VStack {
                 ScrollViewReader { proxy in
                     ScrollView {
-                        VStack {
-                            if chatVM.messages[room.id] != nil {
-                                ForEach(chatVM.messages[room.id]!!, id: \.self) { msg in
-                                    // 나
-                                    if loginUserEmail == msg.userEmail {
-                                        blueMessageBubble(message: msg)
-                                        
-                                        // 상대
-                                    } else {
-                                        grayMessageBubble(message: msg)
-                                    }
+                        if chatVM.messages[room.id] != nil {
+                            ForEach(chatVM.messages[room.id]!!, id: \.self) { msg in
+                                // 나
+                                if loginUserEmail == msg.userEmail {
+                                    blueMessageBubble(message: msg)
+                                        .id(msg.id)
                                     
+                                    // 상대
+                                } else {
+                                    grayMessageBubble(message: msg)
+                                        .id(msg.id)
                                 }
-                                .background(Color.clear)
-                                .onChange(of: chatVM.lastMessageId){ id in
-                                    withAnimation {
-                                        proxy.scrollTo(id, anchor: .bottom)
-                                    }
+                                
+                            } // ForEach
+                            .background(Color.clear)
+                            
+                            // 마지막 메세지로 끌어내리기
+                            .onChange(of: chatVM.lastMessageId){ id in
+                                withAnimation {
+                                    proxy.scrollTo(id, anchor: .bottom)
+                                    print("마지막 메세지: \(chatVM.lastMessageText)")
                                 }
-                                .onAppear(){
-                                    withAnimation {
-                                        proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
-                                    }
+                            }
+                            // 첫화면 끌어내리기
+                            .onAppear(){
+                                withAnimation {
+                                    proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
+                                    print("첫화면 \(chatVM.lastMessageText)")
                                 }
                             }
                         }
                     }
                 }
+                // ScrollViewReader
+                .onAppear {
+                    chatVM.fetchRoom(userEmail: room.userEmail)
+                }
             }
-            .onAppear {
-                chatVM.fetchRoom(userEmail: room.userEmail)
-            }
+            // VStack
             .navigationTitle("시니나케이크")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -77,6 +84,7 @@ struct ChatView2: View {
             }
         }
     }
+    
     
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
@@ -123,8 +131,8 @@ struct ChatView2: View {
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
                     }
                     self.selectedImage = nil
-                   
-                // text 전송
+                    
+                    // text 전송
                 } else {
                     let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
@@ -150,6 +158,7 @@ struct ChatView2: View {
         .padding()
     }
     
+    
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
@@ -164,7 +173,7 @@ struct ChatView2: View {
                         .padding()
                         .background(Color(.customBlue))
                         .cornerRadius(30)
-                        
+                    
                 },
                            placeholder: {
                     ProgressView()
@@ -197,6 +206,6 @@ struct ChatView2: View {
     }
 }
 
-#Preview {
-    ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", id: "iDe7zgI8rZTbXKTSb7id"))
-}
+//#Preview {
+//    ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", id: "iDe7zgI8rZTbXKTSb7id"))
+//}
