@@ -11,19 +11,17 @@ struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     @ObservedObject var calendarVM = CalendarViewModel()
-    
     @StateObject var calendarListVM = CalendarListViewModel()
-    @StateObject var loginVM = LoginViewModel()
+    @StateObject var loginVM = LoginViewModel.shared
     @State private var selectedDate: Date?
-    
-    var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
+    @State var editClicked = false
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
-    //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
     @State var edit: Bool = false
     @State var getData: Bool = false
     
+    var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
         ScrollView {
             
@@ -113,22 +111,16 @@ struct CalendarView: View {
                     print("편집 작동, \(edit)")
                     edit.toggle()
                     getData.toggle()
-                    
+                    editClicked.toggle()
                 } label: {
                     Image(systemName:"list.clipboard.fill")
-                        .foregroundColor(Color(.customBlue))
+                        .foregroundColor(editClicked ? Color(.customBlue) : Color(.customGray))
                 }
             }
             
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
-        .task {
-            // 로그인된 사용자의 이메일로 매니저 여부 확인
-            if let userEmail = Auth.auth().currentUser?.email {
-                await loginVM.checkManager(email: userEmail)
-            }
-        }
     }
     
     private var weekView: some View {
@@ -436,11 +428,6 @@ struct CardView: View {
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
-        .task {
-            if let userEmail = Auth.auth().currentUser?.email {
-                await loginVM.checkManager(email: userEmail)
-            }
-        }
     }
 }
 
