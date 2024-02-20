@@ -11,19 +11,17 @@ struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
     @ObservedObject var calendarVM = CalendarViewModel()
-    
     @StateObject var calendarListVM = CalendarListViewModel()
-    @StateObject var loginVM = LoginViewModel()
+    @StateObject var loginVM = LoginViewModel.shared
     @State private var selectedDate: Date?
-    
-    var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
+    @State var editClicked = false
     @State var currentDate = Date()
     @State var daysList = [[DateValue]]()
-    //화살표 클릭에 의한 월 변경 값
     @State var monthOffset = 0
     @State var edit: Bool = false
     @State var getData: Bool = false
     
+    var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
         ScrollView {
             
@@ -113,10 +111,10 @@ struct CalendarView: View {
                     print("편집 작동, \(edit)")
                     edit.toggle()
                     getData.toggle()
-                    
+                    editClicked.toggle()
                 } label: {
                     Image(systemName:"list.clipboard.fill")
-                        .foregroundColor(Color(.customBlue))
+                        .foregroundColor(editClicked ? Color(.customBlue) : Color(.customGray))
                 }
             }
             
