@@ -13,12 +13,11 @@
 		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E902B7CE42F00A61406 /* ChatRoom.swift */; };
-		23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* ChatView2.swift */; };
+		23C35E972B7CE42F00A61406 /* CustomerChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* CustomerChatView.swift */; };
 		23C35E982B7CE42F00A61406 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E932B7CE42F00A61406 /* Message.swift */; };
 		23C35E9D2B7CE4B900A61406 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */; };
-		23C35E9F2B7CE4EA00A61406 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ChatView.swift */; };
+		23C35E9F2B7CE4EA00A61406 /* ManagerChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */; };
 		23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */; };
-		23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA82B7E45CB00A61406 /* ChatView2.swift */; };
 		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
 		23D682A82B73878A00A2036A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A72B73878A00A2036A /* FirebaseAnalytics */; };
 		23D682AA2B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A92B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -115,12 +114,11 @@
 
 /* Begin PBXFileReference section */
 		23C35E902B7CE42F00A61406 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
-		23C35E922B7CE42F00A61406 /* ChatView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView2.swift; sourceTree = "<group>"; };
+		23C35E922B7CE42F00A61406 /* CustomerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerChatView.swift; sourceTree = "<group>"; };
 		23C35E932B7CE42F00A61406 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		23C35E9E2B7CE4EA00A61406 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerChatView.swift; sourceTree = "<group>"; };
 		23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		23C35EA82B7E45CB00A61406 /* ChatView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView2.swift; sourceTree = "<group>"; };
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		38951A1BE2E0F9CD6200F179 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
@@ -380,10 +378,9 @@
 			isa = PBXGroup;
 			children = (
 				23C35E902B7CE42F00A61406 /* ChatRoom.swift */,
-				23C35EA82B7E45CB00A61406 /* ChatView2.swift */,
-				23C35E9E2B7CE4EA00A61406 /* ChatView.swift */,
 				23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */,
-				23C35E922B7CE42F00A61406 /* ChatView2.swift */,
+				23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */,
+				23C35E922B7CE42F00A61406 /* CustomerChatView.swift */,
 				23C35E932B7CE42F00A61406 /* Message.swift */,
 				23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */,
 			);
@@ -712,7 +709,7 @@
 				8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */,
 				8ECF5FCB2B54EE8A00D6BCF6 /* CautionViewModel.swift in Sources */,
 				8ECF5FC52B54EE5300D6BCF6 /* HomeViewModel.swift in Sources */,
-				23C35E9F2B7CE4EA00A61406 /* ChatView.swift in Sources */,
+				23C35E9F2B7CE4EA00A61406 /* ManagerChatView.swift in Sources */,
 				9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */,
 				8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */,
 				23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */,
@@ -734,7 +731,6 @@
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
 				234ABD892B6A2C4E007199E2 /* (null) in Sources */,
-				23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* CalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
 				9AC123052B746B9B00DC9A42 /* UIScreen+.swift in Sources */,
@@ -767,7 +763,7 @@
 				9A27E6B92B55160B00E7E699 /* ManagerOnlyView.swift in Sources */,
 				9A27E6B72B55159300E7E699 /* MapViewModel.swift in Sources */,
 				23C35E9D2B7CE4B900A61406 /* ChatViewModel.swift in Sources */,
-				23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */,
+				23C35E972B7CE42F00A61406 /* CustomerChatView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
