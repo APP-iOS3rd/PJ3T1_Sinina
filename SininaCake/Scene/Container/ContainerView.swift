@@ -61,7 +61,7 @@ struct ContainerView: View {
             }
         }
         .fullScreenCover(isPresented: $showManager, content: {
-                    ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
+            ChatView2(room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? "", lastMsg: nil, lastMsgTime: nil))
                         .onDisappear() {
                             currentTab = .home
                             chatVM.listener?.remove()

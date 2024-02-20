@@ -10,9 +10,10 @@ import SwiftUI
 struct ChatView2: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
+    @ObservedObject var loginVM = LoginViewModel.shared
     @State var chatText = ""
-    @State var loginUserEmail: String? // 로그인 유저
     @State var room: ChatRoom
+    
     @State private var isChatTextEmpty = true
     @State private var isImagePickerPresented = false
     @State private var selectedImage: UIImage?
@@ -35,7 +36,7 @@ struct ChatView2: View {
                         if chatVM.messages[room.id] != nil {
                             ForEach(chatVM.messages[room.id]!!, id: \.self) { msg in
                                 // 나
-                                if loginUserEmail == msg.userEmail {
+                                if loginVM.loginUserEmail == msg.userEmail {
                                     blueMessageBubble(message: msg)
                                         .id(msg.id)
                                     
@@ -126,7 +127,7 @@ struct ChatView2: View {
                 // 사진을 보낼 때
                 if let selectedImage = selectedImage {
                     if let image = selectedImage.jpegData(compressionQuality: 1){
-                        let msg = Message(imageData: image, imageURL: "", userEmail: loginUserEmail ?? "", timestamp: Date())
+                        let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
                     }
@@ -134,7 +135,7 @@ struct ChatView2: View {
                     
                     // text 전송
                 } else {
-                    let msg = Message(text: chatText, userEmail: loginUserEmail ?? "", timestamp: Date())
+                    let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
                 }
                 

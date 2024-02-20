@@ -9,15 +9,6 @@ import Foundation
 import Firebase
 import FirebaseStorage
 
-//class ListenerRegistration {
-//    let chatRoom: ChatRoom
-//    let listener: ListenerRegistration
-//    
-//    init(chatRoom: ChatRoom, listener: ListenerRegistration) {
-//        self.chatRoom = chatRoom
-//        self.listener = listener
-//    }
-//}
 
 class ChatViewModel: ObservableObject{
     static let shared = ChatViewModel()
@@ -95,12 +86,12 @@ class ChatViewModel: ObservableObject{
         try? fireStore.collection("chatRoom").document(chatRoom.id).setData(from: chatRoom)
     }
     
-    func stopListening() {
-        listeners.removeAll()
-        //messages.removeAll()
-        
-        print("stopListening")
-    }
+//    func stopListening() {
+//        listeners.removeAll()
+//        //messages.removeAll()
+//        
+//        print("stopListening")
+//    }
     
     // 메세지 패치(메세지 가져오기)
     func startListening(chatRoom: ChatRoom) {
@@ -174,14 +165,11 @@ class ChatViewModel: ObservableObject{
             try? fireStore.collection("chatRoom").document(chatRoom.id)
                 .collection("message").document(message.id).setData(from: message)
             
-            // MARK: 추가
-            /*
-            try? fireStore.collection("chatRoom").document(chatRoom.id).setData(from: message.text)
-            try? fireStore.collection("chatRoom").document(chatRoom.id).setData(from: message.timestamp)
-            */
-            
-            print("sendMessage 함수 실행: \(message)추가")
-            print("sendMessage 함수 실행(방이름): \(chatRoom)추가")
+                try? fireStore.collection("chatRoom").document(chatRoom.id).setData([
+                "lastMsg": message.text,
+                "lastMsgTime": message.timestamp], merge: true)
+
+            print("sendMessage 함수 실행")
         }
     }
     
@@ -209,6 +197,7 @@ class ChatViewModel: ObservableObject{
                                   "userEmail": updatedMessage.userEmail,
                                   "timestamp": updatedMessage.timestamp,
                                   "imageURL": updatedMessage.imageURL])
+                    
                     
                     print("print 2: chatRoom: \(chatRoom), updatedMessage: \(updatedMessage)")
                     

@@ -378,8 +378,8 @@
 			children = (
 				23C35E902B7CE42F00A61406 /* ChatRoom.swift */,
 				23C35EA82B7E45CB00A61406 /* ChatView2.swift */,
-				23C35E9E2B7CE4EA00A61406 /* ChatView.swift */,
 				23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */,
+				23C35E9E2B7CE4EA00A61406 /* ChatView.swift */,
 				23C35E922B7CE42F00A61406 /* ChatView2.swift */,
 				23C35E932B7CE42F00A61406 /* Message.swift */,
 				23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */,

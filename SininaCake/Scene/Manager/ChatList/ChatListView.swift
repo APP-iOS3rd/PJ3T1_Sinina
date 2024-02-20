@@ -8,10 +8,10 @@ import Firebase
 
 struct ChatListView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
-//    @ObservedObject var loginVM = LoginViewModel.shared
-//    @ObservedObject var userStore = UserStore.shared
+    //    @ObservedObject var loginVM = LoginViewModel.shared
+    //    @ObservedObject var userStore = UserStore.shared
     @State var loginUserEmail: String? // 현재 접속자(본인)
- 
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -30,21 +30,21 @@ struct ChatListView: View {
                                         
                                         Spacer()
                                         
-                                        if let lastMessageTimestamp = chatVM.lastMessageTimestamp[room.id] {
-                                            CustomText(title: "\(lastMessageTimestamp)", textColor: .customGray, textWeight: .semibold, textSize: 12)
+                                        if let lastMessageTimestamp = room.lastMsgTime?.formattedDate() {
+                                            CustomText(title: "\(lastMessageTimestamp)", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                                                 .frame(alignment: .leading)
                                         }
                                     }
                                     .padding(3)
                                     
                                     HStack {
-                                        if let lastMessageText = chatVM.lastMessageText[room.id] {
-                                            CustomText(title: "\(lastMessageText)", textColor: .customGray, textWeight: .regular, textSize: 16)
+                                        if let lastMessageText = room.lastMsg {
+                                            CustomText(title: "\(lastMessageText)", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                                         }
-                                        
                                         Spacer()
                                         
-                                        CustomText(title: "1", textColor: .customGray, textWeight: .regular, textSize: 16)
+                                        //FIXME: 안읽은 메세지 수
+                                        CustomText(title: "1", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                                             .frame(alignment: .leading)
                                     }
                                 }
@@ -55,13 +55,10 @@ struct ChatListView: View {
                     }
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal){
-                    CustomText(title: "채팅방", textColor: .black, textWeight: .semibold, textSize: 24)}}
         }
         .onAppear(){
-            chatVM.fetchAllRooms()}
+            chatVM.fetchAllRooms()
+        }
     }
 }
 

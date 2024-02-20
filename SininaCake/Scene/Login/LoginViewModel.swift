@@ -160,7 +160,6 @@ extension LoginViewModel {
             }
         }
     }
-    
     /// 카카오 유저 정보 획득
     func getKakaoUserInfo() {
         UserApi.shared.me() {(user, error) in
@@ -224,23 +223,29 @@ extension LoginViewModel {
     /// 유저 정보 파이어스토어에 저장
     func addUserInfoToFirestore(email: String, imgURL: String, userName: String, deviceToken: String) async {
         let db = Firestore.firestore()
+        var isNewUser = false
         
         do {
-          try await db.collection("Users").document(email).setData([
-            "email": email,
-            "userName": userName,
-            "imgURL": imgURL,
-            "deviceToken": deviceToken
-          ], merge: true)
-          print("Document successfully written!")
+            let querySnapshot = try await db.collection("Users").whereField("email", isEqualTo: email).getDocuments()
+            isNewUser = querySnapshot.isEmpty
+    
+            if isNewUser {
+                chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: email, id: email, lastMsg: nil, lastMsgTime: nil))
+                print("addChatRoom")
+            }
+            
+            try await db.collection("Users").document(email).setData([
+                "email": email,
+                "userName": userName,
+                "imgURL": imgURL,
+                "deviceToken": deviceToken
+            ], merge: true)
+            print("Document successfully written!")
         } catch {
             print("Error writing document: \(error)")
         }
-        
-        // 회원가입과 동시에 채팅방 생성
-        // FIXME: 로그인할 때마다 방이 생김(이미 있으면 생성 안하게 만들기)
-        chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: email, id: email))
     }
+    
     
     // MARK: - 파이어베이스
     /// 파이어베이스 유저 정보 획득

@@ -29,8 +29,8 @@ struct ChatView: View {
     // MARK: 메세지 창 띄우는 뷰
     private var messagesView: some View {
         VStack {
-            ScrollViewReader { proxy in
                 ScrollView {
+                    ScrollViewReader { proxy in
                     VStack {
                         if chatVM.messages[room.id] != nil {
                             ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
@@ -43,13 +43,15 @@ struct ChatView: View {
                                     grayMessageBubble(message: msg)
                                 }
                                 
-                            }
+                            } // ForEach
                             .background(Color.clear)
+                            // 마지막 메세지로 끌어내리기
                             .onChange(of: chatVM.lastMessageId){ id in
                                 withAnimation {
                                     proxy.scrollTo(id, anchor: .bottom)
                                 }
                             }
+                            // 첫화면 끌어내리기
                             .onAppear(){
                                 withAnimation {
                                     proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
@@ -58,7 +60,7 @@ struct ChatView: View {
                         }
                     }
             }
-        }
+        } // ScrollViewReader
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal){
