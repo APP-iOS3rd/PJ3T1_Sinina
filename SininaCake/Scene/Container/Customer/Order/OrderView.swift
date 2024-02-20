@@ -65,8 +65,12 @@ struct infoView: View {
             
             TextField("ex) 시니나...", text: $orderData.orderItem.name)
                 .textFieldStyle(.plain)
+                .font(.custom("Pretendard", fixedSize: 16))
+                .fontWeight(.regular)
                 .padding(.leading, 24)
                 .submitLabel(.done)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
             
             
             
@@ -85,11 +89,15 @@ struct infoView: View {
             
             TextField("010 -", text: $orderData.orderItem.phoneNumber)
                 .textFieldStyle(.plain)
+                .font(.custom("Pretendard", fixedSize: 16))
+                .fontWeight(.regular)
                 .submitLabel(.done)
                 .keyboardType(.numberPad)
                 .limitText($orderData.orderItem.phoneNumber, to: 11)
                 .padding(.leading, 24)
                 .kerning(0.5)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
             
             Rectangle()
                 .foregroundColor(.clear)
@@ -131,6 +139,8 @@ struct OrderCalendarView:View {
                 displayedComponents: [.date, .hourAndMinute]
             )
             .datePickerStyle(.graphical)
+            .font(.custom("Pretendard", fixedSize: 16))
+            .fontWeight(.regular)
             .onChange(of: orderData.orderItem.date, perform: { value in
                 let calendar = Calendar.current
                 let day = calendar.component(.weekday, from: value)
@@ -153,10 +163,10 @@ struct OrderCalendarView:View {
             .accentColor(Color(UIColor.customBlue))
             .padding(.bottom,(UIScreen.main.bounds.height) * 12/932 )
             
-            CustomText(title: "*매주 일,월 정기휴무 입니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+            CustomText(title: "*매주 일,월 정기휴무 입니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                 .padding(.leading,(UIScreen.main.bounds.width) * 24/430 )
-            CustomText(title: "*정해진 픽업 시간을 꼭 지켜주세요, 픽업 당일 시간 변경은 불가합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
-                .padding(.leading,(UIScreen.main.bounds.width) * 24/430 )
+            CustomText(title: "*정해진 픽업 시간을 꼭 지켜주세요, 픽업 당일 시간 변경은 불가합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
+                .padding(.horizontal,(UIScreen.main.bounds.width) * 24/430 )
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
         }
     }
@@ -210,7 +220,7 @@ struct OrderCakeView: View {
                             Spacer()
                             
                             CustomText(title: orderCakeModel[index].sizePricel, textColor: .black, textWeight: .regular, textSize: 18)
-                                .padding(.trailing,(UIScreen.main.bounds.height) * 28/430)
+                                .padding(.trailing,(UIScreen.main.bounds.width) * 28/430)
                         }
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/932)
                         .background(
@@ -223,10 +233,11 @@ struct OrderCakeView: View {
                 }
             }
             VStack(alignment: .leading){
-                CustomText(title: "*디자인/그림/제작 난이도에 따라 추가 금액이 발생할 수 있습니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+                CustomText(title: "*디자인/그림/제작 난이도에 따라 추가 금액이 발생할 수 있습니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                     .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
             }
         }
+        .padding(.horizontal,(UIScreen.main.bounds.width) * 24/430)
     }
     private func updateSelection(index: Int) {
         for i in 0..<orderCakeModel.count {
@@ -372,9 +383,9 @@ struct OrderCreamView: View {
                 .padding(.horizontal, (UIScreen.main.bounds.width) * 24/430)
             }
             VStack(alignment: .leading){
-                CustomText(title: "*겉크림은 크림치즈생크림으로 만들어집니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+                CustomText(title: "*겉크림은 크림치즈생크림으로 만들어집니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                 
-                CustomText(title: "*생크림은 100% 동물성 크림만 사용합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+                CustomText(title: "*생크림은 100% 동물성 크림만 사용합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
             }
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
             .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
@@ -407,6 +418,8 @@ struct OrderTextView: View {
                                                  height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
                 .onAppear(perform : UIApplication.shared.hideKeyboard)
         }
@@ -603,6 +616,8 @@ struct OrderCommentView: View {
                 .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430, height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
                 .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
                 .onAppear(perform : UIApplication.shared.hideKeyboard)
         }
