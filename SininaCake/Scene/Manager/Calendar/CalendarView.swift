@@ -371,7 +371,6 @@ struct CardView: View {
     }
 
     var body: some View {
-        
         ZStack() {
             HStack {
                 if value.day > 0 {

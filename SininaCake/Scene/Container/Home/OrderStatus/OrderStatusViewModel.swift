@@ -13,7 +13,6 @@ class OrderStatusViewModel: ObservableObject {
     let loginVM = LoginViewModel.shared
     let storage = Storage.storage()
     @Published var myOrderData: [OrderItem] = []
-    @Published var image: UIImage? = nil
     
     var db: Firestore!
     var ordersRef: CollectionReference!
@@ -25,23 +24,22 @@ class OrderStatusViewModel: ObservableObject {
         
         db = Firestore.firestore()
         ordersRef = db.collection("Users").document(loginVM.loginUserEmail ?? "").collection("Orders")
+        
+        fetchData()
     }
     
-    func downloadImage(_ id: String, _ imageName: String) {
+    func downloadImage(_ id: String, _ imageName: String, completion: @escaping (UIImage) -> Void) {
         let storage = Storage.storage()
-        
         
         let storageRef = storage.reference().child("\(id)/\(imageName)")
         
-        storageRef.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
+        storageRef.getData(maxSize: 30 * 1024 * 1024) { [weak self] data, error in
             if let error = error {
                 print("Cannot download image \(error.localizedDescription)")
                 return
             } else {
                 if let imageData = data, let self = self, let uiImage = UIImage(data: imageData) {
-                    DispatchQueue.main.async {
-                        self.image = uiImage
-                    }
+                    completion(uiImage)
                 }
             }
         }
@@ -50,7 +48,7 @@ class OrderStatusViewModel: ObservableObject {
     func fetchData() {
         myOrderData = []
         
-        let query: Query = ordersRef.order(by: "id")
+        let query: Query = ordersRef.order(by: "orderTime")
         
         query.getDocuments { [weak self] querySnapshot, error in
             if let error = error {

@@ -83,6 +83,7 @@
 		8ECF5FD92B54EF0F00D6BCF6 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD82B54EF0F00D6BCF6 /* CalendarViewModel.swift */; };
 		8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */; };
 		8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFA75322B73428000BEDF0C /* FCMServerAPI.swift */; };
+		9A07A8902B82023A00E6A898 /* UserConfirmOrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07A88F2B82023A00E6A898 /* UserConfirmOrderDetailView.swift */; };
 		9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */; };
 		9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */; };
 		9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */; };
@@ -168,6 +169,7 @@
 		8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		8EFA75322B73428000BEDF0C /* FCMServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMServerAPI.swift; sourceTree = "<group>"; };
 		8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SininaCake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A07A88F2B82023A00E6A898 /* UserConfirmOrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfirmOrderDetailView.swift; sourceTree = "<group>"; };
 		9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusView.swift; sourceTree = "<group>"; };
 		9A27E6A72B5514AC00E7E699 /* OrderStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusViewModel.swift; sourceTree = "<group>"; };
 		9A27E6AA2B55153900E7E699 /* CustomerCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerCalendarView.swift; sourceTree = "<group>"; };
@@ -256,6 +258,8 @@
 			children = (
 				3B4870342B83536600046089 /* ApiKeys.xcconfig */,
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
+				5E8335AB2B83415D00AEA89E /* ApiKeys.xcconfig */,
+				5E8335AD2B83416200AEA89E /* GoogleService-Info.plist */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
@@ -402,6 +406,7 @@
 			children = (
 				8E874BB52B00B59800ECEF08 /* OrderView.swift */,
 				8ECF5FCD2B54EEA400D6BCF6 /* OrderViewModel.swift */,
+				9A07A88F2B82023A00E6A898 /* UserConfirmOrderDetailView.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -741,6 +746,7 @@
 				9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */,
 				23D682D42B738A0200A2036A /* Date.swift in Sources */,
 				23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */,
+				9A07A8902B82023A00E6A898 /* UserConfirmOrderDetailView.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
 				2367639E2B66BF8D008C8244 /* (null) in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,

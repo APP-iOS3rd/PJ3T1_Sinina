@@ -30,7 +30,6 @@ struct ProfileView: View {
             })
             .onAppear {
                 loginVM.getKakaoUserInfo()
-                profileVM.fetchData()
                 profileVM.downloadProfileImage()
             }
         }
@@ -118,11 +117,12 @@ struct MyOrderListView: View {
 
 struct MyOrderView: View {
     @ObservedObject var profileVM: ProfileViewModel
+    @State var thumbnailImage: UIImage? = nil
     let orderItem: OrderItem
     
     var body: some View {
         VStack {
-            if let image = profileVM.image {
+            if let image = thumbnailImage {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
@@ -151,7 +151,13 @@ struct MyOrderView: View {
             }
         )
         .onAppear {
-            profileVM.downloadImage(orderItem.id, orderItem.imageURL[0])
+            if !orderItem.imageURL.isEmpty && orderItem.imageURL[0] != "" {
+                profileVM.downloadImage(orderItem.id, orderItem.imageURL[0]) { image in
+                    DispatchQueue.main.async {
+                        self.thumbnailImage = image
+                    }
+                }
+            }
         }
     }
 }
@@ -159,21 +165,21 @@ struct MyOrderView: View {
 struct StatusTextView: View {
     let orderItem: OrderItem
     
-    var titleAndColor: (String, UIColor) {
+    var titleAndColor: (String, UIColor, UIColor) {
         switch orderItem.status {
         case .assign:
-            return ("예약완료", .white)
+            return ("예약완료", .white, .customBlue)
         case .notAssign:
-            return ("예약대기", .customDarkGray)
+            return ("예약대기", .customDarkGray, .customGray)
         case .complete:
-            return ("제작완료", .black)
+            return ("제작완료", .black, .customGray)
         }
     }
     
     var body: some View {
         CustomText(title: titleAndColor.0, textColor: titleAndColor.1, textWeight: .semibold, textSize: 14)
             .frame(width: UIScreen.UIWidth(75), height: UIScreen.UIHeight(30))
-            .background(Color(.customBlue))
+            .background(Color(titleAndColor.2))
             .cornerRadius(15)
             .padding()
     }

@@ -13,6 +13,7 @@ class OrderDetailViewModel: ObservableObject {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     @Published var images: [UIImage?] = []
+    @Published var imageURLs: [URL?] = []
     @Published var deviceToken: String = ""
     
     func updatePrice(orderItem: OrderItem, _ price: Int) {
@@ -33,19 +34,37 @@ class OrderDetailViewModel: ObservableObject {
         }
     }
     
-    func downloadImage(_ imageNames: [String]) {
-        images = []
-        let storage = Storage.storage()
+    func downloadImageURL(_ id: String, _ imageNames: [String]) {
+        imageURLs = []
         
         for imageName in imageNames {
-            let storageRef = storage.reference().child(imageName)
+            let imagePath = "\(id)/\(imageName)"
             
-            storageRef.getData(maxSize: 1 * 1024 * 1024) { [weak self] data, error in
+            let storageRef = storage.reference().child(imagePath)
+            
+            storageRef.downloadURL { [weak self] url, error in
+                if let error = error {
+                    print("Cannot found download url: \(error.localizedDescription)")
+                } else if let self = self {
+                    self.imageURLs.append(url)
+                }
+            }
+        }
+    }
+    
+    func downloadImage(_ id: String, _ imageNames: [String]) {
+        images = []
+        
+        for imageName in imageNames {
+            let storageRef = storage.reference().child("\(id)/\(imageName)")
+            
+            storageRef.getData(maxSize: 30 * 1024 * 1024) { [weak self] data, error in
                 if let error = error {
                     print("Cannot download image \(error.localizedDescription)")
                     return
                 } else {
                     if let imageData = data, let self = self, let uiImage = UIImage(data: imageData) {
+                        print("success download image")
                         DispatchQueue.main.async {
                             self.images.append(uiImage)
                         }
@@ -53,6 +72,7 @@ class OrderDetailViewModel: ObservableObject {
                 }
             }
         }
+        print(images.count)
     }
     
     func getDeviceToken(_ email: String) {

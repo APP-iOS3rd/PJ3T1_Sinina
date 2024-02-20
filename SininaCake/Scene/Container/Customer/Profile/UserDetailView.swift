@@ -23,15 +23,6 @@ struct UserDetailView: View {
         }
     }
     
-    var opacity: Double {
-        switch orderItem.status {
-        case .complete:
-            return 0
-        default:
-            return 1
-        }
-    }
-
     var body: some View {
         ScrollView {
             VStack {
@@ -50,23 +41,23 @@ struct UserDetailView: View {
                 Spacer()
                     .frame(height: 42)
                 
-                UserOrderInfoView(orderItem: $orderItem)
+                OrderInfoView(orderItem: $orderItem)
                 
-                UserDividerView()
+                DividerView()
                 
-                UserCakeInfoView(orderItem: $orderItem)
+                CakeInfoView(orderItem: $orderItem)
                 
                 Spacer()
                     .frame(height: 18)
                 
-                UserPhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
+                PhotoView(orderItem: $orderItem, orderDetailVM: orderDetailVM)
                 
                 Spacer()
                     .frame(height: 32)
                 
-                UserEtcView(orderItem: $orderItem)
+                EtcView(orderItem: $orderItem)
                 
-                UserDividerView()
+                DividerView()
                 
                 UserPriceView(orderItem: $orderItem)
             }
@@ -82,183 +73,8 @@ struct UserDetailView: View {
             }
         }
         .onAppear {
-            orderDetailVM.downloadImage(orderItem.imageURL)
+            orderDetailVM.downloadImageURL(orderItem.id, orderItem.imageURL)
         }
-    }
-}
-
-// MARK: - DividerView
-struct UserDividerView: View {
-    var body: some View {
-        Spacer()
-            .frame(height: 32)
-        
-        Divider()
-        
-        Spacer()
-            .frame(height: 32)
-    }
-}
-
-// MARK: - OrderInfoView
-struct UserOrderInfoView: View {
-    @Binding var orderItem: OrderItem
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "픽업날짜", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "픽업시간", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "이름", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "휴대전화", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-            }
-            
-            Spacer()
-                .frame(width: 63)
-            
-            VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: dateToTime(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.name, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.phoneNumber, textColor: .black, textWeight: .semibold, textSize: 16)
-            }
-            
-            Spacer()
-        }
-        .padding(.leading, 24)
-    }
-}
-
-// MARK: - CakeInfoView
-struct UserCakeInfoView: View {
-    @Binding var orderItem: OrderItem
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "사이즈", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "시트(빵)", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "속크링", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "문구/글씨 색상", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-            }
-            
-            Spacer()
-                .frame(width: 24)
-            
-            VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.sheet, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.cream, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.text, textColor: .black, textWeight: .semibold, textSize: 16)
-            }
-            
-            Spacer()
-        }
-        .padding(.leading, 24)
-    }
-}
-
-// MARK: - PhotoView
-struct UserPhotoView: View {
-    @Binding var orderItem: OrderItem
-    @ObservedObject var orderDetailVM: OrderDetailViewModel
-    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    let imageWidth = (UIScreen.main.bounds.width - 60) / 2
-    
-    var body: some View {
-        VStack {
-            HStack {
-                CustomText(title: "사진", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                Spacer()
-            }
-            
-            Spacer()
-                .frame(height: 24)
-
-            LazyVGrid(columns: columns) {
-                if orderItem.imageURL.count == 1 && orderItem.imageURL[0] == "" {
-                    ForEach(0...1, id: \.self) { _ in
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customGray))
-                            .frame(width: imageWidth, height: imageWidth)
-                            .foregroundStyle(.clear)
-                            .overlay(
-                                Image("emptyPhoto")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .scaledToFit()
-                            )
-                    }
-                } else {
-                    ForEach(orderDetailVM.images, id: \.self) { image in
-                        if let image = image {
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(.customGray))
-                                .frame(width: imageWidth, height: imageWidth)
-                                .foregroundStyle(.clear)
-                                .overlay(
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .frame(width: imageWidth - 20, height: imageWidth - 20)
-                                        .scaledToFit()
-                                )
-                        }
-                    }
-                    
-                    if orderItem.imageURL.count % 2 == 1 {
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color(.customGray))
-                            .frame(width: imageWidth, height: imageWidth)
-                            .foregroundStyle(.clear)
-                            .overlay(
-                                Image("emptyPhoto")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .scaledToFit()
-                            )
-                    }
-                }
-            }
-        }
-        .padding(.leading, 24)
-        .padding(.trailing, 24)
-    }
-}
-
-// MARK: - EtcView
-struct UserEtcView: View {
-    @Binding var orderItem: OrderItem
-    var icePackTitle: String {
-        switch orderItem.icePack {
-        case .none:
-            return "없음"
-        case .icePack:
-            return "보냉팩(+1000원) 추가"
-        case .iceBag:
-            return "보냉백(+5000원) 추가"
-        }
-    }
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: "보냉팩 / 보냉백", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                CustomText(title: "추가 요청 사항", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-                Spacer()
-            }
-            
-            Spacer()
-                .frame(width: 20)
-            
-            VStack(alignment: .leading, spacing: 18) {
-                CustomText(title: icePackTitle, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.comment, textColor: .black, textWeight: .semibold, textSize: 16)
-                Spacer()
-            }
-            
-            Spacer()
-        }
-        .padding(.leading, 24)
     }
 }
 
