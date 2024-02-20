@@ -199,6 +199,10 @@ class ChatViewModel: ObservableObject{
                                   "timestamp": updatedMessage.timestamp,
                                   "imageURL": updatedMessage.imageURL])
                     
+                    try? self.fireStore.collection("chatRoom").document(chatRoom.id).setData([
+                        "lastMsg": "사진을 보냈습니다.",
+                        "lastMsgTime": message.timestamp], merge: true)
+                    
                     
                     print("print 2: chatRoom: \(chatRoom), updatedMessage: \(updatedMessage)")
                     

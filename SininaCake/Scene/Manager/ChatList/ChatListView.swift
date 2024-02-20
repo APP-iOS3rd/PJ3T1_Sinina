@@ -17,7 +17,7 @@ struct ChatListView: View {
             ScrollView {
                 LazyVStack(spacing: 10) {
                     ForEach(chatVM.chatRooms, id: \.self){ room in
-                        NavigationLink(destination: ChatView(loginUserEmail: loginUserEmail ?? "", room: room)){
+                        NavigationLink(destination: ManagerChatView(room: room)){
                             HStack {
                                 Image(systemName: "person.crop.circle.fill")
                                     .resizable()

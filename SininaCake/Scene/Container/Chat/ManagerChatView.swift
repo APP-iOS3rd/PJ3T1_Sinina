@@ -1,23 +1,22 @@
 //
-//  ChatView2.swift
+//  ChatView.swift
 //  SininaCake
 //
-//  Created by 김수비 on 2/14/24.
+//  Created by  zoa0945 on 1/15/24.
 //
 
 import SwiftUI
+import Firebase
 
-struct ChatView2: View {
+struct ManagerChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var loginVM = LoginViewModel.shared
     @State var chatText = ""
     @State var room: ChatRoom
-    
     @State private var isChatTextEmpty = true
-    @State private var isImagePickerPresented = false
     @State private var selectedImage: UIImage?
-    @Environment(\.presentationMode) var presentationMode
+    @State private var isImagePickerPresented = false
     
     // MARK: 통합 뷰
     var body: some View {
@@ -29,17 +28,17 @@ struct ChatView2: View {
     
     // MARK: 메세지 창 띄우는 뷰
     private var messagesView: some View {
-        NavigationView {
-            VStack {
+        VStack {
+            ScrollView {
                 ScrollViewReader { proxy in
-                    ScrollView {
+                    VStack {
                         if chatVM.messages[room.id] != nil {
-                            ForEach(chatVM.messages[room.id]!!, id: \.self) { msg in
+                            ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
                                 // 나
                                 if loginVM.loginUserEmail == msg.userEmail {
                                     blueMessageBubble(message: msg)
                                         .id(msg.id)
-                                    
+                            
                                     // 상대
                                 } else {
                                     grayMessageBubble(message: msg)
@@ -48,40 +47,30 @@ struct ChatView2: View {
                                 
                             } // ForEach
                             .background(Color.clear)
-                            
                             // 마지막 메세지로 끌어내리기
                             .onChange(of: chatVM.lastMessageId){ id in
                                 withAnimation {
                                     proxy.scrollTo(id, anchor: .bottom)
-                                    print("마지막 메세지: \(chatVM.lastMessageText)")
                                 }
                             }
                             // 첫화면 끌어내리기
                             .onAppear(){
                                 withAnimation {
                                     proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
-                                    print("첫화면 \(chatVM.lastMessageText)")
                                 }
                             }
                         }
                     }
                 }
-                // ScrollViewReader
-                .onAppear {
-                    chatVM.fetchRoom(userEmail: room.userEmail)
-                }
-            }
-            // VStack
-            .navigationTitle("시니나케이크")
+            } // ScrollViewReader
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        Image("angle-left-black")
-                    })
+                ToolbarItem(placement: .principal){
+                    CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 24)
                 }
+            }
+            .onAppear(){
+                chatVM.fetchRoom(userEmail: room.userEmail)
             }
         }
     }
@@ -89,7 +78,6 @@ struct ChatView2: View {
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
         HStack(spacing: 16) {
-            // 사진 버튼
             Button {
                 isImagePickerPresented.toggle()
                 
@@ -101,7 +89,7 @@ struct ChatView2: View {
                     .background(.white)
                     .cornerRadius(45)
             }
-            .sheet(isPresented: $isImagePickerPresented) {
+            .sheet(isPresented: $isImagePickerPresented){
                 ImagePicker(selectedImage: $selectedImage)
             }
             
@@ -114,23 +102,22 @@ struct ChatView2: View {
                         .onAppear(){
                             isChatTextEmpty = false
                         }
-
+                    
                 } else {
-                        TextField("", text: $chatText)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color(.customLightGray))
-                            .cornerRadius(45)
-                            .onChange(of: chatText){ value in
-                                isChatTextEmpty = value.isEmpty
-                    }
+                    TextField("", text: $chatText)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color(.customLightGray))
+                        .cornerRadius(45)
+                        .onChange(of: chatText){ value in
+                            isChatTextEmpty = value.isEmpty
+                        }
                 }
             }
-
+            
             Button {
                 // 사진을 보낼 때
                 if let selectedImage = selectedImage {
-                
                     if let image = selectedImage.jpegData(compressionQuality: 1){
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
@@ -138,7 +125,7 @@ struct ChatView2: View {
                     }
                     self.selectedImage = nil
                     
-                // text 전송
+                    // text 전송
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
@@ -164,7 +151,6 @@ struct ChatView2: View {
         .padding()
     }
     
-    
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
@@ -176,7 +162,7 @@ struct ChatView2: View {
                     image.resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
-                                            
+                    
                     
                 },
                            placeholder: {
@@ -197,19 +183,35 @@ struct ChatView2: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.text ?? "", textColor: .black, textWeight: .regular, textSize: 16)
-                .padding()
-                .background(Color(.textFieldColor))
-                .cornerRadius(30)
+            if let imageURL = message.imageURL, !imageURL.isEmpty {
+                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(idealWidth: 300, idealHeight: 300, alignment: .leading)
+                },
+                           placeholder: {
+                    ProgressView()
+                })
+                
+            } else {
+                CustomText(title: message.text ?? "", textColor: .black, textWeight: .regular, textSize: 16)
+                    .padding()
+                    .background(Color(.customLightGray))
+                    .cornerRadius(30)
+            }
             
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-        } // VStack
+        } // HStack
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 10)
     }
 }
 
-#Preview {
-    ChatView2(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil))
-}
+//#Preview {
+//    NavigationView {
+//        ChatView(loginUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu")
+//                 , userEmail: "b@gmail.com", room: ChatRoom(userEmail: "b@gmail.com", userName: "서감자", date: Timestamp(date: Date()), id: "h30LSY4MBubwggDHhR6n", lastMessageText: nil))
+//    }
+
+//}
