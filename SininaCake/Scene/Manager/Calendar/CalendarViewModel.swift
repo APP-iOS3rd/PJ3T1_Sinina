@@ -9,7 +9,7 @@ import Firebase
 import FirebaseFirestore
  //날짜 칸 표시를 위한 일자 정보
 struct DateValue: Identifiable, Codable, Comparable {
-    @DocumentID var id = UUID().uuidString
+    @DocumentID var id: String?
     var day: Int
     var date: Date
     var isNotCurrentMonth: Bool = false
@@ -30,6 +30,9 @@ struct DateValue: Identifiable, Codable, Comparable {
     static func < (lhs: DateValue, rhs: DateValue) -> Bool {
         return lhs.day < rhs.day
     }
+    
+    
+    
 }
 
  //일정 정보
@@ -63,6 +66,12 @@ extension Date {
     public var weekday: Int {
         return Calendar.current.component(.weekday, from: self)
     }
+    
+    func toDateString() -> String {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd"
+           return dateFormatter.string(from: self)
+       }
     
     func getAllDates() -> [Date] {
         let calendar = Calendar.current
@@ -124,10 +133,11 @@ extension DateValue {
         ]
     }
     
+    
     func saveDateValueToFirestore(dateValue: DateValue) {
         let db = Firestore.firestore()
-        let documentReference = db.collection("dateValues").document(dateValue.id ?? "")
-        print("\(dateValue.id ?? "")")
+        let documentReference = db.collection("dateValues").document(dateValue.date.withoutTime().toDateString())
+        print("\(dateValue.date.withoutTime().toString() ), 데이터 저장")
         documentReference.setData(dateValue.toFirestore) { error in
             if let error = error {
                 print("Error saving DateValue to Firestore: \(error.localizedDescription)")
@@ -158,7 +168,7 @@ extension DateValue {
 }
 
 
-class DateValueViewModel: ObservableObject {
+class CalendarViewModel: ObservableObject {
     @Published var dateValues: [DateValue] = []
     private var listener: ListenerRegistration?
     
@@ -239,6 +249,9 @@ class DateValueViewModel: ObservableObject {
             }
         }
     }
+    private func timestampToDate(_ date: Timestamp) -> Date {
+        return date.dateValue()
+    }
     
     func getTextColorForDateValue(_ dateValue: DateValue) -> Color {
         if dateValue.isSelected {
@@ -282,3 +295,4 @@ class DateValueViewModel: ObservableObject {
         listener?.remove()
     }
 }
+

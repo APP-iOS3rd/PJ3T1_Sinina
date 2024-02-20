@@ -10,8 +10,8 @@ import Firebase
 
 struct ContainerView: View {
     @State var currentTab: Tab = .home
+    @State private var showChat = false
     @State private var showManager = false
-    @State private var showNavManager = false
     @ObservedObject var loginVM = LoginViewModel.shared
     @ObservedObject var chatVM = ChatViewModel.shared
     
@@ -32,6 +32,14 @@ struct ContainerView: View {
                 .padding(.bottom, 90)
                 
                 CustomTabView(selection: $currentTab)
+                    .navigationDestination(isPresented: $showChat) {
+                        ChatView2(loginUserEmail: loginVM.loginUserEmail, room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? ""))
+                            .navigationBarBackButtonHidden()
+                            .onDisappear() {
+                                currentTab = .home
+                                chatVM.listener?.remove()
+                            }
+                    }
             }
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(.white, for: .navigationBar)
@@ -47,31 +55,24 @@ struct ContainerView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Trailing item if needed
                     Button {
-                        showNavManager = true
+                        showManager = true
                     } label: {
                         if (loginVM.isManager) {
                             Image("icon_manager")
                         }
                     }
                     .disabled(!loginVM.isManager)
-                    .fullScreenCover(isPresented: $showNavManager) {
+                    .fullScreenCover(isPresented: $showManager) {
                         ManagerOnlyView()
                     }
                 }
             }
         }
-        .fullScreenCover(isPresented: $showManager, content: {
-            CustomerChatView(room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? "", lastMsg: nil, lastMsgTime: nil))
-                        .onDisappear() {
-                            currentTab = .home
-                            chatVM.listener?.remove()
-                        }
-                })
         .onChange(of: currentTab) { newValue in
             if newValue == .chat {
-                showManager = true
+                showChat = true
             } else {
-                showManager = false
+                showChat = false
             }
         }
     }
@@ -95,6 +96,7 @@ func getTab(tab: Tab) -> String {
 }
 
 struct OrderButtonView: View {
+    
     var body: some View {
         NavigationLink(destination: CautionView()) {
             HStack {

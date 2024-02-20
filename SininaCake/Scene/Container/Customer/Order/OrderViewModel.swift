@@ -103,7 +103,7 @@ class OrderViewModel: ObservableObject {
     }
 
     func imgURL(_ i: Int) {
-        orderItem.imageURL[i].append("\(i + 1)")
+        orderItem.imageURL.append("\(i + 1)")
     }
 
 }
@@ -191,10 +191,12 @@ class PhotoPickerViewModel: ObservableObject {
 
         let storageRef = Storage.storage().reference()
 
-        let fileRef = storageRef.child("\(path)/ \(i + 1)")
+        let fileRef = storageRef.child("\(path)/\(i + 1)")
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
 
         if !selectedimagesData.isEmpty {
-            let uploadTask = fileRef.putData(selectedimagesData, metadata: nil) { metadata,
+            let uploadTask = fileRef.putData(selectedimagesData, metadata: metadata) { metadata,
                 error in
 
                 if error == nil && metadata != nil {
@@ -224,8 +226,6 @@ func statusToString(_ status: OrderStatus) -> String {
         return "미승인"
     case .complete:
         return "완료"
-    default:
-        return "미승인"
     }
 }
 
@@ -237,8 +237,6 @@ func icePackToString(_ icePack: IcePack) -> String {
         return "보냉팩"
     case .iceBag:
         return "보냉백"
-    default:
-        return "없음"
     }
 }
 

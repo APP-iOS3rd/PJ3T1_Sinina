@@ -1,20 +1,15 @@
 //
-//  ProfileVIewModel.swift
+//  CalendarListViewModel.swift
 //  SininaCake
 //
-//  Created by  zoa0945 on 1/15/24.
+//  Created by 박채운 on 2/19/24.
 //
 
 import Foundation
 import Firebase
-import FirebaseStorage
 
-class ProfileViewModel: ObservableObject {
-    let loginVM = LoginViewModel.shared
-    let storage = Storage.storage()
-    @Published var myOrderData: [OrderItem] = []
-    @Published var profileImage: UIImage? = nil
-    
+class CalendarListViewModel: ObservableObject {
+    @Published var allOrderData: [OrderItem] = []
     var db: Firestore!
     var ordersRef: CollectionReference!
     
@@ -24,49 +19,13 @@ class ProfileViewModel: ObservableObject {
         Firestore.firestore().settings = settings
         
         db = Firestore.firestore()
-        ordersRef = db.collection("Users").document(loginVM.loginUserEmail ?? "").collection("Orders")
-        
-        fetchData()
-    }
-    
-    func downloadImage(_ id: String, _ imageName: String, completion: @escaping (UIImage) -> Void) {
-        let storageRef = storage.reference().child("\(id)/\(imageName)")
-        
-        storageRef.getData(maxSize: 30 * 1024 * 1024) { [weak self] data, error in
-            if let error = error {
-                print("Cannot download image \(error.localizedDescription)")
-                return
-            } else {
-                if let imageData = data, let self = self, let uiImage = UIImage(data: imageData) {
-                    completion(uiImage)
-                }
-            }
-        }
-    }
-    
-    func downloadProfileImage() {
-        guard let imageURL = URL(string: loginVM.imgURL ?? "www.google.com") else {
-            return
-        }
-        
-        URLSession.shared.dataTask(with: imageURL) { data, response, error in
-            if let error {
-                print("Profile Image download Error: \(error.localizedDescription)")
-                return
-            }
-            
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.profileImage = image
-                }
-            }
-        }.resume()
+        ordersRef = db.collection("CurrentOrders")
     }
     
     func fetchData() {
-        myOrderData = []
+        allOrderData = []
         
-        let query: Query = ordersRef.order(by: "orderTime")
+        let query: Query = ordersRef.order(by: "id")
         
         query.getDocuments { [weak self] querySnapshot, error in
             if let error = error {
@@ -75,7 +34,6 @@ class ProfileViewModel: ObservableObject {
                 if let snapshot = querySnapshot, let self = self {
                     for doc in snapshot.documents {
                         let documentData: [String: Any] = doc.data()
-                        
                         let id: String = documentData["id"] as? String ?? ""
                         let email: String = documentData["email"] as? String ?? ""
                         let date: Timestamp = documentData["date"] as? Timestamp ?? Timestamp()
@@ -95,7 +53,7 @@ class ProfileViewModel: ObservableObject {
                         
                         let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
-                        myOrderData.append(orderDate)
+                        self.allOrderData.append(orderDate)
                     }
                 }
             }
@@ -131,8 +89,4 @@ class ProfileViewModel: ObservableObject {
             return .none
         }
     }
-//    init() {
-//        getKakaoUserInfo()
-//        getFBAuthUserInfo()
-//    }
 }
