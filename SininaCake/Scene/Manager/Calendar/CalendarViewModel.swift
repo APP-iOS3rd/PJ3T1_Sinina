@@ -137,7 +137,7 @@ extension DateValue {
     func saveDateValueToFirestore(dateValue: DateValue) {
         let db = Firestore.firestore()
         let documentReference = db.collection("dateValues").document(dateValue.date.withoutTime().toDateString())
-        print("\(dateValue.date.withoutTime().toString() )")
+        print("\(dateValue.date.withoutTime().toString() ), 데이터 저장")
         documentReference.setData(dateValue.toFirestore) { error in
             if let error = error {
                 print("Error saving DateValue to Firestore: \(error.localizedDescription)")
@@ -168,7 +168,7 @@ extension DateValue {
 }
 
 
-class DateValueViewModel: ObservableObject {
+class CalendarViewModel: ObservableObject {
     @Published var dateValues: [DateValue] = []
     private var listener: ListenerRegistration?
     

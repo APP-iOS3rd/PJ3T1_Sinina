@@ -10,7 +10,7 @@ import KakaoSDKAuth
 struct CalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
-    @ObservedObject var dateValueVM = DateValueViewModel()
+    @ObservedObject var calendarVM = CalendarViewModel()
     
     @StateObject var calendarListVM = CalendarListViewModel()
     @StateObject var loginVM = LoginViewModel()
@@ -65,6 +65,8 @@ struct CalendarView: View {
             }
             .onAppear {
                 calendarListVM.fetchData()
+                calendarVM.removePastDateValues()
+                print("view 로드, 현재시간 이전 데이터 삭제")
             }
             
         }
@@ -153,7 +155,7 @@ struct CalendarView: View {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: $daysList[i][j], schedule: testSchedule, dateValueVM:dateValueVM, edit: $edit, getData: $getData, loginVM: loginVM, calendarListVM: calendarListVM) { selectedDateValue in
+                        CardView(value: $daysList[i][j], schedule: testSchedule, calendarVM:calendarVM, edit: $edit, getData: $getData, loginVM: loginVM, calendarListVM: calendarListVM) { selectedDateValue in
                             handleDateClick(dateValue: selectedDateValue)
                         }
                         
@@ -167,15 +169,10 @@ struct CalendarView: View {
             monthOffset = Int(month()) ?? 0
             currentDate = getCurrentMonth()
             daysList = extractDate()
-            dateValueVM.loadDataFromFirestore()
-        }
-        .onChange(of: monthOffset) { _ in
-            // updating Month...
-            print("onchange - monthoffset, \(monthOffset)")
-            currentDate = getCurrentMonth()
-            daysList = extractDate()
-            dateValueVM.loadDataFromFirestore()
-            for dv in dateValueVM.dateValues {
+            calendarVM.loadDataFromFirestore()
+            print("onappear - 캘린더뷰")
+            print("onappear \(loginVM.isManager)")
+            for dv in calendarVM.dateValues {
                 if currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
@@ -188,9 +185,29 @@ struct CalendarView: View {
                 }
             }
         }
-        .onChange(of:dateValueVM.dateValues) { _ in
-            print("onchange - dataValues , \(dateValueVM.dateValues.count)")
-            for dv in dateValueVM.dateValues {
+        .onChange(of: monthOffset) { _ in
+            // updating Month...
+            print("onchange - monthoffset, \(monthOffset)")
+            currentDate = getCurrentMonth()
+            daysList = extractDate()
+            calendarVM.loadDataFromFirestore()
+            for dv in calendarVM.dateValues {
+                if currentDate.month == dv.date.month {
+                    print("onchange - month : \(dv.date.month)")
+                    for i in daysList.indices {
+                        for j in daysList[i].indices {
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                                daysList[i][j] = dv
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        .onChange(of:calendarVM.dateValues) { _ in
+            print("onchange - dataValues , \(calendarVM.dateValues.count)")
+            for dv in calendarVM.dateValues {
                 if currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
@@ -339,7 +356,7 @@ struct CalendarView: View {
 struct CardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var dateValueVM: DateValueViewModel
+    @ObservedObject var calendarVM: CalendarViewModel
     @Binding var edit: Bool
     @Binding var getData: Bool
     @StateObject var loginVM: LoginViewModel
@@ -374,7 +391,7 @@ struct CardView: View {
                                         selectedDate()
                                         let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                         value.saveDateValueToFirestore(dateValue: value)
-                                        dateValueVM.removeDuplicateDay(dateValue: dateValue)
+                                        calendarVM.removeDuplicateDay(dateValue: dateValue)
                                     } else {
                                         onDateClick(value)
                                         print("\(value) 클릭")
@@ -407,7 +424,7 @@ struct CardView: View {
                                         selectedDate()
                                         let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                         value.saveDateValueToFirestore(dateValue: value)
-                                        dateValueVM.removeDuplicateDay(dateValue: dateValue)
+                                        calendarVM.removeDuplicateDay(dateValue: dateValue)
                                     } else {
                                         onDateClick(value)
                                         print("\(value) 클릭")

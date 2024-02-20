@@ -25,7 +25,7 @@ struct SininaCakeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ManagerOnlyView()
+            SplashView()
         }
     }
 }
