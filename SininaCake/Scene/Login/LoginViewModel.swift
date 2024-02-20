@@ -270,10 +270,10 @@ extension LoginViewModel {
     /// 카카오 로그아웃
     func handleKakaoLogout() {
         UserApi.shared.logout {(error) in
-            if let error = error {
-                print(error)
-            } else {
+            if error != nil {
                 print("logout() success.")
+            } else {
+                print(error)
             }
         }
         isLoggedin = false
@@ -282,11 +282,11 @@ extension LoginViewModel {
     /// 카카오 회원 탈퇴
     func handleKakaoUnlink() {
         UserApi.shared.unlink {(error) in
-            if let error = error {
-                print(error)
+            if error != nil {
+                print("unlink() success.")
             }
             else {
-                print("unlink() success.")
+                print(error)
             }
         }
         isLoggedin = false
@@ -308,10 +308,10 @@ extension LoginViewModel {
         let user = Auth.auth().currentUser
         
         user?.delete { error in
-            if let error = error {
-                // An error happened.
-            } else {
+            if error != nil {
                 // Account deleted.
+            } else {
+                // An error happened.
             }
         }
         isLoggedin = false

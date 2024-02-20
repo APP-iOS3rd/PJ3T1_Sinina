@@ -231,15 +231,15 @@ struct UnlinkButton: View {
 
                 }
                 let secondButton = Alert.Button.destructive(Text("로그아웃")) {
-                    loginVM.handleKakaoLogout()
-                    loginVM.handleFBAuthLogout()
-                    
-                    isNextScreenActive = true
-                    
                     loginVM.loginUserEmail = nil
                     loginVM.userName = nil
                     loginVM.imgURL = nil
                     appInfo.currentUser = nil
+                    
+                    loginVM.handleKakaoLogout()
+                    loginVM.handleFBAuthLogout()
+                    
+                    isNextScreenActive = true
                 }
                 return Alert(title: Text("로그아웃"),
                              message: Text("정말로 로그아웃 하시겠습니까?"),
@@ -259,12 +259,12 @@ struct UnlinkButton: View {
                     loginVM.handleKakaoUnlink()
                     loginVM.handleFBAuthUnlink()
                     
-                    isNextScreenActive = true
-                    
                     loginVM.loginUserEmail = nil
                     loginVM.userName = nil
                     loginVM.imgURL = nil
                     appInfo.currentUser = nil
+                    
+                    isNextScreenActive = true
                 }
                 return Alert(title: Text("회원탈퇴"),
                              message: Text("정말로 회원탈퇴 하시겠습니까?"),

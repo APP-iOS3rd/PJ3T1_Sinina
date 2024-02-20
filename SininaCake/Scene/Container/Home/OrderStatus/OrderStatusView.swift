@@ -128,10 +128,12 @@ struct DdayView: View {
     
     var titleAndColor: (String, UIColor, UIColor) {
         switch orderItem.status {
-        case .assign, .complete:
-            return (dateToDday(orderItem.date), .white, .customBlue)
         case .notAssign:
             return ("예약대기", .customDarkGray, .customGray)
+        case .assign:
+            return ("입금 대기중", .white, .customBlue)
+        case .complete:
+            return (dateToDday(orderItem.date), .white, .customBlue)
         }
     }
     
