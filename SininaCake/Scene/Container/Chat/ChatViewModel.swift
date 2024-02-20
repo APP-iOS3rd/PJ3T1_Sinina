@@ -195,6 +195,7 @@ class ChatViewModel: ObservableObject{
                         .document(updatedMessage.id)
                         .setData(["id": updatedMessage.id,
                                   "userEmail": updatedMessage.userEmail,
+                                  "text": updatedMessage.text,
                                   "timestamp": updatedMessage.timestamp,
                                   "imageURL": updatedMessage.imageURL])
                     

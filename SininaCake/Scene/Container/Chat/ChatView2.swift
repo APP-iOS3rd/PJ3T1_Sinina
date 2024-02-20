@@ -86,46 +86,51 @@ struct ChatView2: View {
         }
     }
     
-    
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
         HStack(spacing: 16) {
+            // 사진 버튼
             Button {
                 isImagePickerPresented.toggle()
                 
             } label: {
                 Image(systemName: "plus")
-                    .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : Color(.customBlue))
+                    .foregroundColor(Color(.customBlue))
                     .frame(width: 24, height: 24)
                     .padding(10)
-                    .background(isChatTextEmpty ? Color(.customGray) : .white)
+                    .background(.white)
                     .cornerRadius(45)
             }
-            .sheet(isPresented: $isImagePickerPresented){
+            .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(selectedImage: $selectedImage)
             }
             
-            if let selectedImage = selectedImage {
-                Image(uiImage: selectedImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 50)
-            } else {
-                ZStack {
-                    TextField("", text: $chatText)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(Color(.customLightGray))
-                        .cornerRadius(45)
-                        .onChange(of: chatText){ value in
-                            isChatTextEmpty = value.isEmpty
+            ZStack {
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+                        .onAppear(){
+                            isChatTextEmpty = false
                         }
+
+                } else {
+                        TextField("", text: $chatText)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color(.customLightGray))
+                            .cornerRadius(45)
+                            .onChange(of: chatText){ value in
+                                isChatTextEmpty = value.isEmpty
+                    }
                 }
             }
-            
+
             Button {
                 // 사진을 보낼 때
                 if let selectedImage = selectedImage {
+                
                     if let image = selectedImage.jpegData(compressionQuality: 1){
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
@@ -133,7 +138,7 @@ struct ChatView2: View {
                     }
                     self.selectedImage = nil
                     
-                    // text 전송
+                // text 전송
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
@@ -170,10 +175,8 @@ struct ChatView2: View {
                 AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 150, maxHeight: 150)
-                        .padding()
-                        .background(Color(.customBlue))
-                        .cornerRadius(30)
+                        .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
+                                            
                     
                 },
                            placeholder: {
@@ -207,6 +210,6 @@ struct ChatView2: View {
     }
 }
 
-//#Preview {
-//    ChatView2(loginUserEmail: "a@gmail.com", room: ChatRoom(userEmail: "a@gmail.com", id: "iDe7zgI8rZTbXKTSb7id"))
-//}
+#Preview {
+    ChatView2(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil))
+}
