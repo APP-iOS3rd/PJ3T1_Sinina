@@ -893,7 +893,7 @@
 		};
 		8E874BAA2B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4870342B83536600046089 /* ApiKeys.xcconfig */;
+			baseConfigurationReference = 38951A1BE2E0F9CD6200F179 /* Pods-SininaCake.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
