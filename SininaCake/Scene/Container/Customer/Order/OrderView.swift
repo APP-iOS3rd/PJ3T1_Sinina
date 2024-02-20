@@ -625,7 +625,7 @@ private struct BottomView: View {
                 CustomText(title: "\(orderVM.expectedPrice())원", textColor: .black, textWeight: .semibold, textSize: 18)
             }
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-
+          
                 CustomButton(action: {
 //                    defer {
                         clickedConfirm = true
@@ -685,7 +685,10 @@ extension View {
 
 extension UIApplication {
     func hideKeyboard() {
-        guard let window = windows.first else { return }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else {
+            return
+        }
         let tapRecognizer = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
         tapRecognizer.cancelsTouchesInView = false
         tapRecognizer.delegate = self
