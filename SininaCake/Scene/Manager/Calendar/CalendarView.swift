@@ -121,12 +121,6 @@ struct CalendarView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
-        .task {
-            // 로그인된 사용자의 이메일로 매니저 여부 확인
-            if let userEmail = Auth.auth().currentUser?.email {
-                await loginVM.checkManager(email: userEmail)
-            }
-        }
     }
     
     private var weekView: some View {
@@ -434,11 +428,6 @@ struct CardView: View {
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
-        .task {
-            if let userEmail = Auth.auth().currentUser?.email {
-                await loginVM.checkManager(email: userEmail)
-            }
-        }
     }
 }
 
