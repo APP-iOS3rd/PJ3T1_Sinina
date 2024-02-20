@@ -13,17 +13,17 @@ struct OrderListView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                ListView(orderData: orderListVM.notAssignOrderData, title: "미승인 주문 현황", titleColor: .customRed)
+                ListView(orderData: orderListVM.notAssignOrderData, title: "견적요청 현황", titleColor: .black)
                 
                 Spacer()
                     .frame(height: 28)
                 
-                ListView(orderData: orderListVM.assignOrderData, title: "승인 주문 현황", titleColor: .customBlue)
+                ListView(orderData: orderListVM.assignOrderData, title: "입금대기 주문 현황", titleColor: .customRed)
                 
                 Spacer()
                     .frame(height: 28)
                 
-                ListView(orderData: orderListVM.completeOrderData, title: "완료된 주문 현황", titleColor: .black)
+                ListView(orderData: orderListVM.completeOrderData, title: "진행중인 주문 현황", titleColor: .customBlue)
             }
             .navigationDestination(for: OrderItem.self) { item in
                 OrderDetailView(orderItem: item)
@@ -92,12 +92,12 @@ private struct CellView: View {
     var body: some View {
         var statusColor: UIColor {
             switch orderItem.status {
-            case .assign:
-                return .customBlue
             case .notAssign:
                 return .customGray
+            case .assign:
+                return .customRed
             case .complete:
-                return .black
+                return .customBlue
             }
         }
         
