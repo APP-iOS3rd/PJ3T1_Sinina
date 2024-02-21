@@ -131,25 +131,6 @@ struct CustomerCalendarView: View {
             }
         }
         .onDisappear()
-        .onAppear() {
-            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
-            print("onappear - 캘린더뷰")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
-        }
         .onChange(of: calendarVM.monthOffset) { _ in
             print("onchange - monthoffset, \(calendarVM.monthOffset)")
             calendarVM.currentDate = calendarVM.getCurrentMonth()
@@ -183,11 +164,35 @@ struct CustomerCalendarView: View {
                 }
             }
         }
-        .onChange(of: selectedDate) { newSelectedDate in
+        .onChange(of:selectedDate) { newSelectedDate in
+            print("onChange - newSelectedDate \(String(describing: newSelectedDate?.month))")
+            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            calendarVM.loadDataFromFirestore()
             if let newSelectedDate = newSelectedDate {
                 orderData.orderItem.date = newSelectedDate
             }
         }
+        .onAppear() {
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            calendarVM.loadDataFromFirestore()
+            print("onappear - 캘린더뷰")
+            for dv in calendarVM.dateValues {
+                if calendarVM.currentDate.month == dv.date.month {
+                    print("onchange - month : \(dv.date.month)")
+                    for i in daysList.indices {
+                        for j in daysList[i].indices {
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                                daysList[i][j] = dv
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
     }
     
     private var bookingView: some View {
@@ -235,6 +240,7 @@ struct CustomerCalendarView: View {
         let dateString = dateFormatter.string(from: dateValue.date)
         selectedTime = dateString
         print("Filtered Orders for \(dateString)")
+        
     }
 }
 
@@ -297,7 +303,14 @@ struct CustomerCardView: View {
                                 .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray)))
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                    onDateClick(value)
+                                    showAlert = true
+                                }
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text("error"),
+                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
+                                        dismissButton: .default(Text("확인"))
+                                    )
                                 }
                         }
                         else {
@@ -321,7 +334,7 @@ struct CustomerCardView: View {
 struct TimePickerView: View {
     @Binding var selectedDate: Date
     var body: some View {
-        DatePicker("", selection: $selectedDate, displayedComponents: [.date,.hourAndMinute])
+        DatePicker("", selection: $selectedDate, displayedComponents: [.hourAndMinute])
             .datePickerStyle(CompactDatePickerStyle())
             .labelsHidden()
             .clipped()
