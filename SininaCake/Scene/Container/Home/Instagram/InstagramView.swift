@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct InstagramView: View {
     @StateObject var instaAPI = InstagramAPI()
-    //private var instaData: [InstaData]
+    @State var isClicked = false
+    @State var imgUrl: String?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -24,7 +26,25 @@ struct InstagramView: View {
                                        height: UIScreen.UIHeight(185) * (750/601))
                                 .aspectRatio(1/1, contentMode: .fill)
                         }
-                        .frame(width: UIScreen.UIWidth(185), 
+                        .onTapGesture {
+                            imgUrl = data.mediaURL
+                            isClicked.toggle()
+                        }
+                        .fullScreenCover(isPresented: $isClicked, content: {
+                            VStack(alignment: .trailing) {
+                                Button(action: {
+                                    isClicked.toggle()
+                                }, label: {
+                                    Text("닫기")
+                                })
+                            
+                                KFImage(URL(string: imgUrl ?? data.mediaURL))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                        })
+                        .frame(width: UIScreen.UIWidth(185),
                                height: UIScreen.UIHeight(185))
                         .clipShape(.rect(cornerRadius: 12))
                     }

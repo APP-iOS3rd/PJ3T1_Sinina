@@ -99,6 +99,7 @@
 		9A27E6CE2B56B7F800E7E699 /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CD2B56B7F800E7E699 /* KakaoSDKCertCore */; };
 		9A27E6D02B56B7F800E7E699 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CF2B56B7F800E7E699 /* KakaoSDKCommon */; };
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
+		9A6C3D412B8520270034D44A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A6C3D402B8520270034D44A /* Kingfisher */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
 		9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA04FFC2B72110D004F671E /* ContainerView.swift */; };
@@ -223,6 +224,7 @@
 				23D682BE2B73878A00A2036A /* FirebaseDynamicLinks in Frameworks */,
 				23D682CE2B73878A00A2036A /* FirebaseInstallations in Frameworks */,
 				23D682C82B73878A00A2036A /* FirebaseFunctionsCombine-Community in Frameworks */,
+				9A6C3D412B8520270034D44A /* Kingfisher in Frameworks */,
 				23D682CC2B73878A00A2036A /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
 				E497138EE1DEF1C9FCAD9516 /* Pods_SininaCake.framework in Frameworks */,
 			);
@@ -593,6 +595,7 @@
 				23D682CF2B73878A00A2036A /* FirebaseMLModelDownloader */,
 				23D682D12B7389D000A2036A /* FirebaseMessaging */,
 				23D682D52B73AEB000A2036A /* FirebaseStorage */,
+				9A6C3D402B8520270034D44A /* Kingfisher */,
 			);
 			productName = SininaCake;
 			productReference = 8E874B9B2B00B37200ECEF08 /* SininaCake.app */;
@@ -626,6 +629,7 @@
 				9A27E6C62B56B7F800E7E699 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				9AEACEAC2B624EE400AE041F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				23D682A62B73878A00A2036A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9A6C3D3F2B8520270034D44A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 8E874B9C2B00B37200ECEF08 /* Products */;
 			projectDirPath = "";
@@ -1020,6 +1024,14 @@
 				minimumVersion = 2.20.0;
 			};
 		};
+		9A6C3D3F2B8520270034D44A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 		9AEACEAC2B624EE400AE041F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -1174,6 +1186,11 @@
 		9A35885F2B0227DB00501E60 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FirebaseAnalytics;
+		};
+		9A6C3D402B8520270034D44A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A6C3D3F2B8520270034D44A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		9AEACEAD2B624EE400AE041F /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
