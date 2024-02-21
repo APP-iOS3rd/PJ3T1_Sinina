@@ -84,4 +84,8 @@ class InstagramAPI: ObservableObject {
         }
         task.resume()
     }
+    
+    func gatherURLs() {
+        
+    }
 }

@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct InstagramView: View {
     @StateObject var instaAPI = InstagramAPI()
-    //private var instaData: [InstaData]
+    @State var isClicked = false
+    @State var imgUrl: String?
+    @State private var dragOffset: CGFloat = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -24,7 +27,37 @@ struct InstagramView: View {
                                        height: UIScreen.UIHeight(185) * (750/601))
                                 .aspectRatio(1/1, contentMode: .fill)
                         }
-                        .frame(width: UIScreen.UIWidth(185), 
+                        .onTapGesture {
+                            imgUrl = data.mediaURL
+                            isClicked.toggle()
+                        }
+                        .fullScreenCover(isPresented: $isClicked, content: {
+                            ZStack(alignment: .topTrailing) {
+                                KFImage(URL(string: imgUrl ?? data.mediaURL))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: .infinity)
+                                
+                                Button(action: {
+                                    isClicked.toggle()
+                                }, label: {
+                                    Image(systemName: "x.circle")
+                                        .resizable()
+                                        .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                        .foregroundStyle(.red)
+                                })
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .padding(8)
+                            }
+                            .gesture(DragGesture(minimumDistance: 20)
+                                .onEnded({ value in
+                                    if value.translation.height > 100 {
+                                        isClicked.toggle()
+                                    }
+                                })
+                            )
+                        })
+                        .frame(width: UIScreen.UIWidth(185),
                                height: UIScreen.UIHeight(185))
                         .clipShape(.rect(cornerRadius: 12))
                     }
