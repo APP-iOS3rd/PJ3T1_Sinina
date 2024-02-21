@@ -29,7 +29,6 @@ struct OrderView: View {
                     
                     OrderIcePackView(orderData: OrderVM)
                     
-                    
                     OrderCommentView(orderData: OrderVM)
                 }
             }
@@ -59,7 +58,7 @@ struct infoView: View {
         VStack(alignment:.leading){
             CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
                 .kerning(0.45)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
             
             
             
@@ -67,7 +66,7 @@ struct infoView: View {
                 .textFieldStyle(.plain)
                 .font(.custom("Pretendard", fixedSize: 16))
                 .fontWeight(.regular)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
                 .submitLabel(.done)
                 .scaledToFit()
                 .minimumScaleFactor(0.2)
@@ -78,12 +77,12 @@ struct infoView: View {
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                .padding(.leading, 24)
-                .padding(.bottom, 36)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                .padding(.bottom, (UIScreen.main.bounds.height) * 36/932)
             
             /// 휴대폰 번호
             CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
             
             
             
@@ -94,7 +93,7 @@ struct infoView: View {
                 .submitLabel(.done)
                 .keyboardType(.numberPad)
                 .limitText($orderData.orderItem.phoneNumber, to: 11)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
                 .kerning(0.5)
                 .scaledToFit()
                 .minimumScaleFactor(0.2)
@@ -103,8 +102,9 @@ struct infoView: View {
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                .padding(.leading, 24)
-                .padding(.bottom, 36)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                .padding(.bottom, (UIScreen.main.bounds.height) * 36/932)
+            
         }
     }
 }
@@ -151,7 +151,9 @@ struct OrderCalendarView:View {
                     orderData.orderItem.date = calendar.date(bySettingHour: 11, minute: 30, second: 0, of: value) ?? Date()
                 } else if hour > 19 || (hour == 19 && minute > 30) {
                     orderData.orderItem.date = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: value) ?? Date()
-                } else if minute % 30 != 0 {
+                } else if minute % 30 == 0 {
+                    orderData.orderItem.date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: value) ?? Date()
+                }else if minute % 30 != 0 {
                     let roundedMinute = (minute / 30) * 30 + (minute % 30 > 15 ? 30 : 0)
                     orderData.orderItem.date = calendar.date(bySettingHour: hour, minute: roundedMinute, second: 0, of: value) ?? Date()
                 }
@@ -187,7 +189,6 @@ struct OrderCakeView: View {
         OrderCakeViewModel(title: "2호", sideTitle: "4~6인분", bottomTitle: "원형 지름 기준 18Cm", sizePricel: "55,000원", isOn: false),
         OrderCakeViewModel(title: "3호", sideTitle: "6~8인분", bottomTitle: "원형 지름 기준 21Cm", sizePricel: "65,000원", isOn: false)
     ]
-    
     
     
     var body: some View {
@@ -402,8 +403,6 @@ struct OrderCreamView: View {
 }
 
 
-
-
 // MARK: - OrderTextView
 
 struct OrderTextView: View {
@@ -560,6 +559,7 @@ struct OrderIcePackView: View {
                         .background(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
+                                .background(disableSelection(for: index) ? Color(UIColor.textFieldColor) : .white)
                         )
                     })
                     .padding(.bottom, 7)
@@ -601,8 +601,6 @@ struct OrderIcePackView: View {
 }
 
 
-
-
 // MARK: - OrderCommentView
 struct OrderCommentView: View {
     @ObservedObject var orderData: OrderViewModel
@@ -640,26 +638,26 @@ private struct BottomView: View {
                 CustomText(title: "\(orderVM.expectedPrice())원", textColor: .black, textWeight: .semibold, textSize: 18)
             }
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-          
-                CustomButton(action: {
-//                    defer {
-                        clickedConfirm = true
-//                    };
-                    for i in 0...photoVM.selectedImages.count - 1 {
-                        photoVM.uploadPhoto(i, orderVM.orderItem.id);
-                        orderVM.imgURL(i)
-                    };
-                    orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
-                    orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
-                             title: "예약하기",
-                             titleColor: .white,
-                             backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
-                             leading: 110, trailing: 24)
-                .kerning(0.45)
-                .padding(.vertical, 12)
-                .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
-                .navigationDestination(isPresented: $clickedConfirm, destination: {
-                    UserConfirmOrderDetailView(orderVM: orderVM, photoVM: photoVM)})
+            
+            CustomButton(action: {
+                //                    defer {
+                clickedConfirm = true
+                //                    };
+                for i in 0...photoVM.selectedImages.count - 1 {
+                    photoVM.uploadPhoto(i, orderVM.orderItem.id);
+                    orderVM.imgURL(i)
+                };
+                orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
+                orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
+                         title: "예약하기",
+                         titleColor: .white,
+                         backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
+                         leading: 110, trailing: 24)
+            .kerning(0.45)
+            .padding(.vertical, 12)
+            .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
+            .navigationDestination(isPresented: $clickedConfirm, destination: {
+                UserConfirmOrderDetailView(orderVM: orderVM, photoVM: photoVM)})
         }
     }
 }
