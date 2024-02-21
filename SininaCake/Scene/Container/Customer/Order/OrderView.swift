@@ -30,7 +30,6 @@ struct OrderView: View {
                     
                     OrderIcePackView(orderData: OrderVM)
                     
-                    
                     OrderCommentView(orderData: OrderVM)
                 }
             }
@@ -60,14 +59,18 @@ struct infoView: View {
         VStack(alignment:.leading){
             CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
                 .kerning(0.45)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
             
             
             
             TextField("ex) 시니나...", text: $orderData.orderItem.name)
                 .textFieldStyle(.plain)
-                .padding(.leading, 24)
+                .font(.custom("Pretendard", fixedSize: 16))
+                .fontWeight(.regular)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
                 .submitLabel(.done)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
             
             
             
@@ -75,29 +78,34 @@ struct infoView: View {
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                .padding(.leading, 24)
-                .padding(.bottom, 36)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                .padding(.bottom, (UIScreen.main.bounds.height) * 36/932)
             
             /// 휴대폰 번호
             CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
             
             
             
             TextField("010 -", text: $orderData.orderItem.phoneNumber)
                 .textFieldStyle(.plain)
+                .font(.custom("Pretendard", fixedSize: 16))
+                .fontWeight(.regular)
                 .submitLabel(.done)
                 .keyboardType(.numberPad)
                 .limitText($orderData.orderItem.phoneNumber, to: 11)
-                .padding(.leading, 24)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
                 .kerning(0.5)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
             
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 1/932)
                 .background(Color(red: 0.95, green: 0.95, blue: 0.95))
-                .padding(.leading, 24)
-                .padding(.bottom, 36)
+                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                .padding(.bottom, (UIScreen.main.bounds.height) * 36/932)
+            
         }
     }
 }
@@ -132,6 +140,8 @@ struct OrderCalendarView:View {
                 displayedComponents: [.date, .hourAndMinute]
             )
             .datePickerStyle(.graphical)
+            .font(.custom("Pretendard", fixedSize: 16))
+            .fontWeight(.regular)
             .onChange(of: orderData.orderItem.date, perform: { value in
                 let calendar = Calendar.current
                 let day = calendar.component(.weekday, from: value)
@@ -142,7 +152,9 @@ struct OrderCalendarView:View {
                     orderData.orderItem.date = calendar.date(bySettingHour: 11, minute: 30, second: 0, of: value) ?? Date()
                 } else if hour > 19 || (hour == 19 && minute > 30) {
                     orderData.orderItem.date = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: value) ?? Date()
-                } else if minute % 30 != 0 {
+                } else if minute % 30 == 0 {
+                    orderData.orderItem.date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: value) ?? Date()
+                }else if minute % 30 != 0 {
                     let roundedMinute = (minute / 30) * 30 + (minute % 30 > 15 ? 30 : 0)
                     orderData.orderItem.date = calendar.date(bySettingHour: hour, minute: roundedMinute, second: 0, of: value) ?? Date()
                 }
@@ -154,10 +166,10 @@ struct OrderCalendarView:View {
             .accentColor(Color(UIColor.customBlue))
             .padding(.bottom,(UIScreen.main.bounds.height) * 12/932 )
             
-            CustomText(title: "*매주 일,월 정기휴무 입니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+            CustomText(title: "*매주 일,월 정기휴무 입니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                 .padding(.leading,(UIScreen.main.bounds.width) * 24/430 )
-            CustomText(title: "*정해진 픽업 시간을 꼭 지켜주세요, 픽업 당일 시간 변경은 불가합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
-                .padding(.leading,(UIScreen.main.bounds.width) * 24/430 )
+            CustomText(title: "*정해진 픽업 시간을 꼭 지켜주세요, 픽업 당일 시간 변경은 불가합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
+                .padding(.horizontal,(UIScreen.main.bounds.width) * 24/430 )
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
         }
     }
@@ -178,7 +190,6 @@ struct OrderCakeView: View {
         OrderCakeViewModel(title: "2호", sideTitle: "4~6인분", bottomTitle: "원형 지름 기준 18Cm", sizePricel: "55,000원", isOn: false),
         OrderCakeViewModel(title: "3호", sideTitle: "6~8인분", bottomTitle: "원형 지름 기준 21Cm", sizePricel: "65,000원", isOn: false)
     ]
-    
     
     
     var body: some View {
@@ -211,7 +222,7 @@ struct OrderCakeView: View {
                             Spacer()
                             
                             CustomText(title: orderCakeModel[index].sizePricel, textColor: .black, textWeight: .regular, textSize: 18)
-                                .padding(.trailing,(UIScreen.main.bounds.height) * 28/430)
+                                .padding(.trailing,(UIScreen.main.bounds.width) * 28/430)
                         }
                         .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 90/932)
                         .background(
@@ -224,10 +235,11 @@ struct OrderCakeView: View {
                 }
             }
             VStack(alignment: .leading){
-                CustomText(title: "*디자인/그림/제작 난이도에 따라 추가 금액이 발생할 수 있습니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+                CustomText(title: "*디자인/그림/제작 난이도에 따라 추가 금액이 발생할 수 있습니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                     .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
             }
         }
+        .padding(.horizontal,(UIScreen.main.bounds.width) * 24/430)
     }
     private func updateSelection(index: Int) {
         for i in 0..<orderCakeModel.count {
@@ -373,9 +385,9 @@ struct OrderCreamView: View {
                 .padding(.horizontal, (UIScreen.main.bounds.width) * 24/430)
             }
             VStack(alignment: .leading){
-                CustomText(title: "*겉크림은 크림치즈생크림으로 만들어집니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+                CustomText(title: "*겉크림은 크림치즈생크림으로 만들어집니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                 
-                CustomText(title: "*생크림은 100% 동물성 크림만 사용합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 14)
+                CustomText(title: "*생크림은 100% 동물성 크림만 사용합니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
             }
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
             .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
@@ -392,8 +404,6 @@ struct OrderCreamView: View {
 }
 
 
-
-
 // MARK: - OrderTextView
 
 struct OrderTextView: View {
@@ -408,6 +418,8 @@ struct OrderTextView: View {
                                                  height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
                 .padding(.bottom,(UIScreen.main.bounds.height) * 42/932)
                 .onAppear(perform : UIApplication.shared.hideKeyboard)
         }
@@ -548,6 +560,7 @@ struct OrderIcePackView: View {
                         .background(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
+                                .background(disableSelection(for: index) ? Color(UIColor.textFieldColor) : .white)
                         )
                     })
                     .padding(.bottom, 7)
@@ -589,8 +602,6 @@ struct OrderIcePackView: View {
 }
 
 
-
-
 // MARK: - OrderCommentView
 struct OrderCommentView: View {
     @ObservedObject var orderData: OrderViewModel
@@ -604,6 +615,8 @@ struct OrderCommentView: View {
                 .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430, height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
+                .scaledToFit()
+                .minimumScaleFactor(0.2)
                 .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
                 .onAppear(perform : UIApplication.shared.hideKeyboard)
         }
@@ -626,26 +639,26 @@ private struct BottomView: View {
                 CustomText(title: "\(orderVM.expectedPrice())원", textColor: .black, textWeight: .semibold, textSize: 18)
             }
             .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-
-                CustomButton(action: {
-                    defer {
-                        clickedConfirm = true
-                    };
-                    for i in 0...photoVM.selectedImages.count - 1 {
-                        photoVM.uploadPhoto(i, orderVM.orderItem.id);
-                        orderVM.imgURL(i)
-                    };
-                    orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
-                    orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
-                             title: "예약하기",
-                             titleColor: .white,
-                             backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
-                             leading: 110, trailing: 24)
-                .kerning(0.45)
-                .padding(.vertical, 12)
-                .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
-                .navigationDestination(isPresented: $clickedConfirm, destination: {
-                    UserConfirmOrderDetailView(orderVM: orderVM, photoVM: photoVM)})
+            
+            CustomButton(action: {
+                //                    defer {
+                clickedConfirm = true
+                //                    };
+                for i in 0...photoVM.selectedImages.count - 1 {
+                    photoVM.uploadPhoto(i, orderVM.orderItem.id);
+                    orderVM.imgURL(i)
+                };
+                orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
+                orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
+                         title: "예약하기",
+                         titleColor: .white,
+                         backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
+                         leading: 110, trailing: 24)
+            .kerning(0.45)
+            .padding(.vertical, 12)
+            .disabled(!orderVM.isallcheck() || photoVM.selectedImages.isEmpty)
+            .navigationDestination(isPresented: $clickedConfirm, destination: {
+                UserConfirmOrderDetailView(orderVM: orderVM, photoVM: photoVM)})
         }
     }
 }
@@ -686,7 +699,10 @@ extension View {
 
 extension UIApplication {
     func hideKeyboard() {
-        guard let window = windows.first else { return }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else {
+            return
+        }
         let tapRecognizer = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
         tapRecognizer.cancelsTouchesInView = false
         tapRecognizer.delegate = self

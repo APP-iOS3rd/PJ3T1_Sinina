@@ -19,12 +19,12 @@ struct OrderDetailView: View {
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
-        case .assign:
-            return ("승인 주문건 현황", .customBlue, "VectorTrue")
         case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "VectorFalse")
+            return ("견적서", .customGray, "VectorFalse")
+        case .assign:
+            return ("입금 대기중", .customRed, "VectorRed")
         case .complete:
-            return ("완료 주문건 현황", .black, "VectorTrue")
+            return ("주문 확정 및 제작중", .customBlue, "VectorTrue")
         }
     }
     
@@ -398,19 +398,20 @@ struct BottomButton: View {
     @Binding var toggle: Bool
     @Binding var totalPrice: String
     @ObservedObject var fcmAPI: FCMServerAPI
+    let account: String = "신한 110 544 626471"
     
     var buttonStyle: (String, UIColor) {
         switch orderItem.status {
         case .notAssign:
             if toggle {
-                return ("승인하기", .customGray)
+                return ("입금 요청", .customGray)
             } else {
-                return ("승인하기", .customBlue)
+                return ("입금 요청", .customBlue)
             }
         case .assign:
-            return ("제작완료", .customBlue)
+            return ("입금 확인 / 예약 확정", .customBlue)
         case .complete:
-            return ("", .black)
+            return ("픽업 완료", .black)
         }
     }
     
@@ -426,11 +427,11 @@ struct BottomButton: View {
     var messageText: String {
         switch orderItem.status {
         case .notAssign:
-            return "주문 예약이 완료되었습니다. 총 확정금액은 \(totalPrice)입니다!"
+            return "금액이 확정되었습니다! \(account)로 \(totalPrice)원 보내주시면 예약 확정됩니다!😄"
         case .assign:
-            return "제작이 완료되었습니다. \(orderItem.date.dateToString()) \(orderItem.date.dateToTime())까지 시니나케이크로 와주세요!"
-        default:
-            return ""
+            return "예약이 확정되었습니다! \(orderItem.date.dateToString()) \(orderItem.date.dateToTime())까지 시니나케이크로 와주세요!"
+        case .complete:
+            return "감사합니다. 픽업이 완료되었습니다! 다음에 또 이용해주세요🥰"
         }
     }
 
@@ -438,11 +439,14 @@ struct BottomButton: View {
         CustomButton(action: {
             fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: messageText)
             
-            if orderItem.status == .notAssign {
+            switch orderItem.status {
+            case .notAssign:
                 orderDetailVM.updateStatus(orderItem: orderItem)
                 orderDetailVM.updatePrice(orderItem: orderItem, stringToInt(totalPrice))
-            } else {
+            case .assign:
                 orderDetailVM.updateStatus(orderItem: orderItem)
+            // TODO: - 완료 로직 추가
+            case .complete: break
             }
             
             presentationMode.wrappedValue.dismiss()

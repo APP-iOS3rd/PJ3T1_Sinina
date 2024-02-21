@@ -12,6 +12,7 @@ struct UserConfirmOrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var orderVM: OrderViewModel
     @ObservedObject var photoVM: PhotoPickerViewModel
+    @State private var showNavManager = false
     
     var statusTitle: (String, UIColor, String) {
         switch orderVM.orderItem.status {
@@ -68,8 +69,11 @@ struct UserConfirmOrderDetailView: View {
                 
                 CustomButton(action: {
                     orderVM.addOrderItem()
-                    
+                    showNavManager = true
                 }, title: "주문서 보내기", titleColor: .white, backgroundColor: .customBlue, leading: 12, trailing: 12)
+                .fullScreenCover(isPresented: $showNavManager) {
+                    ContainerView()
+                }
             }
         }
         .navigationBarBackButtonHidden()
