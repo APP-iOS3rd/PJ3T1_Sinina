@@ -8,7 +8,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
  //날짜 칸 표시를 위한 일자 정보
-struct DateValue: Identifiable, Codable, Comparable {
+struct DateValue: Identifiable,Decodable, Comparable {
     @DocumentID var id: String?
     var day: Int
     var date: Date
@@ -25,6 +25,23 @@ struct DateValue: Identifiable, Codable, Comparable {
         } else {
             isSelected = true
         }
+    }
+    
+    enum dateColor {
+        case open
+        case close
+        case notAssignButOpen
+        
+        var color: Color {
+                switch self {
+                case .open:
+                    return Color(UIColor.customBlue)
+                case .close:
+                    return Color(UIColor.customDarkGray)
+                case .notAssignButOpen:
+                    return Color(UIColor.customRed)
+                }
+            }
     }
 
     static func < (lhs: DateValue, rhs: DateValue) -> Bool {
@@ -168,12 +185,22 @@ extension DateValue {
 }
 
 
-class CalendarViewModel: ObservableObject {
+class ManagerCalendarViewModel: ObservableObject {
+    
     @Published var dateValues: [DateValue] = []
+    @Published var currentDate = Date()
+    @Published var monthOffset = 0
+    
     private var listener: ListenerRegistration?
     
     init() {
         observeFirestoreChanges()
+    }
+    
+    func convert(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: date)
     }
     
     func observeFirestoreChanges() {
@@ -291,8 +318,86 @@ class CalendarViewModel: ObservableObject {
         }
     }
     
+    //현재 날짜 년도
+    func year() -> String {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "YYYY"
+        
+        return formatter.string(from: currentDate)
+    }
+    
+    //현재 날짜 월
+    func month() -> String {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "MMMM"
+        
+        return formatter.string(from: currentDate)
+    }
+    
+    // 현재 월 로드, monthOffset 값에 변경이 있을 경우 해당 월 로드
+    func getCurrentMonth() -> Date {
+        let calendar = Calendar.current
+        
+        guard let currentMonth = calendar.date(byAdding: .month, value: self.monthOffset, to: Date()) else {
+            return Date()
+        }
+        return currentMonth
+    }
+    //현재 월의 일수 로드 (달력 남은 공간을 채우기 위한 이전달 및 다음달 일수 포함)
+    func extractDate() -> [[DateValue]] {
+        let calendar = Calendar.current
+        
+        let currentMonth = getCurrentMonth()
+        
+        var days = currentMonth.getAllDates().compactMap { date -> DateValue in
+            
+            let day = calendar.component(.day, from: date)
+            
+            return DateValue(day: day, date: date)
+        }
+        //이전달 일수로 남은 공간 채우기
+        let firstWeekDay = calendar.component(.weekday, from: days.first?.date ?? Date())
+        
+        let prevMonthDate = calendar.date(byAdding: .month, value: -1, to: days.first?.date ?? Date())
+        
+        let prevMonthLastDay = prevMonthDate?.getLastDayInMonth() ?? 0
+        
+        for i in 0..<firstWeekDay - 1 {
+            days.insert(DateValue(day: prevMonthLastDay - i, date: calendar.date(byAdding: .day, value: -1, to: days.first?.date ?? Date()) ?? Date(), isNotCurrentMonth: true), at: 0)
+        }
+        //다음달 일수로 남은 공간 채우기
+        let lastWeekDay = calendar.component(.weekday, from: days.last?.date ?? Date())
+        
+        let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: days.first?.date ?? Date())
+        
+        let nextMonthFirstDay = nextMonthDate?.getFirstDayInMonth() ?? 0
+        
+        for i in 0..<7 - lastWeekDay {
+            days.append(DateValue(day: nextMonthFirstDay + i, date: calendar.date(byAdding: .day, value: 1, to: days.last?.date ?? Date()) ?? Date(), isNotCurrentMonth: true))
+        }
+        
+        //달력과 같은 배치의 이차원 배열로 변환하여 리턴
+        var result = [[DateValue]]()
+        
+        days.forEach {
+            if result.isEmpty || result.last?.count == 7 {
+                result.append([$0])
+            } else {
+                result[result.count - 1].append($0)
+            }
+        }
+        return result
+    }
+
     deinit {
         listener?.remove()
     }
+    
+    
+    
 }
 

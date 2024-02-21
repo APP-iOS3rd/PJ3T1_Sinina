@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CalendarListView: View {
-    @StateObject var calendarListVM = CalendarListViewModel()
+struct ManagerCalendarListView: View {
+    @StateObject var calendarListVM = ManagerCalendarListViewModel()
     
     var body: some View {
         ScrollView {
@@ -159,5 +159,5 @@ private func intToString(_ price: Int) -> String {
 }
 
 #Preview {
-    CalendarListView()
+    ManagerCalendarListView()
 }
