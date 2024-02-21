@@ -255,9 +255,11 @@ extension LoginViewModel {
         let userName = user.displayName ?? ""
         
         // TODO: - 함수로 축약
-        self.loginUserEmail = email
-        self.imgURL = imgURL
-        self.userName = userName
+        DispatchQueue.main.async {
+            self.loginUserEmail = email
+            self.imgURL = imgURL
+            self.userName = userName
+        }
         
         self.storeUserInfo(email: email,
                            imgURL: imgURL,
