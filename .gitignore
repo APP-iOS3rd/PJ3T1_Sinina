@@ -107,7 +107,15 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
+## .DS_Store ##
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
 ## API Key ##
 GoogleService-Info.plist
+ApiKeys.plist
+ApiKeys.xcconfig
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,cocoapods

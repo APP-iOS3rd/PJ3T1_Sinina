@@ -26,17 +26,19 @@ struct CustomButton: View {
     }
     
     var body: some View {
-        HStack {
+        Button(action: action, label: {
             Spacer()
-            Button(action: action, label: {
-                CustomText(title: title, textColor: titleColor, textWeight: .semibold, textSize: 18)
-            })
-            .frame(minHeight: 55)
+            CustomText(title: title, textColor: titleColor, textWeight: .semibold, textSize: 18)
+                .frame(minHeight: 55)
             Spacer()
-        }
+        })
         .background(Color(backgroundColor))
-        .cornerRadius(12)
+        .cornerRadius(27.5)
         .padding(.leading, leading)
         .padding(.trailing, trailing)
     }
+}
+
+#Preview {
+    CustomButton(action: {}, title: "123", titleColor: UIColor.white, backgroundColor: UIColor.black, leading: 12, trailing: 12)
 }

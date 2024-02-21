@@ -23,8 +23,10 @@ struct CustomText: View {
     
     var body: some View {
         Text(title)
-            .font(.custom("Pretendard", size: textSize))
+            .font(.custom("Pretendard", fixedSize: textSize))
             .fontWeight(textWeight)
             .foregroundStyle(Color(textColor))
+            .scaledToFit()
+            .minimumScaleFactor(0.2)
     }
 }

@@ -18,11 +18,35 @@ extension UIColor {
         alpha: 1.0
     )
     
+    // hexcode: f2f3f3
+    static let customLightGray = UIColor(
+        red: 0.95,
+        green: 0.95,
+        blue: 0.95,
+        alpha: 1.0
+    )
+    
     // hexcode: dddddd
     static let customGray = UIColor(
         red: 0.87,
         green: 0.87,
         blue: 0.87,
+        alpha: 1.0
+    )
+    
+    // hexcode: 999999
+    static let customDarkGray = UIColor(
+        red: 0.6,
+        green: 0.6,
+        blue: 0.6,
+        alpha: 1.0
+    )
+    
+    // hexcode: FF4444
+    static let customRed = UIColor(
+        red: 1.0,
+        green: 0.27,
+        blue: 0.27,
         alpha: 1.0
     )
     

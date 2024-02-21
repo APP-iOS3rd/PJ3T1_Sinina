@@ -2,6 +2,48 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakao${KAKAO_NATIVE_APP_KEY}</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.196495081616-687qiq8b0cf4eik7b0op852gj95qj7c1</string>
+			</array>
+		</dict>
+	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>INSTAGRAM_API_KEY</key>
+	<string>$(INSTAGRAM_API_KEY)</string>
+	<key>KAKAO_NATIVE_APP_KEY</key>
+	<string>$(KAKAO_NATIVE_APP_KEY)</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>$(REVERSED_CLIENT_ID)</string>
+	<key>FCM_SERVER_KEY</key>
+	<string>$(FCM_SERVER_KEY)</string>
+	<key>NMFClientId</key>
+	<string>$(NMFClientId)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+		<string>kakaoplus</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Black.otf</string>
@@ -14,5 +56,17 @@
 		<string>Pretendard-SmiBold.otf</string>
 		<string>Pretendard-Thin.otf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>위치정보 권한이 필요합니다. (항상 or 앱을 사용하는 동안 위치정보를 수신합니다.)</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>위치정보 권한이 필요합니다. (항상 위치정보를 수신합니다.)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>위치정보 권한이 필요합니다. (앱을 사용하는 동안에만 위치정보를 수신합니다.)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
