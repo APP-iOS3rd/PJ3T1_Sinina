@@ -139,23 +139,21 @@ extension LoginViewModel {
     /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+            UserApi.shared.loginWithKakaoTalk {[weak self] (oauthToken, error) in
                 if let error = error {
                     print(error)
-                } else {
+                } else if let self = self {
                     print("loginWithKakaoTalk() success.")
                     self.getKakaoUserInfo()
-                    self.isLoggedin = true
                 }
             }
         } else {
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+            UserApi.shared.loginWithKakaoAccount {[weak self] (oauthToken, error) in
                 if let error = error {
                     print(error)
-                } else {
+                } else if let self = self {
                     print("loginWithKakaoAccount() success.")
                     self.getKakaoUserInfo()
-                    self.isLoggedin = true
                 }
             }
         }
@@ -164,7 +162,7 @@ extension LoginViewModel {
     func getKakaoUserInfo() {
         UserApi.shared.me() {(user, error) in
             if let error = error {
-                print(error)
+                print("Kakao Login Error: \(error.localizedDescription)")
             }
             else {
                 print("me() success.")
@@ -240,6 +238,10 @@ extension LoginViewModel {
                 "imgURL": imgURL,
                 "deviceToken": deviceToken
             ], merge: true)
+            
+            DispatchQueue.main.async {
+                self.isLoggedin = true
+            }
             print("Document successfully written!")
         } catch {
             print("Error writing document: \(error)")
