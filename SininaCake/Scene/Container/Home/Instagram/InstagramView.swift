@@ -11,7 +11,7 @@ import Kingfisher
 struct InstagramView: View {
     @StateObject var instaAPI = InstagramAPI()
     @State var isClicked = false
-    @State var imgUrl: String?
+    @State var imgUrl: String = ""
     @State private var dragOffset: CGFloat = 0
     
     var body: some View {
@@ -28,12 +28,19 @@ struct InstagramView: View {
                                 .aspectRatio(1/1, contentMode: .fill)
                         }
                         .onTapGesture {
-                            imgUrl = data.mediaURL
-                            isClicked.toggle()
+                            KingfisherManager.shared.retrieveImage(with: URL(string: data.mediaURL)!) { result in
+                                switch result {
+                                case .success(let value):
+                                    imgUrl = value.source.url?.absoluteString ?? ""
+                                    isClicked.toggle()
+                                case .failure:
+                                    break
+                                }
+                            }
                         }
                         .fullScreenCover(isPresented: $isClicked, content: {
                             ZStack(alignment: .topTrailing) {
-                                KFImage(URL(string: imgUrl ?? data.mediaURL))
+                                KFImage(URL(string: imgUrl))
                                     .resizable()
                                     .scaledToFit()
                                     .frame(maxWidth: .infinity)
