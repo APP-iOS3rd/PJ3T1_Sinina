@@ -184,8 +184,12 @@ struct CustomerChatView: View {
                 })
                 
             } else {
-                CustomText(title: message.text ?? "", textColor: .white, textWeight: .regular, textSize: 16)
+                Text("\(message.text ?? "")")
                     .padding()
+                    .frame(idealWidth: 300)
+                    .font(.custom("Pretendard", fixedSize: 16))
+                    .fontWeight(.regular)
+                    .foregroundStyle(.white)
                     .background(Color(.customBlue))
                     .cornerRadius(30)
             }
@@ -208,8 +212,12 @@ struct CustomerChatView: View {
                 })
                 
             } else {
-                CustomText(title: message.text ?? "", textColor: .black, textWeight: .regular, textSize: 16)
+                Text("\(message.text ?? "")")
                     .padding()
+                    .frame(idealWidth: 300)
+                    .font(.custom("Pretendard", fixedSize: 16))
+                    .fontWeight(.regular)
+                    .foregroundStyle(.black)
                     .background(Color(.customLightGray))
                     .cornerRadius(30)
             }
