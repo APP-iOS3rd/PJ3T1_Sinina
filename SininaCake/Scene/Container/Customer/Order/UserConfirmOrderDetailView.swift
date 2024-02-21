@@ -62,7 +62,7 @@ struct UserConfirmOrderDetailView: View {
                 
                 DividerView()
                 
-                UserPriceView(orderItem: $orderVM.orderItem)
+                DetailPriceView(orderItem: $orderVM.orderItem)
                 
                 Spacer()
                     .frame(height: 18)
@@ -86,6 +86,31 @@ struct UserConfirmOrderDetailView: View {
                 })
             }
         }
+    }
+}
+
+struct DetailPriceView: View {
+    @Binding var orderItem: OrderItem
+    
+    var priceText: (String, String) {
+        switch orderItem.status {
+        case .notAssign:
+            return ("총 예상금액", intToString(orderItem.expectedPrice))
+        case .assign, .complete:
+            return ("총 확정금액", intToString(orderItem.confirmedPrice))
+        }
+    }
+    
+    var body: some View {
+        HStack {
+            CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+            Spacer()
+                .frame(width: 45)
+            CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
+            Spacer()
+        }
+        .padding(.leading, 24)
+        .padding(.trailing, 24)
     }
 }
 

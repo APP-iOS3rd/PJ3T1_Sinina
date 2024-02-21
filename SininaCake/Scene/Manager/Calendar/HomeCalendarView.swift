@@ -43,7 +43,6 @@ struct HomeCalendarView: View {
     private var headerView: some View {
         HStack {
             Spacer()
-            Spacer()
             
             Button {
                 calendarVM.monthOffset -= 1
@@ -68,7 +67,6 @@ struct HomeCalendarView: View {
             }
             .offset(x: 5)
             
-            Spacer()
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

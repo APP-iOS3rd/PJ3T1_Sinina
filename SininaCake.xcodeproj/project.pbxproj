@@ -47,6 +47,7 @@
 		3BD583C12B831A3A00861F92 /* ManagerCalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD583C02B831A3A00861F92 /* ManagerCalendarListViewModel.swift */; };
 		3BD583C32B831B1900861F92 /* ManagerCalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD583C22B831B1900861F92 /* ManagerCalendarListView.swift */; };
 		8E1C76552B7DE1A400C70E2B /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */; };
+		8E2C66982B863F4500893EAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E2C66972B863F4500893EAE /* GoogleService-Info.plist */; };
 		8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */; };
 		8E874BAD2B00B40D00ECEF08 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BAC2B00B40D00ECEF08 /* LoginView.swift */; };
 		8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E874BB32B00B58E00ECEF08 /* CautionView.swift */; };
@@ -129,6 +130,7 @@
 		3BD583C22B831B1900861F92 /* ManagerCalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerCalendarListView.swift; sourceTree = "<group>"; };
 		3C590E23B9C464F7336838CC /* Pods-SininaCake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.release.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.release.xcconfig"; sourceTree = "<group>"; };
 		8E1C76542B7DE1A400C70E2B /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
+		8E2C66972B863F4500893EAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E874B9B2B00B37200ECEF08 /* SininaCake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SininaCake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SininaCakeApp.swift; sourceTree = "<group>"; };
 		8E874BAC2B00B40D00ECEF08 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -261,7 +263,6 @@
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
 				3B4870342B83536600046089 /* ApiKeys.xcconfig */,
-				9AC02F802B8636360010716F /* GoogleService-Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
@@ -642,7 +643,6 @@
 				8ECB21AB2B1DC00A003BF8B0 /* Pretendard-ExtraLight.otf in Resources */,
 				8ECB21AF2B1DC00A003BF8B0 /* Pretendard-Bold.otf in Resources */,
 				8ECB21AC2B1DC00A003BF8B0 /* Pretendard-ExtraBold.otf in Resources */,
-				9AC02F812B8636370010716F /* GoogleService-Info.plist in Resources */,
 				9AC122FD2B73C6C600DC9A42 /* Assets.xcassets in Resources */,
 				8ECB21B12B1DC00A003BF8B0 /* Pretendard-Light.otf in Resources */,
 				8ECB21AE2B1DC00A003BF8B0 /* Pretendard-Thin.otf in Resources */,
@@ -934,7 +934,7 @@
 		};
 		8E874BAB2B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4870342B83536600046089 /* ApiKeys.xcconfig */;
+			baseConfigurationReference = 3C590E23B9C464F7336838CC /* Pods-SininaCake.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
