@@ -103,13 +103,14 @@ extension AppDelegate: MessagingDelegate {
     }
 }
 
-extension UINavigationController: ObservableObject, UIGestureRecognizerDelegate {
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = self
-    }
-
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
-    }
-}
+// TODO: - 제스처 리팩토링하기
+//extension UINavigationController: ObservableObject, UIGestureRecognizerDelegate {
+//    override open func viewDidLoad() {
+//        super.viewDidLoad()
+//        interactivePopGestureRecognizer?.delegate = self
+//    }
+//
+//    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return viewControllers.count > 1
+//    }
+//}
