@@ -17,7 +17,7 @@ struct HomeCalendarView: View {
             CustomText(title: "이달의 스케줄", textColor: .black, textWeight: .semibold, textSize: 24)
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: 342, height: 441)
+                .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(444))
                 .background(
                     ZStack {
                         Rectangle()
@@ -27,13 +27,13 @@ struct HomeCalendarView: View {
                         VStack() {
                             headerView
                             Divider()
-                                .frame(width: 302)
+                                .frame(width: UIScreen.UIWidth(302))
                             weekView
                             cardView
                             Divider()
-                                .frame(width: 302)
+                                .frame(width: UIScreen.UIWidth(302))
                             bookingView
-                                .padding([.horizontal,.vertical], 24)
+                                .padding(.vertical, 24)
                         }
                     }
                 )
@@ -161,7 +161,7 @@ struct HomeCalendarView: View {
     private var bookingView: some View {
         HStack() {
             Text("예약 가능")
-                .frame(width: 70, height: 26)
+                .frame(width: UIScreen.UIWidth(70), height: UIScreen.UIWidth(26))
                 .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
                 .font(
                     Font.custom("Pretendard", fixedSize: 12)
@@ -171,7 +171,7 @@ struct HomeCalendarView: View {
                         .inset(by: 0.5)
                         .stroke(Color(red: 0.45, green: 0.76, blue: 0.87), lineWidth: 1))
             Text("예약 마감")
-                .frame(width: 70, height: 26)
+                .frame(width: UIScreen.UIWidth(70), height: UIScreen.UIWidth(26))
                 .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
                 .cornerRadius(45)
                 .font(
@@ -183,7 +183,7 @@ struct HomeCalendarView: View {
                         .inset(by: 0.5)
                         .stroke(Color(red: 1, green: 0.27, blue: 0.27), lineWidth: 1))
             Text("휴무")
-                .frame(width: 70, height: 26)
+                .frame(width: UIScreen.UIWidth(70), height: UIScreen.UIWidth(26))
                 .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
                 .cornerRadius(45)
                 .font(
@@ -224,7 +224,7 @@ struct HomeCardView: View {
                                 .foregroundColor(.white)
                                 .padding([.leading, .bottom], 10)
                                 .background(Circle()
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: UIScreen.UIWidth(40), height: UIScreen.UIWidth(40))
                                     .foregroundColor(Color(UIColor.customBlue))
                                     .offset(x:5.2,y:-3.7)
                                 )
@@ -251,5 +251,4 @@ struct HomeCardView: View {
 
 #Preview {
     HomeCalendarView()
-    
 }
