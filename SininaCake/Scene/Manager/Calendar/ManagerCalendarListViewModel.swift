@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-class CalendarListViewModel: ObservableObject {
+class ManagerCalendarListViewModel: ObservableObject {
     @Published var allOrderData: [OrderItem] = []
     var db: Firestore!
     var ordersRef: CollectionReference!
