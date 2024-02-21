@@ -397,8 +397,8 @@ struct BottomButton: View {
     @Binding var orderItem: OrderItem
     @Binding var toggle: Bool
     @Binding var totalPrice: String
-    var account: String = "신한 110 544 626471"
     @ObservedObject var fcmAPI: FCMServerAPI
+    let account: String = "신한 110 544 626471"
     
     var buttonStyle: (String, UIColor) {
         switch orderItem.status {
@@ -447,7 +447,6 @@ struct BottomButton: View {
                 orderDetailVM.updateStatus(orderItem: orderItem)
             // TODO: - 완료 로직 추가
             case .complete: break
-                    
             }
             
             presentationMode.wrappedValue.dismiss()
