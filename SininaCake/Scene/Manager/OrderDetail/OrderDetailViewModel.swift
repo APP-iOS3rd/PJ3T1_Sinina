@@ -17,17 +17,17 @@ class OrderDetailViewModel: ObservableObject {
     @Published var deviceToken: String = ""
     
     func updatePrice(orderItem: OrderItem, _ price: Int) {
-//        db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["confirmedPrice":price])
+        db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["confirmedPrice":price])
         db.collection("CurrentOrders").document(orderItem.id).updateData(["confirmedPrice":price])
     }
     
     func updateStatus(orderItem: OrderItem) {
         switch orderItem.status {
         case .notAssign:
-//            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"승인"])
+            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"승인"])
             db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"승인"])
         case .assign:
-//            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"완료"])
+            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"완료"])
             db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"완료"])
         default:
             return

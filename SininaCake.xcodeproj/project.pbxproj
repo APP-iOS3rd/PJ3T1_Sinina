@@ -13,12 +13,11 @@
 		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		23C35E952B7CE42F00A61406 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E902B7CE42F00A61406 /* ChatRoom.swift */; };
-		23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* ChatView2.swift */; };
+		23C35E972B7CE42F00A61406 /* CustomerChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E922B7CE42F00A61406 /* CustomerChatView.swift */; };
 		23C35E982B7CE42F00A61406 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E932B7CE42F00A61406 /* Message.swift */; };
 		23C35E9D2B7CE4B900A61406 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */; };
-		23C35E9F2B7CE4EA00A61406 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ChatView.swift */; };
+		23C35E9F2B7CE4EA00A61406 /* ManagerChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */; };
 		23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */; };
-		23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA82B7E45CB00A61406 /* ChatView2.swift */; };
 		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
 		23D682A82B73878A00A2036A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A72B73878A00A2036A /* FirebaseAnalytics */; };
 		23D682AA2B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682A92B73878A00A2036A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -101,6 +100,7 @@
 		9A27E6CE2B56B7F800E7E699 /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CD2B56B7F800E7E699 /* KakaoSDKCertCore */; };
 		9A27E6D02B56B7F800E7E699 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CF2B56B7F800E7E699 /* KakaoSDKCommon */; };
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
+		9A6C3D412B8520270034D44A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A6C3D402B8520270034D44A /* Kingfisher */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
 		9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA04FFC2B72110D004F671E /* ContainerView.swift */; };
@@ -116,12 +116,11 @@
 
 /* Begin PBXFileReference section */
 		23C35E902B7CE42F00A61406 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
-		23C35E922B7CE42F00A61406 /* ChatView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView2.swift; sourceTree = "<group>"; };
+		23C35E922B7CE42F00A61406 /* CustomerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerChatView.swift; sourceTree = "<group>"; };
 		23C35E932B7CE42F00A61406 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		23C35E9E2B7CE4EA00A61406 /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerChatView.swift; sourceTree = "<group>"; };
 		23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		23C35EA82B7E45CB00A61406 /* ChatView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView2.swift; sourceTree = "<group>"; };
 		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		38951A1BE2E0F9CD6200F179 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
@@ -227,6 +226,7 @@
 				23D682BE2B73878A00A2036A /* FirebaseDynamicLinks in Frameworks */,
 				23D682CE2B73878A00A2036A /* FirebaseInstallations in Frameworks */,
 				23D682C82B73878A00A2036A /* FirebaseFunctionsCombine-Community in Frameworks */,
+				9A6C3D412B8520270034D44A /* Kingfisher in Frameworks */,
 				23D682CC2B73878A00A2036A /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
 				E497138EE1DEF1C9FCAD9516 /* Pods_SininaCake.framework in Frameworks */,
 			);
@@ -258,11 +258,12 @@
 		8E874B9D2B00B37200ECEF08 /* SininaCake */ = {
 			isa = PBXGroup;
 			children = (
-				3B4870342B83536600046089 /* ApiKeys.xcconfig */,
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
+				3B4870342B83536600046089 /* ApiKeys.xcconfig */,
+				3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
@@ -381,10 +382,9 @@
 			isa = PBXGroup;
 			children = (
 				23C35E902B7CE42F00A61406 /* ChatRoom.swift */,
-				23C35EA82B7E45CB00A61406 /* ChatView2.swift */,
-				23C35E9E2B7CE4EA00A61406 /* ChatView.swift */,
 				23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */,
-				23C35E922B7CE42F00A61406 /* ChatView2.swift */,
+				23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */,
+				23C35E922B7CE42F00A61406 /* CustomerChatView.swift */,
 				23C35E932B7CE42F00A61406 /* Message.swift */,
 				23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */,
 			);
@@ -498,7 +498,6 @@
 		9A53C55D2B7C835100892E94 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -591,6 +590,7 @@
 				23D682CF2B73878A00A2036A /* FirebaseMLModelDownloader */,
 				23D682D12B7389D000A2036A /* FirebaseMessaging */,
 				23D682D52B73AEB000A2036A /* FirebaseStorage */,
+				9A6C3D402B8520270034D44A /* Kingfisher */,
 			);
 			productName = SininaCake;
 			productReference = 8E874B9B2B00B37200ECEF08 /* SininaCake.app */;
@@ -624,6 +624,7 @@
 				9A27E6C62B56B7F800E7E699 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				9AEACEAC2B624EE400AE041F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				23D682A62B73878A00A2036A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9A6C3D3F2B8520270034D44A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 8E874B9C2B00B37200ECEF08 /* Products */;
 			projectDirPath = "";
@@ -707,7 +708,7 @@
 				8ECF5FB12B54C1C300D6BCF6 /* HomeView.swift in Sources */,
 				8ECF5FCB2B54EE8A00D6BCF6 /* CautionViewModel.swift in Sources */,
 				8ECF5FC52B54EE5300D6BCF6 /* HomeViewModel.swift in Sources */,
-				23C35E9F2B7CE4EA00A61406 /* ChatView.swift in Sources */,
+				23C35E9F2B7CE4EA00A61406 /* ManagerChatView.swift in Sources */,
 				9A27E6A82B5514AC00E7E699 /* OrderStatusViewModel.swift in Sources */,
 				8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */,
 				23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */,
@@ -730,7 +731,6 @@
 				8E874BB42B00B58E00ECEF08 /* CautionView.swift in Sources */,
 				8ECB219B2B1DBF81003BF8B0 /* UIFont+.swift in Sources */,
 				234ABD892B6A2C4E007199E2 /* (null) in Sources */,
-				23C35EA92B7E45CB00A61406 /* ChatView2.swift in Sources */,
 				8E874BBE2B00B66F00ECEF08 /* ManagerCalendarView.swift in Sources */,
 				8ECF5FCE2B54EEA400D6BCF6 /* OrderViewModel.swift in Sources */,
 				9AC123052B746B9B00DC9A42 /* UIScreen+.swift in Sources */,
@@ -763,7 +763,7 @@
 				9A27E6B92B55160B00E7E699 /* ManagerOnlyView.swift in Sources */,
 				9A27E6B72B55159300E7E699 /* MapViewModel.swift in Sources */,
 				23C35E9D2B7CE4B900A61406 /* ChatViewModel.swift in Sources */,
-				23C35E972B7CE42F00A61406 /* ChatView2.swift in Sources */,
+				23C35E972B7CE42F00A61406 /* CustomerChatView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -772,7 +772,7 @@
 /* Begin XCBuildConfiguration section */
 		8E874BA72B00B37400ECEF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38951A1BE2E0F9CD6200F179 /* Pods-SininaCake.debug.xcconfig */;
+			baseConfigurationReference = 3B4870342B83536600046089 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -836,7 +836,7 @@
 		};
 		8E874BA82B00B37400ECEF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C590E23B9C464F7336838CC /* Pods-SininaCake.release.xcconfig */;
+			baseConfigurationReference = 3B4870342B83536600046089 /* ApiKeys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -932,7 +932,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -976,7 +976,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1018,6 +1018,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.20.0;
+			};
+		};
+		9A6C3D3F2B8520270034D44A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
 			};
 		};
 		9AEACEAC2B624EE400AE041F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
@@ -1174,6 +1182,11 @@
 		9A35885F2B0227DB00501E60 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FirebaseAnalytics;
+		};
+		9A6C3D402B8520270034D44A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A6C3D3F2B8520270034D44A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		9AEACEAD2B624EE400AE041F /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

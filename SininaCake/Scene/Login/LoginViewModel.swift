@@ -139,33 +139,30 @@ extension LoginViewModel {
     /// 카카오 로그인
     func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+            UserApi.shared.loginWithKakaoTalk {[weak self] (oauthToken, error) in
                 if let error = error {
                     print(error)
-                } else {
+                } else if let self = self {
                     print("loginWithKakaoTalk() success.")
                     self.getKakaoUserInfo()
-                    self.isLoggedin = true
                 }
             }
         } else {
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+            UserApi.shared.loginWithKakaoAccount {[weak self] (oauthToken, error) in
                 if let error = error {
                     print(error)
-                } else {
+                } else if let self = self {
                     print("loginWithKakaoAccount() success.")
                     self.getKakaoUserInfo()
-                    self.isLoggedin = true
                 }
             }
         }
     }
-    
     /// 카카오 유저 정보 획득
     func getKakaoUserInfo() {
         UserApi.shared.me() {(user, error) in
             if let error = error {
-                print(error)
+                print("Kakao Login Error: \(error.localizedDescription)")
             }
             else {
                 print("me() success.")
@@ -224,23 +221,33 @@ extension LoginViewModel {
     /// 유저 정보 파이어스토어에 저장
     func addUserInfoToFirestore(email: String, imgURL: String, userName: String, deviceToken: String) async {
         let db = Firestore.firestore()
+        var isNewUser = false
         
         do {
-          try await db.collection("Users").document(email).setData([
-            "email": email,
-            "userName": userName,
-            "imgURL": imgURL,
-            "deviceToken": deviceToken
-          ], merge: true)
-          print("Document successfully written!")
+            let querySnapshot = try await db.collection("Users").whereField("email", isEqualTo: email).getDocuments()
+            isNewUser = querySnapshot.isEmpty
+    
+            if isNewUser {
+                chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: email, id: email, lastMsg: nil, lastMsgTime: nil))
+                print("addChatRoom")
+            }
+            
+            try await db.collection("Users").document(email).setData([
+                "email": email,
+                "userName": userName,
+                "imgURL": imgURL,
+                "deviceToken": deviceToken
+            ], merge: true)
+            
+            DispatchQueue.main.async {
+                self.isLoggedin = true
+            }
+            print("Document successfully written!")
         } catch {
             print("Error writing document: \(error)")
         }
-        
-        // 회원가입과 동시에 채팅방 생성
-        // FIXME: 로그인할 때마다 방이 생김(이미 있으면 생성 안하게 만들기)
-        chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: email, id: email))
     }
+    
     
     // MARK: - 파이어베이스
     /// 파이어베이스 유저 정보 획득
@@ -250,9 +257,11 @@ extension LoginViewModel {
         let userName = user.displayName ?? ""
         
         // TODO: - 함수로 축약
-        self.loginUserEmail = email
-        self.imgURL = imgURL
-        self.userName = userName
+        DispatchQueue.main.async {
+            self.loginUserEmail = email
+            self.imgURL = imgURL
+            self.userName = userName
+        }
         
         self.storeUserInfo(email: email,
                            imgURL: imgURL,
@@ -265,10 +274,10 @@ extension LoginViewModel {
     /// 카카오 로그아웃
     func handleKakaoLogout() {
         UserApi.shared.logout {(error) in
-            if let error = error {
-                print(error)
-            } else {
+            if error != nil {
                 print("logout() success.")
+            } else {
+                print(error)
             }
         }
         isLoggedin = false
@@ -277,11 +286,11 @@ extension LoginViewModel {
     /// 카카오 회원 탈퇴
     func handleKakaoUnlink() {
         UserApi.shared.unlink {(error) in
-            if let error = error {
-                print(error)
+            if error != nil {
+                print("unlink() success.")
             }
             else {
-                print("unlink() success.")
+                print(error)
             }
         }
         isLoggedin = false
@@ -303,10 +312,10 @@ extension LoginViewModel {
         let user = Auth.auth().currentUser
         
         user?.delete { error in
-            if let error = error {
-                // An error happened.
-            } else {
+            if error != nil {
                 // Account deleted.
+            } else {
+                // An error happened.
             }
         }
         isLoggedin = false

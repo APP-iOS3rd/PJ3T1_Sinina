@@ -19,8 +19,10 @@ struct SplashView: View {
             .resizable()
             .frame(width: 180, height: 180)
             .onAppear {
-                splashVM.fetchUserData()
-                changeView = true
+                Task {
+                    await splashVM.fetchUserData()
+                    changeView = true
+                }
             }
             .fullScreenCover(isPresented: $changeView) {
                 if loginVM.loginUserEmail != nil {
