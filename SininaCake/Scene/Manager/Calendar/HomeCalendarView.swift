@@ -215,33 +215,13 @@ struct HomeCardView: View {
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
                     } else {
-                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
-                        { Text("\(value.day)")
+                         Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
+                                .foregroundColor(value.color.color)
                                 .padding([.leading, .bottom], 10)
-                        } else if schedule.startDate.withoutTime() == value.date {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(.white)
-                                .padding([.leading, .bottom], 10)
-                                .background(Circle()
-                                    .frame(width: 40, height: 40)
-                                    .foregroundColor(Color(UIColor.customBlue))
-                                    .offset(x:5.2,y:-3.7)
-                                )
-                        } else if schedule.startDate.withoutTime() > value.date {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray)))
-                                .padding([.leading, .bottom], 10)
-                        }
-                        else {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
-                                .padding([.leading, .bottom], 10)
-                        }
+                                .onTapGesture {
+                                   
+                            }
                     }
                 }
             }

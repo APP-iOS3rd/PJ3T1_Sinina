@@ -251,10 +251,11 @@ struct CustomerCardView: View {
     @Binding var selectedDate: Date?
     @State private var showAlert: Bool = false
     var onDateClick: (DateValue) -> Void
+
     
     var body: some View {
         ZStack() {
-            HStack {
+           HStack {
                 if value.day > 0 {
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
@@ -262,69 +263,97 @@ struct CustomerCardView: View {
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
                     } else {
-                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
-                        { Text("\(value.day)")
+                         Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
+                                .foregroundColor(value.color.color)
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                    showAlert = true
-                                }
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text("error"),
-                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
-                                        dismissButton: .default(Text("확인"))
-                                    )
-                                }
-                        } else if schedule.startDate.withoutTime() == value.date {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(.white)
-                                .padding([.leading, .bottom], 10)
-                                .background(Circle()
-                                    .frame(width: 40, height: 40)
-                                    .foregroundColor(Color(UIColor.customBlue))
-                                    .offset(x:5.2,y:-3.7)
-                                    .onTapGesture {
+                                    if value.color != .blue {
                                         showAlert = true
+                                    } else {
+                                        onDateClick(value)
                                     }
-                                    .alert(isPresented: $showAlert) {
-                                        Alert(
-                                            title: Text("error"),
-                                            message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
-                                            dismissButton: .default(Text("확인"))
-                                        )
-                                    }
-                                )
-                        } else if schedule.startDate.withoutTime() > value.date {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray)))
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    showAlert = true
-                                }
+                            }
                                 .alert(isPresented: $showAlert) {
                                     Alert(
                                         title: Text("error"),
-                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
+                                        message: Text("예약가능(파란)날짜가 아닙니다"),
                                         dismissButton: .default(Text("확인"))
                                     )
                                 }
-                        }
-                        else {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    onDateClick(value)
-                                }
-                        }
                     }
                 }
             }
+//            HStack {
+//                if value.day > 0 {
+//                    if value.isNotCurrentMonth {
+//                        Text("\(value.day)")
+//                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                            .foregroundColor(Color(UIColor.customGray))
+//                            .padding([.leading, .bottom], 10)
+//                    } else {
+//                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate {
+//                            Text("\(value.day)")
+//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                                .foregroundColor(value.color.color)
+//                                .padding([.leading, .bottom], 10)
+//                                .onTapGesture {
+//                                    showAlert = true
+//                                }
+//                                .alert(isPresented: $showAlert) {
+//                                    Alert(
+//                                        title: Text("error"),
+//                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
+//                                        dismissButton: .default(Text("확인"))
+//                                    )
+//                                }
+//                        } else if schedule.startDate.withoutTime() == value.date {
+//                            Text("\(value.day)")
+//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                                .foregroundColor(.white)
+//                                .padding([.leading, .bottom], 10)
+//                                .background(Circle()
+//                                    .frame(width: 40, height: 40)
+//                                    .foregroundColor(Color(UIColor.customBlue))
+//                                    .offset(x:5.2,y:-3.7)
+//                                    .onTapGesture {
+//                                        showAlert = true
+//                                    }
+//                                    .alert(isPresented: $showAlert) {
+//                                        Alert(
+//                                            title: Text("error"),
+//                                            message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
+//                                            dismissButton: .default(Text("확인"))
+//                                        )
+//                                    }
+//                                )
+//                        } else if schedule.startDate.withoutTime() > value.date {
+//                            Text("\(value.day)")
+//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                                .foregroundColor(value.color.color)
+//                                .padding([.leading, .bottom], 10)
+//                                .onTapGesture {
+//                                
+//                                }
+//                                .alert(isPresented: $showAlert) {
+//                                    Alert(
+//                                        title: Text("error"),
+//                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
+//                                        dismissButton: .default(Text("확인"))
+//                                    )
+//                                }
+//                        }
+//                        else {
+//                            Text("\(value.day)")
+//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+//                                .foregroundColor(value.color.color)
+//                                .onTapGesture {
+//                                    onDateClick(value)
+//                                }
+//                        }
+//                    }
+//                }
+//            }
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
@@ -338,6 +367,10 @@ struct TimePickerView: View {
             .datePickerStyle(CompactDatePickerStyle())
             .labelsHidden()
             .clipped()
+            .onAppear {
+                UIDatePicker.appearance().minuteInterval = 10
+
+            }
     }
 }
 

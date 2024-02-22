@@ -45,6 +45,7 @@
 		23D682D42B738A0200A2036A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682D32B738A0200A2036A /* Date.swift */; };
 		23D682D62B73AEB000A2036A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 23D682D52B73AEB000A2036A /* FirebaseStorage */; };
 		3B6720BC2B85F6610008F462 /* HomeCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6720BB2B85F6610008F462 /* HomeCalendarView.swift */; };
+		3B6720C22B86EE610008F462 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6720C12B86EE610008F462 /* SwiftUIView.swift */; };
 		3BD583BC2B7EF1A200861F92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */; };
 		3BD583C12B831A3A00861F92 /* ManagerCalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD583C02B831A3A00861F92 /* ManagerCalendarListViewModel.swift */; };
 		3BD583C32B831B1900861F92 /* ManagerCalendarListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD583C22B831B1900861F92 /* ManagerCalendarListView.swift */; };
@@ -126,6 +127,7 @@
 		38951A1BE2E0F9CD6200F179 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
 		3B4870342B83536600046089 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		3B6720BB2B85F6610008F462 /* HomeCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarView.swift; sourceTree = "<group>"; };
+		3B6720C12B86EE610008F462 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		3BD583BA2B7EF1A200861F92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "SininaCake/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3BD583C02B831A3A00861F92 /* ManagerCalendarListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerCalendarListViewModel.swift; sourceTree = "<group>"; };
 		3BD583C22B831B1900861F92 /* ManagerCalendarListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerCalendarListView.swift; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 				8E874BBD2B00B66F00ECEF08 /* ManagerCalendarView.swift */,
 				3BD583C02B831A3A00861F92 /* ManagerCalendarListViewModel.swift */,
 				3BD583C22B831B1900861F92 /* ManagerCalendarListView.swift */,
+				3B6720C12B86EE610008F462 /* SwiftUIView.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 				8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */,
 				23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */,
 				9A27E6B52B55158A00E7E699 /* MapView.swift in Sources */,
+				3B6720C22B86EE610008F462 /* SwiftUIView.swift in Sources */,
 				23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */,
 				9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */,
 				9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */,

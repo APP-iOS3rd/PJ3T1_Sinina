@@ -8,13 +8,43 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
  //날짜 칸 표시를 위한 일자 정보
-struct DateValue: Identifiable,Decodable, Comparable {
+struct DateValue: Identifiable, Decodable, Comparable {
+
     @DocumentID var id: String?
     var day: Int
     var date: Date
     var isNotCurrentMonth: Bool = false
     var isSelected: Bool = false
     var isSecondSelected = false
+    var color: TextColor
+
+    enum TextColor: String, Decodable {
+        case blue
+        case red
+        case gray
+        case notcurrent
+        var color: Color {
+            switch self {
+            case .blue:
+                return Color(UIColor.customBlue)
+            case .red:
+                return Color(UIColor.customRed)
+            case .gray:
+                return Color(UIColor.customDarkGray)
+            case .notcurrent:
+                return Color(UIColor.customGray)
+            }
+        }
+    }
+    
+    
+    init(day: Int, date: Date, color: TextColor? = nil, isNotCurrentMonth: Bool = false) {
+        self.day = day
+        self.date = date
+        self.isNotCurrentMonth = isNotCurrentMonth
+        self.color = color ?? .blue
+    }
+    
     
     mutating func selectedToggle() {
         if isSelected {
@@ -25,23 +55,6 @@ struct DateValue: Identifiable,Decodable, Comparable {
         } else {
             isSelected = true
         }
-    }
-    
-    enum dateColor {
-        case open
-        case close
-        case notAssignButOpen
-        
-        var color: Color {
-                switch self {
-                case .open:
-                    return Color(UIColor.customBlue)
-                case .close:
-                    return Color(UIColor.customDarkGray)
-                case .notAssignButOpen:
-                    return Color(UIColor.customRed)
-                }
-            }
     }
 
     static func < (lhs: DateValue, rhs: DateValue) -> Bool {
@@ -66,78 +79,31 @@ struct Schedule: Codable {
     }
 }
 
-extension Date {
-   
-    public var year: Int {
-        return Calendar.current.component(.year, from: self)
-    }
-    
-    public var month: Int {
-        return Calendar.current.component(.month, from: self)
-    }
-    
-    public var day: Int {
-        return Calendar.current.component(.day, from: self)
-    }
-    
-    public var weekday: Int {
-        return Calendar.current.component(.weekday, from: self)
-    }
-    
-    func toDateString() -> String {
-           let dateFormatter = DateFormatter()
-           dateFormatter.dateFormat = "yyyy-MM-dd"
-           return dateFormatter.string(from: self)
-       }
-    
-    func getAllDates() -> [Date] {
-        let calendar = Calendar.current
-        //getting start Date...
-        let startDate = calendar.date(from: calendar.dateComponents([.year, .month], from: self))!
-        
-        let range = calendar.range(of: .day, in: .month, for: startDate)!
-        
-        return range.compactMap { day -> Date in
-            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
-        }
-    }
-   
-    func getLastDayInMonth() -> Int {
-        let calendar = Calendar.current
-        
-        return (calendar.range(of: .day, in: .month, for: self)?.endIndex ?? 0) - 1
-    }
-    
-    func getFirstDayInMonth() -> Int {
-        let calendar = Calendar.current
-        
-        return (calendar.range(of: .day, in: .month, for: self)?.startIndex ?? 0)
-    }
-    
-    func withoutTime() -> Date {
-        let dateComponents = DateComponents(year: self.year, month: self.month, day: self.day)
-        
-        return Calendar.current.date(from: dateComponents) ?? self
-    }
-}
 
 extension DateValue {
   
     init?(documentData: [String: Any]) {
         guard
+            
             let day = documentData["day"] as? Int,
             let dateTimestamp = documentData["date"] as? Timestamp,
             let isNotCurrentMonth = documentData["isNotCurrentMonth"] as? Bool,
             let isSelected = documentData["isSelected"] as? Bool,
-            let isSecondSelected = documentData["isSecondSelected"] as? Bool
+            let isSecondSelected = documentData["isSecondSelected"] as? Bool,
+            let colorString = documentData["color"] as? String,
+            let color = TextColor(rawValue: colorString)
+                
         else {
             return nil
         }
+        
         self.day = day
         self.date = dateTimestamp.dateValue()
         self.isNotCurrentMonth = isNotCurrentMonth
         self.isSelected = isSelected
         self.isSecondSelected = isSecondSelected
+        self.color = color
+        self.id = date.withoutTime().toDateString()
     }
     
     var toFirestore: [String: Any] {
@@ -146,7 +112,8 @@ extension DateValue {
             "date": Timestamp(date: date),
             "isNotCurrentMonth": isNotCurrentMonth,
             "isSelected": isSelected,
-            "isSecondSelected": isSecondSelected
+            "isSecondSelected": isSecondSelected,
+            "color": color.rawValue
         ]
     }
     
@@ -163,6 +130,7 @@ extension DateValue {
             }
         }
     }
+    
     /// Firestore 데이터 읽어오기
     func getDateValueFromFirestore(documentID: String, completion: @escaping (DateValue?) -> Void) {
         let db = Firestore.firestore()
@@ -190,11 +158,32 @@ class ManagerCalendarViewModel: ObservableObject {
     @Published var dateValues: [DateValue] = []
     @Published var currentDate = Date()
     @Published var monthOffset = 0
+ 
+
+    
     
     private var listener: ListenerRegistration?
     
     init() {
         observeFirestoreChanges()
+    }
+
+    func changeDateColorToBlue(date: Date) {
+        if let index = dateValues.firstIndex(where: { $0.date == date }) {
+            dateValues[index].color = .blue
+        }
+    }
+
+    func changeDateColorToGray(date: Date) {
+        if let index = dateValues.firstIndex(where: { $0.date == date }) {
+            dateValues[index].color = .gray
+        }
+    }
+
+    func changeDateColorToRed(date: Date) {
+        if let index = dateValues.firstIndex(where: { $0.date == date }) {
+            dateValues[index].color = .red
+        }
     }
     
     func convert(date: Date) -> String {
@@ -229,12 +218,13 @@ class ManagerCalendarViewModel: ObservableObject {
     func loadDataFromFirestore() {
         let db = Firestore.firestore()
         let collectionReference = db.collection("dateValues")
-        
+        print("loadDataFromFirestore")
         collectionReference.getDocuments { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
                 print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
                 return
             }
+            print("documents/ ")
             self.dateValues.removeAll()
             self.dateValues = documents.compactMap { queryDocumentSnapshot in
                 do {
@@ -349,16 +339,52 @@ class ManagerCalendarViewModel: ObservableObject {
     }
     //현재 월의 일수 로드 (달력 남은 공간을 채우기 위한 이전달 및 다음달 일수 포함)
     func extractDate() -> [[DateValue]] {
+
         let calendar = Calendar.current
+           
+           let currentMonth = getCurrentMonth()
+           
+           var days = currentMonth.getAllDates().compactMap { date -> DateValue in
+               let day = calendar.component(.day, from: date)
+               let isNotCurrentMonth = !calendar.isDate(date, equalTo: currentMonth, toGranularity: .month)
+               
+               var color: DateValue.TextColor
+               
+               if monthOffset < 0 {
+                   // 1. monthOffset이 0보다 작으면 무조건 .gray
+                   color = .gray
+               } else if monthOffset == 0 {
+                   // 2. monthOffset이 0일 경우
+                   if date < currentDate.withoutTime() {
+                       // 2-1. 오늘 이전은 .gray
+                       color = .gray
+                   } else if date == Calendar.current.date(byAdding: .day, value: 1, to: currentDate.withoutTime()) {
+                       // 2-2. 오늘+1은 .red
+                       color = .red
+                   } else if date == Calendar.current.date(byAdding: .day, value: 2, to: currentDate.withoutTime()) {
+                       // 2-3. 오늘+2는 .red
+                       color = .red
+                   } else {
+                       // 2-4. 그 외의 오늘이후는 .blue
+                       color = .blue
+                   }
+               } else if monthOffset > 0 {
+                   // 3. monthOffset이 0보다 크면
+                   if date.weekday == 1 || date.weekday == 2 {
+                       // 3-1. weekday가 1, 2일 경우 .gray
+                       color = .gray
+                   } else {
+                       // 3-2. 그 외에는 .blue
+                       color = .blue
+                   }
+               } else {
+                   // 위의 모든 조건에 해당하지 않는 경우
+                   color = .red
+               }
+              
+               return DateValue(day: day, date: date, color: color, isNotCurrentMonth: isNotCurrentMonth)
+           }
         
-        let currentMonth = getCurrentMonth()
-        
-        var days = currentMonth.getAllDates().compactMap { date -> DateValue in
-            
-            let day = calendar.component(.day, from: date)
-            
-            return DateValue(day: day, date: date)
-        }
         //이전달 일수로 남은 공간 채우기
         let firstWeekDay = calendar.component(.weekday, from: days.first?.date ?? Date())
         
@@ -391,6 +417,8 @@ class ManagerCalendarViewModel: ObservableObject {
             }
         }
         return result
+        
+        
     }
 
     deinit {
@@ -401,3 +429,60 @@ class ManagerCalendarViewModel: ObservableObject {
     
 }
 
+
+
+
+extension Date {
+   
+    public var year: Int {
+        return Calendar.current.component(.year, from: self)
+    }
+    
+    public var month: Int {
+        return Calendar.current.component(.month, from: self)
+    }
+    
+    public var day: Int {
+        return Calendar.current.component(.day, from: self)
+    }
+    
+    public var weekday: Int {
+        return Calendar.current.component(.weekday, from: self)
+    }
+    
+    func toDateString() -> String {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy-MM-dd"
+           return dateFormatter.string(from: self)
+       }
+    
+    func getAllDates() -> [Date] {
+        let calendar = Calendar.current
+        //getting start Date...
+        let startDate = calendar.date(from: calendar.dateComponents([.year, .month], from: self))!
+        
+        let range = calendar.range(of: .day, in: .month, for: startDate)!
+        
+        return range.compactMap { day -> Date in
+            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+        }
+    }
+   
+    func getLastDayInMonth() -> Int {
+        let calendar = Calendar.current
+        
+        return (calendar.range(of: .day, in: .month, for: self)?.endIndex ?? 0) - 1
+    }
+    
+    func getFirstDayInMonth() -> Int {
+        let calendar = Calendar.current
+        
+        return (calendar.range(of: .day, in: .month, for: self)?.startIndex ?? 0)
+    }
+    
+    func withoutTime() -> Date {
+        let dateComponents = DateComponents(year: self.year, month: self.month, day: self.day)
+        
+        return Calendar.current.date(from: dateComponents) ?? self
+    }
+}
