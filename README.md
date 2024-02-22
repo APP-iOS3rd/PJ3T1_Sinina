@@ -6,14 +6,19 @@
 
 # 프로젝트 소개
 
-
 ### 1. 회원가입과 로그인도 간편하게!
 
+![회원가입](https://github.com/APP-iOS3rd/PJ3T1_Sinina/assets/88993810/1cb10f07-580b-4f0f-b395-426ff269a08e)
+
 ### 2. ****복잡하게 카카오톡으로 주문하던 방식을 앱에서 한 번에!****
+
+![Untitled](https://github.com/APP-iOS3rd/PJ3T1_Sinina/assets/88993810/6add947c-1fbc-4a53-aea0-2f79f5fa3bc9)
 
 ### 3. ****주문 일정을 쉽고 빠르게 확인 가능!****
 
 점주는 진행 중인 주문 내역을 한눈에 관리할 수 있습니다.
+
+![order](https://github.com/APP-iOS3rd/PJ3T1_Sinina/assets/88993810/bef1d8ed-fe9b-402a-9986-31903adb750b)
 
 ### 4. ****적립도 간편하게!****
 
