@@ -141,7 +141,6 @@ struct CustomerCalendarView: View {
             calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            //calendarVM.loadDataFromFirestore()
             print("onappear - 캘린더뷰")
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
@@ -166,7 +165,6 @@ struct CustomerCalendarView: View {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
                         for j in daysList[i].indices {
-                            
                             if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
                                 daysList[i][j] = dv
                                 

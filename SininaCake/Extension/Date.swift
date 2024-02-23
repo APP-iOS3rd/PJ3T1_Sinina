@@ -30,7 +30,7 @@ extension Date {
     
     func dateToString() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko-KR")
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.dateFormat = "yyyy/MM/dd(E)"
         
         let dateString = dateFormatter.string(from: self)

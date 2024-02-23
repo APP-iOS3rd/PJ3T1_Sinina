@@ -29,7 +29,6 @@ struct ProfileView: View {
                 UserDetailView(orderItem: item)
             })
             .onAppear {
-                loginVM.getKakaoUserInfo()
                 profileVM.downloadProfileImage()
             }
         }
@@ -171,8 +170,12 @@ struct StatusTextView: View {
             return ("예약완료", .white, .customBlue)
         case .notAssign:
             return ("예약대기", .customDarkGray, .customGray)
+        case .progress:
+            return ("제작중", .white, .customBlue)
         case .complete:
             return ("제작완료", .black, .customGray)
+        case .pickup:
+            return ("수령완료", .black, .customGray)
         }
     }
     

@@ -14,27 +14,16 @@ struct UserConfirmOrderDetailView: View {
     @ObservedObject var photoVM: PhotoPickerViewModel
     @State private var showNavManager = false
     
-    var statusTitle: (String, UIColor, String) {
-        switch orderVM.orderItem.status {
-        case .assign:
-            return ("승인 주문건 현황", .customBlue, "VectorTrue")
-        case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "VectorFalse")
-        case .complete:
-            return ("완료 주문건 현황", .black, "VectorTrue")
-        }
-    }
-    
     var body: some View {
         ScrollView {
             VStack {
                 HStack {
-                    Image(statusTitle.2)
+                    Image("VectorFalse")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 18, height: 18)
-                        .foregroundStyle(Color(statusTitle.1))
-                    CustomText(title: statusTitle.0, textColor: .black, textWeight: .semibold, textSize: 18)
+                        .foregroundStyle(Color(.customGray))
+                    CustomText(title: "주문 내역 확인", textColor: .black, textWeight: .semibold, textSize: 18)
                     Spacer()
                 }
                 .padding(.leading, 24)
@@ -62,7 +51,7 @@ struct UserConfirmOrderDetailView: View {
                 
                 DividerView()
                 
-                UserPriceView(orderItem: $orderVM.orderItem)
+                DetailPriceView(orderItem: $orderVM.orderItem)
                 
                 Spacer()
                     .frame(height: 18)
@@ -86,6 +75,22 @@ struct UserConfirmOrderDetailView: View {
                 })
             }
         }
+    }
+}
+
+struct DetailPriceView: View {
+    @Binding var orderItem: OrderItem
+    
+    var body: some View {
+        HStack {
+            CustomText(title: "총 예상금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+            Spacer()
+                .frame(width: 45)
+            CustomText(title: intToString(orderItem.expectedPrice), textColor: .black, textWeight: .semibold, textSize: 16)
+            Spacer()
+        }
+        .padding(.leading, 24)
+        .padding(.trailing, 24)
     }
 }
 
@@ -171,10 +176,3 @@ private func intToString(_ price: Int) -> String {
     
     return result.reversed() + "원"
 }
-
-// TODO:OrderViewModel 전달해서 여기서 주문 DB에 저장
-
-
-//#Preview {
-//    UserConfirmOrderDetailView(orderVM: )
-//}

@@ -51,7 +51,6 @@ struct HomeCalendarView: View {
         HStack {
             Spacer()
             Spacer()
-            
             Button {
                 calendarVM.monthOffset -= 1
                 
@@ -120,7 +119,6 @@ struct HomeCalendarView: View {
             calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-
             print("onappear - 캘린더뷰")
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
@@ -140,7 +138,6 @@ struct HomeCalendarView: View {
             print("onchange - monthoffset, \(calendarVM.monthOffset)")
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            //calendarVM.loadDataFromFirestore()
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
@@ -174,7 +171,7 @@ struct HomeCalendarView: View {
     private var bookingView: some View {
         HStack() {
             Text("예약 가능")
-                .frame(width: 70, height: 26)
+                .frame(width: UIScreen.UIWidth(70), height: UIScreen.UIWidth(26))
                 .foregroundColor(Color(red: 0.45, green: 0.76, blue: 0.87))
                 .font(
                     Font.custom("Pretendard", fixedSize: 12)
@@ -184,7 +181,7 @@ struct HomeCalendarView: View {
                         .inset(by: 0.5)
                         .stroke(Color(red: 0.45, green: 0.76, blue: 0.87), lineWidth: 1))
             Text("예약 마감")
-                .frame(width: 70, height: 26)
+                .frame(width: UIScreen.UIWidth(70), height: UIScreen.UIWidth(26))
                 .foregroundColor(Color(red: 1, green: 0.27, blue: 0.27))
                 .cornerRadius(45)
                 .font(
@@ -196,7 +193,7 @@ struct HomeCalendarView: View {
                         .inset(by: 0.5)
                         .stroke(Color(red: 1, green: 0.27, blue: 0.27), lineWidth: 1))
             Text("휴무")
-                .frame(width: 70, height: 26)
+                .frame(width: UIScreen.UIWidth(70), height: UIScreen.UIWidth(26))
                 .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
                 .cornerRadius(45)
                 .font(
@@ -224,6 +221,7 @@ struct HomeCardView: View {
                             Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                                 .foregroundColor(Color(UIColor.customGray))
+
                                 .padding([.leading, .bottom], 10)
                         } else if schedule.startDate.withoutTime() == value.date {
                             Text("\(value.day)")
@@ -254,5 +252,4 @@ struct HomeCardView: View {
 
 #Preview {
     HomeCalendarView()
-    
 }
