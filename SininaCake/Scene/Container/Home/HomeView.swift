@@ -16,6 +16,7 @@ struct HomeView: View {
             ScrollView {
                 VStack(spacing: 64) {
                     OrderStatusView()
+                    HomeCalendarView()
                     InstagramView()
                     MapView()
                     Spacer()

@@ -16,6 +16,7 @@ struct OrderView: View {
                     infoView(orderData: OrderVM)
                     
                     OrderCalendarView(orderData: OrderVM)
+//                    CustomerCalendarView(orderData: OrderVM)
                     
                     OrderCakeView(orderData: OrderVM)
                     
@@ -164,6 +165,7 @@ struct OrderCalendarView:View {
             })
             .accentColor(Color(UIColor.customBlue))
             .padding(.bottom,(UIScreen.main.bounds.height) * 12/932 )
+            .padding(.horizontal,UIScreen.UIWidth(12))
             
             CustomText(title: "*매주 일,월 정기휴무 입니다.", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
                 .padding(.leading,(UIScreen.main.bounds.width) * 24/430 )

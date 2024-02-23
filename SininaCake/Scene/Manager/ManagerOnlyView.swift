@@ -38,7 +38,7 @@ struct ManagerOnlyView: View {
                 TabView(selection: $currentTab) {
                     OrderListView()
                         .tag(ManagerTab.list)
-                    CalendarView()
+                    ManagerCalendarView()
                         .tag(ManagerTab.calendar)
                     ChatListView()
                         .tag(ManagerTab.chat)

@@ -81,6 +81,7 @@ struct UserDetailView: View {
 // MARK: - UserPriceView
 struct UserPriceView: View {
     @Binding var orderItem: OrderItem
+    let accountNumber = "신한 110 544 626471"
     
     var priceText: (String, String) {
         switch orderItem.status {
@@ -91,16 +92,39 @@ struct UserPriceView: View {
         }
     }
     
-    var body: some View {
-        HStack {
-            CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-            Spacer()
-                .frame(width: 45)
-            CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
-            Spacer()
+    var accountOpacity: Double {
+        switch orderItem.status {
+        case .notAssign:
+            return 1
+        case .assign, .complete:
+            return 0
         }
-        .padding(.leading, 24)
-        .padding(.trailing, 24)
+    }
+    
+    var body: some View {
+        VStack(spacing: 18) {
+            HStack {
+                CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                Spacer()
+                    .frame(width: 45)
+                CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            .padding(.leading, 24)
+            .padding(.trailing, 24)
+            
+            HStack {
+                CustomText(title: "계좌번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                Spacer()
+                    .frame(width: 63)
+                CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            .padding(.leading, 24)
+            .padding(.trailing, 24)
+            .padding(.bottom, 24)
+            .opacity(accountOpacity)
+        }
     }
 }
 
