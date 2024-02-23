@@ -23,7 +23,12 @@ struct OrderListView: View {
                 Spacer()
                     .frame(height: 28)
                 
-                ListView(orderData: orderListVM.completeOrderData, title: "진행중인 주문 현황", titleColor: .customBlue)
+                ListView(orderData: orderListVM.progressOrderData, title: "진행중인 주문 현황", titleColor: .customBlue)
+                
+                Spacer()
+                    .frame(height: 28)
+                
+                ListView(orderData: orderListVM.completeOrderData, title: "수령완료 주문 현황", titleColor: .black)
             }
             .navigationDestination(for: OrderItem.self) { item in
                 OrderDetailView(orderItem: item)
@@ -89,27 +94,33 @@ private struct CellView: View {
         self.orderItem = orderItem
     }
     
+    var statusColor: UIColor {
+        switch orderItem.status {
+        case .notAssign:
+            return .customGray
+        case .assign:
+            return .customRed
+        case .progress:
+            return .customBlue
+        case .complete:
+            return .black
+        default:
+            return .black
+        }
+    }
+    
+    var price: (String, Int) {
+        switch orderItem.status {
+        case .notAssign:
+            return ("총 예상금액", orderItem.expectedPrice)
+        case .assign, .progress, .complete:
+            return ("총 확정금액", orderItem.confirmedPrice)
+        default:
+            return ("", 0)
+        }
+    }
+    
     var body: some View {
-        var statusColor: UIColor {
-            switch orderItem.status {
-            case .notAssign:
-                return .customGray
-            case .assign:
-                return .customRed
-            case .complete:
-                return .customBlue
-            }
-        }
-        
-        var price: (String, Int) {
-            switch orderItem.status {
-            case .notAssign:
-                return ("총 예상금액", orderItem.expectedPrice)
-            case .assign, .complete:
-                return ("총 확정금액", orderItem.confirmedPrice)
-            }
-        }
-        
         VStack(spacing: 10) {
             HStack {
                 CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)

@@ -132,8 +132,12 @@ struct DdayView: View {
             return ("예약대기", .customDarkGray, .customGray)
         case .assign:
             return ("입금 대기중", .white, .customBlue)
-        case .complete:
+        case .progress:
             return (dateToDday(orderItem.date), .white, .customBlue)
+        case .complete:
+            return ("제작완료", .black, .customGray)
+        default:
+            return ("", .black, .black)
         }
     }
     
