@@ -49,6 +49,7 @@ class InstagramAPI: ObservableObject {
     }
     
     @Published var instaData = [InstaData]()
+    @Published var instaImageURLs: [String] = [String]()
     
     func fetchInstaData() {
         let instagramAPIKey = Bundle.main.infoDictionary?["INSTAGRAM_API_KEY"] ?? ""
@@ -75,7 +76,10 @@ class InstagramAPI: ObservableObject {
             do {
                 let results = try JSONDecoder().decode(Instagram.self, from: data)
                 DispatchQueue.main.async {
-                    self.instaData = results.data
+//                    self.instaData = results.data
+                    results.data.forEach { image in
+                        self.instaImageURLs.append(image.mediaURL)
+                    }
                 }
             } catch let error {
                 print(error.localizedDescription)
@@ -83,9 +87,5 @@ class InstagramAPI: ObservableObject {
             
         }
         task.resume()
-    }
-    
-    func gatherURLs() {
-        
     }
 }
