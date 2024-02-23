@@ -77,8 +77,10 @@ class InstagramAPI: ObservableObject {
                 let results = try JSONDecoder().decode(Instagram.self, from: data)
                 DispatchQueue.main.async {
 //                    self.instaData = results.data
-                    results.data.forEach { image in
-                        self.instaImageURLs.append(image.mediaURL)
+                    if self.instaImageURLs.isEmpty {
+                        results.data.forEach { image in
+                            self.instaImageURLs.append(image.mediaURL)
+                        }
                     }
                 }
             } catch let error {
