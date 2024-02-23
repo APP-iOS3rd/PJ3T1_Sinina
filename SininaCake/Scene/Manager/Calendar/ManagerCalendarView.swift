@@ -15,7 +15,6 @@ struct ManagerCalendarView: View {
     @State var daysList = [[DateValue]]()
     @State var edit: Bool = false
     
-    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
         ScrollView {
@@ -46,9 +45,9 @@ struct ManagerCalendarView: View {
                     )
             }
             VStack {
+
                 if edit {
                     if let selectedDate = selectedDate {
-                        
                         let formattedDateString = calendarVM.convert(date: selectedDate)
                         CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString) }, title: "주문 내역", titleColor: .black)
                         let _ = print(formattedDateString)
@@ -63,7 +62,7 @@ struct ManagerCalendarView: View {
             
         }
     }
-    
+
     private var headerView: some View {
         HStack {
             Spacer()
@@ -135,6 +134,7 @@ struct ManagerCalendarView: View {
                         CardView(value: $daysList[i][j], schedule: testSchedule, calendarVM:calendarVM, edit: $edit, calendarListVM: calendarListVM, selectedDate: $selectedDate) { selectedDateValue in
                             handleDateClick(dateValue: selectedDateValue)
                         }
+
                     }
                 }
                 .minimumScaleFactor(0.1)
@@ -145,7 +145,6 @@ struct ManagerCalendarView: View {
             calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            //calendarVM.loadDataFromFirestore()
             print("onappear - 캘린더뷰")
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
@@ -166,12 +165,12 @@ struct ManagerCalendarView: View {
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
             //calendarVM.loadDataFromFirestore() -> 어차피 리스너로 실시간 반영해서 로드할 필요x
+
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            
+                        for j in daysList[i].indices {                       
                             if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
                                 daysList[i][j] = dv
 //                                let _ = print("daylistid\(String(describing: daysList[i][j].date.withoutTime().toDateString())) ,dv.id \(String(describing: dv.date.withoutTime().toDateString())) ")
@@ -264,12 +263,14 @@ struct CardView: View {
     @Binding var selectedDate: Date?
     var onDateClick: (DateValue) -> Void
     @State private var showDetail = false
+
     
     var body: some View {
         ZStack() {
             ZStack {
                 let formattedDateString = calendarVM.convert(date: value.date)
                 if !CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString)}, title: "주문 내역", titleColor: .black).orderData.isEmpty {
+
                     Text(".")
                         .font(.system(size: 30))
                         .offset(x: 5, y: 2)
@@ -343,7 +344,6 @@ struct CardView: View {
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
-        
     }
 }
 

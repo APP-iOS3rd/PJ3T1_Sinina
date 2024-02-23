@@ -14,12 +14,16 @@ struct UserDetailView: View {
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
-        case .assign:
-            return ("승인 주문건 현황", .customBlue, "VectorTrue")
         case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "VectorFalse")
+            return ("견적서", .customGray, "VectorFalse")
+        case .assign:
+            return ("입금 대기중", .customRed, "VectorRed")
+        case .progress:
+            return ("주문 확정 및 제작중", .customBlue, "VectorTrue")
         case .complete:
-            return ("완료 주문건 현황", .black, "VectorTrue")
+            return ("제작 완료", .black, "VectorFalse")
+        case .pickup:
+            return ("수령 완료", .black, "VectorFalse")
         }
     }
     
@@ -81,26 +85,50 @@ struct UserDetailView: View {
 // MARK: - UserPriceView
 struct UserPriceView: View {
     @Binding var orderItem: OrderItem
+    let accountNumber = "신한 110 544 626471"
     
     var priceText: (String, String) {
         switch orderItem.status {
         case .notAssign:
             return ("총 예상금액", intToString(orderItem.expectedPrice))
-        case .assign, .complete:
+        default:
             return ("총 확정금액", intToString(orderItem.confirmedPrice))
         }
     }
     
-    var body: some View {
-        HStack {
-            CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
-            Spacer()
-                .frame(width: 45)
-            CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
-            Spacer()
+    var accountOpacity: Double {
+        switch orderItem.status {
+        case .notAssign, .complete, .pickup:
+            return 0
+        case .assign, .progress:
+            return 1
         }
-        .padding(.leading, 24)
-        .padding(.trailing, 24)
+    }
+    
+    var body: some View {
+        VStack(spacing: 18) {
+            HStack {
+                CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                Spacer()
+                    .frame(width: 45)
+                CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            .padding(.leading, 24)
+            .padding(.trailing, 24)
+            
+            HStack {
+                CustomText(title: "계좌번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+                Spacer()
+                    .frame(width: 63)
+                CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+                Spacer()
+            }
+            .padding(.leading, 24)
+            .padding(.trailing, 24)
+            .padding(.bottom, 24)
+            .opacity(accountOpacity)
+        }
     }
 }
 
