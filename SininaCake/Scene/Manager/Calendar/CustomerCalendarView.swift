@@ -26,7 +26,8 @@ struct CustomerCalendarView: View {
                 CustomText(title: selectedTime, textColor: .black, textWeight: .semibold, textSize: 18)
                 CustomText(title: dateToTime(orderData.orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
                     .padding(.trailing,(UIScreen.main.bounds.width) * 24/430)
-                    .onTapGesture {isTimePickerPresented.toggle()
+                    .onTapGesture {
+                    isTimePickerPresented.toggle()
                     }
                     .sheet(isPresented: $isTimePickerPresented, content: {
                         TimePickerView(selectedDate: Binding(
@@ -131,18 +132,39 @@ struct CustomerCalendarView: View {
             }
         }
         .onDisappear()
-        .onChange(of: calendarVM.monthOffset) { _ in
-            print("onchange - monthoffset, \(calendarVM.monthOffset)")
+        .onAppear() {
+            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
+            //calendarVM.loadDataFromFirestore()
+            print("onappear - 캘린더뷰")
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
                         for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
                                 daysList[i][j] = dv
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .onChange(of: calendarVM.monthOffset) { _ in
+            // updating Month...
+            print("onchange - monthoffset, \(calendarVM.monthOffset)")
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            for dv in calendarVM.dateValues {
+                if calendarVM.currentDate.month == dv.date.month {
+                    print("onchange - month : \(dv.date.month)")
+                    for i in daysList.indices {
+                        for j in daysList[i].indices {
+                            
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
+                                daysList[i][j] = dv
+                                
                             }
                         }
                     }
@@ -151,48 +173,30 @@ struct CustomerCalendarView: View {
         }
         .onChange(of:calendarVM.dateValues) { _ in
             print("onchange - dataValues , \(calendarVM.dateValues.count)")
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
                     for i in daysList.indices {
                         for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
+                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
                                 daysList[i][j] = dv
+                                print(" dv 컬러 \(dv.color.color)")
                             }
                         }
                     }
                 }
             }
         }
-        .onChange(of:selectedDate) { newSelectedDate in
-            print("onChange - newSelectedDate \(String(describing: newSelectedDate?.month))")
-            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
+        .onChange(of:selectedDate) { _ in
+            if let selectedDate = selectedDate {
+                orderData.orderItem.date = selectedDate
+            }
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
-            if let newSelectedDate = newSelectedDate {
-                orderData.orderItem.date = newSelectedDate
-            }
+
         }
-        .onAppear() {
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
-            print("onappear - 캘린더뷰")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
     }
     
     private var bookingView: some View {
@@ -234,7 +238,7 @@ struct CustomerCalendarView: View {
     }
     
     private func handleDateClick(dateValue: DateValue) {
-        selectedDate = dateValue.date.withoutTime()
+        selectedDate = dateValue.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
         let dateString = dateFormatter.string(from: dateValue.date)
@@ -250,110 +254,78 @@ struct CustomerCardView: View {
     @ObservedObject var calendarVM: ManagerCalendarViewModel
     @Binding var selectedDate: Date?
     @State private var showAlert: Bool = false
+    @State private var showDetail = false
     var onDateClick: (DateValue) -> Void
 
-    
     var body: some View {
         ZStack() {
-           HStack {
+            HStack {
                 if value.day > 0 {
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
                             .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
-                    } else {
-                         Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.color.color)
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    if value.color != .blue {
-                                        showAlert = true
-                                    } else {
-                                        onDateClick(value)
-                                    }
-                            }
-                                .alert(isPresented: $showAlert) {
-                                    Alert(
-                                        title: Text("error"),
-                                        message: Text("예약가능(파란)날짜가 아닙니다"),
-                                        dismissButton: .default(Text("확인"))
-                                    )
+                    } else if schedule.startDate.withoutTime() == value.date {
+                        Text("\(value.day)")
+                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                            .foregroundColor(.white)
+                            .padding([.leading, .bottom], 10)
+                            .background(Circle()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(Color(UIColor.customBlue))
+                                .offset(x:5.2,y:-3.7)
+                            )
+                            .scaleEffect(showDetail ? 1.3 : 1)
+                            .onTapGesture {
+                                showAlert = true
+                                withAnimation {
+                                    showDetail.toggle()
                                 }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    withAnimation {
+                                        showDetail = false
+                                    }
+                                }
+                            }
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text("error"),
+                                    message: Text("예약가능날짜가 아닙니다"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                            }
+                    } else {
+                        Text("\(value.day)")
+                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                            .foregroundColor(value.color.color)
+                            .padding([.leading, .bottom], 10)
+                            .scaleEffect(showDetail ? 1.3 : 1)
+                            .onTapGesture {
+                                withAnimation {
+                                    showDetail.toggle()
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    withAnimation {
+                                        showDetail = false
+                                    }
+                                }
+                                if value.color != .blue {
+                                    showAlert = true
+                                } else {
+                                    onDateClick(value)
+                                }
+                            }
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text("error"),
+                                    message: Text("예약가능날짜가 아닙니다"),
+                                    dismissButton: .default(Text("확인"))
+                                )
+                            }
                     }
                 }
             }
-//            HStack {
-//                if value.day > 0 {
-//                    if value.isNotCurrentMonth {
-//                        Text("\(value.day)")
-//                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-//                            .foregroundColor(Color(UIColor.customGray))
-//                            .padding([.leading, .bottom], 10)
-//                    } else {
-//                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate {
-//                            Text("\(value.day)")
-//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-//                                .foregroundColor(value.color.color)
-//                                .padding([.leading, .bottom], 10)
-//                                .onTapGesture {
-//                                    showAlert = true
-//                                }
-//                                .alert(isPresented: $showAlert) {
-//                                    Alert(
-//                                        title: Text("error"),
-//                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
-//                                        dismissButton: .default(Text("확인"))
-//                                    )
-//                                }
-//                        } else if schedule.startDate.withoutTime() == value.date {
-//                            Text("\(value.day)")
-//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-//                                .foregroundColor(.white)
-//                                .padding([.leading, .bottom], 10)
-//                                .background(Circle()
-//                                    .frame(width: 40, height: 40)
-//                                    .foregroundColor(Color(UIColor.customBlue))
-//                                    .offset(x:5.2,y:-3.7)
-//                                    .onTapGesture {
-//                                        showAlert = true
-//                                    }
-//                                    .alert(isPresented: $showAlert) {
-//                                        Alert(
-//                                            title: Text("error"),
-//                                            message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
-//                                            dismissButton: .default(Text("확인"))
-//                                        )
-//                                    }
-//                                )
-//                        } else if schedule.startDate.withoutTime() > value.date {
-//                            Text("\(value.day)")
-//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-//                                .foregroundColor(value.color.color)
-//                                .padding([.leading, .bottom], 10)
-//                                .onTapGesture {
-//                                
-//                                }
-//                                .alert(isPresented: $showAlert) {
-//                                    Alert(
-//                                        title: Text("error"),
-//                                        message: Text("\(schedule.endDate.day + 1)일부터 예약이 가능합니다"),
-//                                        dismissButton: .default(Text("확인"))
-//                                    )
-//                                }
-//                        }
-//                        else {
-//                            Text("\(value.day)")
-//                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-//                                .foregroundColor(value.color.color)
-//                                .onTapGesture {
-//                                    onDateClick(value)
-//                                }
-//                        }
-//                    }
-//                }
-//            }
         }
         .frame(width: UIScreen.main.bounds.width / 13)
         .frame(height: 40)
@@ -362,14 +334,17 @@ struct CustomerCardView: View {
 
 struct TimePickerView: View {
     @Binding var selectedDate: Date
+
     var body: some View {
-        DatePicker("", selection: $selectedDate, displayedComponents: [.hourAndMinute])
+        let startDate = Calendar.current.date(bySettingHour: 10, minute: 30, second: 0, of: selectedDate) ?? Date()
+        let endDate = Calendar.current.date(bySettingHour: 19, minute: 30, second: 0, of: selectedDate) ?? Date()
+                
+        DatePicker("", selection: $selectedDate, in: startDate...endDate, displayedComponents: [.hourAndMinute])
             .datePickerStyle(CompactDatePickerStyle())
             .labelsHidden()
             .clipped()
             .onAppear {
                 UIDatePicker.appearance().minuteInterval = 10
-
             }
     }
 }

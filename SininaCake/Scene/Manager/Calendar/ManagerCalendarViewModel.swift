@@ -8,14 +8,12 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
  //날짜 칸 표시를 위한 일자 정보
-struct DateValue: Identifiable, Decodable, Comparable {
+struct DateValue: Identifiable, Decodable, Equatable {
 
-    @DocumentID var id: String?
+    var id: String?
     var day: Int
     var date: Date
     var isNotCurrentMonth: Bool = false
-    var isSelected: Bool = false
-    var isSecondSelected = false
     var color: TextColor
 
     enum TextColor: String, Decodable {
@@ -42,27 +40,14 @@ struct DateValue: Identifiable, Decodable, Comparable {
         self.day = day
         self.date = date
         self.isNotCurrentMonth = isNotCurrentMonth
-        self.color = color ?? .blue
+        self.color = color ?? .notcurrent
+        self.id = date.withoutTime().toDateString()
     }
     
-    
-    mutating func selectedToggle() {
-        if isSelected {
-            isSelected = false
-            isSecondSelected = true
-        } else if isSecondSelected {
-            isSecondSelected = false
-        } else {
-            isSelected = true
-        }
-    }
-
     static func < (lhs: DateValue, rhs: DateValue) -> Bool {
-        return lhs.day < rhs.day
+        return lhs.day == rhs.day
     }
-    
-    
-    
+ 
 }
 
  //일정 정보
@@ -88,8 +73,6 @@ extension DateValue {
             let day = documentData["day"] as? Int,
             let dateTimestamp = documentData["date"] as? Timestamp,
             let isNotCurrentMonth = documentData["isNotCurrentMonth"] as? Bool,
-            let isSelected = documentData["isSelected"] as? Bool,
-            let isSecondSelected = documentData["isSecondSelected"] as? Bool,
             let colorString = documentData["color"] as? String,
             let color = TextColor(rawValue: colorString)
                 
@@ -100,8 +83,6 @@ extension DateValue {
         self.day = day
         self.date = dateTimestamp.dateValue()
         self.isNotCurrentMonth = isNotCurrentMonth
-        self.isSelected = isSelected
-        self.isSecondSelected = isSecondSelected
         self.color = color
         self.id = date.withoutTime().toDateString()
     }
@@ -111,12 +92,81 @@ extension DateValue {
             "day": day,
             "date": Timestamp(date: date),
             "isNotCurrentMonth": isNotCurrentMonth,
-            "isSelected": isSelected,
-            "isSecondSelected": isSecondSelected,
             "color": color.rawValue
         ]
     }
     
+    
+    
+}
+
+
+class ManagerCalendarViewModel: ObservableObject {
+    
+    @Published var dateValues: [DateValue] = []
+    @Published var currentDate = Date()
+    @Published var monthOffset = 0
+ 
+
+    
+    
+    private var listener: ListenerRegistration?
+    
+    init() {
+        observeFirestoreChanges()
+    }
+
+//    func changeDateColorToBlue(date: Date) {
+//        if let index = dateValues.firstIndex(where: { $0.date == date }) {
+//            dateValues[index].color = .blue
+//            print("색 바뀜 -> 블루 \(dateValues[index].color)")
+//        }
+//        
+//    }
+//
+//    func changeDateColorToGray(date: Date) {
+//        if let index = dateValues.firstIndex(where: { $0.date == date }) {
+//            dateValues[index].color = .gray
+//            print("색 바뀜 -> 그레이 \(dateValues[index].color)")
+//        }
+//    }
+//
+//    func changeDateColorToRed(date: Date) {
+//        if let index = dateValues.firstIndex(where: { $0.date == date }) {
+//            dateValues[index].color = .red
+//            print("색 바뀜 -> 레드 \(dateValues[index].color)")
+//        }
+//    }
+    // 이미 리스너에서 색변경이 반영되므로 필요없음
+    
+    func convert(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: date)
+    }
+    
+    func observeFirestoreChanges() {
+        let db = Firestore.firestore()
+        let collectionReference = db.collection("dateValues")
+        
+        listener = collectionReference.addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
+                return
+            }
+            
+            self.dateValues = documents.compactMap { queryDocumentSnapshot in
+                do {
+                    // Firestore에서 직렬화된 데이터를 가져와서 DateValue로 변환
+                    let data = try queryDocumentSnapshot.data(as: DateValue.self)
+                    return data
+                } catch {
+                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
+                    return nil
+                }
+            }
+        }
+    }
     
     func saveDateValueToFirestore(dateValue: DateValue) {
         let db = Firestore.firestore()
@@ -147,70 +197,6 @@ extension DateValue {
                 completion(dateValue)
             } else {
                 completion(nil)
-            }
-        }
-    }
-}
-
-
-class ManagerCalendarViewModel: ObservableObject {
-    
-    @Published var dateValues: [DateValue] = []
-    @Published var currentDate = Date()
-    @Published var monthOffset = 0
- 
-
-    
-    
-    private var listener: ListenerRegistration?
-    
-    init() {
-        observeFirestoreChanges()
-    }
-
-    func changeDateColorToBlue(date: Date) {
-        if let index = dateValues.firstIndex(where: { $0.date == date }) {
-            dateValues[index].color = .blue
-        }
-    }
-
-    func changeDateColorToGray(date: Date) {
-        if let index = dateValues.firstIndex(where: { $0.date == date }) {
-            dateValues[index].color = .gray
-        }
-    }
-
-    func changeDateColorToRed(date: Date) {
-        if let index = dateValues.firstIndex(where: { $0.date == date }) {
-            dateValues[index].color = .red
-        }
-    }
-    
-    func convert(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        return dateFormatter.string(from: date)
-    }
-    
-    func observeFirestoreChanges() {
-        let db = Firestore.firestore()
-        let collectionReference = db.collection("dateValues")
-        
-        listener = collectionReference.addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else {
-                print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
-                return
-            }
-            
-            self.dateValues = documents.compactMap { queryDocumentSnapshot in
-                do {
-                    // Firestore에서 직렬화된 데이터를 가져와서 DateValue로 변환
-                    let data = try queryDocumentSnapshot.data(as: DateValue.self)
-                    return data
-                } catch {
-                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
-                    return nil
-                }
             }
         }
     }
@@ -266,20 +252,11 @@ class ManagerCalendarViewModel: ObservableObject {
             }
         }
     }
+    
     private func timestampToDate(_ date: Timestamp) -> Date {
         return date.dateValue()
     }
-    
-    func getTextColorForDateValue(_ dateValue: DateValue) -> Color {
-        if dateValue.isSelected {
-            return Color(UIColor.customBlue)
-        } else if dateValue.isSecondSelected {
-            return Color(UIColor.customRed)
-        } else {
-            return Color(UIColor.customDarkGray)
-        }
-    }
-    
+
     func removePastDateValues() {
         let db = Firestore.firestore()
         let collectionReference = db.collection("dateValues")

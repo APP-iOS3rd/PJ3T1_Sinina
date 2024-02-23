@@ -17,7 +17,7 @@ struct OrderView: View {
                     
                     //OrderCalendarView(orderData: OrderVM)
                     CustomerCalendarView(orderData: OrderVM)
-                    
+                        .padding(.bottom,10)
                     OrderCakeView(orderData: OrderVM)
                     
                     OrderSheetView(orderData: OrderVM)

@@ -10,22 +10,26 @@ struct HomeCalendarView: View {
     @ObservedObject var calendarVM = ManagerCalendarViewModel()
     @State private var selectedDate: Date?
     @State var daysList = [[DateValue]]()
-    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             CustomText(title: "이달의 스케줄", textColor: .black, textWeight: .semibold, textSize: 24)
+                .padding(.bottom, 5)
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: 342, height: 441)
+                .frame(height: 444)
+                .cornerRadius(12)
+                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                 .background(
-                    ZStack {
+                    ZStack() {
                         Rectangle()
                             .foregroundColor(.white)
                             .cornerRadius(12)
                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                         VStack() {
                             headerView
+                            .fixedSize(horizontal: false, vertical: true)
                             Divider()
                                 .frame(width: 302)
                             weekView
@@ -38,8 +42,11 @@ struct HomeCalendarView: View {
                     }
                 )
         }
+        .padding(.trailing, 24)
+        .padding(.leading, 24)
+        
     }
-    
+
     private var headerView: some View {
         HStack {
             Spacer()
@@ -109,7 +116,7 @@ struct HomeCalendarView: View {
             calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
+
             print("onappear - 캘린더뷰")
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
@@ -129,7 +136,7 @@ struct HomeCalendarView: View {
             print("onchange - monthoffset, \(calendarVM.monthOffset)")
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
+            //calendarVM.loadDataFromFirestore()
             for dv in calendarVM.dateValues {
                 if calendarVM.currentDate.month == dv.date.month {
                     print("onchange - month : \(dv.date.month)")
@@ -206,28 +213,38 @@ struct HomeCardView: View {
     @Binding var selectedDate: Date?
     
     var body: some View {
-        ZStack() {
-            HStack {
-                if value.day > 0 {
-                    if value.isNotCurrentMonth {
-                        Text("\(value.day)")
-                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                            .foregroundColor(Color(UIColor.customGray))
-                            .padding([.leading, .bottom], 10)
-                    } else {
-                         Text("\(value.day)")
+            ZStack() {
+                HStack {
+                    if value.day > 0 {
+                        if value.isNotCurrentMonth {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(Color(UIColor.customGray))
+                                .padding([.leading, .bottom], 10)
+                        } else if schedule.startDate.withoutTime() == value.date {
+                            Text("\(value.day)")
+                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                                .foregroundColor(.white)
+                                .padding([.leading, .bottom], 10)
+                                .background(Circle()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(Color(UIColor.customBlue))
+                                    .offset(x:5.2,y:-3.7)
+                                )
+                        } else {
+                            Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                                 .foregroundColor(value.color.color)
                                 .padding([.leading, .bottom], 10)
                                 .onTapGesture {
-                                   
-                            }
+                                    
+                                }
+                        }
                     }
                 }
             }
-        }
-        .frame(width: UIScreen.main.bounds.width / 13)
-        .frame(height: 40)
+            .frame(width: UIScreen.main.bounds.width / 13)
+            .frame(height: 40)
     }
 }
 
