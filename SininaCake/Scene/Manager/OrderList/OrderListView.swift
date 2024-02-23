@@ -28,7 +28,7 @@ struct OrderListView: View {
                 Spacer()
                     .frame(height: 28)
                 
-                ListView(orderData: orderListVM.completeOrderData, title: "수령완료 주문 현황", titleColor: .black)
+                ListView(orderData: orderListVM.completeOrderData, title: "제작완료 주문 현황", titleColor: .black)
             }
             .navigationDestination(for: OrderItem.self) { item in
                 OrderDetailView(orderItem: item)
