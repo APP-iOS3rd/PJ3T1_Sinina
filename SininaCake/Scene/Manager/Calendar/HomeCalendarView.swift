@@ -18,11 +18,11 @@ struct HomeCalendarView: View {
                 .padding(.bottom, 5)
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(height: 444)
+                .frame(height: 500)
                 .cornerRadius(12)
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                 .background(
-                    ZStack() {
+                    ZStack(alignment:.top) {
                         Rectangle()
                             .foregroundColor(.white)
                             .cornerRadius(12)
@@ -55,8 +55,11 @@ struct HomeCalendarView: View {
             Button {
                 calendarVM.monthOffset -= 1
                 
-            } label: {
+            }
+        label: {
                 Image("angle-left")
+                .opacity(calendarVM.monthOffset <= -1 ? 0 : 1)
+                        .scaleEffect(calendarVM.monthOffset <= -1 ? 0.001 : 1)
             }
             .offset(x: 5)
             Text(calendarVM.month())
@@ -72,9 +75,10 @@ struct HomeCalendarView: View {
                 calendarVM.monthOffset += 1
             } label: {
                 Image("angle-right")
+                    .opacity(calendarVM.monthOffset >= 1 ? 0 : 1)
+                            .scaleEffect(calendarVM.monthOffset >= 1 ? 0.001 : 1)
             }
             .offset(x: 5)
-            
             Spacer()
             Spacer()
         }

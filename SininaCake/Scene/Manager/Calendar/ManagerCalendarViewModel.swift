@@ -8,7 +8,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
  //날짜 칸 표시를 위한 일자 정보
-struct DateValue: Identifiable, Decodable, Equatable {
+struct DateValue: Identifiable, Decodable, Comparable {
 
     var id: String?
     var day: Int
@@ -41,11 +41,11 @@ struct DateValue: Identifiable, Decodable, Equatable {
         self.date = date
         self.isNotCurrentMonth = isNotCurrentMonth
         self.color = color ?? .notcurrent
-        self.id = date.withoutTime().toDateString()
+        self.id = "\(date.year)-\(date.month)-\(date.day)"
     }
     
     static func < (lhs: DateValue, rhs: DateValue) -> Bool {
-        return lhs.day == rhs.day
+        return lhs.day < rhs.day
     }
  
 }
@@ -84,7 +84,7 @@ extension DateValue {
         self.date = dateTimestamp.dateValue()
         self.isNotCurrentMonth = isNotCurrentMonth
         self.color = color
-        self.id = date.withoutTime().toDateString()
+        self.id = "\(date.year)-\(date.month)-\(date.day)"
     }
     
     var toFirestore: [String: Any] {
@@ -105,7 +105,15 @@ class ManagerCalendarViewModel: ObservableObject {
     
     @Published var dateValues: [DateValue] = []
     @Published var currentDate = Date()
-    @Published var monthOffset = 0
+    @Published var monthOffset = 0 {
+            didSet {
+                if monthOffset > 1 {
+                    monthOffset = 1
+                } else if monthOffset < -1 {
+                    monthOffset = -1
+                }
+            }
+        }
  
 
     
@@ -148,6 +156,7 @@ class ManagerCalendarViewModel: ObservableObject {
     func observeFirestoreChanges() {
         let db = Firestore.firestore()
         let collectionReference = db.collection("dateValues")
+        
         
         listener = collectionReference.addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {

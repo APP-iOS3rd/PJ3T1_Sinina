@@ -73,8 +73,11 @@ struct CustomerCalendarView: View {
             Button {
                 calendarVM.monthOffset -= 1
                 
-            } label: {
+            }
+        label: {
                 Image("angle-left")
+                .opacity(calendarVM.monthOffset <= -1 ? 0 : 1)
+                        .scaleEffect(calendarVM.monthOffset <= -1 ? 0.001 : 1)
             }
             .offset(x: 5)
             Text(calendarVM.month())
@@ -90,6 +93,8 @@ struct CustomerCalendarView: View {
                 calendarVM.monthOffset += 1
             } label: {
                 Image("angle-right")
+                    .opacity(calendarVM.monthOffset >= 1 ? 0 : 1)
+                            .scaleEffect(calendarVM.monthOffset >= 1 ? 0.001 : 1)
             }
             .offset(x: 5)
             
@@ -188,14 +193,16 @@ struct CustomerCalendarView: View {
                     }
                 }
             }
+            
         }
-        .onChange(of:selectedDate) { _ in
+        .onChange(of:selectedDate) { selectedDate in
+            
+            print("Selected Date Changed: \(String(describing: selectedDate))")
             if let selectedDate = selectedDate {
                 orderData.orderItem.date = selectedDate
+                print("Order Item Date Changed: \(orderData.orderItem.date)")
             }
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-
+            
         }
     }
     
@@ -238,13 +245,12 @@ struct CustomerCalendarView: View {
     }
     
     private func handleDateClick(dateValue: DateValue) {
-        selectedDate = dateValue.date
+        //selectedDate = dateValue.date 값을 다시 넣을 필요 x
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
         let dateString = dateFormatter.string(from: dateValue.date)
         selectedTime = dateString
         print("Filtered Orders for \(dateString)")
-        
     }
 }
 
@@ -302,14 +308,7 @@ struct CustomerCardView: View {
                             .padding([.leading, .bottom], 10)
                             .scaleEffect(showDetail ? 1.3 : 1)
                             .onTapGesture {
-                                withAnimation {
-                                    showDetail.toggle()
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    withAnimation {
-                                        showDetail = false
-                                    }
-                                }
+                                
                                 if value.color != .blue {
                                     showAlert = true
                                 } else {
