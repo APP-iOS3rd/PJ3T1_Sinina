@@ -14,12 +14,16 @@ struct UserDetailView: View {
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
-        case .assign:
-            return ("승인 주문건 현황", .customBlue, "VectorTrue")
         case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "VectorFalse")
+            return ("견적서", .customGray, "VectorFalse")
+        case .assign:
+            return ("입금 대기중", .customRed, "VectorRed")
+        case .progress:
+            return ("주문 확정 및 제작중", .customBlue, "VectorTrue")
         case .complete:
-            return ("완료 주문건 현황", .black, "VectorTrue")
+            return ("제작 완료", .black, "VectorFalse")
+        case .pickup:
+            return ("수령 완료", .black, "VectorFalse")
         }
     }
     
@@ -87,17 +91,17 @@ struct UserPriceView: View {
         switch orderItem.status {
         case .notAssign:
             return ("총 예상금액", intToString(orderItem.expectedPrice))
-        case .assign, .complete:
+        default:
             return ("총 확정금액", intToString(orderItem.confirmedPrice))
         }
     }
     
     var accountOpacity: Double {
         switch orderItem.status {
-        case .notAssign:
-            return 1
-        case .assign, .complete:
+        case .notAssign, .complete, .pickup:
             return 0
+        case .assign, .progress:
+            return 1
         }
     }
     

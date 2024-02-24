@@ -29,7 +29,9 @@ struct OrderItem: Hashable {
 enum OrderStatus {
     case notAssign
     case assign
+    case progress
     case complete
+    case pickup
 }
 
 enum IcePack {

@@ -224,8 +224,12 @@ func statusToString(_ status: OrderStatus) -> String {
         return "승인"
     case .notAssign:
         return "미승인"
+    case .progress:
+        return "진행중"
     case .complete:
-        return "완료"
+        return "제작완료"
+    case .pickup:
+        return "수령완료"
     }
 }
 

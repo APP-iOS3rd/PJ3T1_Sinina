@@ -23,14 +23,18 @@ struct OrderDetailView: View {
             return ("견적서", .customGray, "VectorFalse")
         case .assign:
             return ("입금 대기중", .customRed, "VectorRed")
-        case .complete:
+        case .progress:
             return ("주문 확정 및 제작중", .customBlue, "VectorTrue")
+        case .complete:
+            return ("제작 완료", .black, "VectorFalse")
+        case .pickup:
+            return ("수령 완료", .black, "VectorFalse")
         }
     }
     
     var opacity: Double {
         switch orderItem.status {
-        case .complete:
+        case .pickup:
             return 0
         default:
             return 1
@@ -303,7 +307,7 @@ struct PriceView: View {
         switch orderItem.status {
         case .notAssign:
             return ("총 예상금액", intToString(orderItem.expectedPrice))
-        case .assign, .complete:
+        case .assign, .progress, .complete, .pickup:
             return ("총 확정금액", intToString(orderItem.confirmedPrice))
         }
     }
@@ -312,7 +316,7 @@ struct PriceView: View {
         switch orderItem.status {
         case .notAssign:
             return 1
-        case .assign, .complete:
+        default:
             return 0
         }
     }
@@ -410,14 +414,18 @@ struct BottomButton: View {
             }
         case .assign:
             return ("입금 확인 / 예약 확정", .customBlue)
+        case .progress:
+            return ("제작 완료", .customBlue)
         case .complete:
             return ("픽업 완료", .black)
+        default:
+            return ("", .black)
         }
     }
     
     var buttonToggle: Bool {
         switch orderItem.status {
-        case .assign:
+        case .assign, .progress, .complete:
             return false
         default:
             return toggle
@@ -427,11 +435,15 @@ struct BottomButton: View {
     var messageText: String {
         switch orderItem.status {
         case .notAssign:
-            return "금액이 확정되었습니다! \(account)로 \(totalPrice)원 보내주시면 예약 확정됩니다!😄"
+            return "금액이 확정되었습니다! \(account)로 \(totalPrice)원 보내주시면 예약 확정됩니다!😊"
         case .assign:
-            return "예약이 확정되었습니다! \(orderItem.date.dateToString()) \(orderItem.date.dateToTime())까지 시니나케이크로 와주세요!"
+            return "예약이 확정되었습니다! 감사합니다~"
+        case .progress:
+            return "케이크 제작이 완료되었습니다! \(orderItem.date.dateToString()) \(orderItem.date.dateToTime())까지 시니나케이크로 와주세요!"
         case .complete:
             return "감사합니다. 픽업이 완료되었습니다! 다음에 또 이용해주세요🥰"
+        default:
+            return ""
         }
     }
 
@@ -443,10 +455,9 @@ struct BottomButton: View {
             case .notAssign:
                 orderDetailVM.updateStatus(orderItem: orderItem)
                 orderDetailVM.updatePrice(orderItem: orderItem, stringToInt(totalPrice))
-            case .assign:
+            case .assign, .progress, .complete:
                 orderDetailVM.updateStatus(orderItem: orderItem)
-            // TODO: - 완료 로직 추가
-            case .complete: break
+            case .pickup: break
             }
             
             presentationMode.wrappedValue.dismiss()

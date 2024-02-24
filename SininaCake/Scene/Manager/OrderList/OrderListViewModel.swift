@@ -11,6 +11,7 @@ import Firebase
 class OrderListViewModel: ObservableObject {
     @Published var assignOrderData: [OrderItem] = []
     @Published var notAssignOrderData: [OrderItem] = []
+    @Published var progressOrderData: [OrderItem] = []
     @Published var completeOrderData: [OrderItem] = []
     
     var db: Firestore!
@@ -28,6 +29,7 @@ class OrderListViewModel: ObservableObject {
     func fetchData() {
         assignOrderData = []
         notAssignOrderData = []
+        progressOrderData = []
         completeOrderData = []
         
         let query: Query = ordersRef.order(by: "orderTime")
@@ -57,14 +59,16 @@ class OrderListViewModel: ObservableObject {
                         let confirmedPrice: Int = documentData["confirmedPrice"] as? Int ?? 0
                         let status: String = documentData["status"] as? String ?? ""
                         
-                        let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
+                        let orderData = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
                         if self.stringToStatus(status) == .assign {
-                            assignOrderData.append(orderDate)
+                            assignOrderData.append(orderData)
                         } else if self.stringToStatus(status) == .notAssign {
-                            notAssignOrderData.append(orderDate)
+                            notAssignOrderData.append(orderData)
                         } else if self.stringToStatus(status) == .complete {
-                            completeOrderData.append(orderDate)
+                            completeOrderData.append(orderData)
+                        } else if self.stringToStatus(status) == .progress {
+                            progressOrderData.append(orderData)
                         }
                     }
                 }
@@ -82,7 +86,9 @@ class OrderListViewModel: ObservableObject {
             return .assign
         case "미승인":
             return .notAssign
-        case "완료":
+        case "진행중":
+            return .progress
+        case "제작완료":
             return .complete
         default:
             return .notAssign

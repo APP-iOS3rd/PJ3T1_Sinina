@@ -12,7 +12,7 @@ struct ManagerCalendarListView: View {
     
     var body: some View {
         ScrollView {
-            ListView(orderData: calendarListVM.allOrderData, title: "모든 주문 현황", titleColor: .black)
+            CalListView(orderData: calendarListVM.allOrderData, title: "모든 주문 현황", titleColor: .black)
         }
         .onAppear {
             calendarListVM.fetchData()
@@ -54,7 +54,10 @@ struct CalListView: View {
                     )
             } else {
                 ForEach(0..<orderData.count, id: \.self) { i in
-                    NavigationLink(value: orderData[i]) {
+//                    NavigationLink(value: orderData[i]) {
+//                        CalendarCellView(orderItem: orderData[i])
+//                    }
+                    NavigationLink(destination: OrderDetailView(orderItem: orderData[i])) {
                         CalendarCellView(orderItem: orderData[i])
                     }
                 }
@@ -77,11 +80,11 @@ private struct CalendarCellView: View {
     var body: some View {
         var statusColor: UIColor {
             switch orderItem.status {
-            case .assign:
-                return .customBlue
             case .notAssign:
                 return .customGray
-            case .complete:
+            case .assign, .progress:
+                return .customBlue
+            case .complete, .pickup:
                 return .black
             }
         }
@@ -90,7 +93,7 @@ private struct CalendarCellView: View {
             switch orderItem.status {
             case .notAssign:
                 return ("총 예상금액", orderItem.expectedPrice)
-            case .assign, .complete:
+            default:
                 return ("총 확정금액", orderItem.confirmedPrice)
             }
         }
