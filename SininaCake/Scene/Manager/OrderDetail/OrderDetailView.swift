@@ -164,7 +164,7 @@ struct CakeInfoView: View {
             VStack(alignment: .leading, spacing: 18) {
                 CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.sheet, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.cream, textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.cream.replacingOccurrences(of: "\n", with: ""), textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.text, textColor: .black, textWeight: .semibold, textSize: 16)
             }
             
