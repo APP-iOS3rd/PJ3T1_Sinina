@@ -100,15 +100,7 @@ class ManagerCalendarViewModel: ObservableObject {
     
     @Published var dateValues: [DateValue] = []
     @Published var currentDate = Date()
-    @Published var monthOffset = 0 {
-            didSet {
-                if monthOffset > 1 {
-                    monthOffset = 1
-                } else if monthOffset < -1 {
-                    monthOffset = -1
-                }
-            }
-        }
+    @Published var monthOffset = 0 
  
     private var listener: ListenerRegistration?
     

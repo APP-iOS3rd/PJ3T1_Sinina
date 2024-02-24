@@ -8,7 +8,7 @@
 import SwiftUI
 struct CustomerCalendarView: View {
     @Environment(\.sizeCategory) var sizeCategory
-    @ObservedObject var calendarVM = ManagerCalendarViewModel()
+    @StateObject var calendarVM = ManagerCalendarViewModel()
     @State private var selectedDate: Date?
     @State var daysList = [[DateValue]]()
     @ObservedObject var orderData: OrderViewModel
@@ -20,14 +20,14 @@ struct CustomerCalendarView: View {
     var body: some View {
         VStack {
             HStack {
-                CustomText(title: "픽업 날짜/시간", textColor: .black, textWeight: .semibold , textSize: 18)
+                CustomText(title: "픽업 날짜/시간", textColor: .black, textWeight: .semibold , textSize: 20)
                     .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
                 Spacer()
-                CustomText(title: selectedTime, textColor: .black, textWeight: .semibold, textSize: 18)
-                CustomText(title: dateToTime(orderData.orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)
+                CustomText(title: selectedTime, textColor: .customBlue, textWeight: .semibold, textSize: 20)
+                CustomText(title: dateToTime(orderData.orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
                     .padding(.trailing,(UIScreen.main.bounds.width) * 24/430)
                     .onTapGesture {
-                    isTimePickerPresented.toggle()
+                        isTimePickerPresented.toggle()
                     }
                     .sheet(isPresented: $isTimePickerPresented, content: {
                         TimePickerView(selectedDate: Binding(
@@ -52,11 +52,11 @@ struct CustomerCalendarView: View {
                             headerView
                                 .fixedSize(horizontal: false, vertical: true)
                             Divider()
-                                .frame(width: 302)
+                                .frame(width: UIScreen.UIWidth(302))
                             weekView
                             cardView
                             Divider()
-                                .frame(width: 302)
+                                .frame(width: UIScreen.UIWidth(302))
                             bookingView
                                 .padding([.horizontal,.vertical], 24)
                         }
@@ -64,23 +64,65 @@ struct CustomerCalendarView: View {
                 )
                 .padding()
         }
+        .onDisappear()
+        .onAppear() {
+            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            print("onappear - 캘린더뷰")
+            initialize()
+        }
+        .onChange(of: calendarVM.monthOffset) { _ in
+            // updating Month...
+            print("onchange - monthoffset, \(calendarVM.monthOffset)")
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            initialize()
+        }
+        .onChange(of:calendarVM.dateValues) { _ in
+            print("onchange - dataValues , \(calendarVM.dateValues.count)")
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            initialize()
+        }
+        .onChange(of:selectedDate) { selectedDate in
+            print("Selected Date Changed: \(String(describing: selectedDate))")
+            if let selectedDate = selectedDate {
+                orderData.orderItem.date = selectedDate
+                print("Order Item Date Changed: \(orderData.orderItem.date)")
+            }
+            
+        }
+    }
+    
+    private func initialize() {
+        for i in daysList.indices {
+            for j in daysList[i].indices {
+                let currentDate = daysList[i][j].date.withoutTime().toDateString()
+                if let dv = calendarVM.dateValues.first(where: { $0.date.withoutTime().toDateString() == currentDate }) {
+                    if calendarVM.currentDate.month == dv.date.month {
+                        print("onchange - month : \(dv.date.month)")
+                        daysList[i][j] = dv
+                    }
+                }
+            }
+        }
     }
     
     private var headerView: some View {
         HStack {
             Spacer()
             Spacer()
-            
             Button {
                 calendarVM.monthOffset -= 1
                 
             }
         label: {
-                Image("angle-left")
-                .opacity(calendarVM.monthOffset <= -1 ? 0 : 1)
-                        .scaleEffect(calendarVM.monthOffset <= -1 ? 0.001 : 1)
-            }
-            .offset(x: 5)
+            Image("angle-left")
+                .opacity(calendarVM.monthOffset <= 0 ? 0 : 1)
+        }
+        .offset(x: 5)
+        .disabled(calendarVM.monthOffset <= 0)
             Text(calendarVM.month())
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -95,14 +137,13 @@ struct CustomerCalendarView: View {
             } label: {
                 Image("angle-right")
                     .opacity(calendarVM.monthOffset >= 1 ? 0 : 1)
-                            .scaleEffect(calendarVM.monthOffset >= 1 ? 0.001 : 1)
             }
             .offset(x: 5)
-            
+            .disabled(calendarVM.monthOffset >= 1)
             Spacer()
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     private var weekView: some View {
@@ -136,72 +177,6 @@ struct CustomerCalendarView: View {
                 }
                 .minimumScaleFactor(0.1)
             }
-        }
-        .onDisappear()
-        .onAppear() {
-            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            print("onappear - 캘린더뷰")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .onChange(of: calendarVM.monthOffset) { _ in
-            // updating Month...
-            print("onchange - monthoffset, \(calendarVM.monthOffset)")
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
-                                daysList[i][j] = dv
-                                
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .onChange(of:calendarVM.dateValues) { _ in
-            print("onchange - dataValues , \(calendarVM.dateValues.count)")
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
-                                daysList[i][j] = dv
-                                print(" dv 컬러 \(dv.color.color)")
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
-        .onChange(of:selectedDate) { selectedDate in
-            
-            print("Selected Date Changed: \(String(describing: selectedDate))")
-            if let selectedDate = selectedDate {
-                orderData.orderItem.date = selectedDate
-                print("Order Item Date Changed: \(orderData.orderItem.date)")
-            }
-            
         }
     }
     
@@ -244,7 +219,7 @@ struct CustomerCalendarView: View {
     }
     
     private func handleDateClick(dateValue: DateValue) {
-        //selectedDate = dateValue.date 값을 다시 넣을 필요 x
+        selectedDate = dateValue.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
         let dateString = dateFormatter.string(from: dateValue.date)
@@ -261,7 +236,7 @@ struct CustomerCardView: View {
     @State private var showAlert: Bool = false
     @State private var showDetail = false
     var onDateClick: (DateValue) -> Void
-
+    
     var body: some View {
         ZStack() {
             HStack {
@@ -332,11 +307,11 @@ struct CustomerCardView: View {
 
 struct TimePickerView: View {
     @Binding var selectedDate: Date
-
+    
     var body: some View {
         let startDate = Calendar.current.date(bySettingHour: 10, minute: 30, second: 0, of: selectedDate) ?? Date()
         let endDate = Calendar.current.date(bySettingHour: 19, minute: 30, second: 0, of: selectedDate) ?? Date()
-                
+        
         DatePicker("", selection: $selectedDate, in: startDate...endDate, displayedComponents: [.hourAndMinute])
             .datePickerStyle(CompactDatePickerStyle())
             .labelsHidden()

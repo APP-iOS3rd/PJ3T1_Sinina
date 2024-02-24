@@ -8,7 +8,7 @@ import SwiftUI
 struct ManagerCalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
-    @ObservedObject var calendarVM = ManagerCalendarViewModel()
+    @StateObject var calendarVM = ManagerCalendarViewModel()
     @StateObject var calendarListVM = ManagerCalendarListViewModel()
     @State private var selectedDate: Date?
     @State var editClicked = false
@@ -25,9 +25,9 @@ struct ManagerCalendarView: View {
                     .foregroundColor(.clear)
                     .frame(height: UIScreen.UIHeight(540))
                     .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(UIColor.customBlue).opacity(1), lineWidth: 1) // 테두리 색 및 두께 조절
-                        )
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(UIColor.customBlue).opacity(1), lineWidth: 1) // 테두리 색 및 두께 조절
+                    )
                     .background(
                         ZStack(alignment:.top){
                             Rectangle()
@@ -37,11 +37,11 @@ struct ManagerCalendarView: View {
                                 headerView
                                     .fixedSize(horizontal: false, vertical: true)
                                 Divider()
-                                    .frame(width: 302)
+                                    .frame(width: UIScreen.UIWidth(302))
                                 weekView
                                 cardView
                                 Divider()
-                                    .frame(width: 302)
+                                    .frame(width: UIScreen.UIWidth(302))
                                 bookingView
                                     .padding([.horizontal,.vertical], 24)
                             }
@@ -64,26 +64,39 @@ struct ManagerCalendarView: View {
                 calendarVM.removePastDateValues()
                 print("view 로드, 현재시간 이전 데이터 삭제")
             }
-            
         }
-        
     }
-
+    
+    private func initialize() {
+        for i in daysList.indices {
+            for j in daysList[i].indices {
+                let currentDate = daysList[i][j].date.withoutTime().toDateString()
+                if let dv = calendarVM.dateValues.first(where: { $0.date.withoutTime().toDateString() == currentDate }) {
+                    if calendarVM.currentDate.month == dv.date.month {
+                        print("onchange - month : \(dv.date.month)")
+                        daysList[i][j] = dv
+                    }
+                }
+            }
+        }
+    }
+    
+    
     private var headerView: some View {
         HStack {
             Spacer()
             Spacer()
-            
+            Spacer()
+            Spacer()
             Button {
                 calendarVM.monthOffset -= 1
                 
             }
         label: {
-                Image("angle-left")
-                .opacity(calendarVM.monthOffset <= -1 ? 0 : 1)
-                        .scaleEffect(calendarVM.monthOffset <= -1 ? 0.001 : 1)
-            }
-            .offset(x: 5)
+            Image("angle-left")
+            
+        }
+        .offset(x: 5)
             Text(calendarVM.month())
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -97,8 +110,7 @@ struct ManagerCalendarView: View {
                 calendarVM.monthOffset += 1
             } label: {
                 Image("angle-right")
-                    .opacity(calendarVM.monthOffset >= 1 ? 0 : 1)
-                            .scaleEffect(calendarVM.monthOffset >= 1 ? 0.001 : 1)
+                
             }
             .offset(x: 5)
             
@@ -113,7 +125,7 @@ struct ManagerCalendarView: View {
                         Font.custom("Pretendard", fixedSize: 16)
                             .weight(.semibold))
                     .foregroundColor(editClicked ? Color(.customBlue) : Color(.customBlue))
-                    
+                
             }
             
             Spacer()
@@ -149,7 +161,7 @@ struct ManagerCalendarView: View {
                         CardView(value: $daysList[i][j], schedule: testSchedule, calendarVM:calendarVM, edit: $edit, calendarListVM: calendarListVM, selectedDate: $selectedDate) { selectedDateValue in
                             handleDateClick(dateValue: selectedDateValue)
                         }
-
+                        
                     }
                 }
                 .minimumScaleFactor(0.1)
@@ -161,57 +173,20 @@ struct ManagerCalendarView: View {
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
             print("onappear - 캘린더뷰")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
+            initialize()
         }
         .onChange(of: calendarVM.monthOffset) { _ in
             // updating Month...
             print("onchange - monthoffset, \(calendarVM.monthOffset)")
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            //calendarVM.loadDataFromFirestore() -> 어차피 리스너로 실시간 반영해서 로드할 필요x
-
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {                       
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
-                                daysList[i][j] = dv
-//                                let _ = print("daylistid\(String(describing: daysList[i][j].date.withoutTime().toDateString())) ,dv.id \(String(describing: dv.date.withoutTime().toDateString())) ")
-                            }
-                        }
-                    }
-                }
-            }
+            initialize()
         }
         .onChange(of:calendarVM.dateValues) { _ in
             print("onchange - dataValues , \(calendarVM.dateValues.count)")
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].date.withoutTime().toDateString() == dv.date.withoutTime().toDateString() {
-                                daysList[i][j] = dv
-                                print(" dv 컬러 \(dv.color.color)")
-                            }
-                        }
-                    }
-                }
-            }
+            initialize()
         }
     }
     
@@ -278,14 +253,14 @@ struct CardView: View {
     @Binding var selectedDate: Date?
     var onDateClick: (DateValue) -> Void
     @State private var showDetail = false
-
+    
     
     var body: some View {
         ZStack() {
             ZStack {
                 let formattedDateString = calendarVM.convert(date: value.date)
                 if !CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString)}, title: "주문 내역", titleColor: .black).orderData.isEmpty {
-
+                    
                     Text(".")
                         .font(.system(size: 30))
                         .offset(x: 5, y: 2)
@@ -334,7 +309,7 @@ struct CardView: View {
                                         showDetail = false
                                     }
                                 }
-                                let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                //                                let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                 if edit == false && schedule.startDate.withoutTime() < value.date {
                                     if value.color == .blue {
                                         value.color = .gray
@@ -351,7 +326,7 @@ struct CardView: View {
                                     print("\(value) 클릭")
                                 }
                                 calendarVM.saveDateValueToFirestore(dateValue: value)
-                                calendarVM.removeDuplicateDay(dateValue: dateValue)
+                                calendarVM.removeDuplicateDay(dateValue: value)
                             }
                     }
                 }
