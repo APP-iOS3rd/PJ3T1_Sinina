@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import Kingfisher
 
 struct ManagerChatView: View {
     
@@ -77,15 +78,15 @@ struct ManagerChatView: View {
     
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 10) {
             Button {
                 isImagePickerPresented.toggle()
                 
             } label: {
                 Image(systemName: "plus")
+                    .font(.system(size: 24))
                     .foregroundColor(Color(.customBlue))
-                    .frame(width: 24, height: 24)
-                    .padding(10)
+                    .padding()
                     .background(.white)
                     .cornerRadius(45)
             }
@@ -102,13 +103,12 @@ struct ManagerChatView: View {
                         .onAppear(){
                             isChatTextEmpty = false
                         }
-                    
-                } else {
+                }
+                            
+                else {
                     TextField("", text: $chatText)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
+                        
                         .background(Color(.customLightGray))
-                        .cornerRadius(45)
                         .onChange(of: chatText){ value in
                             isChatTextEmpty = value.isEmpty
                         }
@@ -138,7 +138,7 @@ struct ManagerChatView: View {
                 Image(systemName: "paperplane")
                     .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : .white)
                     .frame(width: 24, height: 24)
-                    .padding(10)
+                    .padding()
                     .background(isChatTextEmpty ? Color(.customGray) : Color(.customBlue))
                     .cornerRadius(45)
             }
@@ -216,10 +216,9 @@ struct ManagerChatView: View {
     }
 }
 
-//#Preview {
-//    NavigationView {
-//        ChatView(loginUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu")
-//                 , userEmail: "b@gmail.com", room: ChatRoom(userEmail: "b@gmail.com", userName: "서감자", date: Timestamp(date: Date()), id: "h30LSY4MBubwggDHhR6n", lastMessageText: nil))
-//    }
+#Preview {
+    NavigationView {
+        ManagerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: "", lastMsgTime: Date(), imgURL: "jdfkal"))
+    }
 
-//}
+}

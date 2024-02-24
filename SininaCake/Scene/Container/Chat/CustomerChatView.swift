@@ -230,6 +230,6 @@ struct CustomerChatView: View {
     }
 }
 
-#Preview {
-    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil))
-}
+//#Preview {
+//    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil))
+//}
