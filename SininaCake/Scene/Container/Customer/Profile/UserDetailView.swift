@@ -10,6 +10,7 @@ import SwiftUI
 struct UserDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
+    @State var isShowingNotification = false
     @StateObject var orderDetailVM = OrderDetailViewModel()
     
     var statusTitle: (String, UIColor, String) {
@@ -63,7 +64,9 @@ struct UserDetailView: View {
                 
                 DividerView()
                 
-                UserPriceView(orderItem: $orderItem)
+                UserPriceView(orderItem: $orderItem, isShowingNotification: $isShowingNotification)
+                
+                NotificationView(isShowing: $isShowingNotification)
             }
         }
         .navigationBarBackButtonHidden()
@@ -82,9 +85,33 @@ struct UserDetailView: View {
     }
 }
 
+struct NotificationView: View {
+    @Binding var isShowing: Bool
+    
+    var body: some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 12)
+                .foregroundStyle(Color(.customGray))
+                .frame(width: UIScreen.main.bounds.width - 48, height: 40)
+                .overlay(
+                    HStack {
+                        CustomText(title: "계좌번호가 복사되었습니다.", textColor: .white, textWeight: .semibold, textSize: 16)
+                        Spacer()
+                    }
+                        .padding(.horizontal, 12)
+                )
+            
+        }
+        .opacity(isShowing ? 1 : 0)
+        .background(Color(.clear))
+        .animation(.easeInOut)
+    }
+}
+
 // MARK: - UserPriceView
 struct UserPriceView: View {
     @Binding var orderItem: OrderItem
+    @Binding var isShowingNotification: Bool
     let accountNumber = "신한 110 544 626471"
     
     var priceText: (String, String) {
@@ -121,7 +148,25 @@ struct UserPriceView: View {
                 CustomText(title: "계좌번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 63)
-                CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+//                CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+                Button(action: {
+                    UIPasteboard.general.string = accountNumber
+                    withAnimation {
+                        isShowingNotification.toggle()
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        withAnimation {
+                            isShowingNotification.toggle()
+                        }
+                    }
+                }) {
+                    CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+                    Image(systemName: "doc.on.doc")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(Color(.black))
+                }
                 Spacer()
             }
             .padding(.leading, 24)
