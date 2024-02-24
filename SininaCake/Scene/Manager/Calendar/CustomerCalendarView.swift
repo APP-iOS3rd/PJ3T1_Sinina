@@ -26,16 +26,29 @@ struct CustomerCalendarView: View {
                 CustomText(title: selectedTime, textColor: .customBlue, textWeight: .semibold, textSize: 20)
                 CustomText(title: dateToTime(orderData.orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
                     .padding(.trailing,(UIScreen.main.bounds.width) * 24/430)
-                    .onTapGesture {
-                        isTimePickerPresented.toggle()
-                    }
-                    .sheet(isPresented: $isTimePickerPresented, content: {
+                
+                    .overlay( content: {
                         TimePickerView(selectedDate: Binding(
                             get: { selectedDate ?? Date() },
                             set: { selectedDate = $0 }
                         ))
                         .presentationDetents([.fraction(0.1)])
                     })
+                //                    .overlay {
+                //                        
+                //                                DatePicker(selection: Binding(
+                //                                    get: { selectedDate ?? Date() },
+                //                                    set: { selectedDate = $0 }
+                //                                ), displayedComponents: [.hourAndMinute]) {
+                //                                    
+                //                                }
+                //                                    .labelsHidden()
+                //                                    .contentShape(Rectangle())
+                //                                    .opacity(0.011)
+                //                                    .onAppear {
+                //                                        UIDatePicker.appearance().minuteInterval = 10
+                //                                    }
+                //                            }
             }
             .scaledToFit()
             Rectangle()
@@ -221,7 +234,8 @@ struct CustomerCalendarView: View {
     private func handleDateClick(dateValue: DateValue) {
         selectedDate = dateValue.date
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy/MM/dd(E)"
         let dateString = dateFormatter.string(from: dateValue.date)
         selectedTime = dateString
         print("Filtered Orders for \(dateString)")
@@ -239,6 +253,18 @@ struct CustomerCardView: View {
     
     var body: some View {
         ZStack() {
+            ZStack {
+                Circle()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.clear)
+                    .overlay(
+                        Circle()
+                            .offset(x:5.2,y:-3.7)
+                            .stroke(Color(UIColor.customBlue)
+                                   )
+                    )
+                    .opacity(selectedDate == value.date ? 1 : 0)
+            }
             HStack {
                 if value.day > 0 {
                     if value.isNotCurrentMonth {
@@ -256,24 +282,8 @@ struct CustomerCardView: View {
                                 .foregroundColor(Color(UIColor.customBlue))
                                 .offset(x:5.2,y:-3.7)
                             )
-                            .scaleEffect(showDetail ? 1.3 : 1)
                             .onTapGesture {
-                                showAlert = true
-                                withAnimation {
-                                    showDetail.toggle()
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    withAnimation {
-                                        showDetail = false
-                                    }
-                                }
-                            }
-                            .alert(isPresented: $showAlert) {
-                                Alert(
-                                    title: Text("error"),
-                                    message: Text("예약가능날짜가 아닙니다"),
-                                    dismissButton: .default(Text("확인"))
-                                )
+                                onDateClick(value)
                             }
                     } else {
                         Text("\(value.day)")
@@ -315,6 +325,8 @@ struct TimePickerView: View {
         DatePicker("", selection: $selectedDate, in: startDate...endDate, displayedComponents: [.hourAndMinute])
             .datePickerStyle(CompactDatePickerStyle())
             .labelsHidden()
+            .contentShape(Rectangle())
+            .opacity(0.011)
             .clipped()
             .onAppear {
                 UIDatePicker.appearance().minuteInterval = 10

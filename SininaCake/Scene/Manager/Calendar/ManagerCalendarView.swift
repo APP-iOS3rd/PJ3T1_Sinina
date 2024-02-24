@@ -252,27 +252,37 @@ struct CardView: View {
     @StateObject var calendarListVM: ManagerCalendarListViewModel
     @Binding var selectedDate: Date?
     var onDateClick: (DateValue) -> Void
+    
     @State private var showDetail = false
-    
-    
     var body: some View {
         ZStack() {
             ZStack {
                 let formattedDateString = calendarVM.convert(date: value.date)
                 if !CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString)}, title: "주문 내역", titleColor: .black).orderData.isEmpty {
-                    
                     Text(".")
                         .font(.system(size: 30))
                         .offset(x: 5, y: 2)
                 }
-            }
+                Circle()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.clear)
+                    .overlay(
+                        Circle()
+                            .offset(x:5.2,y:-3.7)
+                            .stroke(Color(UIColor.customBlue)
+                                   )
+                        )
+                            .opacity(selectedDate == value.date ? 1 : 0)
+                        }
             HStack {
                 if value.day > 0 {
+                    
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
                             .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
+                        
                     } else if schedule.startDate.withoutTime() == value.date {
                         Text("\(value.day)")
                             .font(.custom("Pretendard-SemiBold", fixedSize: 18))
@@ -283,35 +293,21 @@ struct CardView: View {
                                 .foregroundColor(Color(UIColor.customBlue))
                                 .offset(x:5.2,y:-3.7)
                             )
-                            .scaleEffect(showDetail ? 1.3 : 1)
                             .onTapGesture {
-                                withAnimation {
-                                    showDetail.toggle()
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                    withAnimation {
-                                        showDetail = false
-                                    }
-                                }
+                               
                             }
                     } else {
                         Text("\(value.day)")
                             .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                             .foregroundColor(value.color.color)
                             .padding([.leading, .bottom], 10)
-                            .scaleEffect(showDetail ? 1.3 : 1)
                             .onTapGesture {
-                                withAnimation {
-                                    showDetail.toggle()
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    withAnimation {
-                                        showDetail = false
-                                    }
-                                }
                                 //                                let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
                                 if edit == false && schedule.startDate.withoutTime() < value.date {
+                                    
+                                    onDateClick(value)
                                     if value.color == .blue {
+                                        
                                         value.color = .gray
                                         //calendarVM.changeDateColorToGray(date: value.date)
                                     } else if value.color == .gray {
@@ -322,9 +318,11 @@ struct CardView: View {
                                         value.color = .blue
                                     }
                                 } else {
+                                    
                                     onDateClick(value)
                                     print("\(value) 클릭")
                                 }
+                                
                                 calendarVM.saveDateValueToFirestore(dateValue: value)
                                 calendarVM.removeDuplicateDay(dateValue: value)
                             }
