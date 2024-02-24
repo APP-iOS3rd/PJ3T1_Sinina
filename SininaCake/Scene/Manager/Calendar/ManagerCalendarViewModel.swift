@@ -96,7 +96,6 @@ extension DateValue {
     }
 }
 
-
 class ManagerCalendarViewModel: ObservableObject {
     
     @Published var dateValues: [DateValue] = []
@@ -181,30 +180,30 @@ class ManagerCalendarViewModel: ObservableObject {
     }
 
 
-    func loadDataFromFirestore() {
-        let db = Firestore.firestore()
-        let collectionReference = db.collection("dateValues")
-        print("loadDataFromFirestore")
-
-        collectionReference.getDocuments { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else {
-                print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
-                return
-            }
-            print("documents/ ")
-
-            self.dateValues.removeAll()
-            self.dateValues = documents.compactMap { queryDocumentSnapshot in
-                do {
-                    let data = try queryDocumentSnapshot.data(as: DateValue.self)
-                    return data
-                } catch {
-                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
-                    return nil
-                }
-            }
-        }
-    }
+//    func loadDataFromFirestore() {
+//        let db = Firestore.firestore()
+//        let collectionReference = db.collection("dateValues")
+//        print("loadDataFromFirestore")
+//
+//        collectionReference.getDocuments { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("문서를 가져오는 데 오류가 발생했습니다: \(error?.localizedDescription ?? "알 수 없는 오류")")
+//                return
+//            }
+//            print("documents/ ")
+//
+//            self.dateValues.removeAll()
+//            self.dateValues = documents.compactMap { queryDocumentSnapshot in
+//                do {
+//                    let data = try queryDocumentSnapshot.data(as: DateValue.self)
+//                    return data
+//                } catch {
+//                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
+//                    return nil
+//                }
+//            }
+//        }
+//    }
     
     func removeDuplicateDay(dateValue: DateValue) {
         let db = Firestore.firestore()

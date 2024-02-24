@@ -23,15 +23,19 @@ struct ManagerCalendarView: View {
             VStack() {
                 Rectangle()
                     .foregroundColor(.clear)
-                    .frame(width: 342, height: 500)
+                    .frame(height: UIScreen.UIHeight(540))
+                    .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(UIColor.customBlue).opacity(1), lineWidth: 1) // 테두리 색 및 두께 조절
+                        )
                     .background(
                         ZStack(alignment:.top){
                             Rectangle()
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
-                                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                             VStack() {
                                 headerView
+                                    .fixedSize(horizontal: false, vertical: true)
                                 Divider()
                                     .frame(width: 302)
                                 weekView
@@ -44,8 +48,9 @@ struct ManagerCalendarView: View {
                         }
                     )
             }
+            .padding(.trailing, UIScreen.UIWidth(24))
+            .padding(.leading, UIScreen.UIWidth(24))
             VStack {
-
                 if edit {
                     if let selectedDate = selectedDate {
                         let formattedDateString = calendarVM.convert(date: selectedDate)
@@ -61,6 +66,7 @@ struct ManagerCalendarView: View {
             }
             
         }
+        
     }
 
     private var headerView: some View {
@@ -102,8 +108,12 @@ struct ManagerCalendarView: View {
                 edit.toggle()
                 editClicked.toggle()
             } label: {
-                Image(systemName:"list.clipboard.fill")
-                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customGray))
+                Text(editClicked ? "일정편집" : "목록보기")
+                    .font(
+                        Font.custom("Pretendard", fixedSize: 16)
+                            .weight(.semibold))
+                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customBlue))
+                    
             }
             
             Spacer()
@@ -325,7 +335,7 @@ struct CardView: View {
                                     }
                                 }
                                 let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
-                                if edit == false {
+                                if edit == false && schedule.startDate.withoutTime() < value.date {
                                     if value.color == .blue {
                                         value.color = .gray
                                         //calendarVM.changeDateColorToGray(date: value.date)
@@ -348,7 +358,7 @@ struct CardView: View {
             }
         }
         .frame(width: UIScreen.main.bounds.width / 13)
-        .frame(height: 40)
+        .frame(height: UIScreen.UIHeight(40))
     }
 }
 

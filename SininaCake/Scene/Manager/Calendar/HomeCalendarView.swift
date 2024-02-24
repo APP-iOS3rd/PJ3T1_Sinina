@@ -18,7 +18,7 @@ struct HomeCalendarView: View {
                 .padding(.bottom, 5)
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(height: 500)
+                .frame(height: UIScreen.UIHeight(540))
                 .cornerRadius(12)
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                 .background(
@@ -31,19 +31,21 @@ struct HomeCalendarView: View {
                             headerView
                             .fixedSize(horizontal: false, vertical: true)
                             Divider()
-                                .frame(width: 302)
+                                .frame(width: UIScreen.UIWidth(302))
                             weekView
                             cardView
                             Divider()
-                                .frame(width: 302)
+                                .frame(width: UIScreen.UIWidth(302))
+                                
                             bookingView
-                                .padding([.horizontal,.vertical], 24)
+                                .padding([.horizontal,.vertical], UIScreen.UIWidth(24))
+                            
                         }
                     }
                 )
         }
-        .padding(.trailing, 24)
-        .padding(.leading, 24)
+        .padding(.trailing, UIScreen.UIWidth(24))
+        .padding(.leading, UIScreen.UIWidth(24))
         
     }
 
