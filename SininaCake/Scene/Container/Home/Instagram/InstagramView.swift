@@ -11,7 +11,7 @@ import Kingfisher
 struct InstagramView: View {
     @StateObject var instaAPI = InstagramAPI()
     @State var isClicked = false
-    @State var imgUrl: String = ""
+    @State var sequence: Int = 0
     @State private var dragOffset: CGFloat = 0
     
     var body: some View {
@@ -19,8 +19,8 @@ struct InstagramView: View {
             CustomText(title: "새로운 케이크", textColor: .black, textWeight: .semibold, textSize: 24)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(alignment: .top) {
-                    ForEach(instaAPI.instaData) { data in
-                        AsyncImage(url: URL(string: data.mediaURL)) { image in
+                    ForEach(0..<instaAPI.instaImageURLs.count, id:\.self) { i in
+                        AsyncImage(url: URL(string: instaAPI.instaImageURLs[i])) { image in
                             image.image?
                                 .resizable()
                                 .frame(width: UIScreen.UIWidth(185), 
@@ -28,22 +28,16 @@ struct InstagramView: View {
                                 .aspectRatio(1/1, contentMode: .fill)
                         }
                         .onTapGesture {
-                            KingfisherManager.shared.retrieveImage(with: URL(string: data.mediaURL)!) { result in
-                                switch result {
-                                case .success(let value):
-                                    imgUrl = value.source.url?.absoluteString ?? ""
-                                    isClicked.toggle()
-                                case .failure:
-                                    break
-                                }
-                            }
+                            self.sequence = i
+                            isClicked.toggle()
                         }
                         .fullScreenCover(isPresented: $isClicked, content: {
                             ZStack(alignment: .topTrailing) {
-                                KFImage(URL(string: imgUrl))
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxWidth: .infinity)
+                                AsyncImage(url: URL(string: instaAPI.instaImageURLs[self.sequence])) {image in
+                                    image.image?.resizable()
+                                        .scaledToFit()
+                                        .frame(maxWidth: .infinity)
+                                }
                                 
                                 Button(action: {
                                     isClicked.toggle()
@@ -58,9 +52,7 @@ struct InstagramView: View {
                             }
                             .gesture(DragGesture(minimumDistance: 20)
                                 .onEnded({ value in
-                                    if value.translation.height > 100 {
-                                        isClicked.toggle()
-                                    }
+                                    gesture(value: value)
                                 })
                             )
                         })
@@ -75,6 +67,29 @@ struct InstagramView: View {
         .padding(.horizontal, 24)
         .onAppear() {
             instaAPI.fetchInstaData()
+        }
+    }
+    
+    func gesture(value: DragGesture.Value) {
+        // Down
+        if value.translation.height > 50 {
+            isClicked.toggle()
+        }
+        // Left
+        else if value.translation.width < -50 {
+            if self.sequence == instaAPI.instaImageURLs.endIndex - 1 {
+                self.sequence = 0
+                return
+            }
+            self.sequence += 1
+        } 
+        // Right
+        else if value.translation.width > 50 {
+            if self.sequence == 0 {
+                self.sequence = instaAPI.instaImageURLs.endIndex - 1
+                return
+            }
+            self.sequence -= 1
         }
     }
 }
