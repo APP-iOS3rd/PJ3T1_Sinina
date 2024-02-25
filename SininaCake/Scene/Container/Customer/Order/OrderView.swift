@@ -521,59 +521,99 @@ struct OrderIcePackView: View {
         OrderCakeViewModel(title: "보냉백", sideTitle: "(+5000원)", bottomTitle: "", sizePricel: "", isOn: false),
     ]
     
+    @State var isClicked: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "보냉팩/ 백 추가", textColor: .black, textWeight: .semibold , textSize: 18)
-            
+            HStack{
+                CustomText(title: "보냉팩/ 백 추가", textColor: .black, textWeight: .semibold , textSize: 18)
+                Button(action: {
+                    isClicked.toggle()
+                    print(index)
+                }) {
+                    Image("info 1")
+                        .resizable()
+                        .frame(width: (UIScreen.main.bounds.width) * 14/430, height: (UIScreen.main.bounds.height) * 14/932)
+                        .foregroundColor(.red)
+                        .padding(8)
+                }
+
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack {
+                        HStack{
+                            Image("IcePack")
+                                .resizable()
+                                .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 202/932)
+                            Image("IceBag")
+                                .resizable()
+                                .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 202/932)
+                        }
+                    
+                        Button(action: {
+                            isClicked.toggle()
+                        }) {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: (UIScreen.main.bounds.width) * 22/430, height: (UIScreen.main.bounds.height) * 22/932)
+                                .foregroundColor(.red)
+                                .padding(8)
+                        }
+                        .offset(x: (UIScreen.main.bounds.width) * 185/430 / 2 + 87 , y: -(UIScreen.main.bounds.height) * 202/932 / 2 - 17)
+                    }
+                })
+            }
             HStack{
                 ForEach(orderIcePackModel.indices, id: \.self) { index in
-                    Button(action: {
-                        if selectedIcePackIndex == index {
+                    ZStack {
+                        Button(action: {
+                            if selectedIcePackIndex == index {
+                                selectedIcePackIndex = nil
+                                orderData.orderItem.icePack = .none
+                            } else {
+                                selectedIcePackIndex = index
+                                orderData.orderItem.icePack = stringToIcePack(orderIcePackModel[index].title)
+                            }
+                            print(orderData.orderItem.icePack)
+                            updateSelection(index: index)
+                        }, label: {
+                            HStack{
+                                Image(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? "orderVectorTrue" : "orderVectorFalse")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
+                                    .padding(.leading, (UIScreen.main.bounds.width) * 16/430)
+                                
+                                VStack (alignment: .leading){
+                                    HStack{
+                                        CustomText(title: orderIcePackModel[index].title, textColor: .black, textWeight: .semibold, textSize: 18)
+                                        CustomText(title: orderIcePackModel[index].sideTitle, textColor: .black, textWeight: .regular, textSize: 16)
+                                            .padding(.leading, -4)
+                                            .kerning(0.3)
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                            }
+                            .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
+                                    .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(disableSelection(for: index) ? Color(UIColor.customGray) : .white)
+                                    )
+                            )
+              
+                            .kerning(0.3)
+                        })
+                        .padding(.bottom, 7)
+                        .disabled(disableSelection(for: index))
+                        .onChange(of: orderData.orderItem.cakeSize) { _ in
                             selectedIcePackIndex = nil
                             orderData.orderItem.icePack = .none
-                        } else {
-                            selectedIcePackIndex = index
-                            orderData.orderItem.icePack = stringToIcePack(orderIcePackModel[index].title)
                         }
-                        print(orderData.orderItem.icePack)
-                        updateSelection(index: index)
-                    }, label: {
-                        HStack{
-                            Image(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? "orderVectorTrue" : "orderVectorFalse")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
-                                .padding(.leading, (UIScreen.main.bounds.width) * 16/430)
-                                                        
-                            VStack (alignment: .leading){
-                                HStack{
-                                    CustomText(title: orderIcePackModel[index].title, textColor: .black, textWeight: .semibold, textSize: 18)
-                                    CustomText(title: orderIcePackModel[index].sideTitle, textColor: .black, textWeight: .regular, textSize: 16)
-                                        .padding(.leading, -4)
-                                        .kerning(0.3)
-                                }
-                            }
-                            
-                            Spacer()
-                            
-                        }
-                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
-                                .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(disableSelection(for: index) ? Color(UIColor.customGray) : .white)
-                                    )
-                        )
-                        .kerning(0.3)
-                    })
-                    .padding(.bottom, 7)
-                    .disabled(disableSelection(for: index))
-                    .onChange(of: orderData.orderItem.cakeSize) { _ in
-                        selectedIcePackIndex = nil
-                        orderData.orderItem.icePack = .none
                     }
                 }
             }
@@ -593,6 +633,14 @@ struct OrderIcePackView: View {
     private func disableSelection(for index: Int) -> Bool {
         if orderData.orderItem.cakeSize != "도시락" {
             return orderIcePackModel[index].title != "보냉백"
+        } else {
+            return false
+        }
+    }
+    
+    private func isIcePack(for index: Int) -> Bool {
+        if index == 0 {
+            return true
         } else {
             return false
         }
