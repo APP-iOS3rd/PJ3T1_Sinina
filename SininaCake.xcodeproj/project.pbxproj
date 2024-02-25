@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		234ABD892B6A2C4E007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		234ABD8B2B6A3BBB007199E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		235E2BA62B88793100E219EE /* Sinina_Release.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 235E2BA32B88793100E219EE /* Sinina_Release.mobileprovision */; };
-		235E2BA82B88793100E219EE /* Sinina_Debug.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 235E2BA52B88793100E219EE /* Sinina_Debug.mobileprovision */; };
 		2367639C2B6691DC008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		2367639E2B66BF8D008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		236763A42B67AE57008C8244 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -116,9 +114,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		235E2BA32B88793100E219EE /* Sinina_Release.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Release.mobileprovision; sourceTree = "<group>"; };
 		235E2BA42B88793100E219EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../file/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		235E2BA52B88793100E219EE /* Sinina_Debug.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sinina_Debug.mobileprovision; sourceTree = "<group>"; };
 		23C35E902B7CE42F00A61406 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		23C35E922B7CE42F00A61406 /* CustomerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerChatView.swift; sourceTree = "<group>"; };
 		23C35E932B7CE42F00A61406 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
