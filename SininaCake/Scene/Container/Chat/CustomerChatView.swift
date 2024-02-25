@@ -172,8 +172,8 @@ struct CustomerChatView: View {
             
             if let imageURL = message.imageURL {
                 AsyncImage(url: URL(string: imageURL), content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
+                    image
+                        .resizable()
                         .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
                 },
                            placeholder: {
@@ -239,14 +239,56 @@ struct CustomerChatView: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            if let imageURL = message.imageURL, !imageURL.isEmpty {
-                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(idealWidth: 300, idealHeight: 300, alignment: .leading)
-                }, placeholder: {
+            if let imageURL = message.imageURL {
+                AsyncImage(url: URL(string: imageURL), content: { image in
+                    image
+                        .resizable()
+                        .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
+                },
+                           placeholder: {
                     ProgressView()
+                }) // AsyncImage
+                .onTapGesture {
+                    KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
+                        switch result {
+                        case .success(let value):
+                            imgUrl = value.source.url?.absoluteString ?? ""
+                            isClicked.toggle()
+                            
+                        case .failure:
+                            break
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack(alignment: .topTrailing) {
+                        KFImage(URL(string: imgUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                        
+                        Button(action: {
+                            isClicked.toggle()
+                        }, label: {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                .foregroundStyle(.red)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(8)
+                    }
+                    .gesture(DragGesture(minimumDistance: 20)
+                        .onEnded({ value in
+                            if value.translation.height > 100 {
+                                isClicked.toggle()
+                            }
+                        })
+                    )
                 })
+                .frame(width: UIScreen.UIWidth(185),
+                       height: UIScreen.UIHeight(185))
+                .clipShape(.rect(cornerRadius: 12))
                 
             } else {
                 Text("\(message.text ?? "")")
@@ -267,6 +309,6 @@ struct CustomerChatView: View {
     }
 }
 
-//#Preview {
-//    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil))
-//}
+#Preview {
+    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil, imgURL: ""))
+}
