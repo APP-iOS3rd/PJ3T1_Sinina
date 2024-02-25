@@ -15,9 +15,9 @@ struct OrderView: View {
                 ScrollView(showsIndicators: false){
                     infoView(orderData: OrderVM)
                     
-                    OrderCalendarView(orderData: OrderVM)
-//                    CustomerCalendarView(orderData: OrderVM)
-                    
+                    //OrderCalendarView(orderData: OrderVM)
+                    CustomerCalendarView(orderData: OrderVM)
+
                     OrderCakeView(orderData: OrderVM)
                     
                     OrderSheetView(orderData: OrderVM)

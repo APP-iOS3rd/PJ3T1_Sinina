@@ -50,7 +50,7 @@ class ManagerCalendarListViewModel: ObservableObject {
                         let expectedPrice: Int = documentData["expectedPrice"] as? Int ?? 0
                         let confirmedPrice: Int = documentData["confirmedPrice"] as? Int ?? 0
                         let status: String = documentData["status"] as? String ?? ""
-                        
+                    
                         let orderData = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
                         self.allOrderData.append(orderData)

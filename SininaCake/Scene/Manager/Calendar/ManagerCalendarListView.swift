@@ -63,9 +63,9 @@ struct CalListView: View {
                 }
             }
         }
-        .padding(.leading, 24)
-        .padding(.trailing, 24)
-        .padding(.top, 40)
+        .padding(.trailing, UIScreen.UIWidth(24))
+        .padding(.leading, UIScreen.UIWidth(24))
+        .padding(.top, UIScreen.UIHeight(20))
     }
 }
 
