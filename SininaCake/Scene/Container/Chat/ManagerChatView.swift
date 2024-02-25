@@ -84,9 +84,9 @@ struct ManagerChatView: View {
                 
             } label: {
                 Image(systemName: "plus")
-                    .font(.system(size: 24))
                     .foregroundColor(Color(.customBlue))
-                    .padding()
+                    .frame(width: 24, height: 24)
+                    .padding(10)
                     .background(.white)
                     .cornerRadius(45)
             }
@@ -138,7 +138,7 @@ struct ManagerChatView: View {
                 Image(systemName: "paperplane")
                     .foregroundColor(isChatTextEmpty ? Color(.customDarkGray) : .white)
                     .frame(width: 24, height: 24)
-                    .padding()
+                    .padding(10)
                     .background(isChatTextEmpty ? Color(.customGray) : Color(.customBlue))
                     .cornerRadius(45)
             }
