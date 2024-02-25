@@ -11,9 +11,9 @@ struct ManagerCalendarView: View {
     @StateObject var calendarVM = ManagerCalendarViewModel()
     @StateObject var calendarListVM = ManagerCalendarListViewModel()
     @State private var selectedDate: Date?
-    @State var editClicked = false
+    @State var editClicked = true
     @State var daysList = [[DateValue]]()
-    @State var edit: Bool = false
+    @State var edit: Bool = true
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
@@ -115,20 +115,20 @@ struct ManagerCalendarView: View {
             .offset(x: 5)
             
             Spacer()
+            Spacer()
+            Spacer()
+            
             Button {
                 print("편집 작동, \(edit)")
                 edit.toggle()
                 editClicked.toggle()
             } label: {
-                Text(editClicked ? "일정편집" : "목록보기")
-                    .font(
-                        Font.custom("Pretendard", fixedSize: 16)
-                            .weight(.semibold))
-                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customBlue))
-                
+                Image(systemName: editClicked ? "list.bullet.clipboard" : "gearshape")
+                    .resizable()
+                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIWidth(24))
+                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customRed))
             }
-            
-            Spacer()
+            .padding(.trailing, UIScreen.UIWidth(16))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
     }
