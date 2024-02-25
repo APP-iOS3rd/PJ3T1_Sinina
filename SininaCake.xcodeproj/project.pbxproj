@@ -114,6 +114,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		235E2BA42B88793100E219EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../file/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		23C35E902B7CE42F00A61406 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		23C35E922B7CE42F00A61406 /* CustomerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerChatView.swift; sourceTree = "<group>"; };
 		23C35E932B7CE42F00A61406 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -257,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC122FC2B73C6C600DC9A42 /* Assets.xcassets */,
+				235E2BA42B88793100E219EE /* GoogleService-Info.plist */,
 				9AC123022B73D30C00DC9A42 /* Preview Content */,
 				8EC21AC02B5906AF00E92DA7 /* SininaCake.entitlements */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
