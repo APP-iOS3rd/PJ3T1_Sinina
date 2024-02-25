@@ -39,20 +39,13 @@ struct InstagramView: View {
                                         .frame(maxWidth: .infinity)
                                 }
                                 
-                                Button(action: {
-                                    isClicked.toggle()
-                                }, label: {
-                                    Image("redX")
-                                        .resizable()
-                                        .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
-                                        .foregroundStyle(.red)
-                                })
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(8)
+                                CustomXButton(isClicked: $isClicked)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                    .padding(UIScreen.UIWidth(8))
                             }
                             .gesture(DragGesture(minimumDistance: 20)
                                 .onEnded({ value in
-                                    gesture(value: value)
+                                    gestureDown(value: value)
                                 })
                             )
                         })
@@ -70,7 +63,7 @@ struct InstagramView: View {
         }
     }
     
-    func gesture(value: DragGesture.Value) {
+    func gestureDown(value: DragGesture.Value) {
         // Down
         if value.translation.height > 50 {
             isClicked.toggle()
