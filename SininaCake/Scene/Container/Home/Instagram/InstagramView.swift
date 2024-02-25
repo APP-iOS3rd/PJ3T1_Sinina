@@ -42,7 +42,7 @@ struct InstagramView: View {
                                 Button(action: {
                                     isClicked.toggle()
                                 }, label: {
-                                    Image(systemName: "x.circle")
+                                    Image("redX")
                                         .resizable()
                                         .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
                                         .foregroundStyle(.red)

@@ -475,7 +475,7 @@ private struct OrderPhotoView: View {
             } else {
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(photoVM.selectedImages.indices, id: \.self) { index in
-                        ZStack {
+                        ZStack(alignment: .topTrailing) {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(Color(.customGray))
                                 .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 185/932)
@@ -486,19 +486,18 @@ private struct OrderPhotoView: View {
                                         .frame(width: (UIScreen.main.bounds.width) * 185/430 - 20, height: (UIScreen.main.bounds.height) * 185/932 - 20)
                                         .scaledToFit()
                                 )
+                            
                             Button(action: {
                                 photoVM.selectedImages.remove(at: index)
                                 photoVM.imageSelections.remove(at: index)
                                 print(photoVM.selectedImages.count)
                                 print(photoVM.imageSelections.count)
                             }) {
-                                Image(systemName: "x.circle")
+                                Image("redX")
                                     .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundColor(.red)
-                                    .padding(8)
+                                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                    .padding(UIScreen.UIWidth(12))
                             }
-                            .offset(x: (UIScreen.main.bounds.width) * 185/430 / 2 - 12, y: -(UIScreen.main.bounds.height) * 185/932 / 2 + 12)
                         }
                     }
                 }
