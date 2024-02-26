@@ -3,6 +3,7 @@
 //  SininaCake
 //
 //  Created by  zoa0945 on 1/15/24.
+
 import SwiftUI
 import Firebase
 import Kingfisher
@@ -40,30 +41,30 @@ struct ChatListView: View {
                                 VStack {
                                     HStack {
                                         CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 18)
-                                            .frame(alignment: .leading)
-                                        
                                         Spacer()
-                                        
+
                                         if let lastMessageTimestamp = room.lastMsgTime?.formattedDate() {
                                             CustomText(title: "\(lastMessageTimestamp)", textColor: .customDarkGray, textWeight: .semibold, textSize: 12)
-                                                .frame(alignment: .leading)
                                         }
                                     }
-                                    .padding(3)
-                                    
+                                    .padding(UIScreen.UIWidth(3))
+
                                     HStack {
                                         if let lastMessageText = room.lastMsg {
                                             CustomText(title: "\(lastMessageText)", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                                         }
                                         Spacer()
                                         
-                                        //FIXME: 안읽은 메세지 수
                                         if let unreadMsgCnt = room.unreadMsgCnt {
-                                            CustomText(title: "\(unreadMsgCnt)", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
-                                                .background(Color(.customBlue))
-                                                .frame(alignment: .leading)
+                                            if unreadMsgCnt != 0 {
+                                                CustomText(title: "\(unreadMsgCnt)", textColor: .white, textWeight: .regular, textSize: 16)
+                                                    .background(Circle()
+                                                        .fill(Color(.customBlue))
+                                                        .frame(width: UIScreen.UIWidth(22), height: UIScreen.UIHeight(22)))
+                                            }
                                         }
                                     }
+                                    .padding(.trailing, UIScreen.UIWidth(10))   
                                 }
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

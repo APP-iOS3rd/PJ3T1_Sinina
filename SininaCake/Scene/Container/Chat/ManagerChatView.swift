@@ -29,10 +29,20 @@ struct ManagerChatView: View {
             chatBottomBar
         }
         .onAppear(){
+            chatVM.unreadMsgCnt = 0
+            chatVM.db.collection("chatRoom").document(room.userEmail).updateData(["unreadMsgCnt": 0])
+            
+            chatVM.db.collection("chatRoom").document(room.userEmail).collection("message").getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        document.reference.updateData(["viewed" : true])
+                    }
+                }
+            }
             chatVM.fetchRoom(userEmail: room.userEmail)
             chatVM.getDeviceToken(room.userEmail)
-            
-            chatVM.db.collection("chatRoom").document(room.userEmail).updateData(["unreadMsgCnt": nil])
         }
     }
     
@@ -120,13 +130,13 @@ struct ManagerChatView: View {
                     if let image = selectedImage.jpegData(compressionQuality: 1){
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date(), viewed: false)
                         
-                        chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                        chatVM.managerSendMessageWithImage(chatRoom: room, message: msg)
                         fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: "사진")
                     }
                     self.selectedImage = nil
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date(), viewed: false)
-                    chatVM.sendMessage(chatRoom: room, message: msg)
+                    chatVM.managerSendMessage(chatRoom: room, message: msg)
                     fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: chatText)
                 }
                 
@@ -153,7 +163,9 @@ struct ManagerChatView: View {
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            
+            
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customDarkGray, textWeight: .regular, textSize: 12)
             
             if let imageURL = message.imageURL {
                 AsyncImage(url: URL(string: imageURL), content: { image in
@@ -183,16 +195,9 @@ struct ManagerChatView: View {
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
                         
-                        Button(action: {
-                            isClicked.toggle()
-                        }, label: {
-                            Image(systemName: "redX")
-                                .resizable()
-                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
-                                .foregroundStyle(.red)
-                        })
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(8)
+                        CustomXButton(isClicked: $isClicked)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(UIScreen.UIWidth(8))
                     }
                     .gesture(DragGesture(minimumDistance: 20)
                         .onEnded({ value in
@@ -251,16 +256,9 @@ struct ManagerChatView: View {
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
                         
-                        Button(action: {
-                            isClicked.toggle()
-                        }, label: {
-                            Image(systemName: "redX")
-                                .resizable()
-                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
-                                .foregroundStyle(.red)
-                        })
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(8)
+                        CustomXButton(isClicked: $isClicked)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(UIScreen.UIWidth(8))
                     }
                     .gesture(DragGesture(minimumDistance: 20)
                         .onEnded({ value in
@@ -284,8 +282,7 @@ struct ManagerChatView: View {
                     .background(Color(.customLightGray))
                     .cornerRadius(30)
             }
-            
-            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customDarkGray, textWeight: .regular, textSize: 12)
             
         }
         .frame(maxWidth: .infinity, alignment: .leading)

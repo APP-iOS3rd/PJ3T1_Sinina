@@ -12,7 +12,6 @@ import SwiftUI
 
 class ChatViewModel: ObservableObject{
     static let shared = ChatViewModel()
-//    private var fireStore = FirebaseManager.shared.firestore
     
     @Published var chatRooms = [ChatRoom]()
     @Published var messages = [String: [Message]?]() // key: 방 uuid, 메세지 배열
@@ -86,12 +85,12 @@ class ChatViewModel: ObservableObject{
             }
         }
     }
+    
     func addChatRoom(chatRoom: ChatRoom) {
         try? db.collection("chatRoom").document(chatRoom.id).setData(from: chatRoom)
     }
     
     func startListening(chatRoom: ChatRoom) {
-        
         listener = db.collection("chatRoom").document(chatRoom.id).collection("message").addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot, error == nil else {
                     print("Error: \(error!)")
@@ -160,11 +159,63 @@ class ChatViewModel: ObservableObject{
                                   "userEmail": updatedMessage.userEmail,
                                   "text": updatedMessage.text,
                                   "timestamp": updatedMessage.timestamp,
-                                  "imageURL": updatedMessage.imageURL])
+                                  "imageURL": updatedMessage.imageURL,
+                                  "viewed": false])
+                    
+                    self.unreadMsgCnt += 1
                     
                     try? self.db.collection("chatRoom").document(chatRoom.id).setData([
                         "lastMsg": "사진을 보냈습니다.",
-                        "lastMsgTime": message.timestamp], merge: true)
+                        "lastMsgTime": message.timestamp,
+                        "unreadMsgCnt": self.unreadMsgCnt], merge: true)
+                
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func managerSendMessage(chatRoom: ChatRoom?, message: Message) {
+        if let chatRoom = chatRoom {
+            try? db.collection("chatRoom").document(chatRoom.id)
+                .collection("message").document(message.id).setData(from: message)
+            
+                self.unreadMsgCnt = 0
+
+                try? db.collection("chatRoom").document(chatRoom.id).setData([
+                "lastMsg": message.text,
+                "lastMsgTime": message.timestamp,
+                "unreadMsgCnt": unreadMsgCnt], merge: true)
+        }
+    }
+    
+    func managerSendMessageWithImage(chatRoom: ChatRoom, message: Message) {
+        
+        if let imageData = message.imageData {
+            uploadImageToStorage(imageData: imageData) { result in
+                
+                switch result {
+                case .success(let downloadURL):
+                    var updatedMessage = message
+                    updatedMessage.imageURL = downloadURL.absoluteString // imageURL 채움
+                    
+                    self.db.collection("chatRoom")
+                        .document(chatRoom.id)
+                        .collection("message")
+                        .document(updatedMessage.id)
+                        .setData(["id": updatedMessage.id,
+                                  "userEmail": updatedMessage.userEmail,
+                                  "text": updatedMessage.text,
+                                  "timestamp": updatedMessage.timestamp,
+                                  "imageURL": updatedMessage.imageURL])
+                    
+                    self.unreadMsgCnt = 0
+                    
+                    try? self.db.collection("chatRoom").document(chatRoom.id).setData([
+                        "lastMsg": "사진을 보냈습니다.",
+                        "lastMsgTime": message.timestamp,
+                        "unreadMsgCnt": self.unreadMsgCnt], merge: true)
                 
                 case .failure(let error):
                     print(error)

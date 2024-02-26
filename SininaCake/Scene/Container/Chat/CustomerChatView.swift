@@ -168,7 +168,12 @@ struct CustomerChatView: View {
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12 )
+            
+            if message.viewed == false {
+                CustomText(title: "1", textColor: .customBlue, textWeight: .regular, textSize: 12)
+            }
+            
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customDarkGray, textWeight: .regular, textSize: 12 )
             
             if let imageURL = message.imageURL {
                 AsyncImage(url: URL(string: imageURL), content: { image in
@@ -198,16 +203,9 @@ struct CustomerChatView: View {
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
                         
-                        Button(action: {
-                            isClicked.toggle()
-                        }, label: {
-                            Image(systemName: "redX")
-                                .resizable()
-                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
-                                .foregroundStyle(.red)
-                        })
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(8)
+                        CustomXButton(isClicked: $isClicked)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(UIScreen.UIWidth(8))
                     }
                     .gesture(DragGesture(minimumDistance: 20)
                         .onEnded({ value in
@@ -267,16 +265,9 @@ struct CustomerChatView: View {
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
                         
-                        Button(action: {
-                            isClicked.toggle()
-                        }, label: {
-                            Image(systemName: "redX")
-                                .resizable()
-                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
-                                .foregroundStyle(.red)
-                        })
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(8)
+                        CustomXButton(isClicked: $isClicked)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(UIScreen.UIWidth(8))
                     }
                     .gesture(DragGesture(minimumDistance: 20)
                         .onEnded({ value in
@@ -301,8 +292,11 @@ struct CustomerChatView: View {
                     .cornerRadius(30)
             }
             
-            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customDarkGray, textWeight: .regular, textSize: 12)
             
+//            if message.viewed == false {
+//                CustomText(title: "1", textColor: .customBlue, textWeight: .regular, textSize: 12)
+//            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 10)
