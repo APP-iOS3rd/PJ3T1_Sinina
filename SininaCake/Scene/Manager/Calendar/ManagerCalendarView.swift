@@ -14,10 +14,12 @@ struct ManagerCalendarView: View {
     @State var editClicked = true
     @State var daysList = [[DateValue]]()
     @State var edit: Bool = true
+
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
         ScrollView {
+            
             Spacer()
             Spacer()
             VStack() {
@@ -84,7 +86,7 @@ struct ManagerCalendarView: View {
     
     private var headerView: some View {
         HStack {
-            Spacer()
+          
             Spacer()
             Spacer()
             Spacer()
@@ -113,9 +115,6 @@ struct ManagerCalendarView: View {
                 
             }
             .offset(x: 5)
-            
-            Spacer()
-            Spacer()
             Spacer()
             
             Button {
@@ -123,10 +122,11 @@ struct ManagerCalendarView: View {
                 edit.toggle()
                 editClicked.toggle()
             } label: {
-                Image(systemName: editClicked ? "list.bullet.clipboard" : "gearshape")
-                    .resizable()
-                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIWidth(24))
-                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customRed))
+                Text(editClicked ? "일정편집" : "목록보기")
+                    .font(
+                        Font.custom("Pretendard", fixedSize: 16)
+                            .weight(.semibold))
+                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customBlue))
             }
             .padding(.trailing, UIScreen.UIWidth(16))
         }
@@ -234,6 +234,7 @@ struct ManagerCalendarView: View {
         selectedDate = dateValue.date.withoutTime()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let dateString = dateFormatter.string(from: dateValue.date)
         let filteredOrders = calendarListVM.allOrderData.filter { order in
             dateToString(order.date).contains(dateString)
@@ -247,7 +248,7 @@ struct ManagerCalendarView: View {
 struct CardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var calendarVM: ManagerCalendarViewModel
+    @StateObject var calendarVM: ManagerCalendarViewModel
     @Binding var edit: Bool
     @StateObject var calendarListVM: ManagerCalendarListViewModel
     @Binding var selectedDate: Date?
@@ -272,7 +273,7 @@ struct CardView: View {
                             .stroke(Color(UIColor.customBlue)
                                    )
                         )
-                            .opacity(selectedDate == value.date ? 1 : 0)
+                    .opacity(selectedDate?.withoutTime() == value.date.withoutTime() ? 1 : 0)
                         }
             HStack {
                 if value.day > 0 {

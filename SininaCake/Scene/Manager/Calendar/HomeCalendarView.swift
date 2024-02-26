@@ -191,7 +191,7 @@ struct HomeCalendarView: View {
 struct HomeCardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var calendarVM: ManagerCalendarViewModel
+    @StateObject var calendarVM: ManagerCalendarViewModel
     @Binding var selectedDate: Date?
     
     var body: some View {
