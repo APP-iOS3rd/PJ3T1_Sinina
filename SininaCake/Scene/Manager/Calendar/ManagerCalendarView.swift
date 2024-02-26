@@ -19,6 +19,7 @@ struct ManagerCalendarView: View {
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
         ScrollView {
+            
             Spacer()
             Spacer()
             VStack() {
@@ -85,7 +86,7 @@ struct ManagerCalendarView: View {
     
     private var headerView: some View {
         HStack {
-            Spacer()
+          
             Spacer()
             Spacer()
             Spacer()
@@ -114,9 +115,6 @@ struct ManagerCalendarView: View {
                 
             }
             .offset(x: 5)
-            
-            Spacer()
-            Spacer()
             Spacer()
             
             Button {
