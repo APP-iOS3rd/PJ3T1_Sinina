@@ -22,6 +22,7 @@ struct CustomerCalendarView: View {
             HStack {
                 CustomText(title: "픽업 날짜/시간", textColor: .black, textWeight: .semibold , textSize: 20)
                     .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                starmark()
                 Spacer()
                 CustomText(title: selectedTime, textColor: .customBlue, textWeight: .semibold, textSize: 20)
                 CustomText(title: dateToTime(orderData.orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)

@@ -57,9 +57,19 @@ struct infoView: View {
     @ObservedObject var orderData: OrderViewModel
     var body: some View {
         VStack(alignment:.leading){
-            CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
-                .kerning(0.45)
-                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+            HStack{
+                CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
+                    .kerning(0.45)
+                    .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+//                Image(systemName: "staroflife.fill")
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: (UIScreen.main.bounds.width) * 7/430, height: (UIScreen.main.bounds.height) * 7/932)
+//                    .foregroundColor(Color(UIColor.customRed))
+//                    .padding(.leading, -(UIScreen.main.bounds.width) * 7/430)
+//                    .padding(.bottom,(UIScreen.main.bounds.height) * 7/932 )
+                starmark()
+            }
             
             
             
@@ -82,10 +92,11 @@ struct infoView: View {
                 .padding(.bottom, (UIScreen.main.bounds.height) * 36/932)
             
             /// 휴대폰 번호
-            CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
-                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
-            
-            
+            HStack{
+                CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
+                    .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                starmark()
+            }
             
             TextField("010 -", text: $orderData.orderItem.phoneNumber)
                 .textFieldStyle(.plain)
@@ -195,7 +206,10 @@ struct OrderCakeView: View {
     
     var body: some View {
         VStack(alignment:.leading){
-            CustomText(title: "케이크 사이즈", textColor: .black, textWeight: .semibold , textSize: 18)
+            HStack {
+                CustomText(title: "케이크 사이즈", textColor: .black, textWeight: .semibold , textSize: 18)
+                starmark()
+            }
             VStack {
                 ForEach(orderCakeModel.indices, id: \.self) { index in
                     Button(action: {
@@ -264,7 +278,10 @@ struct OrderSheetView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "시트 (빵)", textColor: .black, textWeight: .semibold , textSize: 18)
+            HStack {
+                CustomText(title: "시트 (빵)", textColor: .black, textWeight: .semibold , textSize: 18)
+                starmark()
+            }
             
             HStack{
                 ForEach(orderSheetModel.indices, id: \.self) { index in
@@ -341,9 +358,11 @@ struct OrderCreamView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "속크림", textColor: .black, textWeight: .semibold , textSize: 18)
-                .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-            
+            HStack {
+                CustomText(title: "속크림", textColor: .black, textWeight: .semibold , textSize: 18)
+                    .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
+                starmark()
+            }
             HStack{
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(orderCreamModel.indices, id: \.self) { index in
@@ -412,8 +431,10 @@ struct OrderTextView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "문구/글씨 색상", textColor: .black, textWeight: .semibold , textSize: 18)
-            
+            HStack {
+                CustomText(title: "문구/글씨 색상", textColor: .black, textWeight: .semibold , textSize: 18)
+                starmark()
+            }
             TextField("ex) 생일축하해 깐깐징어~!", text: $orderData.orderItem.text, axis: .vertical)
                 .addLeftPadding(10)
                 .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430,
@@ -444,6 +465,7 @@ private struct OrderPhotoView: View {
             HStack {
                 CustomText(title: "사진 첨부", textColor: .black, textWeight: .semibold , textSize: 18)
                     .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
+                starmark()
                 
                 Spacer()
                 
@@ -601,7 +623,7 @@ struct OrderIcePackView: View {
                                     .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .fill(disableSelection(for: index) ? Color(UIColor.customGray) : .white)
+                                            .fill(disableSelection(for: index) ? Color(UIColor.textFieldColor) : .white)
                                     )
                             )
               
@@ -705,8 +727,8 @@ private struct BottomView: View {
                 orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
                 orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
                          title: "예약하기",
-                         titleColor: .white,
-                         backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .customGray,
+                         titleColor:  orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .white: .customDarkGray,
+                         backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
                          leading: 110, trailing: 24)
             .kerning(0.45)
             .padding(.vertical, 12)
@@ -717,6 +739,17 @@ private struct BottomView: View {
     }
 }
 
+struct starmark: View {
+    var body: some View {
+        Image(systemName: "staroflife.fill")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: (UIScreen.main.bounds.width) * 7/430, height: (UIScreen.main.bounds.height) * 7/932)
+            .foregroundColor(Color(UIColor.customRed))
+            .padding(.leading, -(UIScreen.main.bounds.width) * 7/430)
+            .padding(.bottom,(UIScreen.main.bounds.height) * 7/932 )
+    }
+}
 
 struct LoginTextFieldModifier: ViewModifier {
     var width: CGFloat
