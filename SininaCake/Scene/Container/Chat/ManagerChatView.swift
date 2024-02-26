@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import Kingfisher
 
 struct ManagerChatView: View {
     
@@ -17,6 +18,8 @@ struct ManagerChatView: View {
     @State private var isChatTextEmpty = true
     @State private var selectedImage: UIImage?
     @State private var isImagePickerPresented = false
+    @State var isClicked = false
+    @State var imgUrl: String = ""
     
     // MARK: 통합 뷰
     var body: some View {
@@ -77,7 +80,7 @@ struct ManagerChatView: View {
     
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 10) {
             Button {
                 isImagePickerPresented.toggle()
                 
@@ -102,13 +105,12 @@ struct ManagerChatView: View {
                         .onAppear(){
                             isChatTextEmpty = false
                         }
-                    
-                } else {
+                }
+                            
+                else {
                     TextField("", text: $chatText)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
+                        
                         .background(Color(.customLightGray))
-                        .cornerRadius(45)
                         .onChange(of: chatText){ value in
                             isChatTextEmpty = value.isEmpty
                         }
@@ -156,18 +158,56 @@ struct ManagerChatView: View {
         HStack {
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-            if let imageURL = message.imageURL, !imageURL.isEmpty {
-                
-                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
+            if let imageURL = message.imageURL {
+                AsyncImage(url: URL(string: imageURL), content: { image in
+                    image
+                        .resizable()
                         .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
-                    
-                    
                 },
                            placeholder: {
                     ProgressView()
+                }) // AsyncImage
+                .onTapGesture {
+                    KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
+                        switch result {
+                        case .success(let value):
+                            imgUrl = value.source.url?.absoluteString ?? ""
+                            isClicked.toggle()
+                            
+                        case .failure:
+                            break
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack(alignment: .topTrailing) {
+                        KFImage(URL(string: imgUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                        
+                        Button(action: {
+                            isClicked.toggle()
+                        }, label: {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                .foregroundStyle(.red)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(8)
+                    }
+                    .gesture(DragGesture(minimumDistance: 20)
+                        .onEnded({ value in
+                            if value.translation.height > 100 {
+                                isClicked.toggle()
+                            }
+                        })
+                    )
                 })
+                .frame(width: UIScreen.UIWidth(185),
+                       height: UIScreen.UIHeight(185))
+                .clipShape(.rect(cornerRadius: 12))
                 
             } else {
                 Text("\(message.text ?? "")")
@@ -187,15 +227,55 @@ struct ManagerChatView: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            if let imageURL = message.imageURL, !imageURL.isEmpty {
-                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
+            if let imageURL = message.imageURL {
+                AsyncImage(url: URL(string: imageURL), content: { image in
                     image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(idealWidth: 300, idealHeight: 300, alignment: .leading)
+                        .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
                 },
                            placeholder: {
                     ProgressView()
+                }) // AsyncImage
+                .onTapGesture {
+                    KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
+                        switch result {
+                        case .success(let value):
+                            imgUrl = value.source.url?.absoluteString ?? ""
+                            isClicked.toggle()
+                            
+                        case .failure:
+                            break
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack(alignment: .topTrailing) {
+                        KFImage(URL(string: imgUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                        
+                        Button(action: {
+                            isClicked.toggle()
+                        }, label: {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                .foregroundStyle(.red)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(8)
+                    }
+                    .gesture(DragGesture(minimumDistance: 20)
+                        .onEnded({ value in
+                            if value.translation.height > 100 {
+                                isClicked.toggle()
+                            }
+                        })
+                    )
                 })
+                .frame(width: UIScreen.UIWidth(185),
+                       height: UIScreen.UIHeight(185))
+                .clipShape(.rect(cornerRadius: 12))
                 
             } else {
                 Text("\(message.text ?? "")")
@@ -216,10 +296,9 @@ struct ManagerChatView: View {
     }
 }
 
-//#Preview {
-//    NavigationView {
-//        ChatView(loginUser: User(name: "아무개", email: "c@gmail.com", createdAt: Timestamp(date: Date()), id: "KYhEjCvYERI4CyoGlZPu")
-//                 , userEmail: "b@gmail.com", room: ChatRoom(userEmail: "b@gmail.com", userName: "서감자", date: Timestamp(date: Date()), id: "h30LSY4MBubwggDHhR6n", lastMessageText: nil))
-//    }
+#Preview {
+    NavigationView {
+        ManagerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: "", lastMsgTime: Date(), imgURL: "jdfkal"))
+    }
 
-//}
+}

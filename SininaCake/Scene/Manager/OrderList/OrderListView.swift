@@ -23,7 +23,7 @@ struct OrderListView: View {
                 Spacer()
                     .frame(height: 28)
                 
-                ListView(orderData: orderListVM.progressOrderData, title: "진행중인 주문 현황", titleColor: .customBlue)
+                ListView(orderData: orderListVM.progressOrderData, title: "확정된 주문 현황", titleColor: .customBlue)
                 
                 Spacer()
                     .frame(height: 28)
@@ -33,7 +33,7 @@ struct OrderListView: View {
             .navigationDestination(for: OrderItem.self) { item in
                 OrderDetailView(orderItem: item)
             }
-            .onAppear {
+            .refreshable {
                 orderListVM.fetchData()
             }
         }
@@ -52,13 +52,15 @@ struct ListView: View {
     }
     
     var body: some View {
+        let sortedOrderData = orderData.sorted{ $0.date < $1.date }
+        
         VStack(spacing: 14) {
             HStack {
                 CustomText(title: title, textColor: titleColor, textWeight: .semibold, textSize: 18)
                 Spacer()
             }
             
-            if orderData.isEmpty {
+            if sortedOrderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(.customGray))
                     .frame(height: 100)
@@ -73,9 +75,9 @@ struct ListView: View {
                         }
                     )
             } else {
-                ForEach(0..<orderData.count, id: \.self) { i in
-                    NavigationLink(value: orderData[i]) {
-                        CellView(orderItem: orderData[i])
+                ForEach(0..<sortedOrderData.count, id: \.self) { i in
+                    NavigationLink(value: sortedOrderData[i]) {
+                        CellView(orderItem: sortedOrderData[i])
                     }
                 }
             }

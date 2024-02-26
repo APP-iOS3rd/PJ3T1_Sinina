@@ -24,6 +24,8 @@ class OrderListViewModel: ObservableObject {
         
         db = Firestore.firestore()
         ordersRef = db.collection("CurrentOrders")
+        
+        fetchData()
     }
     
     func fetchData() {

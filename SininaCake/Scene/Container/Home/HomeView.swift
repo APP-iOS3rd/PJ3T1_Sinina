@@ -8,6 +8,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeVM = HomeViewModel()
+    @StateObject var orderStatusVM = OrderStatusViewModel()
     @ObservedObject var loginVM = LoginViewModel.shared
 //    @State private var showManager = false
     
@@ -15,7 +16,7 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 64) {
-                    OrderStatusView()
+                    OrderStatusView(orderStatusVM: orderStatusVM)
                     HomeCalendarView()
                     InstagramView()
                     MapView()
@@ -23,6 +24,9 @@ struct HomeView: View {
                 }
             }
             .background(Color(.customLightGray))
+            .refreshable {
+                orderStatusVM.fetchData()
+            }
         }
     }
 }
