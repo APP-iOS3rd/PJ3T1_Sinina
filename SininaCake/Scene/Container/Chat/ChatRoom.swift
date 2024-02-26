@@ -14,13 +14,15 @@ struct ChatRoom: Codable, Hashable, Identifiable {
     var lastMsg: String?
     var lastMsgTime: Date?
     var imgURL: String?
+    var unreadMsgCnt: Int?
     
-    init(userEmail: String, id: String, lastMsg: String?, lastMsgTime: Date?, imgURL: String?) {
+    init(userEmail: String, id: String, lastMsg: String?, lastMsgTime: Date?, imgURL: String?, unreadMsgCnt: Int?) {
         self.id = userEmail
         self.userEmail = userEmail
         self.lastMsg = lastMsg
         self.lastMsgTime = lastMsgTime
         self.imgURL = imgURL
+        self.unreadMsgCnt = unreadMsgCnt
     }
 }
 

@@ -58,8 +58,11 @@ struct ChatListView: View {
                                         Spacer()
                                         
                                         //FIXME: 안읽은 메세지 수
-                                        CustomText(title: "1", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
-                                            .frame(alignment: .leading)
+                                        if let unreadMsgCnt = room.unreadMsgCnt {
+                                            CustomText(title: "\(unreadMsgCnt)", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                                                .background(Color(.customBlue))
+                                                .frame(alignment: .leading)
+                                        }
                                     }
                                 }
                             }

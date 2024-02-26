@@ -31,6 +31,8 @@ struct ManagerChatView: View {
         .onAppear(){
             chatVM.fetchRoom(userEmail: room.userEmail)
             chatVM.getDeviceToken(room.userEmail)
+            
+            chatVM.db.collection("chatRoom").document(room.userEmail).updateData(["unreadMsgCnt": nil])
         }
     }
     
@@ -116,14 +118,14 @@ struct ManagerChatView: View {
             Button {
                 if let selectedImage = selectedImage {
                     if let image = selectedImage.jpegData(compressionQuality: 1){
-                        let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
+                        let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date(), viewed: false)
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
                         fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: "사진")
                     }
                     self.selectedImage = nil
                 } else {
-                    let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
+                    let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date(), viewed: false)
                     chatVM.sendMessage(chatRoom: room, message: msg)
                     fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: chatText)
                 }
@@ -291,9 +293,9 @@ struct ManagerChatView: View {
     }
 }
 
-#Preview {
-    NavigationView {
-        ManagerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: "", lastMsgTime: Date(), imgURL: "jdfkal"))
-    }
-
-}
+//#Preview {
+//    NavigationView {
+//        ManagerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: "", lastMsgTime: Date(), imgURL: "jdfkal"))
+//    }
+//
+//}

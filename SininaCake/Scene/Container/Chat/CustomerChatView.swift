@@ -60,13 +60,11 @@ struct CustomerChatView: View {
                             .onChange(of: chatVM.lastMessageId){ id in
                                 withAnimation {
                                     proxy.scrollTo(id, anchor: .bottom)
-                                    print("마지막 메세지: \(chatVM.lastMessageText)")
                                 }
                             }
                             .onAppear(){
                                 withAnimation {
                                     proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
-                                    print("첫화면 \(chatVM.lastMessageText)")
                                 }
                             }
                         }
@@ -130,7 +128,7 @@ struct CustomerChatView: View {
             Button {
                 if let selectedImage = selectedImage {
                     if let image = selectedImage.jpegData(compressionQuality: 1){
-                        let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
+                        let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date(), viewed: false)
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
                         for token in chatVM.managerDeviceToken {
@@ -140,7 +138,7 @@ struct CustomerChatView: View {
                     self.selectedImage = nil
                     
                 } else {
-                    let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
+                    let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date(), viewed: false)
                     chatVM.sendMessage(chatRoom: room, message: msg)
                     for token in chatVM.managerDeviceToken {
                         fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail, body: chatText)
@@ -170,7 +168,7 @@ struct CustomerChatView: View {
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
-            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
+            CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12 )
             
             if let imageURL = message.imageURL {
                 AsyncImage(url: URL(string: imageURL), content: { image in
@@ -311,6 +309,6 @@ struct CustomerChatView: View {
     }
 }
 
-#Preview {
-    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil, imgURL: ""))
-}
+//#Preview {
+//    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil, imgURL: ""))
+//}
