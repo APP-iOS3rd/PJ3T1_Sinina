@@ -41,6 +41,8 @@ class UserConfirmOrderDetailViewModel: ObservableObject {
     }
     
     func getDeviceToken(_ emails: [String]) {
+        deviceToken = []
+        
         for email in emails {
             let docRef = db.collection("Users").document(email)
             
@@ -54,9 +56,7 @@ class UserConfirmOrderDetailViewModel: ObservableObject {
                     let data = doc.data()
                     if let data = data {
                         let token = data["deviceToken"] as? String ?? ""
-                        if email == "zoa0945@gmail.com" {
-                            self.deviceToken.append(token)
-                        }
+                        self.deviceToken.append(token)
                     }
                 }
             }
