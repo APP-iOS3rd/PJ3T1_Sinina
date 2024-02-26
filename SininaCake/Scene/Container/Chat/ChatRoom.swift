@@ -14,7 +14,6 @@ struct ChatRoom: Codable, Hashable, Identifiable {
     var lastMsg: String?
     var lastMsgTime: Date?
     var imgURL: String?
-//    var date: Date?
     
     init(userEmail: String, id: String, lastMsg: String?, lastMsgTime: Date?, imgURL: String?) {
         self.id = userEmail
@@ -22,7 +21,6 @@ struct ChatRoom: Codable, Hashable, Identifiable {
         self.lastMsg = lastMsg
         self.lastMsgTime = lastMsgTime
         self.imgURL = imgURL
-//        self.date = date
     }
 }
 
