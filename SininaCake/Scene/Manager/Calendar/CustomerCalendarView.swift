@@ -305,8 +305,8 @@ struct CustomerCardView: View {
                             }
                             .alert(isPresented: $showAlert) {
                                 Alert(
-                                    title: Text("error"),
-                                    message: Text("예약가능날짜가 아닙니다"),
+                                    title: Text("예약 불가"),
+                                    message: Text("다른 날짜를 선택해 주세요."),
                                     dismissButton: .default(Text("확인"))
                                 )
                             }
