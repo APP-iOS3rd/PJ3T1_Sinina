@@ -475,7 +475,7 @@ struct BottomButton: View {
 
     var body: some View {
         CustomButton(action: {
-            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: messageText)
+            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, title: "시니나케이크", body: messageText)
             
             switch orderItem.status {
             case .notAssign:

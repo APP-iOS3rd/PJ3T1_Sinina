@@ -16,7 +16,7 @@ class AppInfo {
 }
 
 class FCMServerAPI: ObservableObject {
-    func sendFCM(deviceToken: String, body: String) {
+    func sendFCM(deviceToken: String, title: String, body: String) {
         guard let fcmServerURL = URL(string: "https://fcm.googleapis.com/fcm/send") else {
             print("Cannot Found Server URL")
             return
@@ -36,7 +36,7 @@ class FCMServerAPI: ObservableObject {
         let message: [String: Any] = [
             "to": deviceToken,
             "notification": [
-                "title": "시니나케이크",
+                "title": title,
                 "body": body
             ]
         ]

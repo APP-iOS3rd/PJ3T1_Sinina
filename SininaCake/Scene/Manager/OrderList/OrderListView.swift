@@ -33,6 +33,9 @@ struct OrderListView: View {
             .navigationDestination(for: OrderItem.self) { item in
                 OrderDetailView(orderItem: item)
             }
+            .onAppear {
+                orderListVM.fetchData()
+            }
             .refreshable {
                 orderListVM.fetchData()
             }

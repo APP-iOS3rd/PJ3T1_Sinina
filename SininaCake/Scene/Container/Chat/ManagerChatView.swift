@@ -13,6 +13,7 @@ struct ManagerChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var loginVM = LoginViewModel.shared
+    @StateObject var fcmServerAPI = FCMServerAPI()
     @State var chatText = ""
     @State var room: ChatRoom
     @State private var isChatTextEmpty = true
@@ -26,6 +27,10 @@ struct ManagerChatView: View {
         VStack {
             messagesView
             chatBottomBar
+        }
+        .onAppear(){
+            chatVM.fetchRoom(userEmail: room.userEmail)
+            chatVM.getDeviceToken(room.userEmail)
         }
     }
     
@@ -71,9 +76,6 @@ struct ManagerChatView: View {
                 ToolbarItem(placement: .principal){
                     CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 24)
                 }
-            }
-            .onAppear(){
-                chatVM.fetchRoom(userEmail: room.userEmail)
             }
         }
     }
@@ -124,6 +126,7 @@ struct ManagerChatView: View {
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                        fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: "사진")
                     }
                     self.selectedImage = nil
                     
@@ -131,6 +134,7 @@ struct ManagerChatView: View {
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
+                    fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: chatText)
                 }
                 
                 chatText = ""

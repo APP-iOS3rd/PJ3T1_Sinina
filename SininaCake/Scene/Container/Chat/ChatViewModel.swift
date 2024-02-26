@@ -19,8 +19,22 @@ class ChatViewModel: ObservableObject{
     @Published var lastMessageText = [String: String]()
     @Published var lastMessageId = ""
     @Published var lastMessageTimestamp = [String: String]()
+    @Published var deviceToken = ""
+    @Published var managerList: [String] = []
+    @Published var managerDeviceToken: [String] = []
     var listeners = [ListenerRegistration]()
     var listener: ListenerRegistration?
+    var db: Firestore!
+    var ordersRef: CollectionReference!
+    
+    init() {
+        let settings = FirestoreSettings()
+        
+        Firestore.firestore().settings = settings
+        
+        db = Firestore.firestore()
+        ordersRef = db.collection("Managers")
+    }
     
     // 모든 방 리스트를 받아옴
     func fetchAllRooms(){
@@ -238,6 +252,64 @@ class ChatViewModel: ObservableObject{
                 if let downloadURL = url {
                     print("저장 성공")
                     completion(.success(downloadURL))
+                }
+            }
+        }
+    }
+    
+    func getDeviceToken(_ email: String) {
+        let docRef = db.collection("Users").document(email)
+        
+        docRef.getDocument { [weak self] doc, error in
+            if let error = error {
+                print("FireStore Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let doc = doc, doc.exists, let self = self {
+                let data = doc.data()
+                if let data = data {
+                    self.deviceToken = data["deviceToken"] as? String ?? ""
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    func fetchManagerList(completion: @escaping () -> Void) async {
+        managerList = []
+        
+        do {
+            let managers = try await ordersRef.document("Manager").getDocument()
+            if let managerArr = managers.data()?["email"] as? [String] {
+                    self.managerList = managerArr
+            } else {
+                print("Cannot found email in document")
+            }
+        } catch let error {
+            print("Firebase error: \(error.localizedDescription)")
+        }
+        completion()
+    }
+    
+    func getManagerDeviceToken(_ emails: [String]) {
+        managerDeviceToken = []
+        
+        for email in emails {
+            let docRef = db.collection("Users").document(email)
+            
+            docRef.getDocument { [weak self] doc, error in
+                if let error = error {
+                    print("FireStore Error: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let doc = doc, doc.exists, let self = self {
+                    let data = doc.data()
+                    if let data = data {
+                        let token = data["deviceToken"] as? String ?? ""
+                        self.managerDeviceToken.append(token)
+                    }
                 }
             }
         }

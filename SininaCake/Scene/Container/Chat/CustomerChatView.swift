@@ -12,6 +12,7 @@ struct CustomerChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var loginVM = LoginViewModel.shared
+    @StateObject var fcmServerAPI = FCMServerAPI()
     @State var chatText = ""
     @State var room: ChatRoom
     
@@ -28,6 +29,13 @@ struct CustomerChatView: View {
         VStack {
             messagesView
             chatBottomBar
+        }
+        .onAppear {
+            Task {
+                await chatVM.fetchManagerList {
+                    chatVM.getManagerDeviceToken(chatVM.managerList)
+                }
+            }
         }
     }
     
@@ -136,6 +144,9 @@ struct CustomerChatView: View {
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                        for token in chatVM.managerDeviceToken {
+                            fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail ,body: "사진")
+                        }
                     }
                     self.selectedImage = nil
                     
@@ -143,6 +154,9 @@ struct CustomerChatView: View {
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
+                    for token in chatVM.managerDeviceToken {
+                        fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail, body: chatText)
+                    }
                 }
                 
                 chatText = ""
