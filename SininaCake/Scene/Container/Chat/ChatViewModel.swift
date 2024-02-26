@@ -27,18 +27,30 @@ class ChatViewModel: ObservableObject{
         fireStore.collection("chatRoom").getDocuments { (snapshot, error) in
             guard error == nil else { return }
             
-            self.chatRooms.removeAll()
-            self.messages.removeAll()
-            self.listener?.remove()
+            self.removeAll()
             
-            for document in snapshot!.documents{
+            for document in snapshot!.documents {
                 if let data = try? document.data(as: ChatRoom.self) {
                     self.chatRooms.append(data)
                     
-                    print("fetchAllRoom: ", data)
+                    self.chatRooms.sort { room1, room2 in
+                        if let time1 = room1.lastMsgTime, let time2 = room2.lastMsgTime {
+                            return time1 > time2
+                        } else if room1.lastMsgTime != nil {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
                 }
             }
         }
+    }
+    
+    func removeAll(){
+        self.chatRooms.removeAll()
+        self.messages.removeAll()
+        self.listeners.removeAll()
     }
     
     func fetchRoom(userEmail: String){
@@ -47,9 +59,7 @@ class ChatViewModel: ObservableObject{
             guard error == nil else { print("fetch Room 에러 : \(error)")
                 return }
             
-            self.chatRooms.removeAll()
-            self.messages.removeAll()
-            self.listeners.removeAll()
+            self.removeAll()
             
             for document in snapshot!.documents {
                 if let data = try? document.data(as: ChatRoom.self) {
