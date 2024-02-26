@@ -32,13 +32,15 @@ struct CalListView: View {
     }
     
     var body: some View {
+        let sortedOrderData = orderData.sorted { $0.date < $1.date }
+        
         VStack(spacing: 14) {
             HStack {
                 CustomText(title: title, textColor: titleColor, textWeight: .semibold, textSize: 18)
                 Spacer()
             }
             
-            if orderData.isEmpty {
+            if sortedOrderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(.customGray))
                     .frame(height: 100)
@@ -53,19 +55,16 @@ struct CalListView: View {
                         }
                     )
             } else {
-                ForEach(0..<orderData.count, id: \.self) { i in
-//                    NavigationLink(value: orderData[i]) {
-//                        CalendarCellView(orderItem: orderData[i])
-//                    }
-                    NavigationLink(destination: OrderDetailView(orderItem: orderData[i])) {
-                        CalendarCellView(orderItem: orderData[i])
+                ForEach(0..<sortedOrderData.count, id: \.self) { i in
+                    NavigationLink(destination: OrderDetailView(orderItem: sortedOrderData[i])) {
+                        CalendarCellView(orderItem: sortedOrderData[i])
                     }
                 }
             }
         }
-        .padding(.leading, 24)
-        .padding(.trailing, 24)
-        .padding(.top, 40)
+        .padding(.trailing, UIScreen.UIWidth(24))
+        .padding(.leading, UIScreen.UIWidth(24))
+        .padding(.top, UIScreen.UIHeight(20))
     }
 }
 

@@ -33,7 +33,7 @@ struct ContainerView: View {
                 
                 CustomTabView(selection: $currentTab)
                     .navigationDestination(isPresented: $showChat) {
-                        CustomerChatView(room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? "", lastMsg: nil, lastMsgTime: nil))
+                        CustomerChatView(room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? "", lastMsg: nil, lastMsgTime: nil, imgURL: loginVM.imgURL))
                             .navigationBarBackButtonHidden()
                             .onDisappear() {
                                 currentTab = .home

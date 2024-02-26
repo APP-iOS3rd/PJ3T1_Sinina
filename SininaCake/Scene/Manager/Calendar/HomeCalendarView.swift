@@ -7,25 +7,28 @@
 import SwiftUI
 struct HomeCalendarView: View {
     @Environment(\.sizeCategory) var sizeCategory
-    @ObservedObject var calendarVM = ManagerCalendarViewModel()
+    @StateObject var calendarVM = ManagerCalendarViewModel()
     @State private var selectedDate: Date?
     @State var daysList = [[DateValue]]()
-    
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading) {
             CustomText(title: "이달의 스케줄", textColor: .black, textWeight: .semibold, textSize: 24)
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(444))
+                .frame(height: UIScreen.UIHeight(560))
+                .cornerRadius(12)
+                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                 .background(
-                    ZStack {
+                    ZStack(alignment:.top) {
                         Rectangle()
                             .foregroundColor(.white)
                             .cornerRadius(12)
                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                         VStack() {
                             headerView
+                            .fixedSize(horizontal: false, vertical: true)
                             Divider()
                                 .frame(width: UIScreen.UIWidth(302))
                             weekView
@@ -33,24 +36,64 @@ struct HomeCalendarView: View {
                             Divider()
                                 .frame(width: UIScreen.UIWidth(302))
                             bookingView
-                                .padding(.vertical, 24)
+                                .padding([.horizontal,.vertical], UIScreen.UIWidth(24))
                         }
                     }
                 )
         }
+        .padding(.trailing, UIScreen.UIWidth(24))
+        .padding(.leading, UIScreen.UIWidth(24))
+        .onDisappear()
+        .onAppear() {
+            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            print("onappear - 캘린더뷰")
+            initialize()
+        }
+        .onChange(of: calendarVM.monthOffset) { _ in
+            // updating Month...
+            print("onchange - monthoffset, \(calendarVM.monthOffset)")
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            initialize()
+        }
+        .onChange(of:calendarVM.dateValues) { _ in
+            print("onchange - dataValues , \(calendarVM.dateValues.count)")
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            initialize()
+        }
     }
     
+    private func initialize() {
+        for i in daysList.indices {
+            for j in daysList[i].indices {
+                let currentDate = daysList[i][j].date.withoutTime().toDateString()
+                if let dv = calendarVM.dateValues.first(where: { $0.date.withoutTime().toDateString() == currentDate }) {
+                    if calendarVM.currentDate.month == dv.date.month {
+                        print("onchange - month : \(dv.date.month)")
+                        daysList[i][j] = dv
+                    }
+                }
+            }
+        }
+    }
+
     private var headerView: some View {
         HStack {
             Spacer()
-            
+            Spacer()
             Button {
                 calendarVM.monthOffset -= 1
                 
-            } label: {
+            }
+        label: {
                 Image("angle-left")
+                .opacity(calendarVM.monthOffset <= 0 ? 0 : 1)
             }
             .offset(x: 5)
+            .disabled(calendarVM.monthOffset <= 0)
             Text(calendarVM.month())
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -64,9 +107,11 @@ struct HomeCalendarView: View {
                 calendarVM.monthOffset += 1
             } label: {
                 Image("angle-right")
+                    .opacity(calendarVM.monthOffset >= 1 ? 0 : 1)
             }
             .offset(x: 5)
-            
+            .disabled(calendarVM.monthOffset >= 1)
+            Spacer()
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -100,60 +145,6 @@ struct HomeCalendarView: View {
                     }
                 }
                 .minimumScaleFactor(0.1)
-            }
-        }
-        .onDisappear()
-        .onAppear() {
-            calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
-            print("onappear - 캘린더뷰")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .onChange(of: calendarVM.monthOffset) { _ in
-            // updating Month...
-            print("onchange - monthoffset, \(calendarVM.monthOffset)")
-            calendarVM.currentDate = calendarVM.getCurrentMonth()
-            daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .onChange(of:calendarVM.dateValues) { _ in
-            print("onchange - dataValues , \(calendarVM.dateValues.count)")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -204,19 +195,14 @@ struct HomeCardView: View {
     @Binding var selectedDate: Date?
     
     var body: some View {
-        ZStack() {
-            HStack {
-                if value.day > 0 {
-                    if value.isNotCurrentMonth {
-                        Text("\(value.day)")
-                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                            .foregroundColor(Color(UIColor.customGray))
-                            .padding([.leading, .bottom], 10)
-                    } else {
-                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
-                        { Text("\(value.day)")
+            ZStack() {
+                HStack {
+                    if value.day > 0 {
+                        if value.isNotCurrentMonth {
+                            Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
+                                .foregroundColor(Color(UIColor.customGray))
+
                                 .padding([.leading, .bottom], 10)
                         } else if schedule.startDate.withoutTime() == value.date {
                             Text("\(value.day)")
@@ -224,28 +210,24 @@ struct HomeCardView: View {
                                 .foregroundColor(.white)
                                 .padding([.leading, .bottom], 10)
                                 .background(Circle()
-                                    .frame(width: UIScreen.UIWidth(40), height: UIScreen.UIWidth(40))
+                                    .frame(width: 40, height: 40)
                                     .foregroundColor(Color(UIColor.customBlue))
                                     .offset(x:5.2,y:-3.7)
                                 )
-                        } else if schedule.startDate.withoutTime() > value.date {
+                        } else {
                             Text("\(value.day)")
                                 .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray)))
+                                .foregroundColor(value.color.color)
                                 .padding([.leading, .bottom], 10)
-                        }
-                        else {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
-                                .padding([.leading, .bottom], 10)
+                                .onTapGesture {
+                                    
+                                }
                         }
                     }
                 }
             }
-        }
-        .frame(width: UIScreen.main.bounds.width / 13)
-        .frame(height: 40)
+            .frame(width: UIScreen.main.bounds.width / 13)
+            .frame(height: 40)
     }
 }
 

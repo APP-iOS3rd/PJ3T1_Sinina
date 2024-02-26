@@ -81,6 +81,7 @@
 		8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD62B54EEFA00D6BCF6 /* OrderDetailViewModel.swift */; };
 		8ECF5FD92B54EF0F00D6BCF6 /* ManagerCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FD82B54EF0F00D6BCF6 /* ManagerCalendarViewModel.swift */; };
 		8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */; };
+		8EF049502B8C5CCA006F8F56 /* UserConfirmOrderDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF0494F2B8C5CCA006F8F56 /* UserConfirmOrderDetailViewModel.swift */; };
 		8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFA75322B73428000BEDF0C /* FCMServerAPI.swift */; };
 		9A07A8902B82023A00E6A898 /* UserConfirmOrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07A88F2B82023A00E6A898 /* UserConfirmOrderDetailView.swift */; };
 		9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6A52B55149E00E7E699 /* OrderStatusView.swift */; };
@@ -99,6 +100,7 @@
 		9A27E6D02B56B7F800E7E699 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 9A27E6CF2B56B7F800E7E699 /* KakaoSDKCommon */; };
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
 		9A6C3D412B8520270034D44A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A6C3D402B8520270034D44A /* Kingfisher */; };
+		9A86D6632B8B71A100A3F3EE /* CustomXButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A86D6622B8B71A100A3F3EE /* CustomXButton.swift */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
 		9AA04FFD2B72110D004F671E /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA04FFC2B72110D004F671E /* ContainerView.swift */; };
@@ -166,6 +168,7 @@
 		8ECF5FD62B54EEFA00D6BCF6 /* OrderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FD82B54EF0F00D6BCF6 /* ManagerCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerCalendarViewModel.swift; sourceTree = "<group>"; };
 		8ECF5FDF2B54EF6300D6BCF6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		8EF0494F2B8C5CCA006F8F56 /* UserConfirmOrderDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfirmOrderDetailViewModel.swift; sourceTree = "<group>"; };
 		8EFA75322B73428000BEDF0C /* FCMServerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMServerAPI.swift; sourceTree = "<group>"; };
 		8FDFC915E1DAA0A5B53229C0 /* Pods_SininaCake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SininaCake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A07A88F2B82023A00E6A898 /* UserConfirmOrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfirmOrderDetailView.swift; sourceTree = "<group>"; };
@@ -178,6 +181,7 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
+		9A86D6622B8B71A100A3F3EE /* CustomXButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomXButton.swift; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		9AA04FFC2B72110D004F671E /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
@@ -339,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				8ECF5FAB2B54C12000D6BCF6 /* CustomButton.swift */,
+				9A86D6622B8B71A100A3F3EE /* CustomXButton.swift */,
 				8ECF5FAD2B54C12900D6BCF6 /* CustomText.swift */,
 			);
 			path = CustomObject;
@@ -404,6 +409,7 @@
 				8E874BB52B00B59800ECEF08 /* OrderView.swift */,
 				8ECF5FCD2B54EEA400D6BCF6 /* OrderViewModel.swift */,
 				9A07A88F2B82023A00E6A898 /* UserConfirmOrderDetailView.swift */,
+				8EF0494F2B8C5CCA006F8F56 /* UserConfirmOrderDetailViewModel.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -738,6 +744,7 @@
 				9A07A8902B82023A00E6A898 /* UserConfirmOrderDetailView.swift in Sources */,
 				9A27E6AB2B55153900E7E699 /* CustomerCalendarView.swift in Sources */,
 				2367639E2B66BF8D008C8244 /* (null) in Sources */,
+				9A86D6632B8B71A100A3F3EE /* CustomXButton.swift in Sources */,
 				9A27E6A62B55149E00E7E699 /* OrderStatusView.swift in Sources */,
 				8E874BC62B00BBA000ECEF08 /* OrderListView.swift in Sources */,
 				3B6720BC2B85F6610008F462 /* HomeCalendarView.swift in Sources */,
@@ -753,6 +760,7 @@
 				3BD583C32B831B1900861F92 /* ManagerCalendarListView.swift in Sources */,
 				8ECF5FE02B54EF6300D6BCF6 /* Model.swift in Sources */,
 				9A27E6B02B55156000E7E699 /* InstagramView.swift in Sources */,
+				8EF049502B8C5CCA006F8F56 /* UserConfirmOrderDetailViewModel.swift in Sources */,
 				8ECF5FD92B54EF0F00D6BCF6 /* ManagerCalendarViewModel.swift in Sources */,
 				8ECF5FD02B54EEAE00D6BCF6 /* ProfileViewModel.swift in Sources */,
 				8ECF5FB52B54C1FE00D6BCF6 /* OrderDetailView.swift in Sources */,

@@ -24,6 +24,8 @@ class OrderListViewModel: ObservableObject {
         
         db = Firestore.firestore()
         ordersRef = db.collection("CurrentOrders")
+        
+        fetchData()
     }
     
     func fetchData() {
@@ -90,6 +92,8 @@ class OrderListViewModel: ObservableObject {
             return .progress
         case "제작완료":
             return .complete
+        case "수령완료":
+            return .pickup
         default:
             return .notAssign
         }

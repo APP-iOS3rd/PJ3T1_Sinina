@@ -164,7 +164,7 @@ struct CakeInfoView: View {
             VStack(alignment: .leading, spacing: 18) {
                 CustomText(title: orderItem.cakeSize, textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.sheet, textColor: .black, textWeight: .semibold, textSize: 16)
-                CustomText(title: orderItem.cream, textColor: .black, textWeight: .semibold, textSize: 16)
+                CustomText(title: orderItem.cream.replacingOccurrences(of: "\n", with: ""), textColor: .black, textWeight: .semibold, textSize: 16)
                 CustomText(title: orderItem.text, textColor: .black, textWeight: .semibold, textSize: 16)
             }
             
@@ -180,6 +180,7 @@ struct PhotoView: View {
     @ObservedObject var orderDetailVM: OrderDetailViewModel
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     let imageWidth = (UIScreen.main.bounds.width - 60) / 2
+    @State var isClicked = false
     
     var body: some View {
         VStack {
@@ -224,6 +225,31 @@ struct PhotoView: View {
                                             .clipShape(
                                                 .rect(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12, topTrailingRadius: 12)
                                             )
+                                            .onTapGesture {
+                                                isClicked = true
+                                            }
+                                        // FIXME: - 첫번째 사진만 크게 보임
+                                            .fullScreenCover(isPresented: $isClicked, content: {
+                                                ZStack(alignment: .topTrailing) {
+                                                    image
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(maxWidth: .infinity)
+                                                    
+                                                    CustomXButton(isClicked: $isClicked)
+                                                        .frame(maxWidth: .infinity, alignment: .trailing)
+                                                        .padding(UIScreen.UIWidth(8))
+                                                }
+                                                .gesture(DragGesture(minimumDistance: 20)
+                                                    .onEnded({ value in
+                                                        if value.translation.height > 50 {
+                                                            isClicked.toggle()
+                                                        }
+                                                    })
+                                                )
+                                            })
+                                            .transition(AnyTransition.opacity.combined(with: .move(edge: .top)))
+                                        
                                     case .failure:
                                         Image("emptyPhoto")
                                             .resizable()
@@ -449,7 +475,7 @@ struct BottomButton: View {
 
     var body: some View {
         CustomButton(action: {
-            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, body: messageText)
+            fcmAPI.sendFCM(deviceToken: orderDetailVM.deviceToken, title: "시니나케이크", body: messageText)
             
             switch orderItem.status {
             case .notAssign:

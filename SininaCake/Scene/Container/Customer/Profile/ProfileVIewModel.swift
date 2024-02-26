@@ -27,6 +27,7 @@ class ProfileViewModel: ObservableObject {
         ordersRef = db.collection("Users").document(loginVM.loginUserEmail ?? "").collection("Orders")
         
         fetchData()
+        downloadProfileImage()
     }
     
     func downloadImage(_ id: String, _ imageName: String, completion: @escaping (UIImage) -> Void) {

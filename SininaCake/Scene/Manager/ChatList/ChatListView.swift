@@ -5,12 +5,11 @@
 //  Created by  zoa0945 on 1/15/24.
 import SwiftUI
 import Firebase
+import Kingfisher
 
 struct ChatListView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
-    //    @ObservedObject var loginVM = LoginViewModel.shared
-    //    @ObservedObject var userStore = UserStore.shared
-    @State var loginUserEmail: String? // 현재 접속자(본인)
+    @State var loginUserEmail: String?
     
     var body: some View {
         NavigationView {
@@ -19,9 +18,24 @@ struct ChatListView: View {
                     ForEach(chatVM.chatRooms, id: \.self){ room in
                         NavigationLink(destination: ManagerChatView(room: room)){
                             HStack {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .frame(width:55, height: 55)
+                                if let image = room.imgURL {
+                                    AsyncImage(url: URL(string: image)){ img in
+                                        img.image?
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 55, height: 55)
+                                            .clipShape(Circle())
+                                            .padding(.trailing, 10)
+                                    }
+                                } else {
+                                    Image("icon_profile")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 55, height: 55)
+                                        .background(Color(.customLightGray))
+                                        .clipShape(Circle())
+                                        .padding(.trailing, 10)
+                                }
                                 
                                 VStack {
                                     HStack {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OrderStatusView: View {
-    @StateObject var orderStatusVM = OrderStatusViewModel()
+    @ObservedObject var orderStatusVM: OrderStatusViewModel
     
     var body: some View {
         NavigationStack {
@@ -34,7 +34,9 @@ struct StatusView: View {
     @ObservedObject var orderStatusVM: OrderStatusViewModel
     
     var body: some View {
-        if orderStatusVM.myOrderData.isEmpty {
+        let sortedOrderData = orderStatusVM.myOrderData.sorted{ $0.date < $1.date }
+        
+        if sortedOrderData.isEmpty {
             RoundedRectangle(cornerRadius: 12)
                 .foregroundStyle(Color(.white))
                 .frame(height: UIScreen.main.bounds.width - 96)
@@ -64,9 +66,9 @@ struct StatusView: View {
                     }
                 )
         } else {
-            ForEach(0..<orderStatusVM.myOrderData.count, id: \.self) { i in
-                NavigationLink(value: orderStatusVM.myOrderData[i]) {
-                    StatusInfo(orderStatusVM: orderStatusVM, orderItem: orderStatusVM.myOrderData[i])
+            ForEach(0..<sortedOrderData.count, id: \.self) { i in
+                NavigationLink(value: sortedOrderData[i]) {
+                    StatusInfo(orderStatusVM: orderStatusVM, orderItem: sortedOrderData[i])
                 }
             }
         }

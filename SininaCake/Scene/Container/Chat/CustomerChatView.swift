@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct CustomerChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var loginVM = LoginViewModel.shared
+    @StateObject var fcmServerAPI = FCMServerAPI()
     @State var chatText = ""
     @State var room: ChatRoom
+    
+    @State var isClicked = false
+    @State var imgUrl: String = ""
     
     @State private var isChatTextEmpty = true
     @State private var isImagePickerPresented = false
@@ -25,6 +30,13 @@ struct CustomerChatView: View {
             messagesView
             chatBottomBar
         }
+        .onAppear {
+            Task {
+                await chatVM.fetchManagerList {
+                    chatVM.getManagerDeviceToken(chatVM.managerList)
+                }
+            }
+        }
     }
     
     // MARK: 메세지 창 띄우는 뷰
@@ -35,28 +47,22 @@ struct CustomerChatView: View {
                     ScrollView {
                         if chatVM.messages[room.id] != nil {
                             ForEach(chatVM.messages[room.id]!!, id: \.self) { msg in
-                                // 나
                                 if loginVM.loginUserEmail == msg.userEmail {
                                     blueMessageBubble(message: msg)
                                         .id(msg.id)
-                                    
-                                    // 상대
                                 } else {
                                     grayMessageBubble(message: msg)
                                         .id(msg.id)
                                 }
                                 
-                            } // ForEach
+                            }
                             .background(Color.clear)
-                            
-                            // 마지막 메세지로 끌어내리기
                             .onChange(of: chatVM.lastMessageId){ id in
                                 withAnimation {
                                     proxy.scrollTo(id, anchor: .bottom)
                                     print("마지막 메세지: \(chatVM.lastMessageText)")
                                 }
                             }
-                            // 첫화면 끌어내리기
                             .onAppear(){
                                 withAnimation {
                                     proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
@@ -66,12 +72,10 @@ struct CustomerChatView: View {
                         }
                     }
                 }
-                // ScrollViewReader
                 .onAppear {
                     chatVM.fetchRoom(userEmail: room.userEmail)
                 }
             }
-            // VStack
             .navigationTitle("시니나케이크")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -88,8 +92,7 @@ struct CustomerChatView: View {
     
     //MARK: 채팅 치는 뷰
     private var chatBottomBar: some View {
-        HStack(spacing: 16) {
-            // 사진 버튼
+        HStack(spacing: 10) {
             Button {
                 isImagePickerPresented.toggle()
                 
@@ -101,7 +104,7 @@ struct CustomerChatView: View {
                     .background(.white)
                     .cornerRadius(45)
             }
-            .sheet(isPresented: $isImagePickerPresented) {
+            .sheet(isPresented: $isImagePickerPresented){
                 ImagePicker(selectedImage: $selectedImage)
             }
             
@@ -114,13 +117,10 @@ struct CustomerChatView: View {
                         .onAppear(){
                             isChatTextEmpty = false
                         }
-                    
                 } else {
                     TextField("", text: $chatText)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
+                        
                         .background(Color(.customLightGray))
-                        .cornerRadius(45)
                         .onChange(of: chatText){ value in
                             isChatTextEmpty = value.isEmpty
                         }
@@ -128,20 +128,23 @@ struct CustomerChatView: View {
             }
             
             Button {
-                // 사진을 보낼 때
                 if let selectedImage = selectedImage {
-                    
                     if let image = selectedImage.jpegData(compressionQuality: 1){
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                        for token in chatVM.managerDeviceToken {
+                            fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail ,body: "사진")
+                        }
                     }
                     self.selectedImage = nil
                     
-                    // text 전송
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
+                    for token in chatVM.managerDeviceToken {
+                        fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail, body: chatText)
+                    }
                 }
                 
                 chatText = ""
@@ -164,24 +167,61 @@ struct CustomerChatView: View {
         .padding()
     }
     
-    
     // MARK: - 파란 말풍선
     private func blueMessageBubble(message: Message) -> some View {
         HStack {
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-            if let imageURL = message.imageURL, !imageURL.isEmpty {
-                
-                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
+            if let imageURL = message.imageURL {
+                AsyncImage(url: URL(string: imageURL), content: { image in
+                    image
+                        .resizable()
                         .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
-                    
-                    
                 },
                            placeholder: {
                     ProgressView()
                 })
+                .onTapGesture {
+                    KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
+                        switch result {
+                        case .success(let value):
+                            imgUrl = value.source.url?.absoluteString ?? ""
+                            isClicked.toggle()
+                            
+                        case .failure:
+                            break
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack(alignment: .topTrailing) {
+                        KFImage(URL(string: imgUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                        
+                        Button(action: {
+                            isClicked.toggle()
+                        }, label: {
+                            Image(systemName: "redX")
+                                .resizable()
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                .foregroundStyle(.red)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(8)
+                    }
+                    .gesture(DragGesture(minimumDistance: 20)
+                        .onEnded({ value in
+                            if value.translation.height > 100 {
+                                isClicked.toggle()
+                            }
+                        })
+                    )
+                })
+                .frame(width: UIScreen.UIWidth(185),
+                       height: UIScreen.UIHeight(185))
+                .clipShape(.rect(cornerRadius: 12))
                 
             } else {
                 Text("\(message.text ?? "")")
@@ -193,7 +233,7 @@ struct CustomerChatView: View {
                     .background(Color(.customBlue))
                     .cornerRadius(30)
             }
-        } // VStack
+        }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 10)
     }
@@ -201,15 +241,56 @@ struct CustomerChatView: View {
     // MARK: - 회색 말풍선
     private func grayMessageBubble(message: Message) -> some View {
         HStack {
-            if let imageURL = message.imageURL, !imageURL.isEmpty {
-                AsyncImage(url: URL(string: message.imageURL ?? "www.google.com"), content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(idealWidth: 300, idealHeight: 300, alignment: .leading)
+            if let imageURL = message.imageURL {
+                AsyncImage(url: URL(string: imageURL), content: { image in
+                    image
+                        .resizable()
+                        .frame(idealWidth: 300, idealHeight: 300, alignment: .trailing)
                 },
                            placeholder: {
                     ProgressView()
                 })
+                .onTapGesture {
+                    KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
+                        switch result {
+                        case .success(let value):
+                            imgUrl = value.source.url?.absoluteString ?? ""
+                            isClicked.toggle()
+                            
+                        case .failure:
+                            break
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack(alignment: .topTrailing) {
+                        KFImage(URL(string: imgUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                        
+                        Button(action: {
+                            isClicked.toggle()
+                        }, label: {
+                            Image(systemName: "redX")
+                                .resizable()
+                                .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                .foregroundStyle(.red)
+                        })
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(8)
+                    }
+                    .gesture(DragGesture(minimumDistance: 20)
+                        .onEnded({ value in
+                            if value.translation.height > 100 {
+                                isClicked.toggle()
+                            }
+                        })
+                    )
+                })
+                .frame(width: UIScreen.UIWidth(185),
+                       height: UIScreen.UIHeight(185))
+                .clipShape(.rect(cornerRadius: 12))
                 
             } else {
                 Text("\(message.text ?? "")")
@@ -224,12 +305,12 @@ struct CustomerChatView: View {
             
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-        } // HStack
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 10)
     }
 }
 
 #Preview {
-    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil))
+    CustomerChatView(room: ChatRoom(userEmail: "20subi@gmail.com", id: "20subi@gmail.com", lastMsg: nil, lastMsgTime: nil, imgURL: ""))
 }
