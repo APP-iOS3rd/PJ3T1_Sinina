@@ -61,7 +61,7 @@ struct UserConfirmOrderDetailView: View {
                 CustomButton(action: {
                     for token in userConfirmOrderDetailVM.deviceToken {
                         print("DeviceToken: \(token)")
-                        fcmServerAPI.sendFCM(deviceToken: token, body: "새로운 주문이 접수되었습니다. 견적서를 확인해주세요!")
+                        fcmServerAPI.sendFCM(deviceToken: token, title: "시니나케이크", body: "새로운 주문이 접수되었습니다. 견적서를 확인해주세요!")
                     }
                     
                     orderVM.addOrderItem()

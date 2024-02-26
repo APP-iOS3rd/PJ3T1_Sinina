@@ -124,7 +124,7 @@ struct ManagerChatView: View {
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
-                        fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, body: "사진")
+                        fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: "사진")
                     }
                     self.selectedImage = nil
                     
@@ -132,7 +132,7 @@ struct ManagerChatView: View {
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
-                    fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, body: chatText)
+                    fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: chatText)
                 }
                 
                 chatText = ""
