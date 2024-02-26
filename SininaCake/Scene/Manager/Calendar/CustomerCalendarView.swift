@@ -99,10 +99,10 @@ struct CustomerCalendarView: View {
             initialize()
         }
         .onChange(of:selectedDate) { selectedDate in
-            print("Selected Date Changed: \(String(describing: selectedDate))")
+            print("Onchange -Selected Date Changed: \(String(describing: selectedDate))")
             if let selectedDate = selectedDate {
                 orderData.orderItem.date = selectedDate
-                print("Order Item Date Changed: \(orderData.orderItem.date)")
+                print("Onchange - Order Item Date Changed: \(orderData.orderItem.date)")
             }
             
         }
@@ -232,20 +232,24 @@ struct CustomerCalendarView: View {
     }
     
     private func handleDateClick(dateValue: DateValue) {
-        selectedDate = dateValue.date
+        if let unwrappedDate = Calendar.current.date(bySettingHour: 10, minute: 30, second: 0, of: dateValue.date) {
+            selectedDate = unwrappedDate }
+        //selectedDate = dateValue.date
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.dateFormat = "yyyy/MM/dd(E)"
         let dateString = dateFormatter.string(from: dateValue.date)
         selectedTime = dateString
-        print("Filtered Orders for \(dateString)")
+        print("datevalue = \(dateValue.date)")
+            print("Selected Date: \(String(describing: selectedDate))")  // 추가된 부분
+            print("Filtered Orders for \(dateString)")
     }
 }
 
 struct CustomerCardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var calendarVM: ManagerCalendarViewModel
+    @StateObject var calendarVM: ManagerCalendarViewModel
     @Binding var selectedDate: Date?
     @State private var showAlert: Bool = false
     @State private var showDetail = false
@@ -263,7 +267,7 @@ struct CustomerCardView: View {
                             .stroke(Color(UIColor.customBlue)
                                    )
                     )
-                    .opacity(selectedDate == value.date ? 1 : 0)
+                    .opacity(selectedDate?.withoutTime() == value.date.withoutTime() ? 1 : 0)
             }
             HStack {
                 if value.day > 0 {
@@ -331,6 +335,10 @@ struct TimePickerView: View {
             .onAppear {
                 UIDatePicker.appearance().minuteInterval = 10
             }
+            .onChange(of: selectedDate) { _ in
+                   
+                    // onDateClick(value)  // 이 부분을 주석 처리하거나 필요에 따라 수정
+                }
     }
 }
 

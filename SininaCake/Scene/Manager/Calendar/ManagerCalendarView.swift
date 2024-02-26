@@ -13,7 +13,7 @@ struct ManagerCalendarView: View {
     @State private var selectedDate: Date?
     @State var editClicked = true
     @State var daysList = [[DateValue]]()
-    @State var edit: Bool = false
+    @State var edit: Bool = true
 
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
@@ -236,6 +236,7 @@ struct ManagerCalendarView: View {
         selectedDate = dateValue.date.withoutTime()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let dateString = dateFormatter.string(from: dateValue.date)
         let filteredOrders = calendarListVM.allOrderData.filter { order in
             dateToString(order.date).contains(dateString)
@@ -249,7 +250,7 @@ struct ManagerCalendarView: View {
 struct CardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var calendarVM: ManagerCalendarViewModel
+    @StateObject var calendarVM: ManagerCalendarViewModel
     @Binding var edit: Bool
     @StateObject var calendarListVM: ManagerCalendarListViewModel
     @Binding var selectedDate: Date?
@@ -274,7 +275,7 @@ struct CardView: View {
                             .stroke(Color(UIColor.customBlue)
                                    )
                         )
-                            .opacity(selectedDate == value.date ? 1 : 0)
+                    .opacity(selectedDate?.withoutTime() == value.date.withoutTime() ? 1 : 0)
                         }
             HStack {
                 if value.day > 0 {
