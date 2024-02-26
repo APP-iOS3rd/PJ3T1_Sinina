@@ -219,7 +219,7 @@ class ManagerCalendarViewModel: ObservableObject {
                     let data = try queryDocumentSnapshot.data(as: DateValue.self)
                     return data
                 } catch {
-                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
+//                    print("DateValue로의 데이터 변환 중 오류가 발생했습니다: \(error.localizedDescription)")
                     return nil
                 }
             }

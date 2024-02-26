@@ -12,7 +12,9 @@ struct UserConfirmOrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var orderVM: OrderViewModel
     @ObservedObject var photoVM: PhotoPickerViewModel
+    @StateObject var userConfirmOrderDetailVM = UserConfirmOrderDetailViewModel()
     @State private var showNavManager = false
+    @StateObject var fcmServerAPI = FCMServerAPI()
     
     var body: some View {
         ScrollView {
@@ -57,6 +59,11 @@ struct UserConfirmOrderDetailView: View {
                     .frame(height: 18)
                 
                 CustomButton(action: {
+                    for token in userConfirmOrderDetailVM.deviceToken {
+                        print("DeviceToken: \(token)")
+                        fcmServerAPI.sendFCM(deviceToken: token, body: "새로운 주문이 접수되었습니다. 견적서를 확인해주세요!")
+                    }
+                    
                     orderVM.addOrderItem()
                     showNavManager = true
                 }, title: "주문서 보내기", titleColor: .white, backgroundColor: .customBlue, leading: 12, trailing: 12)
@@ -73,6 +80,13 @@ struct UserConfirmOrderDetailView: View {
                     Image("angle-left")
                         .foregroundStyle(Color.black)
                 })
+            }
+        }
+        .onAppear {
+            Task {
+                await userConfirmOrderDetailVM.fetchManagerList {
+                    userConfirmOrderDetailVM.getDeviceToken(userConfirmOrderDetailVM.managerList)
+                }
             }
         }
     }
