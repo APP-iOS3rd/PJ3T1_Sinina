@@ -228,7 +228,7 @@ extension LoginViewModel {
             isNewUser = querySnapshot.isEmpty
     
             if isNewUser {
-                chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: email, id: email, lastMsg: nil, lastMsgTime: nil, imgURL: imgURL))
+                chatVM.addChatRoom(chatRoom: ChatRoom(userEmail: email, id: email, lastMsg: nil, lastMsgTime: nil, imgURL: imgURL, unreadMsgCnt: 0))
                 print("addChatRoom")
             }
             
