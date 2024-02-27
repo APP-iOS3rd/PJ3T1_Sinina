@@ -12,6 +12,7 @@ struct CustomerChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var loginVM = LoginViewModel.shared
+    @StateObject var fcmServerAPI = FCMServerAPI()
     @State var chatText = ""
     @State var room: ChatRoom
     
@@ -29,6 +30,13 @@ struct CustomerChatView: View {
             messagesView
             chatBottomBar
         }
+        .onAppear {
+            Task {
+                await chatVM.fetchManagerList {
+                    chatVM.getManagerDeviceToken(chatVM.managerList)
+                }
+            }
+        }
     }
     
     // MARK: 메세지 창 띄우는 뷰
@@ -39,28 +47,22 @@ struct CustomerChatView: View {
                     ScrollView {
                         if chatVM.messages[room.id] != nil {
                             ForEach(chatVM.messages[room.id]!!, id: \.self) { msg in
-                                // 나
                                 if loginVM.loginUserEmail == msg.userEmail {
                                     blueMessageBubble(message: msg)
                                         .id(msg.id)
-                                    
-                                    // 상대
                                 } else {
                                     grayMessageBubble(message: msg)
                                         .id(msg.id)
                                 }
                                 
-                            } // ForEach
+                            }
                             .background(Color.clear)
-                            
-                            // 마지막 메세지로 끌어내리기
                             .onChange(of: chatVM.lastMessageId){ id in
                                 withAnimation {
                                     proxy.scrollTo(id, anchor: .bottom)
                                     print("마지막 메세지: \(chatVM.lastMessageText)")
                                 }
                             }
-                            // 첫화면 끌어내리기
                             .onAppear(){
                                 withAnimation {
                                     proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
@@ -70,12 +72,10 @@ struct CustomerChatView: View {
                         }
                     }
                 }
-                // ScrollViewReader
                 .onAppear {
                     chatVM.fetchRoom(userEmail: room.userEmail)
                 }
             }
-            // VStack
             .navigationTitle("시니나케이크")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -117,9 +117,7 @@ struct CustomerChatView: View {
                         .onAppear(){
                             isChatTextEmpty = false
                         }
-                }
-                            
-                else {
+                } else {
                     TextField("", text: $chatText)
                         
                         .background(Color(.customLightGray))
@@ -130,19 +128,23 @@ struct CustomerChatView: View {
             }
             
             Button {
-                // 사진을 보낼 때
                 if let selectedImage = selectedImage {
                     if let image = selectedImage.jpegData(compressionQuality: 1){
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                        for token in chatVM.managerDeviceToken {
+                            fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail ,body: "사진")
+                        }
                     }
                     self.selectedImage = nil
                     
-                    // text 전송
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
+                    for token in chatVM.managerDeviceToken {
+                        fcmServerAPI.sendFCM(deviceToken: token, title: room.userEmail, body: chatText)
+                    }
                 }
                 
                 chatText = ""
@@ -178,7 +180,7 @@ struct CustomerChatView: View {
                 },
                            placeholder: {
                     ProgressView()
-                }) // AsyncImage
+                })
                 .onTapGesture {
                     KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
                         switch result {
@@ -201,7 +203,7 @@ struct CustomerChatView: View {
                         Button(action: {
                             isClicked.toggle()
                         }, label: {
-                            Image(systemName: "x.circle")
+                            Image(systemName: "redX")
                                 .resizable()
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
                                 .foregroundStyle(.red)
@@ -231,7 +233,7 @@ struct CustomerChatView: View {
                     .background(Color(.customBlue))
                     .cornerRadius(30)
             }
-        } // VStack
+        }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 10)
     }
@@ -247,7 +249,7 @@ struct CustomerChatView: View {
                 },
                            placeholder: {
                     ProgressView()
-                }) // AsyncImage
+                })
                 .onTapGesture {
                     KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
                         switch result {
@@ -270,7 +272,7 @@ struct CustomerChatView: View {
                         Button(action: {
                             isClicked.toggle()
                         }, label: {
-                            Image(systemName: "x.circle")
+                            Image(systemName: "redX")
                                 .resizable()
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
                                 .foregroundStyle(.red)
@@ -303,7 +305,7 @@ struct CustomerChatView: View {
             
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-        } // HStack
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 10)
     }

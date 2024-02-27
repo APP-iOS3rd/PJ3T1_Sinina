@@ -22,6 +22,7 @@ struct CustomerCalendarView: View {
             HStack {
                 CustomText(title: "픽업 날짜/시간", textColor: .black, textWeight: .semibold , textSize: 20)
                     .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                starmark()
                 Spacer()
                 CustomText(title: selectedTime, textColor: .customBlue, textWeight: .semibold, textSize: 20)
                 CustomText(title: dateToTime(orderData.orderItem.date), textColor: .customBlue, textWeight: .semibold, textSize: 18)
@@ -305,8 +306,8 @@ struct CustomerCardView: View {
                             }
                             .alert(isPresented: $showAlert) {
                                 Alert(
-                                    title: Text("error"),
-                                    message: Text("예약가능날짜가 아닙니다"),
+                                    title: Text("예약 불가"),
+                                    message: Text("다른 날짜를 선택해 주세요."),
                                     dismissButton: .default(Text("확인"))
                                 )
                             }

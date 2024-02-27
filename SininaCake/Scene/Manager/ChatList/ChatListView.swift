@@ -9,7 +9,7 @@ import Kingfisher
 
 struct ChatListView: View {
     @ObservedObject var chatVM = ChatViewModel.shared
-    @State var loginUserEmail: String? // 현재 접속자(본인)
+    @State var loginUserEmail: String?
     
     var body: some View {
         NavigationView {
@@ -18,7 +18,6 @@ struct ChatListView: View {
                     ForEach(chatVM.chatRooms, id: \.self){ room in
                         NavigationLink(destination: ManagerChatView(room: room)){
                             HStack {
-                                // 프로필 사진
                                 if let image = room.imgURL {
                                     AsyncImage(url: URL(string: image)){ img in
                                         img.image?
@@ -37,8 +36,6 @@ struct ChatListView: View {
                                         .clipShape(Circle())
                                         .padding(.trailing, 10)
                                 }
-                                
-                                
                                 
                                 VStack {
                                     HStack {

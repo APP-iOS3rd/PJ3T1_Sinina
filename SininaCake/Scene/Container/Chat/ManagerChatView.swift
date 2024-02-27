@@ -13,6 +13,7 @@ struct ManagerChatView: View {
     
     @ObservedObject var chatVM = ChatViewModel.shared
     @ObservedObject var loginVM = LoginViewModel.shared
+    @StateObject var fcmServerAPI = FCMServerAPI()
     @State var chatText = ""
     @State var room: ChatRoom
     @State private var isChatTextEmpty = true
@@ -27,6 +28,10 @@ struct ManagerChatView: View {
             messagesView
             chatBottomBar
         }
+        .onAppear(){
+            chatVM.fetchRoom(userEmail: room.userEmail)
+            chatVM.getDeviceToken(room.userEmail)
+        }
     }
     
     // MARK: 메세지 창 띄우는 뷰
@@ -37,26 +42,20 @@ struct ManagerChatView: View {
                     VStack {
                         if chatVM.messages[room.id] != nil {
                             ForEach(chatVM.messages[room.id]!!, id: \.id) { msg in
-                                // 나
                                 if loginVM.loginUserEmail == msg.userEmail {
                                     blueMessageBubble(message: msg)
                                         .id(msg.id)
-                            
-                                    // 상대
                                 } else {
                                     grayMessageBubble(message: msg)
                                         .id(msg.id)
                                 }
-                                
-                            } // ForEach
+                            }
                             .background(Color.clear)
-                            // 마지막 메세지로 끌어내리기
                             .onChange(of: chatVM.lastMessageId){ id in
                                 withAnimation {
                                     proxy.scrollTo(id, anchor: .bottom)
                                 }
                             }
-                            // 첫화면 끌어내리기
                             .onAppear(){
                                 withAnimation {
                                     proxy.scrollTo(chatVM.lastMessageId, anchor: .bottom)
@@ -65,15 +64,12 @@ struct ManagerChatView: View {
                         }
                     }
                 }
-            } // ScrollViewReader
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal){
                     CustomText(title: "\(room.userEmail)", textColor: .black, textWeight: .semibold, textSize: 24)
                 }
-            }
-            .onAppear(){
-                chatVM.fetchRoom(userEmail: room.userEmail)
             }
         }
     }
@@ -118,19 +114,18 @@ struct ManagerChatView: View {
             }
             
             Button {
-                // 사진을 보낼 때
                 if let selectedImage = selectedImage {
                     if let image = selectedImage.jpegData(compressionQuality: 1){
                         let msg = Message(imageData: image, imageURL: "", userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                         
                         chatVM.sendMessageWithImage(chatRoom: room, message: msg)
+                        fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: "사진")
                     }
                     self.selectedImage = nil
-                    
-                    // text 전송
                 } else {
                     let msg = Message(text: chatText, userEmail: loginVM.loginUserEmail ?? "", timestamp: Date())
                     chatVM.sendMessage(chatRoom: room, message: msg)
+                    fcmServerAPI.sendFCM(deviceToken: chatVM.deviceToken, title: "시니나케이크", body: chatText)
                 }
                 
                 chatText = ""
@@ -166,7 +161,7 @@ struct ManagerChatView: View {
                 },
                            placeholder: {
                     ProgressView()
-                }) // AsyncImage
+                })
                 .onTapGesture {
                     KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
                         switch result {
@@ -189,7 +184,7 @@ struct ManagerChatView: View {
                         Button(action: {
                             isClicked.toggle()
                         }, label: {
-                            Image(systemName: "x.circle")
+                            Image(systemName: "redX")
                                 .resizable()
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
                                 .foregroundStyle(.red)
@@ -219,7 +214,7 @@ struct ManagerChatView: View {
                     .background(Color(.customBlue))
                     .cornerRadius(30)
             }
-        } // VStack
+        }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 10)
     }
@@ -234,7 +229,7 @@ struct ManagerChatView: View {
                 },
                            placeholder: {
                     ProgressView()
-                }) // AsyncImage
+                })
                 .onTapGesture {
                     KingfisherManager.shared.retrieveImage(with: URL(string: imageURL)!) { result in
                         switch result {
@@ -257,7 +252,7 @@ struct ManagerChatView: View {
                         Button(action: {
                             isClicked.toggle()
                         }, label: {
-                            Image(systemName: "x.circle")
+                            Image(systemName: "redX")
                                 .resizable()
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
                                 .foregroundStyle(.red)
@@ -290,7 +285,7 @@ struct ManagerChatView: View {
             
             CustomText(title: message.timestamp.formattedDate(), textColor: .customGray, textWeight: .regular, textSize: 12)
             
-        } // HStack
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 10)
     }
