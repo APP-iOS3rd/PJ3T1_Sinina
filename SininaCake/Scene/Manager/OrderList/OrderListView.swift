@@ -126,6 +126,26 @@ private struct CellView: View {
     }
     
     var body: some View {
+        var statusColor: UIColor {
+            switch orderItem.status {
+            case .notAssign:
+                return .customGray
+            case .assign:
+                return .customRed
+            case .complete:
+                return .customBlue
+            }
+        }
+        
+        var price: (String, Int) {
+            switch orderItem.status {
+            case .notAssign:
+                return ("총 예상금액", orderItem.expectedPrice)
+            case .assign, .complete:
+                return ("총 확정금액", orderItem.confirmedPrice)
+            }
+        }
+        
         VStack(spacing: 10) {
             HStack {
                 CustomText(title: dateToString(orderItem.date), textColor: .black, textWeight: .semibold, textSize: 18)

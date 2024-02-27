@@ -267,6 +267,8 @@
 				235E2BB92B8C86EA00E219EE /* ApiKeys.xcconfig */,
 				235E2BBA2B8C86EB00E219EE /* GoogleService-Info.plist */,
 				8ECB21B22B1DC05E003BF8B0 /* Info.plist */,
+				3B4870342B83536600046089 /* ApiKeys.xcconfig */,
+				9AC02F822B864EB30010716F /* GoogleService-Info.plist */,
 				8E874B9E2B00B37200ECEF08 /* SininaCakeApp.swift */,
 				9AEACEB12B6255DE00AE041F /* Utilities.swift */,
 				8ECF5FE12B54F58800D6BCF6 /* Model */,
