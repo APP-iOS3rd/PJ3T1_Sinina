@@ -115,6 +115,8 @@ struct ManagerCalendarView: View {
                 
             }
             .offset(x: 5)
+            
+            Spacer()
             Spacer()
             
             Button {
@@ -122,11 +124,10 @@ struct ManagerCalendarView: View {
                 edit.toggle()
                 editClicked.toggle()
             } label: {
-                Text(editClicked ? "일정편집" : "목록보기")
-                    .font(
-                        Font.custom("Pretendard", fixedSize: 16)
-                            .weight(.semibold))
-                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customBlue))
+                Image(systemName: editClicked ? "list.bullet.clipboard" : "gearshape")
+                    .resizable()
+                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIWidth(24))
+                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customRed))
             }
             .padding(.trailing, UIScreen.UIWidth(16))
         }
