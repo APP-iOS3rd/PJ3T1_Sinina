@@ -12,29 +12,20 @@ struct UserConfirmOrderDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var orderVM: OrderViewModel
     @ObservedObject var photoVM: PhotoPickerViewModel
+    @StateObject var userConfirmOrderDetailVM = UserConfirmOrderDetailViewModel()
     @State private var showNavManager = false
-    
-    var statusTitle: (String, UIColor, String) {
-        switch orderVM.orderItem.status {
-        case .assign:
-            return ("승인 주문건 현황", .customBlue, "VectorTrue")
-        case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "VectorFalse")
-        case .complete:
-            return ("완료 주문건 현황", .black, "VectorTrue")
-        }
-    }
+    @StateObject var fcmServerAPI = FCMServerAPI()
     
     var body: some View {
         ScrollView {
             VStack {
                 HStack {
-                    Image(statusTitle.2)
+                    Image("VectorFalse")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 18, height: 18)
-                        .foregroundStyle(Color(statusTitle.1))
-                    CustomText(title: statusTitle.0, textColor: .black, textWeight: .semibold, textSize: 18)
+                        .foregroundStyle(Color(.customGray))
+                    CustomText(title: "주문 내역 확인", textColor: .black, textWeight: .semibold, textSize: 18)
                     Spacer()
                 }
                 .padding(.leading, 24)
@@ -68,6 +59,11 @@ struct UserConfirmOrderDetailView: View {
                     .frame(height: 18)
                 
                 CustomButton(action: {
+                    for token in userConfirmOrderDetailVM.deviceToken {
+                        print("DeviceToken: \(token)")
+                        fcmServerAPI.sendFCM(deviceToken: token, title: "시니나케이크", body: "새로운 주문이 접수되었습니다. 견적서를 확인해주세요!")
+                    }
+                    
                     orderVM.addOrderItem()
                     showNavManager = true
                 }, title: "주문서 보내기", titleColor: .white, backgroundColor: .customBlue, leading: 12, trailing: 12)
@@ -86,27 +82,25 @@ struct UserConfirmOrderDetailView: View {
                 })
             }
         }
+        .onAppear {
+            Task {
+                await userConfirmOrderDetailVM.fetchManagerList {
+                    userConfirmOrderDetailVM.getDeviceToken(userConfirmOrderDetailVM.managerList)
+                }
+            }
+        }
     }
 }
 
 struct DetailPriceView: View {
     @Binding var orderItem: OrderItem
     
-    var priceText: (String, String) {
-        switch orderItem.status {
-        case .notAssign:
-            return ("총 예상금액", intToString(orderItem.expectedPrice))
-        case .assign, .complete:
-            return ("총 확정금액", intToString(orderItem.confirmedPrice))
-        }
-    }
-    
     var body: some View {
         HStack {
-            CustomText(title: priceText.0, textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
+            CustomText(title: "총 예상금액", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
             Spacer()
                 .frame(width: 45)
-            CustomText(title: priceText.1, textColor: .black, textWeight: .semibold, textSize: 16)
+            CustomText(title: intToString(orderItem.expectedPrice), textColor: .black, textWeight: .semibold, textSize: 16)
             Spacer()
         }
         .padding(.leading, 24)
@@ -196,10 +190,3 @@ private func intToString(_ price: Int) -> String {
     
     return result.reversed() + "원"
 }
-
-// TODO:OrderViewModel 전달해서 여기서 주문 DB에 저장
-
-
-//#Preview {
-//    UserConfirmOrderDetailView(orderVM: )
-//}

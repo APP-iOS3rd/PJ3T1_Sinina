@@ -10,16 +10,21 @@ import SwiftUI
 struct UserDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var orderItem: OrderItem
+    @State var isShowingNotification = false
     @StateObject var orderDetailVM = OrderDetailViewModel()
     
     var statusTitle: (String, UIColor, String) {
         switch orderItem.status {
-        case .assign:
-            return ("승인 주문건 현황", .customBlue, "VectorTrue")
         case .notAssign:
-            return ("미승인 주문건 현황", .customGray, "VectorFalse")
+            return ("견적서", .customGray, "VectorFalse")
+        case .assign:
+            return ("입금 대기중", .customRed, "VectorRed")
+        case .progress:
+            return ("주문 확정 및 제작중", .customBlue, "VectorTrue")
         case .complete:
-            return ("완료 주문건 현황", .black, "VectorTrue")
+            return ("제작 완료", .black, "VectorFalse")
+        case .pickup:
+            return ("수령 완료", .black, "VectorFalse")
         }
     }
     
@@ -59,7 +64,9 @@ struct UserDetailView: View {
                 
                 DividerView()
                 
-                UserPriceView(orderItem: $orderItem)
+                UserPriceView(orderItem: $orderItem, isShowingNotification: $isShowingNotification)
+                
+                NotificationView(isShowing: $isShowingNotification)
             }
         }
         .navigationBarBackButtonHidden()
@@ -78,26 +85,50 @@ struct UserDetailView: View {
     }
 }
 
+struct NotificationView: View {
+    @Binding var isShowing: Bool
+    
+    var body: some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 12)
+                .foregroundStyle(Color(.customGray))
+                .frame(width: UIScreen.main.bounds.width - 48, height: 40)
+                .overlay(
+                    HStack {
+                        CustomText(title: "계좌번호가 복사되었습니다.", textColor: .white, textWeight: .semibold, textSize: 16)
+                        Spacer()
+                    }
+                        .padding(.horizontal, 12)
+                )
+            
+        }
+        .opacity(isShowing ? 1 : 0)
+        .background(Color(.clear))
+        .animation(.easeInOut)
+    }
+}
+
 // MARK: - UserPriceView
 struct UserPriceView: View {
     @Binding var orderItem: OrderItem
+    @Binding var isShowingNotification: Bool
     let accountNumber = "신한 110 544 626471"
     
     var priceText: (String, String) {
         switch orderItem.status {
         case .notAssign:
             return ("총 예상금액", intToString(orderItem.expectedPrice))
-        case .assign, .complete:
+        default:
             return ("총 확정금액", intToString(orderItem.confirmedPrice))
         }
     }
     
     var accountOpacity: Double {
         switch orderItem.status {
-        case .notAssign:
-            return 1
-        case .assign, .complete:
+        case .notAssign, .complete, .pickup:
             return 0
+        case .assign, .progress:
+            return 1
         }
     }
     
@@ -117,7 +148,25 @@ struct UserPriceView: View {
                 CustomText(title: "계좌번호", textColor: .customDarkGray, textWeight: .semibold, textSize: 16)
                 Spacer()
                     .frame(width: 63)
-                CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+//                CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+                Button(action: {
+                    UIPasteboard.general.string = accountNumber
+                    withAnimation {
+                        isShowingNotification.toggle()
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        withAnimation {
+                            isShowingNotification.toggle()
+                        }
+                    }
+                }) {
+                    CustomText(title: accountNumber, textColor: .black, textWeight: .semibold, textSize: 16)
+                    Image(systemName: "doc.on.doc")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(Color(.black))
+                }
                 Spacer()
             }
             .padding(.leading, 24)

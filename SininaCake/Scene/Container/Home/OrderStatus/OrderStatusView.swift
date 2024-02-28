@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OrderStatusView: View {
-    @StateObject var orderStatusVM = OrderStatusViewModel()
+    @ObservedObject var orderStatusVM: OrderStatusViewModel
     
     var body: some View {
         NavigationStack {
@@ -34,7 +34,9 @@ struct StatusView: View {
     @ObservedObject var orderStatusVM: OrderStatusViewModel
     
     var body: some View {
-        if orderStatusVM.myOrderData.isEmpty {
+        let sortedOrderData = orderStatusVM.myOrderData.sorted{ $0.date < $1.date }
+        
+        if sortedOrderData.isEmpty {
             RoundedRectangle(cornerRadius: 12)
                 .foregroundStyle(Color(.white))
                 .frame(height: UIScreen.main.bounds.width - 96)
@@ -64,9 +66,9 @@ struct StatusView: View {
                     }
                 )
         } else {
-            ForEach(0..<orderStatusVM.myOrderData.count, id: \.self) { i in
-                NavigationLink(value: orderStatusVM.myOrderData[i]) {
-                    StatusInfo(orderStatusVM: orderStatusVM, orderItem: orderStatusVM.myOrderData[i])
+            ForEach(0..<sortedOrderData.count, id: \.self) { i in
+                NavigationLink(value: sortedOrderData[i]) {
+                    StatusInfo(orderStatusVM: orderStatusVM, orderItem: sortedOrderData[i])
                 }
             }
         }
@@ -132,8 +134,12 @@ struct DdayView: View {
             return ("예약대기", .customDarkGray, .customGray)
         case .assign:
             return ("입금 대기중", .white, .customBlue)
-        case .complete:
+        case .progress:
             return (dateToDday(orderItem.date), .white, .customBlue)
+        case .complete:
+            return ("제작완료", .black, .customGray)
+        default:
+            return ("", .black, .black)
         }
     }
     
@@ -212,22 +218,25 @@ private func intToString(_ price: Int) -> String {
 private func dateToDday(_ completeDate: Date) -> String {
     var dayCount = 0
     let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
     formatter.dateFormat = "yyyy-MM-dd"
     let dateString = formatter.string(from: completeDate)
+    let todayString = formatter.string(from: Date())
     
-    guard let startDate = formatter.date(from: dateString) else { return "" }
-    dayCount = days(from: startDate)
-    if dayCount > 0 {
-        return "D - \(dayCount)"
+    guard let startDate = formatter.date(from: dateString),
+          let endDate = formatter.date(from: todayString) else { return "" }
+    dayCount = days(from: startDate, to: endDate)
+    if dayCount < 0 {
+        return "D - \(dayCount * -1)"
     } else if dayCount == 0 {
         return "D - Day"
     } else {
-        return "D + \(dayCount * -1)"
+        return "D + \(dayCount)"
     }
 }
 
-private func days(from date: Date) -> Int {
-    if let dDay = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
+private func days(from date: Date, to today: Date) -> Int {
+    if let dDay = Calendar.current.dateComponents([.day], from: date, to: today).day {
         return dDay
     }
     

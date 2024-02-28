@@ -12,7 +12,7 @@ struct ManagerCalendarListView: View {
     
     var body: some View {
         ScrollView {
-            ListView(orderData: calendarListVM.allOrderData, title: "모든 주문 현황", titleColor: .black)
+            CalListView(orderData: calendarListVM.allOrderData, title: "모든 주문 현황", titleColor: .black)
         }
         .onAppear {
             calendarListVM.fetchData()
@@ -32,13 +32,15 @@ struct CalListView: View {
     }
     
     var body: some View {
+        let sortedOrderData = orderData.sorted { $0.date < $1.date }
+        
         VStack(spacing: 14) {
             HStack {
                 CustomText(title: title, textColor: titleColor, textWeight: .semibold, textSize: 18)
                 Spacer()
             }
             
-            if orderData.isEmpty {
+            if sortedOrderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(.customGray))
                     .frame(height: 100)
@@ -53,16 +55,16 @@ struct CalListView: View {
                         }
                     )
             } else {
-                ForEach(0..<orderData.count, id: \.self) { i in
-                    NavigationLink(value: orderData[i]) {
-                        CalendarCellView(orderItem: orderData[i])
+                ForEach(0..<sortedOrderData.count, id: \.self) { i in
+                    NavigationLink(destination: OrderDetailView(orderItem: sortedOrderData[i])) {
+                        CalendarCellView(orderItem: sortedOrderData[i])
                     }
                 }
             }
         }
-        .padding(.leading, 24)
-        .padding(.trailing, 24)
-        .padding(.top, 40)
+        .padding(.trailing, UIScreen.UIWidth(24))
+        .padding(.leading, UIScreen.UIWidth(24))
+        .padding(.top, UIScreen.UIHeight(20))
     }
 }
 
@@ -77,11 +79,11 @@ private struct CalendarCellView: View {
     var body: some View {
         var statusColor: UIColor {
             switch orderItem.status {
-            case .assign:
-                return .customBlue
             case .notAssign:
                 return .customGray
-            case .complete:
+            case .assign, .progress:
+                return .customBlue
+            case .complete, .pickup:
                 return .black
             }
         }
@@ -90,7 +92,7 @@ private struct CalendarCellView: View {
             switch orderItem.status {
             case .notAssign:
                 return ("총 예상금액", orderItem.expectedPrice)
-            case .assign, .complete:
+            default:
                 return ("총 확정금액", orderItem.confirmedPrice)
             }
         }

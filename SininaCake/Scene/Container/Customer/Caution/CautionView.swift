@@ -64,11 +64,11 @@ struct ScrollTitleView: View {
                 self.pickUp.toggle()
             }){
                 RoundedRectangle(cornerRadius: 12.0)
-                    .stroke(pickUp ? Color(uiColor: .customBlue) : .white )
+                    .stroke(Color(uiColor: pickUp ? .customBlue : .customGray))
                     .foregroundColor(.clear)
-                    .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(205))
+                    .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(230))
                     .background(.white)
-                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
+                    .shadow(color: pickUp ? .black.opacity(0.05) : .black.opacity(0), radius: 10, x: 0, y: 8)
                     .overlay( VStack(alignment: .leading){
                         
                         HStack {
@@ -78,7 +78,7 @@ struct ScrollTitleView: View {
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
                             
                             
-                            CustomText(title: "예약/픽업 날짜", textColor: .black, textWeight: .semibold, textSize: 16)
+                            CustomText(title: "예약/픽업 날짜", textColor: pickUp ? .black : .customDarkGray, textWeight: .semibold, textSize: 18)
                             
                             CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                             
@@ -104,6 +104,9 @@ struct ScrollTitleView: View {
                         CustomText(title: "ㆍ원하시는 디자인의 사진 또는 도안을 보내주세요.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                         CustomText(title: "ㆍ케이크 작업 중에는 답변이 느릴 수 있습니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                         CustomText(title: "ㆍ순차적으로 답변 드리니 조금만 기다려주세요~", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        CustomText(title: "ㆍ주문서는 한 번에 작성해서 보내주세요. 여러 번", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                        CustomText(title: "보내실 경우 순서가 뒤로 밀릴 수 있습니다.", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
+                            .padding(.leading, UIScreen.UIWidth(15))
                     })
             }
             .padding(.bottom, UIScreen.UIWidth(12))
@@ -116,11 +119,11 @@ struct ScrollTitleView: View {
                 self.cakeCaution.toggle()
             }){
                 RoundedRectangle(cornerRadius: 12.0)
-                    .stroke(cakeCaution ? Color(uiColor: .customBlue) : .white )
+                    .stroke(Color(uiColor: cakeCaution ? .customBlue : .customGray))
                     .foregroundColor(.clear)
                     .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(292))
                     .background(.white)
-                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
+                    .shadow(color: cakeCaution ? .black.opacity(0.05) : .black.opacity(0), radius: 10, x: 0, y: 8)
                     .overlay( VStack(alignment: .leading){
                         
                         HStack {
@@ -129,7 +132,7 @@ struct ScrollTitleView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
                             
-                            CustomText(title: "케이크 주의사항", textColor: .black, textWeight: .semibold, textSize: 16)
+                            CustomText(title: "케이크 주의사항", textColor: cakeCaution ? .black : .customDarkGray, textWeight: .semibold, textSize: 18)
                             
                             CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                         }
@@ -165,11 +168,11 @@ struct ScrollTitleView: View {
                 self.instaUpload.toggle()
             }){
                 RoundedRectangle(cornerRadius: 12.0)
-                    .stroke(instaUpload ? Color(uiColor: .customBlue) : .white )
+                    .stroke(Color(uiColor: instaUpload ? .customBlue : .customGray))
                     .foregroundColor(.clear)
                     .frame(width: UIScreen.UIWidth(382), height: UIScreen.UIHeight(139))
                     .background(.white)
-                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 8)
+                    .shadow(color: instaUpload ? .black.opacity(0.05) : .black.opacity(0), radius: 10, x: 0, y: 8)
                     .overlay( VStack(alignment: .leading){
                         
                         HStack {
@@ -178,7 +181,7 @@ struct ScrollTitleView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(17.9))
                             
-                            CustomText(title: "인스타그램 업로드", textColor: .black, textWeight: .semibold, textSize: 16)
+                            CustomText(title: "인스타그램 업로드", textColor: instaUpload ? .black : .customDarkGray, textWeight: .semibold, textSize: 18)
                             
                             CustomText(title: "(필수)", textColor: .customBlue, textWeight: .semibold, textSize: 18)
                         }
@@ -193,7 +196,8 @@ struct ScrollTitleView: View {
                         VStack(alignment: .leading){
                             CustomText(title: "ㆍ완성된 케이크 사진은 인스타에 게시됩니다. ", textColor: .customDarkGray, textWeight: .regular, textSize: 16)
                             
-                            CustomText(title: "ㆍ원치 않으실 경우 미리 말씀해주세요. ", textColor: .customRed, textWeight: .semibold, textSize: 16)
+                            CustomText(title: "원치 않으실 경우 미리 말씀해주세요. ", textColor: .customRed, textWeight: .semibold, textSize: 16)
+                                .padding(.leading, UIScreen.UIWidth(15))
                         }
                     })
             }

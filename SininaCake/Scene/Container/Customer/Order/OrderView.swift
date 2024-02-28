@@ -15,9 +15,9 @@ struct OrderView: View {
                 ScrollView(showsIndicators: false){
                     infoView(orderData: OrderVM)
                     
-                    OrderCalendarView(orderData: OrderVM)
-//                    CustomerCalendarView(orderData: OrderVM)
-                    
+                    //OrderCalendarView(orderData: OrderVM)
+                    CustomerCalendarView(orderData: OrderVM)
+
                     OrderCakeView(orderData: OrderVM)
                     
                     OrderSheetView(orderData: OrderVM)
@@ -57,9 +57,19 @@ struct infoView: View {
     @ObservedObject var orderData: OrderViewModel
     var body: some View {
         VStack(alignment:.leading){
-            CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
-                .kerning(0.45)
-                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+            HStack{
+                CustomText(title: "이름", textColor: .black, textWeight: .semibold , textSize: 18)
+                    .kerning(0.45)
+                    .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+//                Image(systemName: "staroflife.fill")
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: (UIScreen.main.bounds.width) * 7/430, height: (UIScreen.main.bounds.height) * 7/932)
+//                    .foregroundColor(Color(UIColor.customRed))
+//                    .padding(.leading, -(UIScreen.main.bounds.width) * 7/430)
+//                    .padding(.bottom,(UIScreen.main.bounds.height) * 7/932 )
+                starmark()
+            }
             
             
             
@@ -82,10 +92,11 @@ struct infoView: View {
                 .padding(.bottom, (UIScreen.main.bounds.height) * 36/932)
             
             /// 휴대폰 번호
-            CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
-                .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
-            
-            
+            HStack{
+                CustomText(title: "휴대폰 번호", textColor: .black, textWeight: .semibold , textSize: 18)
+                    .padding(.leading,(UIScreen.main.bounds.width) * 24/430)
+                starmark()
+            }
             
             TextField("010 -", text: $orderData.orderItem.phoneNumber)
                 .textFieldStyle(.plain)
@@ -195,7 +206,10 @@ struct OrderCakeView: View {
     
     var body: some View {
         VStack(alignment:.leading){
-            CustomText(title: "케이크 사이즈", textColor: .black, textWeight: .semibold , textSize: 18)
+            HStack {
+                CustomText(title: "케이크 사이즈", textColor: .black, textWeight: .semibold , textSize: 18)
+                starmark()
+            }
             VStack {
                 ForEach(orderCakeModel.indices, id: \.self) { index in
                     Button(action: {
@@ -264,7 +278,10 @@ struct OrderSheetView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "시트 (빵)", textColor: .black, textWeight: .semibold , textSize: 18)
+            HStack {
+                CustomText(title: "시트 (빵)", textColor: .black, textWeight: .semibold , textSize: 18)
+                starmark()
+            }
             
             HStack{
                 ForEach(orderSheetModel.indices, id: \.self) { index in
@@ -341,9 +358,11 @@ struct OrderCreamView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "속크림", textColor: .black, textWeight: .semibold , textSize: 18)
-                .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
-            
+            HStack {
+                CustomText(title: "속크림", textColor: .black, textWeight: .semibold , textSize: 18)
+                    .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
+                starmark()
+            }
             HStack{
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(orderCreamModel.indices, id: \.self) { index in
@@ -412,9 +431,12 @@ struct OrderTextView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "문구/글씨 색상", textColor: .black, textWeight: .semibold , textSize: 18)
-            
-            TextField(" ex) 생일축하해 깐깐징어~!", text: $orderData.orderItem.text, axis: .vertical)
+            HStack {
+                CustomText(title: "문구/글씨 색상", textColor: .black, textWeight: .semibold , textSize: 18)
+                starmark()
+            }
+            TextField("ex) 생일축하해 깐깐징어~!", text: $orderData.orderItem.text, axis: .vertical)
+                .addLeftPadding(10)
                 .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430,
                                                  height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
@@ -443,6 +465,7 @@ private struct OrderPhotoView: View {
             HStack {
                 CustomText(title: "사진 첨부", textColor: .black, textWeight: .semibold , textSize: 18)
                     .padding(.leading, (UIScreen.main.bounds.width) * 24/430)
+                starmark()
                 
                 Spacer()
                 
@@ -460,22 +483,21 @@ private struct OrderPhotoView: View {
                     .stroke(Color.init(uiColor: .customGray), style: StrokeStyle(lineWidth: 1, dash: [5]))
                     .foregroundColor(.white)
                     .frame(width: (UIScreen.main.bounds.width) * 382/430, height: (UIScreen.main.bounds.height) * 130/932)
-                    .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
                     .overlay {
-                        VStack {
+                        VStack() {
                             Image(systemName: "photo")
                                 .foregroundColor(Color(UIColor.customGray))
                                 .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 25/932)
-                                .padding(.bottom, (UIScreen.main.bounds.height) * 8/932)
                             CustomText(title: "사진을 첨부해주세요", textColor: .customGray, textWeight: .semibold, textSize: 16)
                             CustomText(title: "최대 4매까지 첨부가능합니다.", textColor: .customGray, textWeight: .semibold, textSize: 12)
-                                .padding(.bottom,(UIScreen.main.bounds.height) * 26/932 )
                         }
+                        .padding(.vertical, (UIScreen.main.bounds.height) * 26/932)
                     }
+                    .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
             } else {
                 LazyVGrid(columns: columns, spacing: 0) {
                     ForEach(photoVM.selectedImages.indices, id: \.self) { index in
-                        ZStack {
+                        ZStack(alignment: .topTrailing) {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(Color(.customGray))
                                 .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 185/932)
@@ -486,19 +508,18 @@ private struct OrderPhotoView: View {
                                         .frame(width: (UIScreen.main.bounds.width) * 185/430 - 20, height: (UIScreen.main.bounds.height) * 185/932 - 20)
                                         .scaledToFit()
                                 )
+                            
                             Button(action: {
                                 photoVM.selectedImages.remove(at: index)
                                 photoVM.imageSelections.remove(at: index)
                                 print(photoVM.selectedImages.count)
                                 print(photoVM.imageSelections.count)
                             }) {
-                                Image(systemName: "x.circle")
+                                Image("redX")
                                     .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundColor(.red)
-                                    .padding(8)
+                                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIHeight(24))
+                                    .padding(UIScreen.UIWidth(12))
                             }
-                            .offset(x: (UIScreen.main.bounds.width) * 185/430 / 2 - 12, y: -(UIScreen.main.bounds.height) * 185/932 / 2 + 12)
                         }
                     }
                 }
@@ -521,54 +542,99 @@ struct OrderIcePackView: View {
         OrderCakeViewModel(title: "보냉백", sideTitle: "(+5000원)", bottomTitle: "", sizePricel: "", isOn: false),
     ]
     
+    @State var isClicked: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading){
-            CustomText(title: "보냉팩/ 백 추가", textColor: .black, textWeight: .semibold , textSize: 18)
-            
+            HStack{
+                CustomText(title: "보냉팩/ 백 추가", textColor: .black, textWeight: .semibold , textSize: 18)
+                Button(action: {
+                    isClicked.toggle()
+                    print(index)
+                }) {
+                    Image("info 1")
+                        .resizable()
+                        .frame(width: (UIScreen.main.bounds.width) * 14/430, height: (UIScreen.main.bounds.height) * 14/932)
+                        .foregroundColor(.red)
+                        .padding(8)
+                }
+
+                .fullScreenCover(isPresented: $isClicked, content: {
+                    ZStack {
+                        HStack{
+                            Image("IcePack")
+                                .resizable()
+                                .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 202/932)
+                            Image("IceBag")
+                                .resizable()
+                                .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 202/932)
+                        }
+                    
+                        Button(action: {
+                            isClicked.toggle()
+                        }) {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .frame(width: (UIScreen.main.bounds.width) * 22/430, height: (UIScreen.main.bounds.height) * 22/932)
+                                .foregroundColor(.red)
+                                .padding(8)
+                        }
+                        .offset(x: (UIScreen.main.bounds.width) * 185/430 / 2 + 87 , y: -(UIScreen.main.bounds.height) * 202/932 / 2 - 17)
+                    }
+                })
+            }
             HStack{
                 ForEach(orderIcePackModel.indices, id: \.self) { index in
-                    Button(action: {
-                        if selectedIcePackIndex == index {
+                    ZStack {
+                        Button(action: {
+                            if selectedIcePackIndex == index {
+                                selectedIcePackIndex = nil
+                                orderData.orderItem.icePack = .none
+                            } else {
+                                selectedIcePackIndex = index
+                                orderData.orderItem.icePack = stringToIcePack(orderIcePackModel[index].title)
+                            }
+                            print(orderData.orderItem.icePack)
+                            updateSelection(index: index)
+                        }, label: {
+                            HStack{
+                                Image(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? "orderVectorTrue" : "orderVectorFalse")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
+                                    .padding(.leading, (UIScreen.main.bounds.width) * 16/430)
+                                
+                                VStack (alignment: .leading){
+                                    HStack{
+                                        CustomText(title: orderIcePackModel[index].title, textColor: .black, textWeight: .semibold, textSize: 18)
+                                        CustomText(title: orderIcePackModel[index].sideTitle, textColor: .black, textWeight: .regular, textSize: 16)
+                                            .padding(.leading, -4)
+                                            .kerning(0.3)
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                            }
+                            .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
+                                    .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(disableSelection(for: index) ? Color(UIColor.textFieldColor) : .white)
+                                    )
+                            )
+              
+                            .kerning(0.3)
+                        })
+                        .padding(.bottom, 7)
+                        .disabled(disableSelection(for: index))
+                        .onChange(of: orderData.orderItem.cakeSize) { _ in
                             selectedIcePackIndex = nil
                             orderData.orderItem.icePack = .none
-                        } else {
-                            selectedIcePackIndex = index
-                            orderData.orderItem.icePack = stringToIcePack(orderIcePackModel[index].title)
                         }
-                        print(orderData.orderItem.icePack)
-                        updateSelection(index: index)
-                    }, label: {
-                        HStack{
-                            Image(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? "orderVectorTrue" : "orderVectorFalse")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: (UIScreen.main.bounds.width) * 28/430, height: (UIScreen.main.bounds.height) * 28/932)
-                                .padding(.leading, (UIScreen.main.bounds.width) * 22/430)
-                                .padding(.trailing, (UIScreen.main.bounds.width) * 7/430)
-                            
-                            VStack (alignment: .leading){
-                                HStack{
-                                    CustomText(title: orderIcePackModel[index].title, textColor: .black, textWeight: .semibold, textSize: 18)
-                                    CustomText(title: orderIcePackModel[index].sideTitle, textColor: .black, textWeight: .regular, textSize: 16)
-                                        .padding(.leading, -4)
-                                }
-                            }
-                            
-                            Spacer()
-                            
-                        }
-                        .frame(width: (UIScreen.main.bounds.width) * 185/430, height: (UIScreen.main.bounds.height) * 90/932)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? Color(uiColor: .customBlue) : Color(uiColor: .customGray))
-                                .background(disableSelection(for: index) ? Color(UIColor.textFieldColor) : .white)
-                        )
-                    })
-                    .padding(.bottom, 7)
-                    .disabled(disableSelection(for: index))
-                    .onChange(of: orderData.orderItem.cakeSize) { _ in
-                        selectedIcePackIndex = nil
-                        orderData.orderItem.icePack = .none
                     }
                 }
             }
@@ -593,6 +659,14 @@ struct OrderIcePackView: View {
         }
     }
     
+    private func isIcePack(for index: Int) -> Bool {
+        if index == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     private func updateSelection(index: Int) {
         for i in 0..<orderIcePackModel.count {
             if i != index {
@@ -612,7 +686,8 @@ struct OrderCommentView: View {
         VStack(alignment: .leading){
             CustomText(title: "추가 요청 사항", textColor: .black, textWeight: .semibold , textSize: 18)
             
-            TextField(" 잘 부탁드립니다 ~", text: $orderData.orderItem.comment, axis: .vertical)
+            TextField("잘 부탁드립니다 ~", text: $orderData.orderItem.comment, axis: .vertical)
+                .addLeftPadding(10)
                 .modifier(LoginTextFieldModifier(width: (UIScreen.main.bounds.width) * 382/430, height:  (UIScreen.main.bounds.height) * 90/430))
                 .font(.custom("Pretendard", size: 16))
                 .fontWeight(.regular)
@@ -652,7 +727,7 @@ private struct BottomView: View {
                 orderVM.orderItem.expectedPrice = orderVM.expectedPrice();
                 orderVM.orderItem.email = loginVM.loginUserEmail ?? ""},
                          title: "예약하기",
-                         titleColor: .white,
+                         titleColor:  orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .white: .customDarkGray,
                          backgroundColor: orderVM.isallcheck() && !photoVM.selectedImages.isEmpty ? .customBlue : .textFieldColor,
                          leading: 110, trailing: 24)
             .kerning(0.45)
@@ -664,6 +739,17 @@ private struct BottomView: View {
     }
 }
 
+struct starmark: View {
+    var body: some View {
+        Image(systemName: "staroflife.fill")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: (UIScreen.main.bounds.width) * 7/430, height: (UIScreen.main.bounds.height) * 7/932)
+            .foregroundColor(Color(UIColor.customRed))
+            .padding(.leading, -(UIScreen.main.bounds.width) * 7/430)
+            .padding(.bottom,(UIScreen.main.bounds.height) * 7/932 )
+    }
+}
 
 struct LoginTextFieldModifier: ViewModifier {
     var width: CGFloat
@@ -680,6 +766,7 @@ struct LoginTextFieldModifier: ViewModifier {
                     .foregroundColor(.white)
                     .frame(maxWidth: (UIScreen.main.bounds.width) * 382/430, maxHeight: (UIScreen.main.bounds.height) * 90/932)
             }
+
     }
 }
 
@@ -717,6 +804,11 @@ extension UIApplication: UIGestureRecognizerDelegate {
     }
 }
 
+extension TextField {
+    func addLeftPadding(_ width: CGFloat) -> some View {
+            return self.padding(.leading, width)
+        }
+}
 
 #Preview {
     OrderView()

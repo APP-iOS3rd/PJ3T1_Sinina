@@ -28,9 +28,8 @@ struct ProfileView: View {
             .navigationDestination(for: OrderItem.self, destination: { item in
                 UserDetailView(orderItem: item)
             })
-            .onAppear {
-                loginVM.getKakaoUserInfo()
-                profileVM.downloadProfileImage()
+            .refreshable {
+                profileVM.fetchData()
             }
         }
     }
@@ -80,6 +79,8 @@ struct MyOrderListView: View {
     @ObservedObject var profileVM: ProfileViewModel
     
     var body: some View {
+        let sortedOrderData = profileVM.myOrderData.sorted { $0.date < $1.date }
+        
         VStack(spacing: 14) {
             HStack {
                 CustomText(title: "MY", textColor: .customBlue, textWeight: .semibold, textSize: 18)
@@ -87,7 +88,7 @@ struct MyOrderListView: View {
                 Spacer()
             }
             
-            if profileVM.myOrderData.isEmpty {
+            if sortedOrderData.isEmpty {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(.customGray))
                     .frame(height: 100)
@@ -102,9 +103,9 @@ struct MyOrderListView: View {
                         }
                     )
             } else {
-                ForEach(0..<profileVM.myOrderData.count, id: \.self) { i in
-                    NavigationLink(value: profileVM.myOrderData[i]) {
-                        MyOrderView(profileVM: profileVM, orderItem: profileVM.myOrderData[i])
+                ForEach(0..<sortedOrderData.count, id: \.self) { i in
+                    NavigationLink(value: sortedOrderData[i]) {
+                        MyOrderView(profileVM: profileVM, orderItem: sortedOrderData[i])
                     }
                 }
             }
@@ -171,8 +172,12 @@ struct StatusTextView: View {
             return ("예약완료", .white, .customBlue)
         case .notAssign:
             return ("예약대기", .customDarkGray, .customGray)
+        case .progress:
+            return ("제작중", .white, .customBlue)
         case .complete:
             return ("제작완료", .black, .customGray)
+        case .pickup:
+            return ("수령완료", .black, .customGray)
         }
     }
     

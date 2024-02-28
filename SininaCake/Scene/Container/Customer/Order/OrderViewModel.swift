@@ -187,14 +187,15 @@ class PhotoPickerViewModel: ObservableObject {
 
     func uploadPhoto(_ i: Int,_ path: String) {
 
-        guard let selectedimagesData = selectedImages[i].pngData() else { return }
+        guard let selectedimagesData = selectedImages[i].jpegData(compressionQuality: 0.5) else { return }
 
         let storageRef = Storage.storage().reference()
 
         let fileRef = storageRef.child("\(path)/\(i + 1)")
         let metadata = StorageMetadata()
-        metadata.contentType = "image/png"
-
+        metadata.contentType = "image/jpeg"
+        
+        
         if !selectedimagesData.isEmpty {
             let uploadTask = fileRef.putData(selectedimagesData, metadata: metadata) { metadata,
                 error in
@@ -224,8 +225,12 @@ func statusToString(_ status: OrderStatus) -> String {
         return "승인"
     case .notAssign:
         return "미승인"
+    case .progress:
+        return "진행중"
     case .complete:
-        return "완료"
+        return "제작완료"
+    case .pickup:
+        return "수령완료"
     }
 }
 

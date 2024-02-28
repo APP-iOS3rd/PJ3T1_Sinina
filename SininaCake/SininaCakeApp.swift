@@ -38,7 +38,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // 파이어베이스 설정
         FirebaseApp.configure()
         
-        // 파이어베이스 Meesaging 설정
+        // 파이어베이스 Meesaging 설정#imageLiteral(resourceName: "simulator_screenshot_D9D4A766-C413-4018-B832-303657DEA376.png")
         Messaging.messaging().delegate = self
         
         // MARK: - 앱 실행 시 사용자에게 알림 허용 권한을 받음

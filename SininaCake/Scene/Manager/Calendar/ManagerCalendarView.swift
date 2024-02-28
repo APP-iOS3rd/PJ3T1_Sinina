@@ -8,47 +8,53 @@ import SwiftUI
 struct ManagerCalendarView: View {
     
     @Environment(\.sizeCategory) var sizeCategory
-    @ObservedObject var calendarVM = ManagerCalendarViewModel()
+    @StateObject var calendarVM = ManagerCalendarViewModel()
     @StateObject var calendarListVM = ManagerCalendarListViewModel()
     @State private var selectedDate: Date?
-    @State var editClicked = false
+    @State var editClicked = true
     @State var daysList = [[DateValue]]()
-    @State var edit: Bool = false
-    @State var getData: Bool = false
+    @State var edit: Bool = true
+
     
     var testSchedule = Schedule(name: "", startDate: Date(), endDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date())
     var body: some View {
         ScrollView {
+            
             Spacer()
             Spacer()
             VStack() {
                 Rectangle()
                     .foregroundColor(.clear)
-                    .frame(width: 342, height: 441)
+                    .frame(height: UIScreen.UIHeight(540))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(UIColor.customBlue).opacity(1), lineWidth: 1) // 테두리 색 및 두께 조절
+                    )
                     .background(
-                        ZStack {
+                        ZStack(alignment:.top){
                             Rectangle()
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
-                                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 8)
                             VStack() {
                                 headerView
+                                    .fixedSize(horizontal: false, vertical: true)
                                 Divider()
-                                    .frame(width: 302)
+                                    .frame(width: UIScreen.UIWidth(302))
                                 weekView
                                 cardView
                                 Divider()
-                                    .frame(width: 302)
+                                    .frame(width: UIScreen.UIWidth(302))
                                 bookingView
                                     .padding([.horizontal,.vertical], 24)
                             }
                         }
                     )
             }
+            .padding(.trailing, UIScreen.UIWidth(24))
+            .padding(.leading, UIScreen.UIWidth(24))
             VStack {
-                if edit == true {
+                if edit {
                     if let selectedDate = selectedDate {
-                        
                         let formattedDateString = calendarVM.convert(date: selectedDate)
                         CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString) }, title: "주문 내역", titleColor: .black)
                         let _ = print(formattedDateString)
@@ -60,23 +66,39 @@ struct ManagerCalendarView: View {
                 calendarVM.removePastDateValues()
                 print("view 로드, 현재시간 이전 데이터 삭제")
             }
-            
+        }
+    }
+    
+    private func initialize() {
+        for i in daysList.indices {
+            for j in daysList[i].indices {
+                let currentDate = daysList[i][j].date.withoutTime().toDateString()
+                if let dv = calendarVM.dateValues.first(where: { $0.date.withoutTime().toDateString() == currentDate }) {
+                    if calendarVM.currentDate.month == dv.date.month {
+                        print("onchange - month : \(dv.date.month)")
+                        daysList[i][j] = dv
+                    }
+                }
+            }
         }
     }
     
     
     private var headerView: some View {
         HStack {
+          
             Spacer()
             Spacer()
-            
+            Spacer()
             Button {
                 calendarVM.monthOffset -= 1
                 
-            } label: {
-                Image("angle-left")
             }
-            .offset(x: 5)
+        label: {
+            Image("angle-left")
+            
+        }
+        .offset(x: 5)
             Text(calendarVM.month())
                 .font(
                     Font.custom("Pretendard", fixedSize: 24)
@@ -90,21 +112,24 @@ struct ManagerCalendarView: View {
                 calendarVM.monthOffset += 1
             } label: {
                 Image("angle-right")
+                
             }
             .offset(x: 5)
             
             Spacer()
+            Spacer()
+            
             Button {
                 print("편집 작동, \(edit)")
                 edit.toggle()
-                getData.toggle()
                 editClicked.toggle()
             } label: {
-                Image(systemName:"list.clipboard.fill")
-                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customGray))
+                Image(systemName: editClicked ? "list.bullet.clipboard" : "gearshape")
+                    .resizable()
+                    .frame(width: UIScreen.UIWidth(24), height: UIScreen.UIWidth(24))
+                    .foregroundColor(editClicked ? Color(.customBlue) : Color(.customRed))
             }
-            
-            Spacer()
+            .padding(.trailing, UIScreen.UIWidth(16))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // 부모 스택의 크기를 가득 채우도록 설정
     }
@@ -133,7 +158,8 @@ struct ManagerCalendarView: View {
             ForEach(daysList.indices, id: \.self) { i in
                 HStack() {
                     ForEach(daysList[i].indices, id: \.self) { j in
-                        CardView(value: $daysList[i][j], schedule: testSchedule, calendarVM:calendarVM, edit: $edit, getData: $getData, calendarListVM: calendarListVM, selectedDate: $selectedDate) { selectedDateValue in
+                        let _ = print("CardViewload \(daysList[i][j].color)")
+                        CardView(value: $daysList[i][j], schedule: testSchedule, calendarVM:calendarVM, edit: $edit, calendarListVM: calendarListVM, selectedDate: $selectedDate) { selectedDateValue in
                             handleDateClick(dateValue: selectedDateValue)
                         }
                         
@@ -147,57 +173,22 @@ struct ManagerCalendarView: View {
             calendarVM.monthOffset = Int(calendarVM.month()) ?? 0
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
             print("onappear - 캘린더뷰")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
+            initialize()
         }
         .onChange(of: calendarVM.monthOffset) { _ in
             // updating Month...
             print("onchange - monthoffset, \(calendarVM.monthOffset)")
             calendarVM.currentDate = calendarVM.getCurrentMonth()
             daysList = calendarVM.extractDate()
-            calendarVM.loadDataFromFirestore()
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
-            
+            initialize()
         }
         .onChange(of:calendarVM.dateValues) { _ in
             print("onchange - dataValues , \(calendarVM.dateValues.count)")
-            for dv in calendarVM.dateValues {
-                if calendarVM.currentDate.month == dv.date.month {
-                    print("onchange - month : \(dv.date.month)")
-                    for i in daysList.indices {
-                        for j in daysList[i].indices {
-                            if !daysList[i][j].isNotCurrentMonth && daysList[i][j].day == dv.day {
-                                daysList[i][j] = dv
-                            }
-                        }
-                    }
-                }
-            }
+            calendarVM.currentDate = calendarVM.getCurrentMonth()
+            daysList = calendarVM.extractDate()
+            initialize()
         }
-        
     }
     
     private var bookingView: some View {
@@ -244,6 +235,7 @@ struct ManagerCalendarView: View {
         selectedDate = dateValue.date.withoutTime()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let dateString = dateFormatter.string(from: dateValue.date)
         let filteredOrders = calendarListVM.allOrderData.filter { order in
             dateToString(order.date).contains(dateString)
@@ -257,107 +249,91 @@ struct ManagerCalendarView: View {
 struct CardView: View {
     @Binding var value: DateValue
     @State var schedule: Schedule
-    @ObservedObject var calendarVM: ManagerCalendarViewModel
+    @StateObject var calendarVM: ManagerCalendarViewModel
     @Binding var edit: Bool
-    @Binding var getData: Bool
     @StateObject var calendarListVM: ManagerCalendarListViewModel
     @Binding var selectedDate: Date?
-    @State private var dateColor: DateValue.dateColor = .open
     var onDateClick: (DateValue) -> Void
     
-    func clickedDate() {
-        value.selectedToggle()
-        // 클릭할 때마다 클릭 여부를 변경
-        print("tap\(value.isSelected)")
-        
-    }
-    
+    @State private var showDetail = false
     var body: some View {
         ZStack() {
             ZStack {
                 let formattedDateString = calendarVM.convert(date: value.date)
-                if !CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString) }, title: "주문 내역", titleColor: .black).orderData.isEmpty {
+                if !CalListView(orderData: calendarListVM.allOrderData.filter { dateToString($0.date).contains(formattedDateString)}, title: "주문 내역", titleColor: .black).orderData.isEmpty {
                     Text(".")
                         .font(.system(size: 30))
                         .offset(x: 5, y: 2)
                 }
-            }
+                Circle()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.clear)
+                    .overlay(
+                        Circle()
+                            .offset(x:5.2,y:-3.7)
+                            .stroke(Color(UIColor.customBlue)
+                                   )
+                        )
+                    .opacity(selectedDate?.withoutTime() == value.date.withoutTime() ? 1 : 0)
+                        }
             HStack {
                 if value.day > 0 {
+                    
                     if value.isNotCurrentMonth {
                         Text("\(value.day)")
                             .font(.custom("Pretendard-SemiBold", fixedSize: 18))
                             .foregroundColor(Color(UIColor.customGray))
                             .padding([.leading, .bottom], 10)
+                        
+                    } else if schedule.startDate.withoutTime() == value.date {
+                        Text("\(value.day)")
+                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                            .foregroundColor(.white)
+                            .padding([.leading, .bottom], 10)
+                            .background(Circle()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(Color(UIColor.customBlue))
+                                .offset(x:5.2,y:-3.7)
+                            )
+                            .onTapGesture {
+                               
+                            }
                     } else {
-                        if schedule.startDate.withoutTime() < value.date && value.date <= schedule.endDate
-                        { Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customDarkGray) : Color(UIColor.customRed)))
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    if edit == false {
-                                        clickedDate()
-                                        let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
-                                        value.saveDateValueToFirestore(dateValue: value)
-                                        calendarVM.removeDuplicateDay(dateValue: dateValue)
-                                    } else {
-                                        onDateClick(value)
-                                        print("\(value) 클릭")
+                        Text("\(value.day)")
+                            .font(.custom("Pretendard-SemiBold", fixedSize: 18))
+                            .foregroundColor(value.color.color)
+                            .padding([.leading, .bottom], 10)
+                            .onTapGesture {
+                                //                                let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
+                                if edit == false && schedule.startDate.withoutTime() < value.date {
+                                    
+                                    onDateClick(value)
+                                    if value.color == .blue {
+                                        
+                                        value.color = .gray
+                                        //calendarVM.changeDateColorToGray(date: value.date)
+                                    } else if value.color == .gray {
+                                        
+                                        value.color = .red
+                                    } else if value.color == .red {
+                                        
+                                        value.color = .blue
                                     }
+                                } else {
+                                    
+                                    onDateClick(value)
+                                    print("\(value) 클릭")
                                 }
-                            
-                        } else if schedule.startDate.withoutTime() == value.date {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(.white)
-                                .padding([.leading, .bottom], 10)
-                                .background(Circle()
-                                    .frame(width: 40, height: 40)
-                                    .foregroundColor(Color(UIColor.customBlue))
-                                    .offset(x:5.2,y:-3.7)
-                                )
-                                .onTapGesture {
-                                    if edit == true {
-                                        onDateClick(value)
-                                        print("\(value) 클릭")
-                                    }
-                                }
-                        } else if schedule.startDate.withoutTime() > value.date {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor(value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray)))
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    if edit == true {
-                                        onDateClick(value)
-                                        print("\(value) 클릭")
-                                    }
-                                }
-                        }
-                        else {
-                            Text("\(value.day)")
-                                .font(.custom("Pretendard-SemiBold", fixedSize: 18))
-                                .foregroundColor((value.date.weekday == 1 || value.date.weekday == 2) ? (value.isSelected ? Color(UIColor.customBlue) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customDarkGray))) : (value.isSelected ? Color(UIColor.customDarkGray) : (value.isSecondSelected ? Color(UIColor.customRed) : Color(UIColor.customBlue))))
-                                .padding([.leading, .bottom], 10)
-                                .onTapGesture {
-                                    if edit == false  {
-                                        clickedDate()
-                                        let dateValue = DateValue(day: value.day, date: value.date.withoutTime())
-                                        value.saveDateValueToFirestore(dateValue: value)
-                                        calendarVM.removeDuplicateDay(dateValue: dateValue)
-                                    } else {
-                                        onDateClick(value)
-                                        print("\(value) 클릭")
-                                    }
-                                }
-                        }
+                                
+                                calendarVM.saveDateValueToFirestore(dateValue: value)
+                                calendarVM.removeDuplicateDay(dateValue: value)
+                            }
                     }
                 }
             }
         }
         .frame(width: UIScreen.main.bounds.width / 13)
-        .frame(height: 40)
+        .frame(height: UIScreen.UIHeight(40))
     }
 }
 

@@ -27,8 +27,14 @@ class OrderDetailViewModel: ObservableObject {
             db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"승인"])
             db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"승인"])
         case .assign:
-            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"완료"])
-            db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"완료"])
+            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"진행중"])
+            db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"진행중"])
+        case .progress:
+            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"제작완료"])
+            db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"제작완료"])
+        case .complete:
+            db.collection("Users").document(orderItem.email).collection("Orders").document(orderItem.id).updateData(["status":"수령완료"])
+            db.collection("CurrentOrders").document(orderItem.id).updateData(["status":"수령완료"])
         default:
             return
         }

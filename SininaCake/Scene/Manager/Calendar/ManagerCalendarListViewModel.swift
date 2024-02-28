@@ -50,10 +50,10 @@ class ManagerCalendarListViewModel: ObservableObject {
                         let expectedPrice: Int = documentData["expectedPrice"] as? Int ?? 0
                         let confirmedPrice: Int = documentData["confirmedPrice"] as? Int ?? 0
                         let status: String = documentData["status"] as? String ?? ""
+                    
+                        let orderData = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
                         
-                        let orderDate = OrderItem(id: id, email: email, date: self.timestampToDate(date), orderTime: self.timestampToDate(orderTime), cakeSize: cakeSize, sheet: sheet, cream: cream, icePack: stringToIcePack(icePack), name: name, phoneNumber: phoneNumber, text: text, imageURL: imageURL, comment: comment, expectedPrice: expectedPrice, confirmedPrice: confirmedPrice, status: self.stringToStatus(status))
-                        
-                        self.allOrderData.append(orderDate)
+                        self.allOrderData.append(orderData)
                     }
                 }
             }
@@ -70,8 +70,12 @@ class ManagerCalendarListViewModel: ObservableObject {
             return .assign
         case "미승인":
             return .notAssign
-        case "완료":
+        case "진행중":
+            return .progress
+        case "제작완료":
             return .complete
+        case "수령완료":
+            return .pickup
         default:
             return .notAssign
         }
