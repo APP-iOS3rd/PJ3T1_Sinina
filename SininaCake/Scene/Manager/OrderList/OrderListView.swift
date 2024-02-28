@@ -127,24 +127,30 @@ private struct CellView: View {
     
     var body: some View {
         var statusColor: UIColor {
-            switch orderItem.status {
-            case .notAssign:
-                return .customGray
-            case .assign:
-                return .customRed
-            case .complete:
-                return .customBlue
+                switch orderItem.status {
+                case .notAssign:
+                    return .customGray
+                case .assign:
+                    return .customRed
+                case .progress:
+                    return .customBlue
+                case .complete:
+                    return .black
+                default:
+                    return .black
+                }
             }
-        }
-        
-        var price: (String, Int) {
-            switch orderItem.status {
-            case .notAssign:
-                return ("총 예상금액", orderItem.expectedPrice)
-            case .assign, .complete:
-                return ("총 확정금액", orderItem.confirmedPrice)
+            
+            var price: (String, Int) {
+                switch orderItem.status {
+                case .notAssign:
+                    return ("총 예상금액", orderItem.expectedPrice)
+                case .assign, .progress, .complete:
+                    return ("총 확정금액", orderItem.confirmedPrice)
+                default:
+                    return ("", 0)
+                }
             }
-        }
         
         VStack(spacing: 10) {
             HStack {
