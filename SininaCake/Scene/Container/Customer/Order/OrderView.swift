@@ -216,7 +216,7 @@ struct OrderCakeView: View {
                         selectedCakeIndex = index
                         orderData.orderItem.cakeSize = orderCakeModel[index].title
                         print(orderData.orderItem.cakeSize)
-                        updateSelection(index: index)
+                        updateSelection(index: index, orderModel: orderCakeModel)
                     }, label: {
                         HStack{
                             Image(orderCakeModel[index].title == orderData.orderItem.cakeSize ? "orderVectorTrue" : "orderVectorFalse")
@@ -256,13 +256,6 @@ struct OrderCakeView: View {
         }
         .padding(.horizontal,(UIScreen.main.bounds.width) * 24/430)
     }
-    private func updateSelection(index: Int) {
-        for i in 0..<orderCakeModel.count {
-            if i != index {
-                orderCakeModel[i].isOn = false
-            }
-        }
-    }
 }
 
 // MARK: - OrderSheetView
@@ -289,7 +282,7 @@ struct OrderSheetView: View {
                         selectedSheetIndex = index
                         orderData.orderItem.sheet = orderSheetModel[index].title
                         print(orderData.orderItem.sheet)
-                        updateSelection(index: index)
+                        updateSelection(index: index, orderModel: orderSheetModel)
                     }, label: {
                         HStack{
                             Image(orderSheetModel[index].title == orderData.orderItem.sheet ? "orderVectorTrue" : "orderVectorFalse")
@@ -319,13 +312,6 @@ struct OrderSheetView: View {
             }
             .padding(.bottom, (UIScreen.main.bounds.height) * 42/932)
             
-        }
-    }
-    private func updateSelection(index: Int) {
-        for i in 0..<orderSheetModel.count {
-            if i != index {
-                orderSheetModel[i].isOn = false
-            }
         }
     }
 }
@@ -370,7 +356,7 @@ struct OrderCreamView: View {
                             selectedCreamIndex = index
                             orderData.orderItem.cream = orderCreamModel[index].title
                             print(orderData.orderItem.cream)
-                            updateSelection(index: index)
+                            updateSelection(index: index, orderModel: orderCreamModel)
                         }, label: {
                             HStack{
                                 Image(orderCreamModel[index].title == orderData.orderItem.cream ? "orderVectorTrue" : "orderVectorFalse")
@@ -414,15 +400,7 @@ struct OrderCreamView: View {
         }
     }
     
-    private func updateSelection(index: Int) {
-        for i in 0..<orderCreamModel.count {
-            if i != index {
-                orderCreamModel[i].isOn = false
-            }
-        }
-    }
 }
-
 
 // MARK: - OrderTextView
 
@@ -595,7 +573,7 @@ struct OrderIcePackView: View {
                                 orderData.orderItem.icePack = stringToIcePack(orderIcePackModel[index].title)
                             }
                             print(orderData.orderItem.icePack)
-                            updateSelection(index: index)
+                            updateSelection(index: index, orderModel: orderIcePackModel)
                         }, label: {
                             HStack{
                                 Image(orderIcePackModel[index].title == icePackToString(orderData.orderItem.icePack) ? "orderVectorTrue" : "orderVectorFalse")
@@ -667,13 +645,6 @@ struct OrderIcePackView: View {
         }
     }
     
-    private func updateSelection(index: Int) {
-        for i in 0..<orderIcePackModel.count {
-            if i != index {
-                orderIcePackModel[i].isOn = false
-            }
-        }
-    }
 }
 
 

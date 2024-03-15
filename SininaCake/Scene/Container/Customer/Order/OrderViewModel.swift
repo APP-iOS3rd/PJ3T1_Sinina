@@ -263,4 +263,10 @@ func dateToTime(_ date: Date) -> String {
     return timeString
 }
 
-
+func updateSelection(index: Int, orderModel: [OrderCakeViewModel]) {
+    for i in 0..<orderModel.count {
+        if i != index {
+            orderModel[i].isOn = false
+        }
+    }
+}
