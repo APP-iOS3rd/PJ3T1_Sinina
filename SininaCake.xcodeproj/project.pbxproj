@@ -19,7 +19,7 @@
 		23C35E9D2B7CE4B900A61406 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */; };
 		23C35E9F2B7CE4EA00A61406 /* ManagerChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */; };
 		23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */; };
-		23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManger.swift */; };
+		23D682992B7380A400A2036A /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682982B7380A400A2036A /* FirebaseManager.swift */; };
 		23D682D42B738A0200A2036A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D682D32B738A0200A2036A /* Date.swift */; };
 		3B6720BC2B85F6610008F462 /* HomeCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6720BB2B85F6610008F462 /* HomeCalendarView.swift */; };
 		3BD583C12B831A3A00861F92 /* ManagerCalendarListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD583C02B831A3A00861F92 /* ManagerCalendarListViewModel.swift */; };
@@ -73,6 +73,7 @@
 		9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */; };
 		9A2C58692B9E0584007ECE82 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2C58682B9E0584007ECE82 /* Kingfisher */; };
 		9A3588602B0227DB00501E60 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9A35885F2B0227DB00501E60 /* FirebaseAnalytics */; };
+		9A749E992BA02A76000F9C67 /* AppstoreVersionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A749E982BA02A76000F9C67 /* AppstoreVersionChecker.swift */; };
 		9A86D6632B8B71A100A3F3EE /* CustomXButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A86D6622B8B71A100A3F3EE /* CustomXButton.swift */; };
 		9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB32B5917C7001B49EF /* SplashView.swift */; };
 		9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */; };
@@ -135,7 +136,7 @@
 		23C35E9C2B7CE4B900A61406 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		23C35E9E2B7CE4EA00A61406 /* ManagerChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerChatView.swift; sourceTree = "<group>"; };
 		23C35EA62B7D9A7B00A61406 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		23D682982B7380A400A2036A /* FirebaseManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManger.swift; sourceTree = "<group>"; };
+		23D682982B7380A400A2036A /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		23D682D32B738A0200A2036A /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		38951A1BE2E0F9CD6200F179 /* Pods-SininaCake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SininaCake.debug.xcconfig"; path = "Target Support Files/Pods-SininaCake/Pods-SininaCake.debug.xcconfig"; sourceTree = "<group>"; };
 		3B6720BB2B85F6610008F462 /* HomeCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCalendarView.swift; sourceTree = "<group>"; };
@@ -193,6 +194,7 @@
 		9A27E6B62B55159300E7E699 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyView.swift; sourceTree = "<group>"; };
 		9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerOnlyViewModel.swift; sourceTree = "<group>"; };
+		9A749E982BA02A76000F9C67 /* AppstoreVersionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppstoreVersionChecker.swift; sourceTree = "<group>"; };
 		9A86D6622B8B71A100A3F3EE /* CustomXButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomXButton.swift; sourceTree = "<group>"; };
 		9A9E9DB32B5917C7001B49EF /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		9A9E9DB52B5917D3001B49EF /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				8ECB219C2B1DBF89003BF8B0 /* Extension */,
 				8ECB219F2B1DBFD2003BF8B0 /* Font */,
 				8E874BB02B00B47700ECEF08 /* Scene */,
+				9A749E9A2BA02A7E000F9C67 /* Manager */,
 			);
 			path = SininaCake;
 			sourceTree = "<group>";
@@ -306,12 +309,12 @@
 				9AA04FFB2B72109D004F671E /* Container */,
 				9A9E9DB72B5917D9001B49EF /* Splash */,
 				8ECF5FC32B54EE4200D6BCF6 /* Login */,
-				8E874BB12B00B52900ECEF08 /* Manager */,
+				8E874BB12B00B52900ECEF08 /* StoreOwner */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
 		};
-		8E874BB12B00B52900ECEF08 /* Manager */ = {
+		8E874BB12B00B52900ECEF08 /* StoreOwner */ = {
 			isa = PBXGroup;
 			children = (
 				8ECF5FD52B54EEE200D6BCF6 /* OrderList */,
@@ -321,7 +324,7 @@
 				9A27E6B82B55160B00E7E699 /* ManagerOnlyView.swift */,
 				9A27E6BA2B55161700E7E699 /* ManagerOnlyViewModel.swift */,
 			);
-			path = Manager;
+			path = StoreOwner;
 			sourceTree = "<group>";
 		};
 		8E874BB22B00B53B00ECEF08 /* Customer */ = {
@@ -384,7 +387,7 @@
 		8ECF5FC32B54EE4200D6BCF6 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				23D682982B7380A400A2036A /* FirebaseManger.swift */,
+				23D682982B7380A400A2036A /* FirebaseManager.swift */,
 				8E874BAC2B00B40D00ECEF08 /* LoginView.swift */,
 				8ECF5FC12B54EE3D00D6BCF6 /* LoginViewModel.swift */,
 			);
@@ -525,6 +528,14 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		9A749E9A2BA02A7E000F9C67 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				9A749E982BA02A76000F9C67 /* AppstoreVersionChecker.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		9A9E9DB72B5917D9001B49EF /* Splash */ = {
@@ -749,7 +760,7 @@
 				8ECF5FD72B54EEFA00D6BCF6 /* OrderDetailViewModel.swift in Sources */,
 				23C35EA72B7D9A7B00A61406 /* ImagePicker.swift in Sources */,
 				9A27E6B52B55158A00E7E699 /* MapView.swift in Sources */,
-				23D682992B7380A400A2036A /* FirebaseManger.swift in Sources */,
+				23D682992B7380A400A2036A /* FirebaseManager.swift in Sources */,
 				9AEACEB22B6255DE00AE041F /* Utilities.swift in Sources */,
 				9A9E9DB42B5917C7001B49EF /* SplashView.swift in Sources */,
 				8EFA75332B73428000BEDF0C /* FCMServerAPI.swift in Sources */,
@@ -758,6 +769,7 @@
 				9A27E6BB2B55161700E7E699 /* ManagerOnlyViewModel.swift in Sources */,
 				8ECF5FBB2B54C42900D6BCF6 /* InstagramAPI.swift in Sources */,
 				8E874B9F2B00B37200ECEF08 /* SininaCakeApp.swift in Sources */,
+				9A749E992BA02A76000F9C67 /* AppstoreVersionChecker.swift in Sources */,
 				8ECF5FD42B54EEDA00D6BCF6 /* OrderListViewModel.swift in Sources */,
 				9A9E9DB62B5917D3001B49EF /* SplashViewModel.swift in Sources */,
 				236763A42B67AE57008C8244 /* (null) in Sources */,

@@ -18,7 +18,7 @@ struct ContainerView: View {
     init() {
         UITabBar.appearance().isHidden = true
     }
-    
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
@@ -51,6 +51,7 @@ struct ContainerView: View {
                             .frame(width: UIScreen.UIWidth(40),
                                    height: UIScreen.UIHeight(40))
                 }
+                
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Trailing item if needed
