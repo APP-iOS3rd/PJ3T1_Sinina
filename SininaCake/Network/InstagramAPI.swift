@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 // MARK: - Insta
 struct Instagram: Codable {
@@ -44,16 +45,19 @@ struct Cursors: Codable {
 }
 
 class InstagramAPI: ObservableObject {
+    private var instagramAPIKey: String = ""
+    
     init() {
-        self.fetchInstaData()
+        Task {
+            await getInstagramAPIKey()
+            self.fetchInstaData()
+        }
     }
     
     @Published var instaData = [InstaData]()
     @Published var instaImageURLs: [String] = [String]()
     
     func fetchInstaData() {
-        let instagramAPIKey = Bundle.main.infoDictionary?["INSTAGRAM_API_KEY"] ?? ""
-        
         let urlString = "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url&access_token=\(instagramAPIKey)"
         
         guard let url = URL(string: urlString) else { return }
@@ -76,7 +80,6 @@ class InstagramAPI: ObservableObject {
             do {
                 let results = try JSONDecoder().decode(Instagram.self, from: data)
                 DispatchQueue.main.async {
-//                    self.instaData = results.data
                     if self.instaImageURLs.isEmpty {
                         results.data.forEach { image in
                             self.instaImageURLs.append(image.mediaURL)
@@ -89,5 +92,19 @@ class InstagramAPI: ObservableObject {
             
         }
         task.resume()
+    }
+    
+    func getInstagramAPIKey() async {
+        let db = Firestore.firestore()
+        var isNewUser = false
+        
+        do {
+            let instaAPI = try await db.collection("Keys").document("InstaKey").getDocument()
+            let apiKey = instaAPI.get("key") as! String
+            instagramAPIKey = apiKey
+            print("Success to getting InstaAPIKey: \(apiKey)")
+        } catch {
+            print("Error writing document: \(error)")
+        }
     }
 }
