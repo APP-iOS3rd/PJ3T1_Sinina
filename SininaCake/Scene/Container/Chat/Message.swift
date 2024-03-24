@@ -15,21 +15,24 @@ struct Message: Identifiable, Codable, Hashable {
     var userEmail: String?
     var imageURL: String?
     var imageData: Data?
+    var viewed: Bool?
     
     // 텍스트 메시지 생성자
-    init(text: String, userEmail: String, timestamp: Date, id: String = UUID().uuidString) {
+    init(text: String, userEmail: String, timestamp: Date, id: String = UUID().uuidString, viewed: Bool?) {
         self.id = id
         self.text = text
         self.userEmail = userEmail
         self.timestamp = timestamp
+        self.viewed = viewed
     }
     
     // 이미지 메시지 생성자
-    init(imageData: Data, imageURL: String?, userEmail: String, timestamp: Date, id: String = UUID().uuidString) {
+    init(imageData: Data, imageURL: String?, userEmail: String, timestamp: Date, id: String = UUID().uuidString, viewed: Bool?) {
         self.id = id
         self.imageURL = imageURL
         self.userEmail = userEmail
         self.timestamp = timestamp
         self.imageData = imageData
+        self.viewed = viewed
     }
 }

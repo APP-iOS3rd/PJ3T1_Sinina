@@ -18,7 +18,7 @@ struct ContainerView: View {
     init() {
         UITabBar.appearance().isHidden = true
     }
-    
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
@@ -33,7 +33,7 @@ struct ContainerView: View {
                 
                 CustomTabView(selection: $currentTab)
                     .navigationDestination(isPresented: $showChat) {
-                        CustomerChatView(room: ChatRoom(userEmail: loginVM.loginUserEmail ?? "", id: loginVM.loginUserEmail ?? "", lastMsg: nil, lastMsgTime: nil, imgURL: loginVM.imgURL))
+                        CustomerChatView(room: chatVM.chatRoom)
                             .navigationBarBackButtonHidden()
                             .onDisappear() {
                                 currentTab = .home
@@ -51,6 +51,7 @@ struct ContainerView: View {
                             .frame(width: UIScreen.UIWidth(40),
                                    height: UIScreen.UIHeight(40))
                 }
+                
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Trailing item if needed
@@ -74,6 +75,9 @@ struct ContainerView: View {
             } else {
                 showChat = false
             }
+        }
+        .onAppear(){
+            chatVM.getChatRoom(loginVM.loginUserEmail ?? "")
         }
     }
 }

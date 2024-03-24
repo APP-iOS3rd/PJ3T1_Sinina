@@ -187,14 +187,15 @@ class PhotoPickerViewModel: ObservableObject {
 
     func uploadPhoto(_ i: Int,_ path: String) {
 
-        guard let selectedimagesData = selectedImages[i].pngData() else { return }
+        guard let selectedimagesData = selectedImages[i].jpegData(compressionQuality: 0.5) else { return }
 
         let storageRef = Storage.storage().reference()
 
         let fileRef = storageRef.child("\(path)/\(i + 1)")
         let metadata = StorageMetadata()
-        metadata.contentType = "image/png"
-
+        metadata.contentType = "image/jpeg"
+        
+        
         if !selectedimagesData.isEmpty {
             let uploadTask = fileRef.putData(selectedimagesData, metadata: metadata) { metadata,
                 error in
